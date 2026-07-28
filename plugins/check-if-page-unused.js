@@ -1,4 +1,4 @@
 export default defineNuxtPlugin(() => {
-  // Este plugin está vacío porque solo sirve para eliminar el warning
-  console.log('Plugin de verificación de páginas cargado')
+  // Plugin para eliminar el warning NUXT_B2005
+  console.log('✅ Plugin de verificación de páginas cargado')
 })

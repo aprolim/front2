@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     families: {
       'Roboto': [300, 400, 500, 700],
       'Montserrat': [400, 600, 700, 800]
-    }
+    },
+    display: 'swap'
   },
   
   css: ['~/assets/main.css'],

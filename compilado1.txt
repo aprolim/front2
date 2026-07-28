@@ -149,7 +149,8 @@ export default defineNuxtConfig({
     families: {
       'Roboto': [300, 400, 500, 700],
       'Montserrat': [400, 600, 700, 800]
-    }
+    },
+    display: 'swap'
   },
   
   css: ['~/assets/main.css'],
@@ -285,22 +286,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        'senado-blue': {
-          50: '#e6f0fa',
-          100: '#cce1f5',
-          200: '#99c3eb',
-          300: '#66a5e0',
-          400: '#3387d6',
-          500: '#0069cc',
-          600: '#0054a3',
-          700: '#003f7a',
-          800: '#002a52',
-          900: '#001529'
+        'senado': {
+          'primary': 'var(--senado-primary)',
+          'primary-light': 'var(--senado-primary-light)',
+          'primary-dark': 'var(--senado-primary-dark)',
+          'gold': 'var(--senado-gold)',
+          'gold-light': 'var(--senado-gold-light)',
+          'gold-dark': 'var(--senado-gold-dark)'
         }
       }
     }
   },
-  plugins: []
+  plugins: [
+    // 🔥 Agregar variantes portrait y landscape
+    function({ addVariant }) {
+      addVariant('portrait', '@media (orientation: portrait)')
+      addVariant('landscape', '@media (orientation: landscape)')
+    }
+  ]
 } 
 ================================= 
 assets\main.css 
@@ -311,6 +314,16 @@ assets\main.css
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
+    --senado-primary: #5b0a14;
+    --senado-primary-light: #8f1522;
+    --senado-primary-dark: #3a060d;
+    --senado-gold: #c9a84c;
+    --senado-gold-light: #e1c975;
+    --senado-gold-dark: #967a30;
+  }
+
   html {
     font-family: 'Roboto', sans-serif;
   }
@@ -320,42 +333,48 @@ assets\main.css
   }
 }
 
-@layer components {
-  .container-senado {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-} 
+ 
 ================================= 
 components\Footer.vue 
 ================================= 
  
 <template>
-  <footer class="bg-senado-blue-900 text-white py-6 mt-10">
-    <div class="container-senado">
+  <footer class="bg-senado-primary text-white py-6 mt-10">
+    <div class="">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <h4 class="font-bold mb-2">Redes Sociales</h4>
+          <h4 class="font-bold mb-2 text-senado-gold">Redes Sociales</h4>
           <div class="flex gap-3">
-            <a href="#" class="hover:underline">Facebook</a>
-            <a href="#" class="hover:underline">Twitter</a>
-            <a href="#" class="hover:underline">YouTube</a>
+            <a href="#" class="hover:text-senado-gold transition-colors">
+              <Icon name="mdi:facebook" class="text-2xl" />
+            </a>
+            <a href="#" class="hover:text-senado-gold transition-colors">
+              <Icon name="mdi:twitter" class="text-2xl" />
+            </a>
+            <a href="#" class="hover:text-senado-gold transition-colors">
+              <Icon name="mdi:youtube" class="text-2xl" />
+            </a>
+            <a href="#" class="hover:text-senado-gold transition-colors">
+              <Icon name="mdi:instagram" class="text-2xl" />
+            </a>
           </div>
         </div>
         <div>
-          <h4 class="font-bold mb-2">Contacto</h4>
+          <h4 class="font-bold mb-2 text-senado-gold">Contacto</h4>
           <p class="text-sm">Calle Comercio esquina Colón</p>
           <p class="text-sm">Telf.: (591) 2158701</p>
           <p class="text-sm">La Paz - Bolivia</p>
         </div>
         <div>
-          <h4 class="font-bold mb-2">Sitios de interés</h4>
+          <h4 class="font-bold mb-2 text-senado-gold">Sitios de interés</h4>
           <ul class="text-sm space-y-1">
-            <li><a href="#" class="hover:underline">Portal del Estado</a></li>
-            <li><a href="#" class="hover:underline">Cámara de Diputados</a></li>
+            <li><a href="#" class="hover:text-senado-gold transition-colors">Portal del Estado</a></li>
+            <li><a href="#" class="hover:text-senado-gold transition-colors">Cámara de Diputados</a></li>
+            <li><a href="#" class="hover:text-senado-gold transition-colors">Órgano Judicial</a></li>
           </ul>
         </div>
       </div>
-      <div class="text-center text-xs mt-6 border-t border-blue-700 pt-4">
+      <div class="text-center text-xs mt-6 border-t border-white border-opacity-20 pt-4">
         © 2026 Senado de Bolivia - Todos los derechos reservados
       </div>
     </div>
@@ -366,31 +385,229 @@ components\Header.vue
 ================================= 
  
 <template>
-  <header class="bg-senado-blue-700 text-white shadow-lg">
-    <div class="container-senado py-4 flex justify-between items-center">
-      <div>
-        <h1 class="text-2xl font-bold">Senado de Bolivia</h1>
+  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+    <div class="py-2">
+      <!-- Fila superior -->
+      <div class="flex items-center justify-between gap-4">
+        <!-- Botón sandwich -->
+        <button @click="toggleMenu" class="text-3xl text-senado-primary hover:bg-gray-100 p-2 rounded-lg transition-colors flex-shrink-0">
+          <Icon name="material-symbols:menu-rounded" class="text-3xl" v-if="!menuAbierto" />
+          <Icon name="material-symbols:close-rounded" class="text-3xl" v-else />
+        </button>
+
+        <!-- Logo -->
+        <div class="flex-shrink-0">
+          <img src="/images/logo-senado.png" alt="Senado" class="h-12 w-auto" />
+        </div>
+
+        <!-- Título "Cámara de Senadores" -->
+        <div class="hidden md:block flex-grow text-center">
+          <h1 class="text-2xl font-bold text-senado-primary leading-tight">
+            Cámara de<br />
+            <span class="text-3xl">Senadores</span>
+          </h1>
+        </div>
+
+        <!-- Buscador -->
+        <div class="hidden lg:block flex-grow max-w-xs">
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Buscar..." 
+              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
+              <Icon name="material-symbols:search-rounded" class="text-xl" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Redes Sociales -->
+        <div class="flex items-center gap-3 flex-shrink-0">
+          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
+            <Icon name="mdi:facebook" class="text-2xl" />
+          </a>
+          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
+            <Icon name="mdi:twitter" class="text-2xl" />
+          </a>
+          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
+            <Icon name="mdi:youtube" class="text-2xl" />
+          </a>
+          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
+            <Icon name="mdi:instagram" class="text-2xl" />
+          </a>
+        </div>
       </div>
-      
-      <button @click="toggleMenu" class="text-3xl md:hidden">
-        ☰
-      </button>
-      
-      <nav class="hidden md:flex gap-6">
-        <a href="/" class="hover:underline">Inicio</a>
-        <a href="/actividad" class="hover:underline">Actividad</a>
-        <a href="/senadores" class="hover:underline">Senadores</a>
-        <a href="/noticias" class="hover:underline">Noticias</a>
-      </nav>
+
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col items-center gap-2 mt-2">
+        <h1 class="text-xl font-bold text-senado-primary leading-tight text-center">
+          Cámara de<br />
+          <span class="text-2xl">Senadores</span>
+        </h1>
+        <p class="text-xs text-gray-500 font-medium tracking-wider">
+          ENCONTRA TU GANCHO
+        </p>
+        <div class="w-full max-w-xs">
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Buscar..." 
+              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
+              <Icon name="material-symbols:search-rounded" class="text-xl" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div v-if="menuAbierto" class="md:hidden bg-senado-blue-800 p-4">
-      <nav class="flex flex-col gap-3">
-        <a href="/" class="hover:underline">Inicio</a>
-        <a href="/actividad" class="hover:underline">Actividad</a>
-        <a href="/senadores" class="hover:underline">Senadores</a>
-        <a href="/noticias" class="hover:underline">Noticias</a>
-      </nav>
+
+    <!-- Menú lateral -->
+    <div
+      v-if="menuAbierto"
+      class="fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity"
+      @click.self="toggleMenu"
+    >
+      <div class="bg-white text-gray-800 w-80 h-full overflow-y-auto shadow-2xl">
+        <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
+          <span class="font-bold text-lg">Menú</span>
+          <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors">
+            ✕
+          </button>
+        </div>
+
+        <nav class="p-4 space-y-6">
+          <!-- Actividad Legislativa -->
+          <div>
+            <button 
+              @click="toggleSubmenu('legislativa')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Actividad Legislativa</span>
+              <span>{{ submenus.legislativa ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.legislativa" class="ml-4 mt-2 space-y-2">
+              <!-- Legislación -->
+              <div>
+                <button 
+                  @click="toggleSubmenu('legislacion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Legislación</span>
+                  <span>{{ submenus.legislacion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.legislacion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
+                </div>
+              </div>
+
+              <!-- Gestión -->
+              <div>
+                <button 
+                  @click="toggleSubmenu('gestion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Gestión</span>
+                  <span>{{ submenus.gestion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.gestion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</a>
+                </div>
+              </div>
+
+              <!-- Fiscalización -->
+              <div>
+                <button 
+                  @click="toggleSubmenu('fiscalizacion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Fiscalización</span>
+                  <span>{{ submenus.fiscalizacion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.fiscalizacion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tus senadores -->
+          <div>
+            <button 
+              @click="toggleSubmenu('senadores')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Tus senadores</span>
+              <span>{{ submenus.senadores ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.senadores" class="ml-4 mt-2 space-y-1 text-sm text-gray-600">
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Senadoras y senadores</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</a>
+            </div>
+          </div>
+
+          <!-- Acerca del Senado -->
+          <div>
+            <button 
+              @click="toggleSubmenu('acerca')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Acerca del Senado</span>
+              <span>{{ submenus.acerca ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.acerca" class="ml-4 mt-2 space-y-2">
+              <div>
+                <button 
+                  @click="toggleSubmenu('funciones')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Funciones del Senado</span>
+                  <span>{{ submenus.funciones ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.funciones" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</a>
+                </div>
+              </div>
+              <a href="#" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-semibold">Antecedentes históricos</a>
+            </div>
+          </div>
+
+          <!-- Senado abierto -->
+          <div>
+            <button 
+              @click="toggleSubmenu('abierto')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Senado abierto</span>
+              <span>{{ submenus.abierto ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.abierto" class="ml-4 mt-2 space-y-1 text-sm text-gray-600">
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Noticias</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</a>
+            </div>
+          </div>
+
+          <hr class="border-gray-200">
+
+          <!-- Enlaces rápidos -->
+          <div class="space-y-2 text-sm">
+            <a href="/" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">🏠 Inicio</a>
+            <a href="/contacto" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">📞 Contacto</a>
+          </div>
+        </nav>
+      </div>
     </div>
   </header>
 </template>
@@ -399,16 +616,51 @@ components\Header.vue
 export default {
   data() {
     return {
-      menuAbierto: false
+      menuAbierto: false,
+      submenus: {
+        legislativa: false,
+        legislacion: false,
+        gestion: false,
+        fiscalizacion: false,
+        senadores: false,
+        acerca: false,
+        funciones: false,
+        abierto: false
+      }
     }
   },
   methods: {
     toggleMenu() {
       this.menuAbierto = !this.menuAbierto
+      if (!this.menuAbierto) {
+        Object.keys(this.submenus).forEach(key => {
+          this.submenus[key] = false
+        })
+      }
+    },
+    toggleSubmenu(key) {
+      this.submenus[key] = !this.submenus[key]
     }
   }
 }
-</script> 
+</script>
+
+<style scoped>
+/* Estilos para el scroll del menú */
+.menu-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.menu-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menu-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+</style> 
 ================================= 
 layouts\default.vue 
 ================================= 
@@ -439,42 +691,162 @@ pages\index.vue
 ================================= 
  
 <template>
-  <div class="container-senado py-10">
-    <h1 class="text-4xl font-bold text-senado-blue-700 mb-6">
-      Senado de Bolivia
-    </h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-bold text-senado-blue-600">Legislación</h2>
-        <ul class="mt-3 space-y-1 text-sm">
-          <li>• Resoluciones Camarales</li>
-          <li>• Declaraciones Camarales</li>
-          <li>• Minutas de Comunicación</li>
-        </ul>
+  <div>
+    <!-- ========================================== -->
+    <!-- BANNER DE BIENVENIDA (ancho completo)      -->
+    <!-- ========================================== -->
+    <div class="w-full">
+      <div class="portrait:bg-blue-500 landscape:bg-[#edeeed] rounded-lg shadow-lg h-[12rem] flex items-center justify-center">
+        <h1 class="text-3xl font-bold text-center portrait:text-white landscape:text-senado-primary">
+          Bienvenido al sitio web oficial del Senado de Bolivia
+        </h1>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-bold text-senado-blue-600">Gestión</h2>
-        <ul class="mt-3 space-y-1 text-sm">
-          <li>• Proyectos de Ley en Tratamiento</li>
-          <li>• Proyectos de Ley Aprobados</li>
-          <li>• Leyes Sancionadas</li>
-        </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BARRA DE SESIÓN (ancho completo)           -->
+    <!-- ========================================== -->
+    <div class="w-full bg-gray-50 border-y border-gray-200 py-3 px-4">
+      <div class="flex items-center justify-center gap-2 flex-wrap">
+        <span class="text-senado-primary font-bold">Sesión -</span>
+        <span class="text-gray-700 font-medium">Lunes, 07 de Julio de 2026</span>
+        <span class="text-gray-400">|</span>
+        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1">
+          Mira en directo
+          <Icon name="mdi:play-circle" class="text-lg" />
+        </a>
+        <span class="text-gray-400">|</span>
+        <a href="#" class="text-senado-primary hover:underline font-medium">
+          ORDEN DEL DÍA
+        </a>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-bold text-senado-blue-600">Fiscalización</h2>
-        <ul class="mt-3 space-y-1 text-sm">
-          <li>• Peticiones de Informe Escrito</li>
-          <li>• Peticiones de Informe Oral</li>
-        </ul>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- COLUMNAS: 70% - 30%                       -->
+    <!-- ========================================== -->
+    <div class="mx-auto w-[90%] py-10">
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- ========================================== -->
+        <!-- COLUMNA IZQUIERDA (70%)                    -->
+        <!-- ========================================== -->
+        <div class="md:w-[70%]">
+          <!-- Imagen (75% del alto) -->
+          <div class="w-full h-[75%]">
+            <img 
+              src="/images/sesion-senado.jpg" 
+              alt="Sesión del Senado" 
+              class="w-full h-full object-cover rounded-lg"
+            />
+          </div>
+          
+          <!-- Texto (25% del alto) -->
+          <div class="h-[25%] flex flex-col justify-center mt-4">
+            <h2 class="text-2xl font-bold text-senado-primary">
+              Diálogo e institucionalidad: Ejecutivo y Legislativo acuerdan una ruta conjunta frente a la conflictividad
+            </h2>
+            <p class="text-sm text-gray-500 mt-1">
+              29 de junio de 2026 | 12:06
+            </p>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- COLUMNA DERECHA (30%)                     -->
+        <!-- ========================================== -->
+        <div class="md:w-[30%] flex flex-col gap-4">
+          <!-- Tarjeta 1 (27% del alto) -->
+          <div class="bg-white p-4 rounded-lg shadow border-l-4 border-senado-primary hover:shadow-lg transition-shadow h-[27%]">
+            <p class="text-sm font-semibold text-gray-800 line-clamp-3">
+              PIO: Ministro de Defensa y titular del TSE comparecen ante el Senado en jornada de fiscalización
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              20 de junio de 2026 | 10:18
+            </p>
+          </div>
+
+          <!-- Tarjeta 2 (27% del alto) -->
+          <div class="bg-white p-4 rounded-lg shadow border-l-4 border-senado-primary hover:shadow-lg transition-shadow h-[27%]">
+            <p class="text-sm font-semibold text-gray-800 line-clamp-3">
+              Senado abroga la Ley 1720 y abre una nueva etapa de concertación para la pequeña propiedad agraria
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              11 de junio de 2026 | 16:25
+            </p>
+          </div>
+
+          <!-- Tarjeta 3 (27% del alto) -->
+          <div class="bg-white p-4 rounded-lg shadow border-l-4 border-senado-primary hover:shadow-lg transition-shadow h-[27%]">
+            <p class="text-sm font-semibold text-gray-800 line-clamp-3">
+              Comisión de Constitución aprueba proyecto de ley de reforma judicial
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              05 de junio de 2026 | 14:30
+            </p>
+          </div>
+
+          <!-- Texto restante (19% del alto) -->
+          <div class="h-[19%] flex items-center justify-end">
+            <a href="/noticias" class="text-senado-primary hover:underline font-medium text-sm">
+              Ver todas las noticias →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN: ACTIVIDAD LEGISLATIVA             -->
+      <!-- ========================================== -->
+      <div class="mt-16">
+        <h2 class="text-3xl font-bold text-senado-primary mb-6">
+          Actividad Legislativa
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Legislación -->
+          <div class="bg-white p-6 rounded-lg shadow border-t-4 border-senado-primary hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-bold text-senado-primary">Legislación</h3>
+            <ul class="mt-3 space-y-1 text-sm">
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Resoluciones Camarales</li>
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Declaraciones Camarales</li>
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Minutas de Comunicación</li>
+            </ul>
+          </div>
+
+          <!-- Gestión -->
+          <div class="bg-white p-6 rounded-lg shadow border-t-4 border-senado-primary hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-bold text-senado-primary">Gestión</h3>
+            <ul class="mt-3 space-y-1 text-sm">
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Proyectos de Ley en Tratamiento</li>
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Proyectos de Ley Aprobados</li>
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Leyes Sancionadas</li>
+            </ul>
+          </div>
+
+          <!-- Fiscalización -->
+          <div class="bg-white p-6 rounded-lg shadow border-t-4 border-senado-primary hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-bold text-senado-primary">Fiscalización</h3>
+            <ul class="mt-3 space-y-1 text-sm">
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Peticiones de Informe Escrito</li>
+              <li class="hover:text-senado-primary transition-colors cursor-pointer">• Peticiones de Informe Oral</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template> 
 ================================= 
+plugins\check-if-page-unused.js 
+================================= 
+ 
+export default defineNuxtPlugin(() => {
+  // Plugin para eliminar el warning NUXT_B2005
+  console.log('✅ Plugin de verificación de páginas cargado')
+}) 
+================================= 
 public\robots.txt 
 ================================= 
  
 User-Agent: *
-Disallow:
- 
+Disallow: 
