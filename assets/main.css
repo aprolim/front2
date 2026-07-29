@@ -31,3 +31,37 @@
   }
 }
 
+/* =======================================================
+   🔥 ESTO ES LO QUE DEBES AGREGAR AL FINAL DEL ARCHIVO 🔥
+   ======================================================= */
+
+/* Clase para la cúpula que debe sobresalir por encima del navbar */
+.cupula-flotante {
+  /* Asegura que esté por encima de todo (ajusta si el navbar tiene un z-index mayor) */
+  z-index: 9999 !important;
+  
+  /* Necesario para que z-index funcione */
+  position: relative !important;
+  
+  /* Sube la imagen unos píxeles para que asome por debajo del navbar */
+  margin-top: -60px !important; /* Ajusta este número según necesites (-20px, -100px, etc) */
+  
+  /* Opcional: para que ocupe todo el ancho y no se vea raro */
+  width: 100%;
+  display: block;
+}
+
+/* Si el navbar usa position: fixed o sticky, esto es OBLIGATORIO para que no lo tape */
+.navbar-superior {
+  /* Asegúrate de que el navbar tenga un z-index más bajo que la cúpula */
+  position: relative;
+  z-index: 10; /* Si es 10, la cúpula con z-index 9999 queda encima */
+}
+
+/* =======================================================
+   ALTERNATIVA: Si prefieres usar las clases de Tailwind
+   en el HTML sin escribir CSS extra, busca en tu HTML y
+   ponle estas clases al contenedor de la imagen:
+   
+   class="relative z-[9999] -mt-16 w-full"
+   ======================================================= */

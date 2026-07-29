@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-white overflow-visible">
     <Header />
     <main>
       <slot />
@@ -19,3 +19,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>

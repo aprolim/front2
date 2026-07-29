@@ -1,6 +1,10 @@
 <template>
+  <!-- 🔥 HEADER CON Z-INDEX ALTO -->
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
-    <div class="py-2">
+    
+    <!-- CONTENEDOR DEL 80% CENTRADO -->
+    <div class="mx-auto w-[80%] max-w-[1400px] py-2">
+      
       <!-- Fila superior -->
       <div class="flex items-center justify-between gap-4">
         <!-- Botón sandwich -->
@@ -23,7 +27,7 @@
         </div>
 
         <!-- Buscador -->
-        <div class="hidden lg:block flex-grow max-w-xs">
+        <div class="hidden lg:block flex-grow max-w-xs z-[1000]">
           <div class="relative">
             <input 
               type="text" 
@@ -37,7 +41,7 @@
         </div>
 
         <!-- Redes Sociales -->
-        <div class="flex items-center gap-3 flex-shrink-0">
+        <div class="flex items-center gap-3 flex-shrink-0 z-50">
           <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
             <Icon name="mdi:facebook" class="text-2xl" />
           </a>
@@ -77,13 +81,17 @@
       </div>
     </div>
 
-    <!-- Menú lateral -->
+    <!-- ========================================== -->
+    <!-- MENÚ LATERAL CORREGIDO                       -->
+    <!-- ========================================== -->
     <div
       v-if="menuAbierto"
-      class="fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity"
+      class="fixed inset-0 z-[9999999] bg-black bg-opacity-50 transition-opacity"
       @click.self="toggleMenu"
     >
-      <div class="bg-white text-gray-800 w-80 h-full overflow-y-auto shadow-2xl">
+      <!-- w-96 para que no se corte el texto, y max-w-[90vw] para móviles -->
+      <div class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl">
+        <!-- Header del menú -->
         <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
           <span class="font-bold text-lg">Menú</span>
           <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors">
