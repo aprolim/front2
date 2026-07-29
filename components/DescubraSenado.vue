@@ -388,8 +388,9 @@ onMounted(() => {
   filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.5));
 }
 
+/* 🔥 ELIMINAMOS EL EFECTO DE CLIC (transform: scale) */
 .senator-circle:active {
-  transform: scale(0.95);
+  /* transform: scale(0.95);  <-- ELIMINADO */
 }
 
 .seat-number {

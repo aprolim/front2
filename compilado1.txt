@@ -174,9 +174,11 @@ package.json
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "cross-env PORT=3000 node .output/server/index.mjs"
   },
   "dependencies": {
+    "cross-env": "^10.1.0",
     "nuxt": "^4.5.0",
     "vue": "^3.5.40",
     "vue-router": "^5.2.0"
@@ -947,8 +949,8 @@ components\Header.vue
 ================================= 
  
 <template>
-  <!-- 🔥 HEADER CON Z-INDEX MÁS ALTO QUE LA CÚPULA -->
-  <header class="bg-white shadow-md sticky top-0  border-b border-gray-200">
+  <!-- 🔥 HEADER CON Z-INDEX ALTO -->
+  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
     
     <!-- CONTENEDOR DEL 80% CENTRADO -->
     <div class="mx-auto w-[80%] max-w-[1400px] py-2">
@@ -963,18 +965,18 @@ components\Header.vue
 
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <img src="/images/logo-senado.png" alt="Senado" class="h-12 w-auto" />
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-12 w-auto" />
         </div>
 
         <!-- Título "Cámara de Senadores" -->
-        <div class="hidden md:block flex-grow text-center">
+        <div class="hidden md:block flex-grow text-left">
           <h1 class="text-2xl font-bold text-senado-primary leading-tight">
             Cámara de<br />
             <span class="text-3xl">Senadores</span>
           </h1>
         </div>
 
-        <!-- Buscador (Siempre visible y encima) -->
+        <!-- Buscador -->
         <div class="hidden lg:block flex-grow max-w-xs z-[1000]">
           <div class="relative">
             <input 
@@ -988,21 +990,47 @@ components\Header.vue
           </div>
         </div>
 
-        <!-- Redes Sociales (Siempre visibles y encima) -->
-        <div class="flex items-center gap-3 flex-shrink-0 z-50">
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:facebook" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:twitter" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:youtube" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:instagram" class="text-2xl" />
-          </a>
+        <!-- ========================================== -->
+        <!-- BOTÓN REDES SOCIALES DESPLEGABLE            -->
+        <!-- ========================================== -->
+        <div class="relative flex-shrink-0 z-[9999]">
+          <button 
+            @click="toggleRedes"
+            class="flex items-center gap-1 text-gray-600 hover:text-senado-primary transition-colors font-medium text-sm px-3 py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200"
+          >
+            <Icon name="material-symbols:share" class="text-xl" />
+            <span>Redes Sociales</span>
+            <Icon 
+              :name="redesAbiertas ? 'material-symbols:keyboard-arrow-up' : 'material-symbols:keyboard-arrow-down'" 
+              class="text-lg" 
+            />
+          </button>
+
+          <!-- 🔥 SOLUCIÓN DEFINITIVA: Menú desplegable con position: fixed -->
+          <div 
+            v-if="redesAbiertas"
+            class="fixed top-16 right-[10%] bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2 z-[999999]"
+          >
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+              <span class="text-sm font-medium">Facebook</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+              <span class="text-sm font-medium">Twitter / X</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+              <span class="text-sm font-medium">YouTube</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+              <span class="text-sm font-medium">Instagram</span>
+            </a>
+          </div>
         </div>
+        <!-- ========================================== -->
+
       </div>
 
       <!-- Mobile -->
@@ -1029,13 +1057,15 @@ components\Header.vue
       </div>
     </div>
 
-    <!-- Menú lateral (Se mantiene igual) -->
+    <!-- ========================================== -->
+    <!-- MENÚ LATERAL                                -->
+    <!-- ========================================== -->
     <div
       v-if="menuAbierto"
-      class="fixed inset-0 z-[99999] bg-black bg-opacity-50 transition-opacity"
+      class="fixed inset-0 z-[9999999] bg-black bg-opacity-50 transition-opacity"
       @click.self="toggleMenu"
     >
-      <div class="bg-white text-gray-800 w-80 h-full overflow-y-auto shadow-2xl">
+      <div class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl">
         <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
           <span class="font-bold text-lg">Menú</span>
           <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors">
@@ -1183,6 +1213,7 @@ export default {
   data() {
     return {
       menuAbierto: false,
+      redesAbiertas: false,
       submenus: {
         legislativa: false,
         legislacion: false,
@@ -1203,6 +1234,9 @@ export default {
           this.submenus[key] = false
         })
       }
+    },
+    toggleRedes() {
+      this.redesAbiertas = !this.redesAbiertas
     },
     toggleSubmenu(key) {
       this.submenus[key] = !this.submenus[key]
@@ -1264,28 +1298,27 @@ pages\index.vue
     <!-- ========================================== -->
     <!-- BANNER DE BIENVENIDA (ancho completo)      -->
     <!-- ========================================== -->
-    <div class="w-full bg-senado-primary relative" style="overflow: visible !important; min-height: 160px;">
+    <div class="w-full bg-[#EDEEED] relative h-[19vw] " style="overflow: visible !important;">
 
       <!-- Contenedor del 70% centrado -->
-      <div class="mx-auto w-[70%] relative py-6 min-h-[10rem] flex items-center" style="overflow: visible !important;">
+      <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
         
         <!-- ========================================== -->
         <!-- IMAGEN IZQUIERDA (Logo Blanco)             -->
         <!-- ========================================== -->
-        <div class="absolute left-0 top-1/2 -translate-y-1/2 -ml-8 z-10 w-40 h-56 overflow-hidden">
-          <img 
-            src="/images/LogoBlanco.svg" 
-            alt="Senado izquierda" 
-            class="w-full h-full object-cover"
-          />
+        <!-- IMAGEN IZQUIERDA - MITAD SUPERIOR RECORTADA -->
+        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
+          <div 
+            class="w-full h-full scale-[2] origin-top bg-[#F3F3F3] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
+          ></div>
         </div>
 
         <!-- ========================================== -->
         <!-- CÚPULA DERECHA (Alineada por su base)      -->
         <!-- ========================================== -->
         <div 
-          class="absolute right-0 z-[50]"
-          style="bottom: 0; width: 180px; height: 400px; pointer-events: none;"
+          class="absolute right-0 z-[50] w-[22vw]"
+          style="bottom: 0; pointer-events: none;"
         >
           <!-- Borde decorativo exterior (oro y rojo) -->
             <!-- Borde interior blanco/gold -->
@@ -1300,14 +1333,14 @@ pages\index.vue
         <!-- TEXTO CENTRADO                              -->
         <!-- ========================================== -->
         <div class="flex-1 text-center px-8 z-20">
-          <h1 class="text-3xl font-bold text-white">
-            Bienvenido al sitio web oficial del Senado de Bolivia
+          <h1 class="text-[2.7vw] font-bold text-black w-[70%]">
+            Bienvenido al sitio web oficial del 
+            <span class="text-senado-primary text-[3.6vw]">Senado de Bolivia</span>
           </h1>
         </div>
       </div>
 
       <!-- Línea dorada inferior -->
-      <div class="absolute bottom-0 left-0 right-0 h-1 bg-senado-gold-dark"></div>
     </div>
 
     <!-- ========================================== -->

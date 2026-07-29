@@ -12,12 +12,10 @@
         <!-- IMAGEN IZQUIERDA (Logo Blanco)             -->
         <!-- ========================================== -->
         <!-- IMAGEN IZQUIERDA - MITAD SUPERIOR RECORTADA -->
-        <div class="absolute left-0 top-[-2vw] z-10  h-[calc(100%+2vw)]  aspect-[2/1] overflow-hidden">
-          <img 
-            src="/images/LogoBlanco.svg" 
-            alt="Senado izquierda" 
-            class="w-full h-full object-contain scale-[2] origin-top"
-          />
+        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
+          <div 
+            class="w-full h-full scale-[2] origin-top bg-[#F3F3F3] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
+          ></div>
         </div>
 
         <!-- ========================================== -->
@@ -40,14 +38,14 @@
         <!-- TEXTO CENTRADO                              -->
         <!-- ========================================== -->
         <div class="flex-1 text-center px-8 z-20">
-          <h1 class="text-3xl font-bold text-white">
-            Bienvenido al sitio web oficial del Senado de Bolivia
+          <h1 class="text-[2.7vw] font-bold text-black w-[70%]">
+            Bienvenido al sitio web oficial del 
+            <span class="text-senado-primary text-[3.6vw]">Senado de Bolivia</span>
           </h1>
         </div>
       </div>
 
       <!-- Línea dorada inferior -->
-      <div class="absolute bottom-0 left-0 right-0 h-1 bg-senado-gold-dark"></div>
     </div>
 
     <!-- ========================================== -->
@@ -96,7 +94,7 @@
 
         <div class="md:w-[30%] flex flex-col gap-4">
           <div class="bg-senado-gold-lightest shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.5vw] bg-senado-gold-dark"></div>
+            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
             <div class="p-4">
               <p class="text-sm font-semibold text-gray-800">
                 PIO: Ministro de Defensa y titular del TSE comparecen ante el Senado en jornada de fiscalización
@@ -108,7 +106,7 @@
           </div>
 
           <div class="bg-senado-gold-lightest shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.5vw] bg-senado-gold-dark"></div>
+            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
             <div class="p-4">
               <p class="text-sm font-semibold text-gray-800">
                 Senado abroga la Ley 1720 y abre una nueva etapa de concertación para la pequeña propiedad agraria
@@ -120,7 +118,7 @@
           </div>
 
           <div class="bg-senado-gold-lightest shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.5vw] bg-senado-gold-dark"></div>
+            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
             <div class="p-4">
               <p class="text-sm font-semibold text-gray-800">
                 Comisión de Constitución aprueba proyecto de ley de reforma judicial
@@ -134,10 +132,9 @@
           <div class="mt-2">
             <a 
               href="/noticias" 
-              class="bg-senado-gold-dark text-white w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-medium text-sm flex items-center justify-center gap-2 shadow-sm"
+              class="bg-senado-gold-soft text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-sm flex items-center justify-center gap-2 shadow-sm"
             >
               Ir a todas las noticias
-              <Icon name="mdi:arrow-right" class="text-lg" />
             </a>
           </div>
         </div>
@@ -147,7 +144,7 @@
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-senado-gold-light"></div>
         <div class="flex-shrink-0">
-          <img src="/images/escudo-senado.png" alt="Senado" class="h-10 w-10 object-contain" />
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-10 w-10 object-contain" />
         </div>
         <div class="flex-1 h-px bg-senado-gold-light"></div>
       </div>
@@ -157,7 +154,7 @@
         <h2 class="text-3xl font-bold text-senado-primary mb-6">Actividad Legislativa</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-senado-gold-lightest border border-senado-gold-light rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-dark text-white px-4 py-2 font-bold text-lg">Legislación</div>
+            <div class="bg-senado-gold-dark text-black px-4 py-2 text-lg text-center">LEGISLACIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-sm">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
@@ -174,7 +171,7 @@
           </div>
 
           <div class="bg-senado-gold-lightest border border-senado-gold-light rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-dark text-white px-4 py-2 font-bold text-lg">Gestión</div>
+            <div class="bg-senado-gold-dark text-black px-4 py-2  text-lg text-center">GESTIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-sm">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
@@ -191,7 +188,7 @@
           </div>
 
           <div class="bg-senado-gold-lightest border border-senado-gold-light rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-dark text-white px-4 py-2 font-bold text-lg">Fiscalización</div>
+            <div class="bg-senado-gold-dark text-black px-4 py-2 text-lg text-center">FISCALIZACIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-sm">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">

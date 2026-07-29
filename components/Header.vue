@@ -1,5 +1,5 @@
 <template>
-  <!-- 🔥 HEADER CON Z-INDEX ALTO -->
+  <!-- 🔥 HEADER CON Z-INDEX ALTO (para que la cúpula lo tape parcialmente) -->
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
     
     <!-- CONTENEDOR DEL 80% CENTRADO -->
@@ -15,11 +15,11 @@
 
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <img src="/images/logo-senado.png" alt="Senado" class="h-12 w-auto" />
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-12 w-auto" />
         </div>
 
         <!-- Título "Cámara de Senadores" -->
-        <div class="hidden md:block flex-grow text-center">
+        <div class="hidden md:block flex-grow text-left">
           <h1 class="text-2xl font-bold text-senado-primary leading-tight">
             Cámara de<br />
             <span class="text-3xl">Senadores</span>
@@ -40,21 +40,49 @@
           </div>
         </div>
 
-        <!-- Redes Sociales -->
-        <div class="flex items-center gap-3 flex-shrink-0 z-50">
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:facebook" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:twitter" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:youtube" class="text-2xl" />
-          </a>
-          <a href="#" class="text-gray-600 hover:text-senado-primary transition-colors">
-            <Icon name="mdi:instagram" class="text-2xl" />
-          </a>
+        <!-- ========================================== -->
+        <!-- BOTÓN REDES SOCIALES DESPLEGABLE            -->
+        <!-- ========================================== -->
+        <!-- El contenedor tiene z-index alto para que el botón quede bien -->
+        <div class="relative flex-shrink-0 z-[9999]">
+          <button 
+            @click="toggleRedes"
+            class="flex items-center gap-1 text-gray-600 hover:text-senado-primary transition-colors font-medium text-sm px-3 py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200"
+          >
+            <Icon name="material-symbols:share" class="text-xl" />
+            <span>Redes Sociales</span>
+            <Icon 
+              :name="redesAbiertas ? 'material-symbols:keyboard-arrow-up' : 'material-symbols:keyboard-arrow-down'" 
+              class="text-lg" 
+            />
+          </button>
+
+          <!-- 🔥 MENÚ DESPLEGABLE CON Z-INDEX ALTÍSIMO (position: fixed) -->
+          <!-- Esto asegura que esté por encima de la cúpula -->
+          <div 
+            v-if="redesAbiertas"
+            class="fixed top-14 right-[5%] bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2 z-[999999999]"
+          >
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+              <span class="text-sm font-medium">Facebook</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+              <span class="text-sm font-medium">Twitter / X</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+              <span class="text-sm font-medium">YouTube</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+              <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+              <span class="text-sm font-medium">Instagram</span>
+            </a>
+          </div>
         </div>
+        <!-- ========================================== -->
+
       </div>
 
       <!-- Mobile -->
@@ -239,6 +267,7 @@ export default {
   data() {
     return {
       menuAbierto: false,
+      redesAbiertas: false, // 👈 Nuevo estado para el botón de redes
       submenus: {
         legislativa: false,
         legislacion: false,
@@ -259,6 +288,9 @@ export default {
           this.submenus[key] = false
         })
       }
+    },
+    toggleRedes() {
+      this.redesAbiertas = !this.redesAbiertas
     },
     toggleSubmenu(key) {
       this.submenus[key] = !this.submenus[key]
