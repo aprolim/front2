@@ -53,15 +53,14 @@
     <!-- ========================================== -->
     <div class="w-full border-b border-[#f4f4f4] py-3 px-4">
       <div class="flex items-center justify-center gap-2 flex-wrap">
-        <span class="text-senado-primary font-bold">Sesión -</span>
-        <span class="text-gray-700 font-medium">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-primary font-medium">Sesión -</span>
+        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1">
+        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
           Mira en directo
-          <Icon name="mdi:play-circle" class="text-lg" />
         </a>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium">
+        <a href="#" class="text-black hover:underline font-thin underline">
           ORDEN DEL DÍA5
         </a>
       </div>
