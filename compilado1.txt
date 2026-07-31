@@ -322,6 +322,11 @@ export default {
 assets\main.css 
 ================================= 
  
+/* ========================================== */
+/* IMPORTAR FUENTES LOCALES (RUTA CORRECTA)    */
+/* ========================================== */
+@import '~/public/fonts/fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -400,6 +405,7 @@ components\DescubraSenado.vue
     <div class="background-container">
       <div class="hemicycle-wrapper">
         <div class="hemicycle-container">
+          <!-- SVG del hemiciclo -->
           <svg 
             class="hemicycle-svg" 
             viewBox="250 200 700 400" 
@@ -535,6 +541,28 @@ components\DescubraSenado.vue
         </div>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- LEYENDA DE PARTIDOS (debajo del hemiciclo) -->
+    <!-- ========================================== -->
+    <div class="legend-container">
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #2E7078;"></div>
+        <span class="legend-text">Partido Demócrata Cristiano (PDC)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #EFCD04;"></div>
+        <span class="legend-text">Unidad (UNIDAD)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #DB3737;"></div>
+        <span class="legend-text">Libre (LIBRE)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: #611789;"></div>
+        <span class="legend-text">Autonomía para Bolivia Súmate (APB)</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -640,7 +668,7 @@ const allSeats = computed(() => {
 })
 
 // ============================================
-// MÉTODOS CON DEBUG
+// MÉTODOS
 // ============================================
 const getSeatById = (id) => {
   const found = allSeats.value.find(s => s.id === id)
@@ -661,10 +689,9 @@ const handleMouseLeave = () => {
 
 const updateTooltipPosition = (event) => {
   if (event && event.clientX && event.clientY) {
-
-    const offset = event.clientX  < 768 ? 35 : -340
+    const offset = event.clientX < 768 ? 35 : -340
     tooltipPosition.value = {
-      x: event.clientX + offset ,
+      x: event.clientX + offset,
       y: event.clientY
     }
   }
@@ -673,7 +700,6 @@ const updateTooltipPosition = (event) => {
 const goToSenator = (id) => {
   console.log(`🟢 Click en senador ID: ${id}`)
   
-  // Buscar el senador en allSeats
   const seat = allSeats.value.find(s => s.id === id)
   
   if (!seat) {
@@ -714,7 +740,7 @@ const tooltipStyle = computed(() => {
 })
 
 // ============================================
-// MONTAJE - Verificar todos los IDs
+// MONTAJE
 // ============================================
 onMounted(() => {
   console.log('✅ SenateChamber montado')
@@ -722,7 +748,6 @@ onMounted(() => {
   console.log('📋 IDs disponibles:', allSeats.value.map(s => s.id).sort((a,b) => a - b))
   console.log('📋 IDs en el centro: [32, 6, 12, 33, 13]')
   
-  // Verificar que los IDs del centro existen
   const centerIds = [32, 6, 12, 33, 13]
   centerIds.forEach(id => {
     const exists = allSeats.value.some(s => s.id === id)
@@ -777,12 +802,8 @@ onMounted(() => {
   stroke-width: 3;
 }
 
-.senator-circle.selected {
-}
-
-/* 🔥 ELIMINAMOS EL EFECTO DE CLIC (transform: scale) */
 .senator-circle:active {
-  /* transform: scale(0.95);  <-- ELIMINADO */
+  /* Sin efecto de click */
 }
 
 .seat-number {
@@ -791,6 +812,55 @@ onMounted(() => {
   font-size: 14px;
 }
 
+/* ========================================== */
+/* LEYENDA DE PARTIDOS                        */
+/* ========================================== */
+.legend-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.legend-color {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.legend-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .legend-container {
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+  .legend-item {
+    font-size: 0.7rem;
+  }
+  .legend-color {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Tooltip styles */
 .seat-tooltip {
   animation: fadeIn 0.15s ease;
 }
@@ -883,10 +953,9 @@ components\Footer.vue
     <div class="mx-auto w-[90%]">
       <!-- Contenedor al 80% máximo y centrado -->
       <div class="max-w-[80%] mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          
-          <!-- Columna 1: Redes Sociales -->
-          <div class="flex flex-col items-center">
+        <!-- Grid de 3 columnas con líneas verticales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 text-center">
+          <div class="flex flex-col items-center px-4 py-2">
             <h4 class="font-bold mb-3 text-senado-dark">Redes Sociales</h4>
             <div class="flex justify-center gap-3">
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
@@ -904,16 +973,18 @@ components\Footer.vue
             </div>
           </div>
 
-          <!-- Columna 2: Contacto -->
-          <div class="flex flex-col items-center">
-            <h4 class="font-bold mb-3 text-senado-dark">Contacto</h4>
+          <!-- Columna 2: Contacto (Con borde a ambos lados) -->
+          <div class="flex flex-col items-center px-4 py-2 border-x  border-gray-200">
+            <div class="flex-shrink-0 mb-2">
+              <img src="/images/LogoBordo.svg" alt="Senado" class="h-[6vw] w-[6vw] object-contain brightness-0 opacity-50" />
+            </div>
             <p class="text-sm text-senado-dark">Calle Comercio esquina Colón</p>
             <p class="text-sm text-senado-dark">Telf.: (591) 2158701</p>
             <p class="text-sm text-senado-dark">La Paz - Bolivia</p>
           </div>
 
-          <!-- Columna 3: Sitios de Interés -->
-          <div class="flex flex-col items-center">
+          <!-- Columna 3: Sitios de Interés (Sin borde derecho) -->
+          <div class="flex flex-col items-center px-4 py-2 ">
             <h4 class="font-bold mb-3 text-senado-dark">Sitios de interés</h4>
             <ul class="text-sm space-y-1">
               <li>
@@ -937,10 +1008,6 @@ components\Footer.vue
         </div>
       </div>
 
-      <!-- Copyright -->
-      <div class="text-center text-xs mt-8 border-t border-senado-dark-light pt-4 text-senado-dark">
-        © 2026 Senado de Bolivia - Todos los derechos reservados
-      </div>
     </div>
   </footer>
 </template> 
@@ -1270,6 +1337,382 @@ export default {
 }
 </style> 
 ================================= 
+components\NoticiasDinamicas.vue 
+================================= 
+ 
+<!-- components/NoticiasDinamicas.vue -->
+<template>
+  <div class="flex flex-col md:flex-row gap-6">
+    <!-- COLUMNA IZQUIERDA - 70% -->
+    <div class="md:w-[70%]">
+      <!-- Estado de carga -->
+      <div v-if="loading" class="w-full">
+        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg" style="height: 400px;"></div>
+        <div class="w-full h-[1vw] bg-gray-300"></div>
+        <div class="mt-4">
+          <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+      </div>
+
+      <!-- Noticia Principal -->
+      <div v-else-if="noticiaPrincipal" class="group cursor-pointer" @click="irANoticia(noticiaPrincipal)">
+        <div class="w-full">
+          <div class="relative overflow-hidden rounded-t-lg" style="height: 400px;">
+            <SafeImage 
+              :src="obtenerImagen(noticiaPrincipal)"
+              :alt="limpiarAsteriscos(noticiaPrincipal.titulo)"
+              image-class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              priority="high"
+              loading-strategy="eager"
+              :max-retries="8"
+              :persistent="true"
+            />
+            
+            <!-- Badge "Destacada" -->
+            <div class="absolute top-4 left-4 bg-[#E03636] text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+              DESTACADA
+            </div>
+          </div>
+          <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
+        </div>
+        
+        <div class="mt-4">
+          <h2 class="text-2xl font-bold text-senado-primary group-hover:text-[#A54A4A] transition-colors">
+            {{ limpiarAsteriscos(noticiaPrincipal.titulo) }}
+          </h2>
+          <p class="text-sm text-gray-500 mt-1">
+            {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Sin noticias -->
+      <div v-else class="w-full text-center py-12 bg-gray-50 rounded-lg">
+        <p class="text-gray-600">No hay noticias disponibles</p>
+        <button @click="recargarDatos" class="mt-4 px-4 py-2 bg-[#E03636] text-white rounded-lg hover:bg-[#C12F2F] transition">
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA - 30% -->
+    <div class="md:w-[30%] flex flex-col gap-4">
+      <!-- Estado de carga para secundarias -->
+      <div v-if="loading" class="flex flex-col gap-4">
+        <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
+          <div class="h-[0.6vw] bg-gray-300"></div>
+          <div class="p-4">
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noticias secundarias -->
+      <template v-else-if="noticiasSecundarias.length > 0">
+        <div 
+          v-for="noticia in noticiasSecundarias" 
+          :key="noticia.id"
+          class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg cursor-pointer group"
+          @click="irANoticia(noticia)"
+        >
+          <div class="h-[0.6vw] bg-senado-gold-dark"></div>
+          <div class="p-4">
+            <p class="text-sm font-semibold text-gray-800 group-hover:text-senado-primary transition-colors line-clamp-3">
+              {{ limpiarAsteriscos(noticia.titulo) }}
+            </p>
+            <p class="text-xs text-gray-500 mt-2">
+              {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Sin noticias secundarias -->
+      <div v-else-if="!loading" class="text-center py-8 bg-gray-50 rounded-lg">
+        <p class="text-gray-500 text-sm">No hay noticias secundarias</p>
+      </div>
+
+      <!-- Botón "Ir a todas las noticias" -->
+      <div class="mt-2">
+        <NuxtLink 
+          to="/noticias" 
+          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-sm flex items-center justify-center gap-2 shadow-sm"
+        >
+          Ir a todas las noticias
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useNoticias } from '~/composables/useNoticias'
+import SafeImage from '@/components/SafeImage.vue'
+
+// Props
+const props = defineProps({
+  secundariasLimit: {
+    type: Number,
+    default: 3
+  },
+  autoLoad: {
+    type: Boolean,
+    default: true
+  }
+})
+
+const router = useRouter()
+
+// 🔥 Usar el composable de noticias
+const { 
+  noticiasImportantes, 
+  loading, 
+  error, 
+  recargarDatos 
+} = useNoticias()
+
+// 🔥 Obtener y ordenar noticias
+const noticias = computed(() => {
+  if (!noticiasImportantes.value) return []
+  
+  // Ordenar por fecha (más reciente primero)
+  const ordenadas = [...noticiasImportantes.value].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+  
+  return ordenadas
+})
+
+// 🔥 Noticia principal (la primera)
+const noticiaPrincipal = computed(() => {
+  return noticias.value.length > 0 ? noticias.value[0] : null
+})
+
+// 🔥 Noticias secundarias (el resto, limitado)
+const noticiasSecundarias = computed(() => {
+  return noticias.value.length > 1 
+    ? noticias.value.slice(1, 1 + props.secundariasLimit)
+    : []
+})
+
+// 🔥 Funciones de utilidad
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return 'Fecha no disponible'
+  try {
+    const date = new Date(fecha)
+    return date.toLocaleDateString('es-ES', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    })
+  } catch {
+    return fecha
+  }
+}
+
+const obtenerImagen = (noticia) => {
+  if (!noticia) return '/images/default-news.jpg'
+  return noticia.featuredImage?.url || 
+         noticia.imagen || 
+         '/images/default-news.jpg'
+}
+
+const irANoticia = (noticia) => {
+  if (noticia?.slug) {
+    router.push(`/noticias/${noticia.slug}`)
+  }
+}
+
+// 🔥 Cargar datos al montar
+onMounted(async () => {
+  if (props.autoLoad && noticiasImportantes.value.length === 0) {
+    await recargarDatos()
+  }
+})
+
+// 🔥 Exponer métodos
+defineExpose({
+  recargarDatos
+})
+</script>
+
+<style scoped>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+composables\useNoticias.js 
+================================= 
+ 
+// composables/useNoticias.js
+import { ref, computed } from 'vue'
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const transformarNoticia = (item) => {
+  if (!item) return null
+  
+  const textoPlano = item.content?.replace(/<[^>]*>/g, '') || ''
+  const esImportante = item.category === 'importante'
+  
+  return {
+    id: item._id || item.id,
+    titulo: item.title || 'Sin título',
+    slug: item.slug,
+    contenido: item.content || '',
+    resumen: item.excerpt || textoPlano.substring(0, 200),
+    descripcion: item.excerpt || textoPlano.substring(0, 150),
+    descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
+    fecha: item.publishedAt || item.createdAt,
+    publishedAt: item.publishedAt || item.createdAt,
+    imagen: item.featuredImage?.url || item.imagen,
+    featuredImage: item.featuredImage,
+    categoria: item.category,
+    importante: esImportante,
+    tipo: item.type || 'noticia',
+    status: item.status,
+    views: item.views || 0,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt
+  }
+}
+
+export const fetchNoticiasImportantes = async () => {
+  console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando importantes:', err)
+    return []
+  }
+}
+
+export const fetchNoticiasUltimas = async () => {
+  console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando últimas:', err)
+    return []
+  }
+}
+
+// 🔥 FUNCIÓN PARA ORDENAR NOTICIAS POR FECHA
+const ordenarPorFecha = (noticias) => {
+  return [...noticias].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+}
+
+export const fetchNoticias = async () => {
+  console.log(`📡 [useNoticias] Cargando todas las noticias...`)
+  
+  const [noticiasImportantes, ultimasNoticias] = await Promise.all([
+    fetchNoticiasImportantes(),
+    fetchNoticiasUltimas()
+  ])
+  
+  const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
+  
+  console.log(`📊 [useNoticias] Total combinado: ${todasLasNoticias.length} noticias`)
+  
+  return {
+    noticiasImportantes: noticiasImportantes.slice(0, 4),
+    ultimasNoticias: ultimasNoticias.slice(0, 4),
+    todasLasNoticias: todasLasNoticias,
+    error: null
+  }
+}
+
+export const useNoticias = () => {
+  const noticiasImportantes = ref([])
+  const ultimasNoticias = ref([])
+  const todasLasNoticias = ref([])
+  const loading = ref(true)
+  const error = ref(null)
+  const loaded = ref(false)
+  
+  const cargarDatos = async () => {
+    if (loaded.value) {
+      console.log('📦 [useNoticias] Datos ya cargados, omitiendo...')
+      return
+    }
+    
+    console.log('🔄 [useNoticias] cargarDatos() ejecutándose...')
+    
+    loading.value = true
+    const result = await fetchNoticias()
+    
+    noticiasImportantes.value = result.noticiasImportantes
+    ultimasNoticias.value = result.ultimasNoticias
+    todasLasNoticias.value = result.todasLasNoticias
+    error.value = result.error
+    loading.value = false
+    loaded.value = true
+    
+    return result
+  }
+  
+  const recargarDatos = async () => {
+    console.log('🔄 [useNoticias] Recargando datos...')
+    loaded.value = false
+    await cargarDatos()
+  }
+  
+  return {
+    noticiasImportantes: computed(() => noticiasImportantes.value),
+    ultimasNoticias: computed(() => ultimasNoticias.value),
+    todasLasNoticias: computed(() => todasLasNoticias.value),
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    loaded: computed(() => loaded.value),
+    cargarDatos,
+    recargarDatos
+  }
+} 
+================================= 
 layouts\default.vue 
 ================================= 
  
@@ -1340,10 +1783,10 @@ pages\index.vue
         <!-- ========================================== -->
         <!-- TEXTO CENTRADO                              -->
         <!-- ========================================== -->
-        <div class="flex-1 text-center px-8 z-20">
-          <h1 class="text-[2.7vw] font-bold text-black w-[70%]">
-            Bienvenido al sitio web oficial del 
-            <span class="text-senado-primary text-[3.6vw]">Senado de Bolivia</span>
+        <div class="flex-1 text-center z-20">
+          <h1 class="text-[3.0vw] text-black w-[60%] leading-[.9] font-medium text-justify">
+            Bienvenido al sitio web oficial <br> del
+            <span class="text-senado-primary text-[3.8vw] text-justify font-bold">Senado de Bolivia</span>
           </h1>
         </div>
       </div>
@@ -1356,15 +1799,14 @@ pages\index.vue
     <!-- ========================================== -->
     <div class="w-full border-b border-[#f4f4f4] py-3 px-4">
       <div class="flex items-center justify-center gap-2 flex-wrap">
-        <span class="text-senado-primary font-bold">Sesión -</span>
-        <span class="text-gray-700 font-medium">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-primary font-medium">Sesión -</span>
+        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1">
+        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
           Mira en directo
-          <Icon name="mdi:play-circle" class="text-lg" />
         </a>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium">
+        <a href="#" class="text-black hover:underline font-thin underline">
           ORDEN DEL DÍA5
         </a>
       </div>
@@ -1374,74 +1816,7 @@ pages\index.vue
     <!-- COLUMNAS: 70% - 30%                        -->
     <!-- ========================================== -->
     <div class="mx-auto w-[75%] py-10">
-      <div class="flex flex-col md:flex-row gap-6">
-        <div class="md:w-[70%]">
-          <div class="w-full">
-            <img 
-              src="/images/sesion-senado.jpg" 
-              alt="Sesión del Senado" 
-              class="w-full object-cover rounded-t-lg"
-              style="height: 400px;"
-            />
-            <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
-          </div>
-          <div class="mt-4">
-            <h2 class="text-2xl font-bold text-senado-primary">
-              Diálogo e institucionalidad: Ejecutivo y Legislativo acuerdan una ruta conjunta frente a la conflictividad
-            </h2>
-            <p class="text-sm text-gray-500 mt-1">
-              29 de junio de 2026 | 12:06
-            </p>
-          </div>
-        </div>
-
-        <div class="md:w-[25%] flex flex-col gap-4">
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                PIO: Ministro de Defensa y titular del TSE comparecen ante el Senado en jornada de fiscalización
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                20 de junio de 2026 | 10:18
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                Senado abroga la Ley 1720 y abre una nueva etapa de concertación para la pequeña propiedad agraria
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                11 de junio de 2026 | 16:25
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                Comisión de Constitución aprueba proyecto de ley de reforma judicial
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                05 de junio de 2026 | 14:30
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-2">
-            <a 
-              href="/noticias" 
-              class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-sm flex items-center justify-center gap-2 shadow-sm"
-            >
-              Ir a todas las noticias
-            </a>
-          </div>
-        </div>
-      </div>
+      <NoticiasDinamicas />
 
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-10">
@@ -1548,6 +1923,7 @@ pages\index.vue
 
 <script setup>
 import DescubraSenado from '~/components/DescubraSenado.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 </script> 
 ================================= 
 pages\senador\[id].vue 

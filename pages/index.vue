@@ -70,74 +70,7 @@
     <!-- COLUMNAS: 70% - 30%                        -->
     <!-- ========================================== -->
     <div class="mx-auto w-[75%] py-10">
-      <div class="flex flex-col md:flex-row gap-6">
-        <div class="md:w-[70%]">
-          <div class="w-full">
-            <img 
-              src="/images/sesion-senado.jpg" 
-              alt="Sesión del Senado" 
-              class="w-full object-cover rounded-t-lg"
-              style="height: 400px;"
-            />
-            <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
-          </div>
-          <div class="mt-4">
-            <h2 class="text-2xl font-bold text-senado-primary">
-              Diálogo e institucionalidad: Ejecutivo y Legislativo acuerdan una ruta conjunta frente a la conflictividad
-            </h2>
-            <p class="text-sm text-gray-500 mt-1">
-              29 de junio de 2026 | 12:06
-            </p>
-          </div>
-        </div>
-
-        <div class="md:w-[25%] flex flex-col gap-4">
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                PIO: Ministro de Defensa y titular del TSE comparecen ante el Senado en jornada de fiscalización
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                20 de junio de 2026 | 10:18
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                Senado abroga la Ley 1720 y abre una nueva etapa de concertación para la pequeña propiedad agraria
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                11 de junio de 2026 | 16:25
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg">
-            <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-            <div class="p-4">
-              <p class="text-sm font-semibold text-gray-800">
-                Comisión de Constitución aprueba proyecto de ley de reforma judicial
-              </p>
-              <p class="text-xs text-gray-500 mt-2">
-                05 de junio de 2026 | 14:30
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-2">
-            <a 
-              href="/noticias" 
-              class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-sm flex items-center justify-center gap-2 shadow-sm"
-            >
-              Ir a todas las noticias
-            </a>
-          </div>
-        </div>
-      </div>
+      <NoticiasDinamicas />
 
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-10">
@@ -244,4 +177,5 @@
 
 <script setup>
 import DescubraSenado from '~/components/DescubraSenado.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 </script>
