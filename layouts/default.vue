@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white overflow-visible">
+  <div class="min-h-screen bg-[#fff] overflow-visible">
     <Header />
     <main>
       <slot />

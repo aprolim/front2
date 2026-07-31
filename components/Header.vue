@@ -15,7 +15,7 @@
 
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-12 w-auto" />
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-12 w-auto" />
         </div>
 
         <!-- Título "Cámara de Senadores" -->
@@ -27,17 +27,22 @@
         </div>
 
         <!-- Buscador -->
-        <div class="hidden lg:block flex-grow max-w-xs z-[1000]">
+        <div class="hidden lg:block flex-grow max-w-[18vw] z-[1000]">
           <div class="relative">
-            <input 
+            <input
               type="text" 
-              placeholder="Buscar..." 
-              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+              placeholder="ENCUENTRA TU SENADOR" 
+              class="w-full px-4 py-2 border border-[#cdcdcd] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw]"
             />
-            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
+            <!-- <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
               <Icon name="material-symbols:search-rounded" class="text-xl" />
-            </button>
+            </button> -->
           </div>
+        </div>
+
+        <!-- Espacio -->
+        <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]">
+
         </div>
 
         <!-- ========================================== -->
@@ -47,9 +52,8 @@
         <div class="relative flex-shrink-0 z-[9999]">
           <button 
             @click="toggleRedes"
-            class="flex items-center gap-1 text-gray-600 hover:text-senado-primary transition-colors font-medium text-sm px-3 py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200"
+            class="flex items-center gap-1 text-gray-600 hover:text-senado-primary transition-colors font-medium text-sm px-3 py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 bg-senado-gold-light h-[1.2vw]"
           >
-            <Icon name="material-symbols:share" class="text-xl" />
             <span>Redes Sociales</span>
             <Icon 
               :name="redesAbiertas ? 'material-symbols:keyboard-arrow-up' : 'material-symbols:keyboard-arrow-down'" 

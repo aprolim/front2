@@ -3,10 +3,9 @@
     <div class="mx-auto w-[90%]">
       <!-- Contenedor al 80% máximo y centrado -->
       <div class="max-w-[80%] mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          
-          <!-- Columna 1: Redes Sociales -->
-          <div class="flex flex-col items-center">
+        <!-- Grid de 3 columnas con líneas verticales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 text-center">
+          <div class="flex flex-col items-center px-4 py-2">
             <h4 class="font-bold mb-3 text-senado-dark">Redes Sociales</h4>
             <div class="flex justify-center gap-3">
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
@@ -24,16 +23,18 @@
             </div>
           </div>
 
-          <!-- Columna 2: Contacto -->
-          <div class="flex flex-col items-center">
-            <h4 class="font-bold mb-3 text-senado-dark">Contacto</h4>
+          <!-- Columna 2: Contacto (Con borde a ambos lados) -->
+          <div class="flex flex-col items-center px-4 py-2 border-x  border-gray-200">
+            <div class="flex-shrink-0 mb-2">
+              <img src="/images/LogoBordo.svg" alt="Senado" class="h-[6vw] w-[6vw] object-contain brightness-0 opacity-50" />
+            </div>
             <p class="text-sm text-senado-dark">Calle Comercio esquina Colón</p>
             <p class="text-sm text-senado-dark">Telf.: (591) 2158701</p>
             <p class="text-sm text-senado-dark">La Paz - Bolivia</p>
           </div>
 
-          <!-- Columna 3: Sitios de Interés -->
-          <div class="flex flex-col items-center">
+          <!-- Columna 3: Sitios de Interés (Sin borde derecho) -->
+          <div class="flex flex-col items-center px-4 py-2 ">
             <h4 class="font-bold mb-3 text-senado-dark">Sitios de interés</h4>
             <ul class="text-sm space-y-1">
               <li>
@@ -57,10 +58,6 @@
         </div>
       </div>
 
-      <!-- Copyright -->
-      <div class="text-center text-xs mt-8 border-t border-senado-dark-light pt-4 text-senado-dark">
-        © 2026 Senado de Bolivia - Todos los derechos reservados
-      </div>
     </div>
   </footer>
 </template>

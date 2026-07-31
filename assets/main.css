@@ -1,3 +1,8 @@
+/* ========================================== */
+/* IMPORTAR FUENTES LOCALES (RUTA CORRECTA)    */
+/* ========================================== */
+@import '~/public/fonts/fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,17 +10,19 @@
 @layer base {
   :root {
   /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
-    --senado-primary: #5b0a14;
+    --senado-primary: #611717;
     --senado-primary-light: #8f1522;
     --senado-primary-dark: #3a060d;
 
     /* Paleta Gold / Cream */
-    --senado-gold-lightest: #fcfcf8;
+    --senado-gold-lightest3: #fdfcf9;
+    --senado-gold-lightest2: #fbf8f1;
+    --senado-gold-lightest: #fbf8ef;
     --senado-gold-lighter: #f9f7ee;
     --senado-gold-soft: #f9f7eb;
-    --senado-gold-light: #ece4c7;
+    --senado-gold-light: #f0e6cc;
     --senado-gold: #e9e0be;
-    --senado-gold-dark: #daca8f;
+    --senado-gold-dark: #e3d194;
 
     /* Paleta Neutral / Dark (de más claro a más oscuro) */
     --senado-dark-light: #d9dada;

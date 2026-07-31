@@ -15,6 +15,8 @@ export default {
           'primary-dark': 'var(--senado-primary-dark)',
           'gold': {
             DEFAULT: 'var(--senado-gold)',
+            'lightest3': 'var(--senado-gold-lightest3)',
+            'lightest2': 'var(--senado-gold-lightest2)',
             'lightest': 'var(--senado-gold-lightest)',
             'lighter': 'var(--senado-gold-lighter)',
             'soft': 'var(--senado-gold-soft)',
