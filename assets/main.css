@@ -1,7 +1,8 @@
 /* ========================================== */
-/* IMPORTAR FUENTES LOCALES (RUTA CORRECTA)    */
+/* 🔥 FUENTES LOCALES (OPCIONAL)              */
 /* ========================================== */
-@import '~/public/fonts/fonts.css';
+/* Si tienes fuentes locales, descomenta esto: */
+/* @import '~/public/fonts/fonts.css'; */
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +10,7 @@
 
 @layer base {
   :root {
-  /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
+    /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
     --senado-primary: #611717;
     --senado-primary-light: #8f1522;
     --senado-primary-dark: #3a060d;
@@ -24,19 +25,44 @@
     --senado-gold: #e9e0be;
     --senado-gold-dark: #e3d194;
 
-    /* Paleta Neutral / Dark (de más claro a más oscuro) */
+    /* Paleta Neutral / Dark */
     --senado-dark-light: #d9dada;
     --senado-dark: #000001;
   }
 
+  /* ✅ FUENTE POR DEFECTO PARA TODO EL SITIO */
   html {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
+  /* ✅ TÍTULOS CON MONTSERRAT (más pesados) */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  /* ✅ TEXTOS ESPECÍFICOS */
+  p, span, a, li, button, input, textarea {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
   }
 }
+
+/* ✅ CLASE PARA FORZAR MONTSERRAT EN CUALQUIER ELEMENTO */
+.font-montserrat {
+  font-family: 'Montserrat', 'Roboto', sans-serif !important;
+}
+
+/* ✅ CLASE PARA TÍTULOS CON PESO ESPECÍFICO */
+.font-montserrat-light { font-family: 'Montserrat', sans-serif; font-weight: 300; }
+.font-montserrat-regular { font-family: 'Montserrat', sans-serif; font-weight: 400; }
+.font-montserrat-medium { font-family: 'Montserrat', sans-serif; font-weight: 500; }
+.font-montserrat-semibold { font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.font-montserrat-extrabold { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+.font-montserrat-black { font-family: 'Montserrat', sans-serif; font-weight: 900; }
 
 /* =======================================================
    🔥 ESTO ES LO QUE DEBES AGREGAR AL FINAL DEL ARCHIVO 🔥
@@ -44,31 +70,45 @@
 
 /* Clase para la cúpula que debe sobresalir por encima del navbar */
 .cupula-flotante {
-  /* Asegura que esté por encima de todo (ajusta si el navbar tiene un z-index mayor) */
   z-index: 9999 !important;
-  
-  /* Necesario para que z-index funcione */
   position: relative !important;
-  
-  /* Sube la imagen unos píxeles para que asome por debajo del navbar */
-  margin-top: -60px !important; /* Ajusta este número según necesites (-20px, -100px, etc) */
-  
-  /* Opcional: para que ocupe todo el ancho y no se vea raro */
+  margin-top: -60px !important;
   width: 100%;
   display: block;
 }
 
-/* Si el navbar usa position: fixed o sticky, esto es OBLIGATORIO para que no lo tape */
+/* Navbar superior */
 .navbar-superior {
-  /* Asegúrate de que el navbar tenga un z-index más bajo que la cúpula */
   position: relative;
-  z-index: 10; /* Si es 10, la cúpula con z-index 9999 queda encima */
+  z-index: 10;
 }
 
-/* =======================================================
-   ALTERNATIVA: Si prefieres usar las clases de Tailwind
-   en el HTML sin escribir CSS extra, busca en tu HTML y
-   ponle estas clases al contenedor de la imagen:
-   
-   class="relative z-[9999] -mt-16 w-full"
-   ======================================================= */
+/* ✅ ANIMACIONES */
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right { animation: slide-right 4s ease-in-out infinite; }
+.animate-slide-left { animation: slide-left 4s ease-in-out infinite; }
+.animate-slide-down { animation: slide-down 4s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 4s ease-in-out infinite; }

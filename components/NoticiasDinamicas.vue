@@ -72,7 +72,7 @@
         <div 
           v-for="noticia in noticiasSecundarias" 
           :key="noticia.id"
-          class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg cursor-pointer group"
+          class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
           @click="irANoticia(noticia)"
         >
           <div class="h-[0.6vw] bg-senado-gold-dark"></div>

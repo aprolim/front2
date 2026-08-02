@@ -20,9 +20,9 @@
 
         <!-- Título "Cámara de Senadores" -->
         <div class="hidden md:block flex-grow text-left">
-          <h1 class="text-2xl font-bold text-senado-primary leading-tight">
+          <h1 class="text-[1.7vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
             Cámara de<br />
-            <span class="text-3xl">Senadores</span>
+            <span class=" font-montserrat-bold">Senadores</span>
           </h1>
         </div>
 

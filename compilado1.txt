@@ -120,12 +120,7 @@ COMPILADO DE ARCHIVOS
 # Nuxt dev/build outputs
 .output
 .data
-.nuxt
-.nitro
-.cache
-dist
-
-# Node dependencie 
+.n 
 ================================= 
 nuxt.config.js 
 ================================= 
@@ -136,6 +131,9 @@ import { dirname, join } from 'path'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
+  // ✅ CORREGIDO: compatibilityDate
+  compatibilityDate: '2026-08-02',
+  
   devtools: { enabled: true },
   
   modules: [
@@ -145,21 +143,101 @@ export default defineNuxtConfig({
     '@nuxt/icon'
   ],
   
+  // ==========================================
+  // 🔥 CONFIGURACIÓN DE GOOGLE FONTS
+  // ==========================================
   googleFonts: {
     families: {
-      'Roboto': [300, 400, 500, 700],
-      'Montserrat': [400, 600, 700, 800]
+      Montserrat: [300, 400, 500, 600, 700, 800, 900],
+      Roboto: [300, 400, 500, 700]
     },
-    display: 'swap'
+    display: 'swap',
+    prefetch: true,
+    preconnect: true,
+    preload: true,
+    download: true,
+    base64: false,
+    overwriting: true
   },
   
-  css: ['~/assets/main.css'],
+  // ==========================================
+  // 📦 CSS GLOBAL
+  // ==========================================
+  css: [
+    '~/assets/main.css'
+  ],
   
+  // ==========================================
+  // 🔧 ALIAS DE RESOLUCIÓN
+  // ==========================================
+  alias: {
+    '~': join(currentDir, '.'),
+    '@': join(currentDir, '.'),
+    '~~': join(currentDir, '.'),
+    '@@': join(currentDir, '.'),
+    '~components': join(currentDir, 'components'),
+    '~composables': join(currentDir, 'composables'),
+    '~assets': join(currentDir, 'assets'),
+    '~public': join(currentDir, 'public'),
+  },
+  
+  // ==========================================
+  // ⚙️ OTRAS CONFIGURACIONES
+  // ==========================================
   future: {
     compatibilityVersion: 4
   },
   
-  compatibilityDate: '2024-07-23'
+  // ==========================================
+  // 🚀 OPTIMIZACIONES
+  // ==========================================
+  nitro: {
+    preset: 'node-server',
+    compressPublicAssets: true
+  },
+  
+  image: {
+    format: ['webp', 'avif', 'jpg'],
+    quality: 80,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536
+    }
+  },
+  
+  icon: {
+    serverBundle: 'remote',
+    clientBundle: 'auto'
+  },
+  
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' }
+      ],
+      link: [
+        { 
+          rel: 'preconnect', 
+          href: 'https://fonts.googleapis.com' 
+        },
+        { 
+          rel: 'preconnect', 
+          href: 'https://fonts.gstatic.com', 
+          crossorigin: '' 
+        },
+        { 
+          rel: 'stylesheet', 
+          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap' 
+        }
+      ]
+    }
+  }
 }) 
 ================================= 
 package.json 
@@ -323,9 +401,10 @@ assets\main.css
 ================================= 
  
 /* ========================================== */
-/* IMPORTAR FUENTES LOCALES (RUTA CORRECTA)    */
+/* 🔥 FUENTES LOCALES (OPCIONAL)              */
 /* ========================================== */
-@import '~/public/fonts/fonts.css';
+/* Si tienes fuentes locales, descomenta esto: */
+/* @import '~/public/fonts/fonts.css'; */
 
 @tailwind base;
 @tailwind components;
@@ -333,7 +412,7 @@ assets\main.css
 
 @layer base {
   :root {
-  /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
+    /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
     --senado-primary: #611717;
     --senado-primary-light: #8f1522;
     --senado-primary-dark: #3a060d;
@@ -348,19 +427,44 @@ assets\main.css
     --senado-gold: #e9e0be;
     --senado-gold-dark: #e3d194;
 
-    /* Paleta Neutral / Dark (de más claro a más oscuro) */
+    /* Paleta Neutral / Dark */
     --senado-dark-light: #d9dada;
     --senado-dark: #000001;
   }
 
+  /* ✅ FUENTE POR DEFECTO PARA TODO EL SITIO */
   html {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
+  /* ✅ TÍTULOS CON MONTSERRAT (más pesados) */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  /* ✅ TEXTOS ESPECÍFICOS */
+  p, span, a, li, button, input, textarea {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
   }
 }
+
+/* ✅ CLASE PARA FORZAR MONTSERRAT EN CUALQUIER ELEMENTO */
+.font-montserrat {
+  font-family: 'Montserrat', 'Roboto', sans-serif !important;
+}
+
+/* ✅ CLASE PARA TÍTULOS CON PESO ESPECÍFICO */
+.font-montserrat-light { font-family: 'Montserrat', sans-serif; font-weight: 300; }
+.font-montserrat-regular { font-family: 'Montserrat', sans-serif; font-weight: 400; }
+.font-montserrat-medium { font-family: 'Montserrat', sans-serif; font-weight: 500; }
+.font-montserrat-semibold { font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.font-montserrat-extrabold { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+.font-montserrat-black { font-family: 'Montserrat', sans-serif; font-weight: 900; }
 
 /* =======================================================
    🔥 ESTO ES LO QUE DEBES AGREGAR AL FINAL DEL ARCHIVO 🔥
@@ -368,34 +472,48 @@ assets\main.css
 
 /* Clase para la cúpula que debe sobresalir por encima del navbar */
 .cupula-flotante {
-  /* Asegura que esté por encima de todo (ajusta si el navbar tiene un z-index mayor) */
   z-index: 9999 !important;
-  
-  /* Necesario para que z-index funcione */
   position: relative !important;
-  
-  /* Sube la imagen unos píxeles para que asome por debajo del navbar */
-  margin-top: -60px !important; /* Ajusta este número según necesites (-20px, -100px, etc) */
-  
-  /* Opcional: para que ocupe todo el ancho y no se vea raro */
+  margin-top: -60px !important;
   width: 100%;
   display: block;
 }
 
-/* Si el navbar usa position: fixed o sticky, esto es OBLIGATORIO para que no lo tape */
+/* Navbar superior */
 .navbar-superior {
-  /* Asegúrate de que el navbar tenga un z-index más bajo que la cúpula */
   position: relative;
-  z-index: 10; /* Si es 10, la cúpula con z-index 9999 queda encima */
+  z-index: 10;
 }
 
-/* =======================================================
-   ALTERNATIVA: Si prefieres usar las clases de Tailwind
-   en el HTML sin escribir CSS extra, busca en tu HTML y
-   ponle estas clases al contenedor de la imagen:
-   
-   class="relative z-[9999] -mt-16 w-full"
-   ======================================================= */ 
+/* ✅ ANIMACIONES */
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right { animation: slide-right 4s ease-in-out infinite; }
+.animate-slide-left { animation: slide-left 4s ease-in-out infinite; }
+.animate-slide-down { animation: slide-down 4s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 4s ease-in-out infinite; } 
 ================================= 
 components\DescubraSenado.vue 
 ================================= 
@@ -1414,7 +1532,7 @@ components\NoticiasDinamicas.vue
         <div 
           v-for="noticia in noticiasSecundarias" 
           :key="noticia.id"
-          class="bg-white shadow hover:shadow-lg transition-shadow overflow-hidden rounded-b-lg cursor-pointer group"
+          class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
           @click="irANoticia(noticia)"
         >
           <div class="h-[0.6vw] bg-senado-gold-dark"></div>
@@ -1450,8 +1568,8 @@ components\NoticiasDinamicas.vue
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useNoticias } from '~/composables/useNoticias'
-import SafeImage from '@/components/SafeImage.vue'
+import { useNoticias } from '../composables/useNoticias'
+import SafeImage from './SafeImage.vue'
 
 // Props
 const props = defineProps({
@@ -1556,6 +1674,113 @@ defineExpose({
   overflow: hidden;
 }
 </style> 
+================================= 
+components\SafeImage.vue 
+================================= 
+ 
+<!-- components/SafeImage.vue -->
+<template>
+  <div class="relative overflow-hidden" :style="{ width: '100%', height: '100%' }">
+    <!-- Skeleton de carga -->
+    <div v-if="showSkeleton && !loaded" class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+    
+    <!-- Imagen -->
+    <img 
+      v-if="!error && src" 
+      :src="src" 
+      :alt="alt" 
+      :class="imageClass"
+      @error="handleError"
+      @load="handleLoad"
+      :loading="loadingStrategy === 'lazy' ? 'lazy' : 'eager'"
+      :style="{ opacity: loaded || !showSkeleton ? 1 : 0 }"
+    />
+    
+    <!-- Estado de error -->
+    <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+      <span class="text-gray-400 text-sm">Imagen no disponible</span>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    default: ''
+  },
+  imageClass: {
+    type: String,
+    default: ''
+  },
+  priority: {
+    type: String,
+    default: 'low'
+  },
+  loadingStrategy: {
+    type: String,
+    default: 'lazy'
+  },
+  showSkeleton: {
+    type: Boolean,
+    default: false
+  },
+  maxRetries: {
+    type: Number,
+    default: 3
+  },
+  persistent: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const error = ref(false)
+const loaded = ref(false)
+let retryCount = 0
+
+const handleError = () => {
+  if (retryCount < props.maxRetries) {
+    retryCount++
+    // Reintentar después de un delay
+    setTimeout(() => {
+      error.value = false
+      // Forzar recarga de la imagen
+      const img = new Image()
+      img.src = props.src
+      img.onload = () => {
+        loaded.value = true
+        error.value = false
+      }
+      img.onerror = () => {
+        if (retryCount >= props.maxRetries) {
+          error.value = true
+        }
+      }
+    }, 1000 * retryCount)
+  } else {
+    error.value = true
+  }
+}
+
+const handleLoad = () => {
+  loaded.value = true
+  error.value = false
+}
+
+// Resetear estado cuando cambia la src
+watch(() => props.src, () => {
+  error.value = false
+  loaded.value = false
+  retryCount = 0
+})
+</script> 
 ================================= 
 composables\useNoticias.js 
 ================================= 
@@ -2078,14 +2303,6 @@ const getInitials = (name) => {
   return name.substring(0, 2).toUpperCase()
 }
 </script> 
-================================= 
-plugins\check-if-page-unused.js 
-================================= 
- 
-export default defineNuxtPlugin(() => {
-  // Plugin para eliminar el warning NUXT_B2005
-  console.log('✅ Plugin de verificación de páginas cargado')
-}) 
 ================================= 
 public\robots.txt 
 ================================= 

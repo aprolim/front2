@@ -1,3 +1,4 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -8,6 +9,12 @@ export default {
   ],
   theme: {
     extend: {
+      // ✅ AGREGA ESTA CONFIGURACIÓN DE FUENTES
+      fontFamily: {
+        'montserrat': ['Montserrat', 'Roboto', 'sans-serif'],
+        'roboto': ['Roboto', 'sans-serif'],
+        'sans': ['Montserrat', 'Roboto', 'sans-serif'],  // ← Fuente por defecto
+      },
       colors: {
         'senado': {
           'primary': 'var(--senado-primary)',
@@ -32,7 +39,6 @@ export default {
     }
   },
   plugins: [
-    // 🔥 Agregar variantes portrait y landscape
     function({ addVariant }) {
       addVariant('portrait', '@media (orientation: portrait)')
       addVariant('landscape', '@media (orientation: landscape)')
