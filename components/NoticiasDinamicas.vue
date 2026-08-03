@@ -1,11 +1,11 @@
 <!-- components/NoticiasDinamicas.vue -->
 <template>
-  <div class="flex flex-col md:flex-row gap-6">
+  <div class="flex flex-col md:flex-row gap-[1vw]">
     <!-- COLUMNA IZQUIERDA - 70% -->
     <div class="md:w-[70%]">
       <!-- Estado de carga -->
       <div v-if="loading" class="w-full">
-        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg" style="height: 400px;"></div>
+        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg"></div>
         <div class="w-full h-[1vw] bg-gray-300"></div>
         <div class="mt-4">
           <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
@@ -16,7 +16,7 @@
       <!-- Noticia Principal -->
       <div v-else-if="noticiaPrincipal" class="group cursor-pointer" @click="irANoticia(noticiaPrincipal)">
         <div class="w-full">
-          <div class="relative overflow-hidden rounded-t-lg" style="height: 400px;">
+          <div class="relative overflow-hidden rounded-t-lg">
             <SafeImage 
               :src="obtenerImagen(noticiaPrincipal)"
               :alt="limpiarAsteriscos(noticiaPrincipal.titulo)"
@@ -28,18 +28,18 @@
             />
             
             <!-- Badge "Destacada" -->
-            <div class="absolute top-4 left-4 bg-[#E03636] text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+            <!-- <div class="absolute top-4 left-4 bg-[#E03636] text-white text-[.8vw] font-bold px-3 py-1 rounded-full z-10">
               DESTACADA
-            </div>
+            </div> -->
           </div>
           <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
         </div>
         
-        <div class="mt-4">
-          <h2 class="text-2xl font-bold text-senado-primary group-hover:text-[#A54A4A] transition-colors">
+        <div class="mt-[2vw]">
+          <h2 class="text-[1.5vw] font-bold text-senado-primary group-hover:text-[#A54A4A] transition-colors">
             {{ limpiarAsteriscos(noticiaPrincipal.titulo) }}
           </h2>
-          <p class="text-sm text-gray-500 mt-1">
+          <p class="text-[0.8vw] text-gray-500 mt-1">
             {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
           </p>
         </div>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- COLUMNA DERECHA - 30% -->
-    <div class="md:w-[30%] flex flex-col gap-4">
+    <div class="md:w-[30%] flex flex-col gap-[1vw]">
       <!-- Estado de carga para secundarias -->
       <div v-if="loading" class="flex flex-col gap-4">
         <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
@@ -76,11 +76,11 @@
           @click="irANoticia(noticia)"
         >
           <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-          <div class="p-4">
-            <p class="text-sm font-semibold text-gray-800 group-hover:text-senado-primary transition-colors line-clamp-3">
+          <div class="p-[1vw]">
+            <p class="text-[1.0vw] font-semibold text-gray-800 group-hover:text-senado-primary transition-colors line-clamp-3">
               {{ limpiarAsteriscos(noticia.titulo) }}
             </p>
-            <p class="text-xs text-gray-500 mt-2">
+            <p class="text-[.8vw] text-gray-500 mt-2">
               {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
             </p>
           </div>
@@ -96,7 +96,7 @@
       <div class="mt-2">
         <NuxtLink 
           to="/noticias" 
-          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-sm flex items-center justify-center gap-2 shadow-sm"
+          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-[1vw] flex items-center justify-center gap-2 shadow-sm"
         >
           Ir a todas las noticias
         </NuxtLink>

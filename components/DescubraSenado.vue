@@ -18,78 +18,90 @@
               <g>
                 <!-- 32 - Presidente -->
                 <circle 
+                  v-if="mostrarSenador(32)"
                   cx="520" cy="240" r="20" 
-                  fill="#2E7078" stroke="white" stroke-width="2" 
+                  :fill="getColorById(32)" 
+                  stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 32 }"
                   @click="goToSenator(32)"
                   @mouseenter="handleMouseEnter(getSeatById(32), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="520" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
+                <text v-if="mostrarSenador(32)" x="520" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
                 
                 <!-- 6 - 1ra Vicepresidencia -->
                 <circle 
+                  v-if="mostrarSenador(6)"
                   cx="560" cy="240" r="20" 
-                  fill="#EFCD04" stroke="white" stroke-width="2" 
+                  :fill="getColorById(6)" 
+                  stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 6 }"
                   @click="goToSenator(6)"
                   @mouseenter="handleMouseEnter(getSeatById(6), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="560" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
+                <text v-if="mostrarSenador(6)" x="560" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
                 
                 <!-- 12 - 2da Vicepresidencia -->
                 <circle 
+                  v-if="mostrarSenador(12)"
                   cx="599" cy="240" r="20" 
-                  fill="#DB3737" stroke="white" stroke-width="2" 
+                  :fill="getColorById(12)" 
+                  stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 12 }"
                   @click="goToSenator(12)"
                   @mouseenter="handleMouseEnter(getSeatById(12), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="599" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                <text v-if="mostrarSenador(12)" x="599" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
                 
                 <!-- 33 - 1ra Secretaria -->
                 <circle 
+                  v-if="mostrarSenador(33)"
                   cx="638" cy="240" r="20" 
-                  fill="#2E7078" stroke="white" stroke-width="2" 
+                  :fill="getColorById(33)" 
+                  stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 33 }"
                   @click="goToSenator(33)"
                   @mouseenter="handleMouseEnter(getSeatById(33), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="638" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                <text v-if="mostrarSenador(33)" x="638" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
                 
                 <!-- 13 - 2da Secretaria -->
                 <circle 
+                  v-if="mostrarSenador(13)"
                   cx="678" cy="240" r="20" 
-                  fill="#EFCD04" stroke="white" stroke-width="2" 
+                  :fill="getColorById(13)" 
+                  stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 13 }"
                   @click="goToSenator(13)"
                   @mouseenter="handleMouseEnter(getSeatById(13), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="678" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+                <text v-if="mostrarSenador(13)" x="678" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
               </g>
 
               <!-- BOLITAS DE SENADORES (36) -->
               <g v-for="seat in allSeats" :key="seat.id">
                 <circle
+                  v-if="mostrarSenador(seat.id)"
                   :cx="seat.x" :cy="seat.y" r="20"
                   :fill="seat.partyColor"
                   stroke="white" stroke-width="2"
                   class="senator-circle"
-                  :class="{ 'selected': hoveredSeat?.id === seat.id }"
+                  :class="{ 'selected': hoveredSeat?.id === seat.id, 'filtered-out': !mostrarSenador(seat.id) }"
                   @click="goToSenator(seat.id)"
                   @mouseenter="handleMouseEnter(seat, $event)"
                   @mouseleave="handleMouseLeave"
                 />
                 <text
+                  v-if="mostrarSenador(seat.id)"
                   :x="seat.x" :y="seat.y + 5"
                   text-anchor="middle"
                   fill="white"
@@ -141,24 +153,23 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- LEYENDA DE PARTIDOS (debajo del hemiciclo) -->
+    <!-- LEYENDA DE PARTIDOS CON FILTRO             -->
     <!-- ========================================== -->
     <div class="legend-container">
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #2E7078;"></div>
-        <span class="legend-text">Partido Demócrata Cristiano (PDC)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #EFCD04;"></div>
-        <span class="legend-text">Unidad (UNIDAD)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #DB3737;"></div>
-        <span class="legend-text">Libre (LIBRE)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background-color: #611789;"></div>
-        <span class="legend-text">Autonomía para Bolivia Súmate (APB)</span>
+      <div 
+        v-for="partido in partidos" 
+        :key="partido.nombre"
+        class="legend-item clickable"
+        :class="{ 'active': filtroPartido === partido.nombre }"
+        @click="toggleFiltro(partido.nombre)"
+      >
+        <span class="legend-number" :style="{ color: filtroPartido === partido.nombre ? partido.color : '#000000' }">
+          {{ partido.cantidad }}
+        </span>
+        <div class="legend-color" :style="{ backgroundColor: partido.color, width: '20px', height: '20px' }"></div>
+        <span class="legend-text" :style="{ color: filtroPartido === partido.nombre ? partido.color : '#333' }">
+          {{ partido.nombre }}
+        </span>
       </div>
     </div>
   </div>
@@ -176,6 +187,7 @@ const router = useRouter()
 const hoveredSeat = ref(null)
 const tooltipPosition = ref({ x: 0, y: 0 })
 const isNavigating = ref(false)
+const filtroPartido = ref(null) // null = mostrar todos
 
 // ============================================
 // SEAT POSITIONS
@@ -266,11 +278,69 @@ const allSeats = computed(() => {
 })
 
 // ============================================
+// PARTIDOS (para la leyenda)
+// ============================================
+const partidos = computed(() => {
+  const conteo = {}
+  senators.forEach(s => {
+    conteo[s.party] = (conteo[s.party] || 0) + 1
+  })
+  
+  const colores = {
+    'Partido Demócrata Cristiano': '#2E7078',
+    'Libre': '#DB3737',
+    'Unidad': '#EFCD04',
+    'Autonomía para Bolivia Súmate': '#611789'
+  }
+  
+  const nombres = {
+    'Partido Demócrata Cristiano': 'Partido Demócrata Cristiano',
+    'Libre': 'Alianza Libre',
+    'Unidad': 'Alianza Unidad',
+    'Autonomía para Bolivia Súmate': 'Autonomía Para Bolivia Súmate'
+  }
+  
+  return Object.entries(conteo).map(([nombre, cantidad]) => ({
+    nombre: nombres[nombre] || nombre,
+    nombreOriginal: nombre,
+    cantidad,
+    color: colores[nombre] || '#000000'
+  }))
+})
+
+// ============================================
 // MÉTODOS
 // ============================================
+const toggleFiltro = (nombrePartido) => {
+  // Buscar el nombre original del partido
+  const partido = partidos.value.find(p => p.nombre === nombrePartido)
+  if (!partido) return
+  
+  const nombreOriginal = partido.nombreOriginal
+  
+  if (filtroPartido.value === nombreOriginal) {
+    filtroPartido.value = null // Desactivar filtro
+  } else {
+    filtroPartido.value = nombreOriginal // Activar filtro
+  }
+}
+
+const mostrarSenador = (id) => {
+  if (!filtroPartido.value) return true // Mostrar todos
+  
+  const senador = allSeats.value.find(s => s.id === id)
+  if (!senador) return false
+  
+  return senador.party === filtroPartido.value
+}
+
+const getColorById = (id) => {
+  const senador = allSeats.value.find(s => s.id === id)
+  return senador?.partyColor || '#cccccc'
+}
+
 const getSeatById = (id) => {
   const found = allSeats.value.find(s => s.id === id)
-  console.log(`🔍 Buscando senador con ID: ${id}`, found || '❌ NO ENCONTRADO')
   return found || null
 }
 
@@ -296,18 +366,8 @@ const updateTooltipPosition = (event) => {
 }
 
 const goToSenator = (id) => {
-  console.log(`🟢 Click en senador ID: ${id}`)
-  
   const seat = allSeats.value.find(s => s.id === id)
-  
-  if (!seat) {
-    console.error(`❌ ERROR: Senador con ID ${id} NO ENCONTRADO en allSeats`)
-    console.log('📋 Lista de IDs disponibles:', allSeats.value.map(s => s.id).sort((a,b) => a - b))
-    return
-  }
-  
-  console.log(`✅ Senador encontrado: ${seat.name} (ID: ${seat.id})`)
-  console.log(`🔗 Redirigiendo a: /senador/${id}`)
+  if (!seat) return
   
   isNavigating.value = true
   hoveredSeat.value = null
@@ -342,15 +402,6 @@ const tooltipStyle = computed(() => {
 // ============================================
 onMounted(() => {
   console.log('✅ SenateChamber montado')
-  console.log('📋 Total de senadores:', allSeats.value.length)
-  console.log('📋 IDs disponibles:', allSeats.value.map(s => s.id).sort((a,b) => a - b))
-  console.log('📋 IDs en el centro: [32, 6, 12, 33, 13]')
-  
-  const centerIds = [32, 6, 12, 33, 13]
-  centerIds.forEach(id => {
-    const exists = allSeats.value.some(s => s.id === id)
-    console.log(`  ${exists ? '✅' : '❌'} ID ${id} ${exists ? 'encontrado' : 'NO encontrado'}`)
-  })
 })
 </script>
 
@@ -400,8 +451,9 @@ onMounted(() => {
   stroke-width: 3;
 }
 
-.senator-circle:active {
-  /* Sin efecto de click */
+.senator-circle.filtered-out {
+  opacity: 0.1;
+  pointer-events: none;
 }
 
 .seat-number {
@@ -411,50 +463,87 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* LEYENDA DE PARTIDOS                        */
+/* LEYENDA DE PARTIDOS CON FILTRO             */
 /* ========================================== */
 .legend-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 1rem 0.5rem 0.5rem 0.5rem;
-  margin-top: 0.5rem;
+  gap: 1rem 1.5rem;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .legend-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: #333;
+  gap: 0.05rem;
+  min-width: 70px;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.legend-item:hover {
+  background-color: rgba(0,0,0,0.05);
+  transform: scale(1.05);
+}
+
+.legend-item.active {
+  background-color: rgba(0,0,0,0.08);
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.legend-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000000;
+  transition: color 0.3s ease;
 }
 
 .legend-color {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.legend-item.active .legend-color {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px currentColor, 0 2px 8px rgba(0,0,0,0.25);
 }
 
 .legend-text {
+  font-size: 0.6rem;
   font-weight: 500;
-  white-space: nowrap;
+  color: #333;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 90px;
+  transition: color 0.3s ease;
 }
 
 @media (max-width: 640px) {
   .legend-container {
-    gap: 0.75rem;
-    padding: 0.5rem;
+    gap: 0.75rem 1rem;
   }
-  .legend-item {
-    font-size: 0.7rem;
+  .legend-number {
+    font-size: 1.25rem;
+  }
+  .legend-text {
+    font-size: 0.5rem;
+    max-width: 60px;
   }
   .legend-color {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 }
 

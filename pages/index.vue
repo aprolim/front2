@@ -38,9 +38,9 @@
         <!-- TEXTO CENTRADO                              -->
         <!-- ========================================== -->
         <div class="flex-1 text-center z-20">
-          <h1 class="text-[3.0vw] text-black w-[60%] leading-[.9] font-medium text-justify">
+          <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
             Bienvenido al sitio web oficial <br> del
-            <span class="text-senado-primary text-[3.8vw] text-justify font-bold">Senado de Bolivia</span>
+            <span class="text-senado-primary text-[4vw] text-justify font-bold">Senado de Bolivia</span>
           </h1>
         </div>
       </div>
@@ -51,8 +51,8 @@
     <!-- ========================================== -->
     <!-- BARRA DE SESIÓN (ancho completo)           -->
     <!-- ========================================== -->
-    <div class="w-full border-b border-[#f4f4f4] py-3 px-4">
-      <div class="flex items-center justify-center gap-2 flex-wrap">
+    <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
+      <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
         <span class="text-senado-primary font-medium">Sesión -</span>
         <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
         <span class="text-senado-gold-dark">|</span>
@@ -61,7 +61,7 @@
         </a>
         <span class="text-senado-gold-dark">|</span>
         <a href="#" class="text-black hover:underline font-thin underline">
-          ORDEN DEL DÍA5
+          ORDEN DEL DÍA
         </a>
       </div>
     </div>
@@ -69,26 +69,27 @@
     <!-- ========================================== -->
     <!-- COLUMNAS: 70% - 30%                        -->
     <!-- ========================================== -->
-    <div class="mx-auto w-[75%] py-10">
+    <div class="mx-auto w-[75%] py-[2vw]">
       <NoticiasDinamicas />
-
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-10">
-        <div class="flex-1 h-px bg-[#f4f4f4]"></div>
+        <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-10 w-10 object-contain brightness-0 opacity-50" />
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
         </div>
-        <div class="flex-1 h-px bg-[#f4f4f4]"></div>
+        <div class="flex-1 h-px bg-[#000]"></div>
       </div>
 
       <!-- ACTIVIDAD LEGISLATIVA -->
       <div class="mt-6">
-        <h2 class="text-3xl font-bold text-senado-primary mb-6">Actividad Legislativa</h2>
+        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Actividad Legislativa</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-senado-gold-lightest2  rounded-lg hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-light text-black px-4 py-2 text-lg text-center">LEGISLACIÓN</div>
+          
+          <!-- LEGISLACIÓN -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
-              <ul class="mt-3 space-y-2 text-sm">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
                 </li>
@@ -102,10 +103,11 @@
             </div>
           </div>
 
-          <div class="bg-senado-gold-lightest3  rounded-lg hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-light text-black px-4 py-2  text-lg text-center">GESTIÓN</div>
+          <!-- GESTIÓN (COMPLETO) -->
+          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
             <div class="p-4">
-              <ul class="mt-3 space-y-2 text-sm">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
                 </li>
@@ -115,14 +117,24 @@
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
                 </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
+                </li>
               </ul>
             </div>
           </div>
 
-          <div class="bg-senado-gold-lightest2  rounded-lg hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-light text-black px-4 py-2 text-lg text-center">FISCALIZACIÓN</div>
+          <!-- FISCALIZACIÓN -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
             <div class="p-4">
-              <ul class="mt-3 space-y-2 text-sm">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
                 </li>
@@ -150,22 +162,22 @@
 
       <!-- MANDATO, FUNCIONES, ANTECEDENTES -->
       <div class="mt-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-[2vw] items-end">
           <div class="text-center">
-            <h3 class="text-2xl font-bold text-senado-primary mb-3">Mandato Constitucional</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden">
+            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Mandato Constitucional</h3>
+            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
               <img src="/images/25.webp" alt="Mandato Constitucional" class="w-full h-full object-cover" />
             </div>
           </div>
           <div class="text-center">
-            <h3 class="text-2xl font-bold text-senado-primary mb-3">Funciones del Senado</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden">
+            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Funciones del Senado</h3>
+            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
               <img src="/images/26.webp" alt="Funciones del Senado" class="w-full h-full object-cover" />
             </div>
           </div>
           <div class="text-center">
-            <h3 class="text-2xl font-bold text-senado-primary mb-3">Antecedentes históricos</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden">
+            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Antecedentes históricos</h3>
+            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
               <img src="/images/27.webp" alt="Antecedentes históricos" class="w-full h-full object-cover" />
             </div>
           </div>

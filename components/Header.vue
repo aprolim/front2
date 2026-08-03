@@ -3,69 +3,73 @@
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
     
     <!-- CONTENEDOR DEL 80% CENTRADO -->
-    <div class="mx-auto w-[80%] max-w-[1400px] py-2">
+    <div class="mx-auto w-[80%] py-[1vw]">
       
       <!-- Fila superior -->
-      <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center justify-between gap-[1vw]">
         <!-- Botón sandwich -->
-        <button @click="toggleMenu" class="text-3xl text-senado-primary hover:bg-gray-100 p-2 rounded-lg transition-colors flex-shrink-0">
-          <Icon name="material-symbols:menu-rounded" class="text-3xl" v-if="!menuAbierto" />
-          <Icon name="material-symbols:close-rounded" class="text-3xl" v-else />
+        <button 
+          @click="toggleMenu" 
+          class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
+        >
+          <Icon 
+            name="material-symbols:menu-rounded" 
+            class="text-[3vw]" 
+            v-if="!menuAbierto" 
+            style="font-variation-settings: 'wght' 900;"
+          />
+          <Icon 
+            name="material-symbols:close-rounded" 
+            class="text-[3vw]" 
+            v-else 
+          />
         </button>
 
         <!-- Logo -->
-        <div class="flex-shrink-0">
-          <img src="/images/LogoDorado.svg" alt="Senado" class="h-12 w-auto" />
+        <div class="flex-shrink-0 spin-coin">
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[4vw] w-auto ml-[2vw] mr-[.5vw]" />
         </div>
 
         <!-- Título "Cámara de Senadores" -->
         <div class="hidden md:block flex-grow text-left">
           <h1 class="text-[1.7vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
             Cámara de<br />
-            <span class=" font-montserrat-bold">Senadores</span>
+            <span class="font-montserrat-bold">Senadores</span>
           </h1>
         </div>
 
         <!-- Buscador -->
-        <div class="hidden lg:block flex-grow max-w-[18vw] z-[1000]">
-          <div class="relative">
+        <div class="hidden lg:block flex-grow z-[1000] ml-auto">
+          <div class="relative text-right">
             <input
               type="text" 
               placeholder="ENCUENTRA TU SENADOR" 
-              class="w-full px-4 py-2 border border-[#cdcdcd] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw]"
+              class="w-[12vw] px-[.5vw] py-2 border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
             />
-            <!-- <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
-              <Icon name="material-symbols:search-rounded" class="text-xl" />
-            </button> -->
           </div>
         </div>
 
         <!-- Espacio -->
-        <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]">
-
-        </div>
+        <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]"></div>
 
         <!-- ========================================== -->
-        <!-- BOTÓN REDES SOCIALES DESPLEGABLE            -->
+        <!-- BOTÓN REDES SOCIALES CON HOVER              -->
         <!-- ========================================== -->
-        <!-- El contenedor tiene z-index alto para que el botón quede bien -->
-        <div class="relative flex-shrink-0 z-[9999]">
+        <div class="relative flex-shrink-0 z-[9999] group">
+          <!-- Botón -->
           <button 
-            @click="toggleRedes"
-            class="flex items-center gap-1 text-gray-600 hover:text-senado-primary transition-colors font-medium text-sm px-3 py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 bg-senado-gold-light h-[1.2vw]"
+            class="flex items-center gap-[.5vw] text-gray-600 hover:text-senado-primary transition-colors font-medium text-[1.0vw] px-[.5vw] py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 bg-senado-gold-light h-[1.2vw]"
           >
             <span>Redes Sociales</span>
             <Icon 
-              :name="redesAbiertas ? 'material-symbols:keyboard-arrow-up' : 'material-symbols:keyboard-arrow-down'" 
-              class="text-lg" 
+              name="material-symbols:keyboard-arrow-down" 
+              class="text-[1vw] group-hover:rotate-180 transition-transform duration-200" 
             />
           </button>
 
-          <!-- 🔥 MENÚ DESPLEGABLE CON Z-INDEX ALTÍSIMO (position: fixed) -->
-          <!-- Esto asegura que esté por encima de la cúpula -->
+          <!-- 🔥 MENÚ DESPLEGABLE CON HOVER -->
           <div 
-            v-if="redesAbiertas"
-            class="fixed top-14 right-[5%] bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2 z-[999999999]"
+            class="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2 z-[999999999] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
           >
             <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
               <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
@@ -121,7 +125,6 @@
       class="fixed inset-0 z-[9999999] bg-black bg-opacity-50 transition-opacity"
       @click.self="toggleMenu"
     >
-      <!-- w-96 para que no se corte el texto, y max-w-[90vw] para móviles -->
       <div class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl">
         <!-- Header del menú -->
         <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
@@ -271,7 +274,6 @@ export default {
   data() {
     return {
       menuAbierto: false,
-      redesAbiertas: false, // 👈 Nuevo estado para el botón de redes
       submenus: {
         legislativa: false,
         legislacion: false,
@@ -292,9 +294,6 @@ export default {
           this.submenus[key] = false
         })
       }
-    },
-    toggleRedes() {
-      this.redesAbiertas = !this.redesAbiertas
     },
     toggleSubmenu(key) {
       this.submenus[key] = !this.submenus[key]
@@ -317,5 +316,21 @@ export default {
 .menu-scroll::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
   border-radius: 4px;
+}
+
+/* Animación de rotación del logo */
+@keyframes spin-coin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.spin-coin {
+  animation: spin-coin 6s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 </style>
