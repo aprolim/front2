@@ -1,11 +1,6 @@
 <template>
-  <!-- 🔥 HEADER CON Z-INDEX ALTO (para que la cúpula lo tape parcialmente) -->
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
-    
-    <!-- CONTENEDOR DEL 80% CENTRADO -->
     <div class="mx-auto w-[80%] py-[1vw]">
-      
-      <!-- Fila superior -->
       <div class="flex items-center justify-between gap-[1vw]">
         <!-- Botón sandwich -->
         <button 
@@ -30,7 +25,7 @@
           <img src="/images/LogoDorado.svg" alt="Senado" class="h-[4vw] w-auto ml-[2vw] mr-[.5vw]" />
         </div>
 
-        <!-- Título "Cámara de Senadores" -->
+        <!-- Título -->
         <div class="hidden md:block flex-grow text-left">
           <h1 class="text-[1.7vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
             Cámara de<br />
@@ -49,45 +44,27 @@
           </div>
         </div>
 
-        <!-- Espacio -->
         <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]"></div>
 
         <!-- ========================================== -->
-        <!-- BOTÓN REDES SOCIALES CON HOVER              -->
+        <!-- REDES SOCIALES - BOTÓN                     -->
         <!-- ========================================== -->
-        <div class="relative flex-shrink-0 z-[9999] group">
-          <!-- Botón -->
+        <div 
+          class="relative flex-shrink-0 z-[9999]"
+          @mouseenter="abrirRedes"
+          @mouseleave="cerrarRedes"
+        >
           <button 
+            ref="redesButton"
             class="flex items-center gap-[.5vw] text-gray-600 hover:text-senado-primary transition-colors font-medium text-[1.0vw] px-[.5vw] py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 bg-senado-gold-light h-[1.2vw]"
           >
             <span>Redes Sociales</span>
             <Icon 
               name="material-symbols:keyboard-arrow-down" 
-              class="text-[1vw] group-hover:rotate-180 transition-transform duration-200" 
+              class="text-[1vw] transition-transform duration-200" 
+              :class="{ 'rotate-180': redesAbiertas }"
             />
           </button>
-
-          <!-- 🔥 MENÚ DESPLEGABLE CON HOVER -->
-          <div 
-            class="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2 z-[999999999] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
-          >
-            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-              <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
-              <span class="text-sm font-medium">Facebook</span>
-            </a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
-              <span class="text-sm font-medium">Twitter / X</span>
-            </a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-              <Icon name="mdi:youtube" class="text-2xl text-red-600" />
-              <span class="text-sm font-medium">YouTube</span>
-            </a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-              <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
-              <span class="text-sm font-medium">Instagram</span>
-            </a>
-          </div>
         </div>
         <!-- ========================================== -->
 
@@ -118,22 +95,20 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ LATERAL CORREGIDO                       -->
+    <!-- MENÚ LATERAL                               -->
     <!-- ========================================== -->
     <div
       v-if="menuAbierto"
-      class="fixed inset-0 z-[9999999] bg-black bg-opacity-50 transition-opacity"
+      class="fixed inset-0 z-[99999999] bg-black bg-opacity-50 transition-opacity"
       @click.self="toggleMenu"
     >
       <div class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl">
-        <!-- Header del menú -->
         <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
           <span class="font-bold text-lg">Menú</span>
           <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors">
             ✕
           </button>
         </div>
-
         <nav class="p-4 space-y-6">
           <!-- Actividad Legislativa -->
           <div>
@@ -145,7 +120,6 @@
               <span>{{ submenus.legislativa ? '▼' : '►' }}</span>
             </button>
             <div v-if="submenus.legislativa" class="ml-4 mt-2 space-y-2">
-              <!-- Legislación -->
               <div>
                 <button 
                   @click="toggleSubmenu('legislacion')" 
@@ -160,8 +134,6 @@
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
                 </div>
               </div>
-
-              <!-- Gestión -->
               <div>
                 <button 
                   @click="toggleSubmenu('gestion')" 
@@ -179,8 +151,6 @@
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</a>
                 </div>
               </div>
-
-              <!-- Fiscalización -->
               <div>
                 <button 
                   @click="toggleSubmenu('fiscalizacion')" 
@@ -197,7 +167,6 @@
             </div>
           </div>
 
-          <!-- Tus senadores -->
           <div>
             <button 
               @click="toggleSubmenu('senadores')" 
@@ -214,7 +183,6 @@
             </div>
           </div>
 
-          <!-- Acerca del Senado -->
           <div>
             <button 
               @click="toggleSubmenu('acerca')" 
@@ -241,7 +209,6 @@
             </div>
           </div>
 
-          <!-- Senado abierto -->
           <div>
             <button 
               @click="toggleSubmenu('abierto')" 
@@ -258,7 +225,6 @@
 
           <hr class="border-gray-200">
 
-          <!-- Enlaces rápidos -->
           <div class="space-y-2 text-sm">
             <a href="/" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">🏠 Inicio</a>
             <a href="/contacto" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">📞 Contacto</a>
@@ -266,6 +232,37 @@
         </nav>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- MENÚ REDES SOCIALES - Teleport al body     -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <div 
+        v-if="redesAbiertas"
+        ref="redesMenu"
+        class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2"
+        :style="menuStyle"
+        @mouseenter="cancelarCierre"
+        @mouseleave="cerrarRedes"
+      >
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+          <span class="text-sm font-medium">Facebook</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+          <span class="text-sm font-medium">Twitter / X</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+          <span class="text-sm font-medium">YouTube</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+          <span class="text-sm font-medium">Instagram</span>
+        </a>
+      </div>
+    </Teleport>
   </header>
 </template>
 
@@ -274,6 +271,8 @@ export default {
   data() {
     return {
       menuAbierto: false,
+      redesAbiertas: false,
+      hoverTimeout: null,
       submenus: {
         legislativa: false,
         legislacion: false,
@@ -283,6 +282,26 @@ export default {
         acerca: false,
         funciones: false,
         abierto: false
+      }
+    }
+  },
+  computed: {
+    menuStyle() {
+      if (process.client) {
+        const button = this.$refs.redesButton
+        if (button) {
+          const rect = button.getBoundingClientRect()
+          return {
+            top: (rect.bottom + 8) + 'px',
+            left: (rect.left - 10) + 'px',
+            zIndex: 9999999999
+          }
+        }
+      }
+      return {
+        top: '50px',
+        right: '20px',
+        zIndex: 9999999999
       }
     }
   },
@@ -297,40 +316,51 @@ export default {
     },
     toggleSubmenu(key) {
       this.submenus[key] = !this.submenus[key]
+    },
+    abrirRedes() {
+      clearTimeout(this.hoverTimeout)
+      this.redesAbiertas = true
+    },
+    cerrarRedes() {
+      this.hoverTimeout = setTimeout(() => {
+        this.redesAbiertas = false
+      }, 300) // ← 300ms de delay para que el mouse pueda llegar al menú
+    },
+    cancelarCierre() {
+      clearTimeout(this.hoverTimeout)
+      this.redesAbiertas = true
     }
+  },
+  beforeDestroy() {
+    clearTimeout(this.hoverTimeout)
   }
 }
 </script>
 
 <style scoped>
-/* Estilos para el scroll del menú */
 .menu-scroll {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
-
 .menu-scroll::-webkit-scrollbar {
   width: 4px;
 }
-
 .menu-scroll::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
   border-radius: 4px;
 }
 
-/* Animación de rotación del logo */
 @keyframes spin-coin {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
 }
-
 .spin-coin {
   animation: spin-coin 6s linear infinite;
   transform-style: preserve-3d;
   perspective: 1000px;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }
 </style>

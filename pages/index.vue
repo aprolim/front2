@@ -22,16 +22,14 @@
         <!-- CÚPULA DERECHA (Alineada por su base)      -->
         <!-- ========================================== -->
         <div 
-          class="absolute right-0 z-[50] w-[22vw]"
+          class="absolute right-0 z-[60] w-[22vw]"
           style="bottom: 0; pointer-events: none;"
         >
-          <!-- Borde decorativo exterior (oro y rojo) -->
-            <!-- Borde interior blanco/gold -->
-              <img 
-                src="/images/Cupula.png" 
-                alt="Senado derecha" 
-                style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
-              />
+          <img 
+            src="/images/Cupula.png" 
+            alt="Senado derecha" 
+            style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
+          />
         </div>
 
         <!-- ========================================== -->

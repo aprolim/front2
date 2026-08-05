@@ -16,38 +16,10 @@
             <g>
               <!-- BOLITAS DE LA DIRECTIVA (CENTRO) -->
               <g>
-                <!-- 32 - Presidente -->
-                <circle 
-                  v-if="mostrarSenador(32)"
-                  cx="520" cy="240" r="20" 
-                  :fill="getColorById(32)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 'selected': hoveredSeat?.id === 32 }"
-                  @click="goToSenator(32)"
-                  @mouseenter="handleMouseEnter(getSeatById(32), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text v-if="mostrarSenador(32)" x="520" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
-                
-                <!-- 6 - 1ra Vicepresidencia -->
-                <circle 
-                  v-if="mostrarSenador(6)"
-                  cx="560" cy="240" r="20" 
-                  :fill="getColorById(6)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 'selected': hoveredSeat?.id === 6 }"
-                  @click="goToSenator(6)"
-                  @mouseenter="handleMouseEnter(getSeatById(6), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text v-if="mostrarSenador(6)" x="560" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
-                
                 <!-- 12 - 2da Vicepresidencia -->
                 <circle 
                   v-if="mostrarSenador(12)"
-                  cx="599" cy="240" r="20" 
+                  cx="500" cy="240" r="20" 
                   :fill="getColorById(12)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
@@ -56,12 +28,40 @@
                   @mouseenter="handleMouseEnter(getSeatById(12), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(12)" x="599" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                <text v-if="mostrarSenador(12)" x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                
+                <!-- 6 - 1ra Vicepresidencia -->
+                <circle 
+                  v-if="mostrarSenador(6)"
+                  cx="540" cy="240" r="20" 
+                  :fill="getColorById(6)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 6 }"
+                  @click="goToSenator(6)"
+                  @mouseenter="handleMouseEnter(getSeatById(6), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text v-if="mostrarSenador(6)" x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
+                
+                <!-- 32 - Presidente -->
+                <circle 
+                  v-if="mostrarSenador(32)"
+                  cx="580" cy="240" r="20" 
+                  :fill="getColorById(32)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 32 }"
+                  @click="goToSenator(32)"
+                  @mouseenter="handleMouseEnter(getSeatById(32), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text v-if="mostrarSenador(32)" x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
                 
                 <!-- 33 - 1ra Secretaria -->
                 <circle 
                   v-if="mostrarSenador(33)"
-                  cx="638" cy="240" r="20" 
+                  cx="620" cy="240" r="20" 
                   :fill="getColorById(33)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
@@ -70,12 +70,26 @@
                   @mouseenter="handleMouseEnter(getSeatById(33), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(33)" x="638" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                <text v-if="mostrarSenador(33)" x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                
+                <!-- 24 - Julio Diego Romaña Galindo -->
+                <circle 
+                  v-if="mostrarSenador(24)"
+                  cx="660" cy="240" r="20" 
+                  :fill="getColorById(24)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 24 }"
+                  @click="goToSenator(24)"
+                  @mouseenter="handleMouseEnter(getSeatById(24), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text v-if="mostrarSenador(24)" x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
                 
                 <!-- 13 - 2da Secretaria -->
                 <circle 
                   v-if="mostrarSenador(13)"
-                  cx="678" cy="240" r="20" 
+                  cx="700" cy="240" r="20" 
                   :fill="getColorById(13)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
@@ -84,7 +98,7 @@
                   @mouseenter="handleMouseEnter(getSeatById(13), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(13)" x="678" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+                <text v-if="mostrarSenador(13)" x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
               </g>
 
               <!-- BOLITAS DE SENADORES (36) -->
@@ -115,15 +129,22 @@
             </g>
           </svg>
 
-          <!-- TOOLTIP -->
+          <!-- TOOLTIP CON FOTO -->
           <div 
             v-if="hoveredSeat && !isNavigating" 
             class="seat-tooltip"
             :style="tooltipStyle"
           >
             <div class="tooltip-header">
-              <div class="seat-number-indicator" :style="{ backgroundColor: hoveredSeat.partyColor }">
-                {{ hoveredSeat.seatNumber }}
+              <!-- Foto del senador -->
+              <div class="seat-photo">
+                <img 
+                  :src="hoveredSeat.foto || '/images/default-avatar.png'" 
+                  :alt="hoveredSeat.name"
+                  class="w-12 h-12 rounded-full object-cover border-2"
+                  :style="{ borderColor: hoveredSeat.partyColor }"
+                  @error="(e) => e.target.src = '/images/default-avatar.png'"
+                />
               </div>
               <div class="senator-info">
                 <h4 class="text-sm font-bold text-gray-800">{{ hoveredSeat.name }}</h4>
@@ -178,6 +199,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { senadores } from '~/data/senadores'
 
 const router = useRouter()
 
@@ -218,48 +240,6 @@ const seatPositions = {
 }
 
 // ============================================
-// SENADORES
-// ============================================
-const senators = [
-  { id: 1, seatNumber: 1, name: "Wilder Véliz Armas", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Cochabamba", bancada: "Gobierno", comite: "Comité de Justicia Plural y Consejo de la Magistratura.", cargo: "Secretario de Comite" },
-  { id: 2, seatNumber: 2, name: "Judith Rosario García Coca", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Cochabamba", bancada: "Gobierno", comision: "Comisión de Seguridad del Estado", cargo: "Presidente de Comisión" },
-  { id: 3, seatNumber: 3, name: "Claudia Mallón Vargas", party: "Autonomía para Bolivia Súmate", partyShort: "APB", partyColor: "#611789", department: "Cochabamba", bancada: "Aliados", comite: "Comité de Vivienda, Regimen Laboral, Seguridad Industrial y Seguridad Social", cargo: "Secretaria de Comite" },
-  { id: 4, seatNumber: 4, name: "Wanda Ximena Medrano Hervas", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Cochabamba", bancada: "Oposición", comite: "Comité de Relaciones Económicas Internacionales", cargo: "Secretaria de Comite" },
-  { id: 5, seatNumber: 5, name: "José Manuel Ormachea Mendieta", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "La Paz", bancada: "Oposición", comision: "Comisión de Naciones y Pueblos Indígena Originario Campesinos, Culturas e Interculturalidad", cargo: "Presidente de Comisión" },
-  { id: 6, seatNumber: 6, name: "Carmen Soledad Chapeton Tancara", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "La Paz", bancada: "Aliados", comision: "Directiva Legislatura 2025-2026", cargo: "Primera Vicepresidencia" },
-  { id: 7, seatNumber: 7, name: "Nicanor Gonzalo Cochi Condorí", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "La Paz", bancada: "Gobierno", comision: "Comisión de Política Internacional y Protección al Migrante", cargo: "Presidente de Comisión" },
-  { id: 8, seatNumber: 8, name: "Tomasa Yarhui Jacome", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Chuquisaca", bancada: "Oposición", comite: "Comité de Sistema Electoral, Derechos Humanos y Equidad Social", cargo: "Secretaria de Comite" },
-  { id: 9, seatNumber: 9, name: "Abdon Porcel Arancibia", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Chuquisaca", bancada: "Oposición", comite: "Comité de Políticas Financiera, Monetaria, Tributaria y Seguros", cargo: "Secretario de Comite" },
-  { id: 10, seatNumber: 10, name: "Bertha Cartagena Sánchez", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Chuquisaca", bancada: "Gobierno", comite: "Comité de Culturas, Interculturalidad y Patrimonio Cultural", cargo: "Secretaria de Comite" },
-  { id: 11, seatNumber: 11, name: "Branko Goran Marinković Jovicevic", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Santa Cruz", bancada: "Oposición", comision: "Comisión de Tierra y Territorio / Región Amazónica", cargo: "Presidente de Comisión" },
-  { id: 12, seatNumber: 12, name: "Kathia Lizbeth Quiroga Fernández", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Santa Cruz", bancada: "Oposición", comision: "Directiva Legislatura 2025-2026", cargo: "Segunda Vicepresidencia" },
-  { id: 13, seatNumber: 13, name: "Rosa Tatiana Áñez Carrasco", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Santa Cruz", bancada: "Aliados", comision: "Directiva Legislatura 2025-2026", cargo: "Tercera Secretaria" },
-  { id: 14, seatNumber: 14, name: "Paola Limbania López Zeballos", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Santa Cruz", bancada: "Gobierno", comite: "Comité de Seguridad del Estado y Lucha Contra el Narcotráfico", cargo: "Secretaria de Comite" },
-  { id: 15, seatNumber: 15, name: "Betty Canaviri Villanueva", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Potosí", bancada: "Oposición", comite: "Comité de Economía Plural, Desarrollo Productivo, Obras Públicas e Infraestructura", cargo: "Secretaria de Comite" },
-  { id: 16, seatNumber: 16, name: "Teresa Alarcón Arana", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Potosí", bancada: "Oposición", comite: "Comité de Asuntos Exteriores Interpelatorios y Organismos Internacionales", cargo: "Secretaria de Comite" },
-  { id: 17, seatNumber: 17, name: "Marcelino Flores Ordoñez", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Potosí", bancada: "Gobierno", comite: "Comité de Energía, Hidrocarburos, Minería y Metalurgia", cargo: "Secretario de Comite" },
-  { id: 18, seatNumber: 18, name: "Bertha Nurmy Gutiérrez Meneces", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Potosí", bancada: "Gobierno", comite: "Comité de Naciones y Pueblos Indígena Originario Campesinos", cargo: "Secretaria de Comite" },
-  { id: 19, seatNumber: 19, name: "Erick Nelson Soruco Alpire", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Beni", bancada: "Gobierno", comision: "Comisión de Justicia Plural, Ministerio Público y Defensa del Estado", cargo: "Presidente de Comisión" },
-  { id: 20, seatNumber: 20, name: "José Roca Haensel", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Beni", bancada: "Aliados", comite: "Comité de Autonomías Municipales, Indigena Originario Campesinas y Regionales", cargo: "Secretario de Comite" },
-  { id: 21, seatNumber: 21, name: "Ana Karina Velasco Añez", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Beni", bancada: "Aliados", comite: "Comité de Fuerzas Armadas y Policía Boliviana", cargo: "Secretaria de comite" },
-  { id: 22, seatNumber: 22, name: "Ernesto Suarez Sattori", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Beni", bancada: "Oposición", comite: "Comité de Autonomías Departamentales", cargo: "Secretario de Comite" },
-  { id: 23, seatNumber: 23, name: "Ana María Crispin Choque", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "La Paz", bancada: "Gobierno", comision: "Comisión de Economía Plural, Producción e Industria", cargo: "Presidente de Comisión" },
-  { id: 24, seatNumber: 24, name: "Julio Diego Romaña Galindo", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Pando", bancada: "Oposición", comision: "Directiva Legislatura 2025-2026", cargo: "Segunda Secretaria" },
-  { id: 25, seatNumber: 25, name: "Carol Carlo Durán", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Pando", bancada: "Oposición", comite: "Comité de Tierra y Territorio, Recursos Naturales y Hoja de la Coca", cargo: "Secretaria de Comite" },
-  { id: 26, seatNumber: 26, name: "Cinthia Mónica Puerta Campos", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Pando", bancada: "Gobierno", comite: "Comité de Medio Ambiente, Biodiversidad, Amazonía, Áreas Protegidas y Cambio Climático", cargo: "Secretaria de Comite" },
-  { id: 27, seatNumber: 27, name: "Eliana Rina Acosta Quispe", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Pando", bancada: "Aliados", comision: "Comisión de Planificación, Política Económica y Finanzas", cargo: "Presidente de Comisión" },
-  { id: 28, seatNumber: 28, name: "Daniel Antonio Ortiz Velásquez", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Chuquisaca", bancada: "Gobierno", comision: "Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral", cargo: "Presidente de Comisión" },
-  { id: 29, seatNumber: 29, name: "María Isabel Moreno Cortez", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Tarija", bancada: "Oposición", comite: "Comité de Ministerio Público y Defensa Legal del Estado", cargo: "Secretaria de Comite" },
-  { id: 30, seatNumber: 30, name: "César Mentasti Padilla", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Tarija", bancada: "Aliados", comision: "Comisión de Organización Territorial del Estado y Autonomías", cargo: "Presidente de Comisión" },
-  { id: 31, seatNumber: 31, name: "Leonor Rosalva Romero Gutiérrez", party: "Unidad", partyShort: "UNIDAD", partyColor: "#EFCD04", department: "Tarija", bancada: "Aliados", comite: "Comité de Planificación, Presupuesto, Inversión Pública y Contraloría General del Estado", cargo: "Secretaria de Comite" },
-  { id: 32, seatNumber: 32, name: "Diego Esteban Mateo Ávila Navajas", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Tarija", bancada: "Gobierno", comision: "Directiva Legislatura 2025-2026", cargo: "Presidente" },
-  { id: 33, seatNumber: 33, name: "Yasmín Estivariz Villarroel", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Oruro", bancada: "Gobierno", comision: "Directiva Legislatura 2025-2026", cargo: "Primera Secretaria" },
-  { id: 34, seatNumber: 34, name: "Freddy Castillo Chávez", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Oruro", bancada: "Gobierno", comite: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.", cargo: "Secretario de Comite" },
-  { id: 35, seatNumber: 35, name: "Maria Antonieta Alcón Sánchez", party: "Partido Demócrata Cristiano", partyShort: "PDC", partyColor: "#2E7078", department: "Oruro", bancada: "Gobierno", comite: "Comité de Educación, Salud, Ciencia, Tecnología y Deporte", cargo: "Secretaria de Comite" },
-  { id: 36, seatNumber: 36, name: "José Sánchez Aguilar", party: "Libre", partyShort: "LIBRE", partyColor: "#DB3737", department: "Oruro", bancada: "Gobierno", comision: "Comisión de Política Social", cargo: "Presidente de Comisión" },
-]
-
-// ============================================
 // COMPUTED
 // ============================================
 const allSeats = computed(() => {
@@ -270,7 +250,7 @@ const allSeats = computed(() => {
     ...seatPositions.lowerRight
   ]
   
-  return senators.map((senator, i) => ({
+  return senadores.map((senator, i) => ({
     ...senator,
     x: allPositions[i]?.x || 400,
     y: allPositions[i]?.y || 300
@@ -282,7 +262,7 @@ const allSeats = computed(() => {
 // ============================================
 const partidos = computed(() => {
   const conteo = {}
-  senators.forEach(s => {
+  senadores.forEach(s => {
     conteo[s.party] = (conteo[s.party] || 0) + 1
   })
   
@@ -312,21 +292,20 @@ const partidos = computed(() => {
 // MÉTODOS
 // ============================================
 const toggleFiltro = (nombrePartido) => {
-  // Buscar el nombre original del partido
   const partido = partidos.value.find(p => p.nombre === nombrePartido)
   if (!partido) return
   
   const nombreOriginal = partido.nombreOriginal
   
   if (filtroPartido.value === nombreOriginal) {
-    filtroPartido.value = null // Desactivar filtro
+    filtroPartido.value = null
   } else {
-    filtroPartido.value = nombreOriginal // Activar filtro
+    filtroPartido.value = nombreOriginal
   }
 }
 
 const mostrarSenador = (id) => {
-  if (!filtroPartido.value) return true // Mostrar todos
+  if (!filtroPartido.value) return true
   
   const senador = allSeats.value.find(s => s.id === id)
   if (!senador) return false
@@ -547,7 +526,9 @@ onMounted(() => {
   }
 }
 
-/* Tooltip styles */
+/* ========================================== */
+/* TOOLTIP CON FOTO                          */
+/* ========================================== */
 .seat-tooltip {
   animation: fadeIn 0.15s ease;
 }
@@ -572,18 +553,21 @@ onMounted(() => {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.seat-number-indicator {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.seat-photo {
   flex-shrink: 0;
+}
+
+.seat-photo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+  transition: transform 0.2s ease;
+}
+
+.seat-photo img:hover {
+  transform: scale(1.05);
 }
 
 .senator-info h4 {

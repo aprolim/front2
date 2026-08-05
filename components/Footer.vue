@@ -9,16 +9,16 @@
             <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Nuestras Redes Sociales:</h4>
             <div class="flex justify-center gap-3">
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:facebook" class="text-2xl" />
+                <Icon name="mdi:facebook" class="text-[1.9vw]" />
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="ri:twitter-x-line" class="text-2xl" />
+                <Icon name="ri:twitter-x-line" class="text-[1.9vw]" />
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:youtube" class="text-2xl" />
+                <Icon name="mdi:youtube" class="text-[1.9vw]" />
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:instagram" class="text-2xl" />
+                <Icon name="mdi:instagram" class="text-[1.9vw]" />
               </a>
             </div>
           </div>
