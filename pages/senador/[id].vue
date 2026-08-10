@@ -5,7 +5,7 @@
       <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
         <!-- Columna 1: Foto -->
         <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
-          <img 
+          <img
             v-if="senator.foto"
             :src="senator.foto" 
             :alt="senator.name"
@@ -108,7 +108,7 @@
                 </div>
                 <div>
                   <!-- CONTACTO - REDES SOCIALES -->
-                  <div class="flex gap-2 flex-wrap text-[.5em]">
+                  <div v-if="senator.facebook || senator.twitter || senator.instagram" class="flex gap-2 flex-wrap text-[.5em]">
                     <!-- Facebook -->
                     <a 
                       v-if="senator.facebook"
@@ -176,6 +176,7 @@
                       </svg>
                     </a>
                   </div>
+                  <span v-else class="text-gray-800">{{ 'No disponible' }}</span>
                 </div>
                 <div>
                   <span class="text-gray-800">{{ senator.suplente || 'No disponible' }}</span>
@@ -219,28 +220,7 @@
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
-      <div class="mt-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-[2vw] items-end">
-          <div class="text-center">
-            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Mandato Constitucional</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
-              <img src="/images/25.webp" alt="Mandato Constitucional" class="w-full h-full object-cover" />
-            </div>
-          </div>
-          <div class="text-center">
-            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Funciones del Senado</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
-              <img src="/images/26.webp" alt="Funciones del Senado" class="w-full h-full object-cover" />
-            </div>
-          </div>
-          <div class="text-center">
-            <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Antecedentes históricos</h3>
-            <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
-              <img src="/images/27.webp" alt="Antecedentes históricos" class="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <MandatoFuncionesAntecedentes />
     </div>
     
 
@@ -256,6 +236,8 @@
 <script setup>
 import { computed } from 'vue'
 import { senadores } from '~/data/senadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
 
 const route = useRoute()
 const id = computed(() => parseInt(route.params.id))

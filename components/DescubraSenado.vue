@@ -1,6 +1,32 @@
 <template>
   <div class="senate-chamber" @mouseleave="handleMouseLeave">
     <div class="background-container">
+      <!-- ========================================== -->
+      <!-- BOTÓN TITULARES/SUPLENTES                  -->
+      <!-- ========================================== -->
+      <div class="flex justify-start mb-4">
+        <div class="inline-flex rounded-md shadow-sm" role="group">
+          <button
+            @click="setTipoVisualizacion('titulares')"
+            class="px-4 py-2 text-sm font-medium rounded-l-lg transition-colors"
+            :class="tipoVisualizacion === 'titulares' 
+              ? 'bg-senado-primary text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'"
+          >
+            Titulares
+          </button>
+          <button
+            @click="setTipoVisualizacion('suplentes')"
+            class="px-4 py-2 text-sm font-medium rounded-r-lg transition-colors"
+            :class="tipoVisualizacion === 'suplentes' 
+              ? 'bg-senado-primary text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 border-l-0'"
+          >
+            Suplentes
+          </button>
+        </div>
+      </div>
+
       <div class="hemicycle-wrapper">
         <div class="hemicycle-container">
           <!-- SVG del hemiciclo -->
@@ -14,108 +40,108 @@
             <rect width="1000" height="600" fill="#fff" rx="20" />
 
             <g>
-              <!-- BOLITAS DE LA DIRECTIVA (CENTRO) -->
+              <!-- ========================================== -->
+              <!-- DIRECTIVA (CENTRO) - SIEMPRE TITULARES     -->
+              <!-- ========================================== -->
               <g>
                 <!-- 12 - 2da Vicepresidencia -->
                 <circle 
-                  v-if="mostrarSenador(12)"
                   cx="500" cy="240" r="20" 
-                  :fill="getColorById(12)" 
+                  :fill="getColorDirectiva(12)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 12 }"
                   @click="goToSenator(12)"
-                  @mouseenter="handleMouseEnter(getSeatById(12), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(12)" x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                <text x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
                 
                 <!-- 6 - 1ra Vicepresidencia -->
                 <circle 
-                  v-if="mostrarSenador(6)"
                   cx="540" cy="240" r="20" 
-                  :fill="getColorById(6)" 
+                  :fill="getColorDirectiva(6)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 6 }"
                   @click="goToSenator(6)"
-                  @mouseenter="handleMouseEnter(getSeatById(6), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(6)" x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
+                <text x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
                 
                 <!-- 32 - Presidente -->
                 <circle 
-                  v-if="mostrarSenador(32)"
                   cx="580" cy="240" r="20" 
-                  :fill="getColorById(32)" 
+                  :fill="getColorDirectiva(32)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 32 }"
                   @click="goToSenator(32)"
-                  @mouseenter="handleMouseEnter(getSeatById(32), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(32)" x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
+                <text x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
                 
                 <!-- 33 - 1ra Secretaria -->
                 <circle 
-                  v-if="mostrarSenador(33)"
                   cx="620" cy="240" r="20" 
-                  :fill="getColorById(33)" 
+                  :fill="getColorDirectiva(33)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 33 }"
                   @click="goToSenator(33)"
-                  @mouseenter="handleMouseEnter(getSeatById(33), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(33)" x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                <text x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
                 
                 <!-- 24 - Julio Diego Romaña Galindo -->
                 <circle 
-                  v-if="mostrarSenador(24)"
                   cx="660" cy="240" r="20" 
-                  :fill="getColorById(24)" 
+                  :fill="getColorDirectiva(24)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 24 }"
                   @click="goToSenator(24)"
-                  @mouseenter="handleMouseEnter(getSeatById(24), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(24)" x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
+                <text x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
                 
                 <!-- 13 - 2da Secretaria -->
                 <circle 
-                  v-if="mostrarSenador(13)"
                   cx="700" cy="240" r="20" 
-                  :fill="getColorById(13)" 
+                  :fill="getColorDirectiva(13)" 
                   stroke="white" stroke-width="2" 
                   class="senator-circle directive-seat"
                   :class="{ 'selected': hoveredSeat?.id === 13 }"
                   @click="goToSenator(13)"
-                  @mouseenter="handleMouseEnter(getSeatById(13), $event)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text v-if="mostrarSenador(13)" x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+                <text x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
               </g>
 
-              <!-- BOLITAS DE SENADORES (36) -->
+              <!-- ========================================== -->
+              <!-- ARCO (36 SENADORES - TODOS)                -->
+              <!-- ========================================== -->
               <g v-for="seat in allSeats" :key="seat.id">
                 <circle
-                  v-if="mostrarSenador(seat.id)"
                   :cx="seat.x" :cy="seat.y" r="20"
-                  :fill="seat.partyColor"
+                  :fill="seat.partyColor || '#e5e7eb'"
                   stroke="white" stroke-width="2"
                   class="senator-circle"
-                  :class="{ 'selected': hoveredSeat?.id === seat.id, 'filtered-out': !mostrarSenador(seat.id) }"
+                  :class="{ 
+                    'selected': hoveredSeat?.id === seat.id,
+                    'suplente': tipoVisualizacion === 'suplentes' && !seat.isEmpty,
+                    'empty-seat': seat.isEmpty
+                  }"
                   @click="goToSenator(seat.id)"
                   @mouseenter="handleMouseEnter(seat, $event)"
                   @mouseleave="handleMouseLeave"
                 />
                 <text
-                  v-if="mostrarSenador(seat.id)"
                   :x="seat.x" :y="seat.y + 5"
                   text-anchor="middle"
                   fill="white"
@@ -136,31 +162,36 @@
             :style="tooltipStyle"
           >
             <div class="tooltip-header">
-              <!-- Foto del senador -->
               <div class="seat-photo">
                 <img 
-                  :src="hoveredSeat.foto || '/images/default-avatar.png'" 
-                  :alt="hoveredSeat.name"
+                  :src="hoveredSeat.fotoActual || '/images/default-avatar.png'" 
+                  :alt="hoveredSeat.nombreActual || hoveredSeat.name"
                   class="w-12 h-12 rounded-full object-cover border-2"
-                  :style="{ borderColor: hoveredSeat.partyColor }"
+                  :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }"
                   @error="(e) => e.target.src = '/images/default-avatar.png'"
                 />
               </div>
               <div class="senator-info">
-                <h4 class="text-sm font-bold text-gray-800">{{ hoveredSeat.name }}</h4>
-                <div class="party-badge text-xs px-2 py-0.5 rounded" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor }">
-                  {{ hoveredSeat.partyShort }}
+                <h4 class="text-sm font-bold text-gray-800">{{ hoveredSeat.nombreActual || hoveredSeat.name }}</h4>
+                <div class="party-badge text-xs px-2 py-0.5 rounded" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
+                  {{ hoveredSeat.partyShort || 'Sin partido' }}
+                </div>
+                <div v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente" class="text-xs text-gray-500 mt-1">
+                  Suplente de: {{ hoveredSeat.name }}
+                </div>
+                <div v-if="hoveredSeat.isEmpty" class="text-xs text-gray-500 mt-1">
+                  Sin suplente
                 </div>
               </div>
             </div>
             <div class="tooltip-body">
               <div class="info-row">
                 <span class="label">Departamento:</span>
-                <span class="value">{{ hoveredSeat.department }}</span>
+                <span class="value">{{ hoveredSeat.department || '-' }}</span>
               </div>
               <div class="info-row">
                 <span class="label">Bancada:</span>
-                <span class="value">{{ hoveredSeat.bancada }}</span>
+                <span class="value">{{ hoveredSeat.bancada || '-' }}</span>
               </div>
               <div class="info-row" v-if="hoveredSeat.cargo">
                 <span class="label">Cargo:</span>
@@ -209,60 +240,144 @@ const router = useRouter()
 const hoveredSeat = ref(null)
 const tooltipPosition = ref({ x: 0, y: 0 })
 const isNavigating = ref(false)
-const filtroPartido = ref(null) // null = mostrar todos
+const filtroPartido = ref(null)
+const tipoVisualizacion = ref('titulares')
+
+// IDs de la directiva (SIEMPRE TITULARES)
+const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
 
 // ============================================
-// SEAT POSITIONS
+// SEAT POSITIONS PARA EL ARCO (36 posiciones)
 // ============================================
-const seatPositions = {
-  upperLeft: [
-    { x: 399, y: 303 }, { x: 405, y: 343 }, { x: 421, y: 380 },
-    { x: 445, y: 412 }, { x: 477, y: 436 }, { x: 513, y: 455 },
-    { x: 553, y: 465 }
-  ],
-  upperRight: [
-    { x: 647, y: 465 }, { x: 687, y: 455 }, { x: 723, y: 436 },
-    { x: 755, y: 412 }, { x: 779, y: 380 }, { x: 795, y: 343 },
-    { x: 801, y: 303 }
-  ],
-  lowerLeft: [
-    { x: 280, y: 252 }, { x: 283, y: 301 }, { x: 292, y: 349 },
-    { x: 307, y: 395 }, { x: 328, y: 438 }, { x: 355, y: 477 },
-    { x: 388, y: 511 }, { x: 423, y: 538 }, { x: 464, y: 559 },
-    { x: 507, y: 573 }, { x: 553, y: 580 }
-  ],
-  lowerRight: [
-    { x: 647, y: 580 }, { x: 693, y: 573 }, { x: 736, y: 559 },
-    { x: 777, y: 538 }, { x: 812, y: 511 }, { x: 845, y: 477 },
-    { x: 872, y: 438 }, { x: 893, y: 395 }, { x: 908, y: 349 },
-    { x: 917, y: 301 }, { x: 920, y: 252 }
-  ]
+const seatPositionsArco = [
+  // upperLeft (7)
+  { x: 399, y: 303 }, { x: 405, y: 343 }, { x: 421, y: 380 },
+  { x: 445, y: 412 }, { x: 477, y: 436 }, { x: 513, y: 455 },
+  { x: 553, y: 465 },
+  // upperRight (7)
+  { x: 647, y: 465 }, { x: 687, y: 455 }, { x: 723, y: 436 },
+  { x: 755, y: 412 }, { x: 779, y: 380 }, { x: 795, y: 343 },
+  { x: 801, y: 303 },
+  // lowerLeft (11)
+  { x: 280, y: 252 }, { x: 283, y: 301 }, { x: 292, y: 349 },
+  { x: 307, y: 395 }, { x: 328, y: 438 }, { x: 355, y: 477 },
+  { x: 388, y: 511 }, { x: 423, y: 538 }, { x: 464, y: 559 },
+  { x: 507, y: 573 }, { x: 553, y: 580 },
+  // lowerRight (11)
+  { x: 647, y: 580 }, { x: 693, y: 573 }, { x: 736, y: 559 },
+  { x: 777, y: 538 }, { x: 812, y: 511 }, { x: 845, y: 477 },
+  { x: 872, y: 438 }, { x: 893, y: 395 }, { x: 908, y: 349 },
+  { x: 917, y: 301 }, { x: 920, y: 252 }
+]
+
+// ============================================
+// FUNCIÓN PARA VERIFICAR SI ES DIRECTIVA
+// ============================================
+const esDirectiva = (id) => {
+  return DIRECTIVA_IDS.includes(id)
 }
 
 // ============================================
-// COMPUTED
+// FUNCIÓN PARA GENERAR SLUG
+// ============================================
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+// ============================================
+// COMPUTED - ARCO (36 SENADORES - TODOS)
 // ============================================
 const allSeats = computed(() => {
-  const allPositions = [
-    ...seatPositions.upperLeft,
-    ...seatPositions.upperRight,
-    ...seatPositions.lowerLeft,
-    ...seatPositions.lowerRight
-  ]
+  // TODOS los senadores (incluyendo los de la directiva)
+  const senadoresOrdenados = [...senadores].sort((a, b) => a.seatNumber - b.seatNumber)
   
-  return senadores.map((senator, i) => ({
-    ...senator,
-    x: allPositions[i]?.x || 400,
-    y: allPositions[i]?.y || 300
-  }))
+  return senadoresOrdenados.map((senator, index) => {
+    const pos = seatPositionsArco[index] || { x: 400, y: 300 }
+    
+    // Si es modo suplentes
+    if (tipoVisualizacion.value === 'suplentes') {
+      // Si tiene suplente
+      if (senator.suplente && senator.suplente !== null) {
+        return {
+          ...senator,
+          nombreActual: senator.suplente,
+          fotoActual: senator.fotoSuplente || '/images/default-avatar.png',
+          slugSuplente: generarSlug(senator.suplente),
+          x: pos.x,
+          y: pos.y,
+          isEmpty: false,
+          partyColor: senator.partyColor,
+          esSuplente: true
+        }
+      } else {
+        // No tiene suplente (Teresa Alarcón) - círculo gris vacío
+        return {
+          ...senator,
+          nombreActual: 'Sin suplente',
+          fotoActual: '/images/default-avatar.png',
+          x: pos.x,
+          y: pos.y,
+          isEmpty: true,
+          partyColor: '#e5e7eb',
+          partyShort: 'Sin suplente',
+          slugSuplente: null,
+          esSuplente: false
+        }
+      }
+    }
+    
+    // Modo titulares → mostrar titular
+    return {
+      ...senator,
+      nombreActual: senator.name,
+      fotoActual: senator.foto,
+      x: pos.x,
+      y: pos.y,
+      isEmpty: false,
+      partyColor: senator.partyColor,
+      slugSuplente: null,
+      esSuplente: false
+    }
+  })
 })
+
+// ============================================
+// FUNCIONES PARA LA DIRECTIVA
+// ============================================
+const getColorDirectiva = (id) => {
+  const senador = senadores.find(s => s.id === id)
+  return senador?.partyColor || '#cccccc'
+}
+
+const getSeatDirectiva = (id) => {
+  const senador = senadores.find(s => s.id === id)
+  if (!senador) return null
+  return {
+    ...senador,
+    nombreActual: senador.name,
+    fotoActual: senador.foto,
+    isEmpty: false
+  }
+}
 
 // ============================================
 // PARTIDOS (para la leyenda)
 // ============================================
 const partidos = computed(() => {
   const conteo = {}
-  senadores.forEach(s => {
+  const baseSenadores = tipoVisualizacion.value === 'suplentes'
+    ? senadores.filter(s => s.suplente && s.suplente !== null)
+    : senadores
+  
+  baseSenadores.forEach(s => {
     conteo[s.party] = (conteo[s.party] || 0) + 1
   })
   
@@ -291,6 +406,11 @@ const partidos = computed(() => {
 // ============================================
 // MÉTODOS
 // ============================================
+const setTipoVisualizacion = (tipo) => {
+  tipoVisualizacion.value = tipo
+  filtroPartido.value = null
+}
+
 const toggleFiltro = (nombrePartido) => {
   const partido = partidos.value.find(p => p.nombre === nombrePartido)
   if (!partido) return
@@ -304,21 +424,16 @@ const toggleFiltro = (nombrePartido) => {
   }
 }
 
-const mostrarSenador = (id) => {
-  if (!filtroPartido.value) return true
-  
-  const senador = allSeats.value.find(s => s.id === id)
-  if (!senador) return false
-  
-  return senador.party === filtroPartido.value
-}
-
 const getColorById = (id) => {
   const senador = allSeats.value.find(s => s.id === id)
   return senador?.partyColor || '#cccccc'
 }
 
 const getSeatById = (id) => {
+  // Buscar en directiva primero
+  if (esDirectiva(id)) {
+    return getSeatDirectiva(id)
+  }
   const found = allSeats.value.find(s => s.id === id)
   return found || null
 }
@@ -345,11 +460,25 @@ const updateTooltipPosition = (event) => {
 }
 
 const goToSenator = (id) => {
+  // Buscar el asiento
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return
   
+  // Si está vacío (sin suplente), no hacer nada
+  if (seat.isEmpty) return
+  
   isNavigating.value = true
   hoveredSeat.value = null
+  
+  // Si está en modo suplentes y tiene suplente
+  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && seat.suplente) {
+    // Redirigir a la página del suplente usando el nombre como slug
+    const slug = generarSlug(seat.suplente)
+    router.push(`/senador/suplente/${slug}`)
+    return
+  }
+  
+  // Modo titulares o directiva → redirigir al titular
   router.push(`/senador/${id}`)
 }
 
@@ -430,9 +559,18 @@ onMounted(() => {
   stroke-width: 3;
 }
 
-.senator-circle.filtered-out {
-  opacity: 0.1;
-  pointer-events: none;
+.senator-circle.suplente {
+  stroke-dasharray: 4 4;
+}
+
+.senator-circle.empty-seat {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.senator-circle.empty-seat:hover {
+  r: 20;
+  stroke-width: 2;
 }
 
 .seat-number {
@@ -441,9 +579,6 @@ onMounted(() => {
   font-size: 14px;
 }
 
-/* ========================================== */
-/* LEYENDA DE PARTIDOS CON FILTRO             */
-/* ========================================== */
 .legend-container {
   display: flex;
   flex-wrap: wrap;
@@ -526,9 +661,6 @@ onMounted(() => {
   }
 }
 
-/* ========================================== */
-/* TOOLTIP CON FOTO                          */
-/* ========================================== */
 .seat-tooltip {
   animation: fadeIn 0.15s ease;
 }
