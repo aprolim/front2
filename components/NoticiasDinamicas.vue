@@ -5,7 +5,7 @@
     <div class="md:w-[70%]">
       <!-- Estado de carga -->
       <div v-if="loading" class="w-full">
-        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg"></div>
+        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg aspect-[16/9]"></div>
         <div class="w-full h-[1vw] bg-gray-300"></div>
         <div class="mt-4">
           <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
@@ -16,29 +16,33 @@
       <!-- Noticia Principal -->
       <div v-else-if="noticiaPrincipal" class="group cursor-pointer" @click="irANoticia(noticiaPrincipal)">
         <div class="w-full">
-          <div class="relative overflow-hidden rounded-t-lg">
-            <SafeImage 
+          <div class="relative overflow-hidden rounded-t-lg aspect-[18/9] bg-gray-100">
+            <!-- Imagen con aspecto fijo 16:9 -->
+            <img 
               :src="obtenerImagen(noticiaPrincipal)"
               :alt="limpiarAsteriscos(noticiaPrincipal.titulo)"
-              image-class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              priority="high"
-              loading-strategy="eager"
-              :max-retries="8"
-              :persistent="true"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="eager"
+              @error="imagenError = true"
             />
             
-            <!-- Badge "Destacada" -->
-            <!-- <div class="absolute top-4 left-4 bg-[#E03636] text-white text-[.8vw] font-bold px-3 py-1 rounded-full z-10">
-              DESTACADA
-            </div> -->
+            <!-- Fallback -->
+            <div 
+              v-if="imagenError"
+              class="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500 text-sm"
+            >
+              Imagen no disponible
+            </div>
           </div>
           <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
         </div>
         
         <div class="mt-[2vw]">
-          <h2 class="text-[1.5vw] font-bold text-senado-primary group-hover:text-[#A54A4A] transition-colors">
-            {{ limpiarAsteriscos(noticiaPrincipal.titulo) }}
-          </h2>
+          <!-- Título con resaltado de asteriscos -->
+          <h2 
+            class="text-[1.5vw] font-bold group-hover:text-senado-primary transition-colors"
+            v-html="tituloResaltado(noticiaPrincipal.titulo)"
+          ></h2>
           <p class="text-[0.8vw] text-gray-500 mt-1">
             {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
           </p>
@@ -56,7 +60,7 @@
 
     <!-- COLUMNA DERECHA - 30% -->
     <div class="md:w-[30%] flex flex-col gap-[1vw]">
-      <!-- Estado de carga para secundarias -->
+      <!-- Estado de carga -->
       <div v-if="loading" class="flex flex-col gap-4">
         <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
           <div class="h-[0.6vw] bg-gray-300"></div>
@@ -71,15 +75,16 @@
       <template v-else-if="noticiasSecundarias.length > 0">
         <div 
           v-for="noticia in noticiasSecundarias" 
-          :key="noticia.id"
+          :key="noticia.id || noticia._id"
           class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
           @click="irANoticia(noticia)"
         >
           <div class="h-[0.6vw] bg-senado-gold-dark"></div>
           <div class="p-[1vw]">
-            <p class="text-[1.0vw] font-semibold text-gray-800 group-hover:text-senado-primary transition-colors line-clamp-3">
-              {{ limpiarAsteriscos(noticia.titulo) }}
-            </p>
+            <p 
+              class="text-[1.0vw] font-semibold group-hover:text-senado-primary transition-colors line-clamp-3"
+              v-html="tituloResaltado(noticia.titulo, 'text-gray-800')"
+            ></p>
             <p class="text-[.8vw] text-gray-500 mt-2">
               {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
             </p>
@@ -92,7 +97,7 @@
         <p class="text-gray-500 text-sm">No hay noticias secundarias</p>
       </div>
 
-      <!-- Botón "Ir a todas las noticias" -->
+      <!-- Botón -->
       <div class="mt-2">
         <NuxtLink 
           to="/noticias" 
@@ -109,23 +114,15 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useNoticias } from '../composables/useNoticias'
-import SafeImage from './SafeImage.vue'
 
-// Props
 const props = defineProps({
-  secundariasLimit: {
-    type: Number,
-    default: 3
-  },
-  autoLoad: {
-    type: Boolean,
-    default: true
-  }
+  secundariasLimit: { type: Number, default: 3 },
+  autoLoad: { type: Boolean, default: true }
 })
 
 const router = useRouter()
+const imagenError = ref(false)
 
-// 🔥 Usar el composable de noticias
 const { 
   noticiasImportantes, 
   loading, 
@@ -133,33 +130,14 @@ const {
   recargarDatos 
 } = useNoticias()
 
-// 🔥 Obtener y ordenar noticias
-const noticias = computed(() => {
-  if (!noticiasImportantes.value) return []
-  
-  // Ordenar por fecha (más reciente primero)
-  const ordenadas = [...noticiasImportantes.value].sort((a, b) => {
-    const fechaA = new Date(a.publishedAt || a.fecha || 0)
-    const fechaB = new Date(b.publishedAt || b.fecha || 0)
-    return fechaB - fechaA
+// Resalta texto entre asteriscos
+const tituloResaltado = (texto, colorNormal = 'text-gray-900') => {
+  if (!texto) return ''
+  return texto.replace(/\*([^*]+)\*/g, (match, contenido) => {
+    return `<span class="text-senado-primary font-bold">${contenido}</span>`
   })
-  
-  return ordenadas
-})
+}
 
-// 🔥 Noticia principal (la primera)
-const noticiaPrincipal = computed(() => {
-  return noticias.value.length > 0 ? noticias.value[0] : null
-})
-
-// 🔥 Noticias secundarias (el resto, limitado)
-const noticiasSecundarias = computed(() => {
-  return noticias.value.length > 1 
-    ? noticias.value.slice(1, 1 + props.secundariasLimit)
-    : []
-})
-
-// 🔥 Funciones de utilidad
 const limpiarAsteriscos = (texto) => {
   if (!texto) return ''
   return texto.replace(/\*/g, '')
@@ -192,20 +170,37 @@ const irANoticia = (noticia) => {
   }
 }
 
-// 🔥 Cargar datos al montar
+// Computadas
+const noticias = computed(() => {
+  if (!noticiasImportantes.value) return []
+  return [...noticiasImportantes.value].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+})
+
+const noticiaPrincipal = computed(() => {
+  return noticias.value.length > 0 ? noticias.value[0] : null
+})
+
+const noticiasSecundarias = computed(() => {
+  return noticias.value.length > 1 
+    ? noticias.value.slice(1, 1 + props.secundariasLimit)
+    : []
+})
+
 onMounted(async () => {
   if (props.autoLoad && noticiasImportantes.value.length === 0) {
     await recargarDatos()
   }
 })
 
-// 🔥 Exponer métodos
-defineExpose({
-  recargarDatos
-})
+defineExpose({ recargarDatos })
 </script>
 
 <style scoped>
+/* Solo lo necesario para line-clamp (Tailwind no lo tiene por defecto) */
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;

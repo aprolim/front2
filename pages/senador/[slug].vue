@@ -1,10 +1,13 @@
 <template>
   <div class="py-10">
     <div v-if="senator" class="max-w-6xl mx-auto">
-      <!-- Botón volver -->
-      <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6">
+      <!-- Botón volver con history.back() y fallback -->
+      <button 
+        @click="volver"
+        class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6 cursor-pointer"
+      >
         ← Volver al hemiciclo
-      </NuxtLink>
+      </button>
 
       <!-- Tarjeta del senador -->
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -167,6 +170,17 @@ const slug = computed(() => route.params.slug)
 const senator = computed(() => {
   return getSenadorBySlug(slug.value)
 })
+
+// Función para volver atrás o ir al inicio
+const volver = () => {
+  // Si hay historial (viene de otra página), volver atrás
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    // Si no hay historial (ej: abierto en nueva pestaña), ir a inicio
+    navigateTo('/')
+  }
+}
 
 const getInitials = (name) => {
   if (!name) return '?'
