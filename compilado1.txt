@@ -1,0 +1,2335 @@
+COMPILADO DE ARCHIVOS 
+ 
+ 
+================================= 
+.gitignore 
+================================= 
+ 
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+ 
+================================= 
+app.vue 
+================================= 
+ 
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+
+<script setup>
+useHead({
+  title: 'Senado de Bolivia',
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { name: 'description', content: 'Sitio oficial del Senado de Bolivia' }
+  ]
+})
+</script> 
+================================= 
+compilado1.txt 
+================================= 
+ 
+COMPILADO DE ARCHIVOS 
+ 
+ 
+================================= 
+.gitignore 
+================================= 
+ 
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+ 
+================================= 
+app.vue 
+================================= 
+ 
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+
+<script setup>
+useHead({
+  title: 'Senado de Bolivia',
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { name: 'description', content: 'Sitio oficial del Senado de Bolivia' }
+  ]
+})
+</script> 
+================================= 
+compilado1.txt 
+================================= 
+ 
+COMPILADO DE ARCHIVOS 
+ 
+ 
+================================= 
+.gitignore 
+================================= 
+ 
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencie 
+================================= 
+nuxt.config.js 
+================================= 
+ 
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
+
+export default defineNuxtConfig({
+  // ✅ CORREGIDO: compatibilityDate
+  compatibilityDate: '2026-08-02',
+  
+  devtools: { enabled: true },
+  
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image',
+    '@nuxtjs/google-fonts',
+    '@nuxt/icon'
+  ],
+  
+  // ==========================================
+  // 🔥 CONFIGURACIÓN DE GOOGLE FONTS
+  // ==========================================
+  googleFonts: {
+    families: {
+      Montserrat: [300, 400, 500, 600, 700, 800, 900],
+      Roboto: [300, 400, 500, 700]
+    },
+    display: 'swap',
+    prefetch: true,
+    preconnect: true,
+    preload: true,
+    download: true,
+    base64: false,
+    overwriting: true
+  },
+  
+  // ==========================================
+  // 📦 CSS GLOBAL
+  // ==========================================
+  css: [
+    '~/assets/main.css'
+  ],
+  
+  // ==========================================
+  // 🔧 ALIAS DE RESOLUCIÓN
+  // ==========================================
+  alias: {
+    '~': join(currentDir, '.'),
+    '@': join(currentDir, '.'),
+    '~~': join(currentDir, '.'),
+    '@@': join(currentDir, '.'),
+    '~components': join(currentDir, 'components'),
+    '~composables': join(currentDir, 'composables'),
+    '~assets': join(currentDir, 'assets'),
+    '~public': join(currentDir, 'public'),
+  },
+  
+  // ==========================================
+  // ⚙️ OTRAS CONFIGURACIONES
+  // ==========================================
+  future: {
+    compatibilityVersion: 4
+  },
+  
+  // ==========================================
+  // 🚀 OPTIMIZACIONES
+  // ==========================================
+  nitro: {
+    preset: 'node-server',
+    compressPublicAssets: true
+  },
+  
+  image: {
+    format: ['webp', 'avif', 'jpg'],
+    quality: 80,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536
+    }
+  },
+  
+  icon: {
+    serverBundle: 'remote',
+    clientBundle: 'auto'
+  },
+  
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' }
+      ],
+      link: [
+        { 
+          rel: 'preconnect', 
+          href: 'https://fonts.googleapis.com' 
+        },
+        { 
+          rel: 'preconnect', 
+          href: 'https://fonts.gstatic.com', 
+          crossorigin: '' 
+        },
+        { 
+          rel: 'stylesheet', 
+          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap' 
+        }
+      ]
+    }
+  }
+}) 
+================================= 
+package.json 
+================================= 
+ 
+{
+  "name": "frontend-publico-oficial2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "start": "cross-env PORT=3000 node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "nuxt": "^4.5.0",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@nuxt/icon": "^2.3.1",
+    "@nuxt/image": "^2.0.0",
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@types/node": "^26.1.1",
+    "dotenv": "^17.4.2"
+  }
+}
+ 
+================================= 
+README.md 
+================================= 
+ 
+# Nuxt Minimal Starter
+
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+## Setup
+
+Make sure to install dependencies:
+
+```bash
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+ 
+================================= 
+tailwind.config.js 
+================================= 
+ 
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './components/**/*.{vue,js,ts}',
+    './layouts/**/*.{vue,js,ts}',
+    './pages/**/*.{vue,js,ts}',
+    './app.vue'
+  ],
+  theme: {
+    extend: {
+      // ✅ AGREGA ESTA CONFIGURACIÓN DE FUENTES
+      fontFamily: {
+        'montserrat': ['Montserrat', 'Roboto', 'sans-serif'],
+        'roboto': ['Roboto', 'sans-serif'],
+        'sans': ['Montserrat', 'Roboto', 'sans-serif'],  // ← Fuente por defecto
+      },
+      colors: {
+        'senado': {
+          'primary': 'var(--senado-primary)',
+          'primary-light': 'var(--senado-primary-light)',
+          'primary-dark': 'var(--senado-primary-dark)',
+          'gold': {
+            DEFAULT: 'var(--senado-gold)',
+            'lightest3': 'var(--senado-gold-lightest3)',
+            'lightest2': 'var(--senado-gold-lightest2)',
+            'lightest': 'var(--senado-gold-lightest)',
+            'lighter': 'var(--senado-gold-lighter)',
+            'soft': 'var(--senado-gold-soft)',
+            'light': 'var(--senado-gold-light)',
+            'dark': 'var(--senado-gold-dark)',
+          },
+          'dark': {
+            DEFAULT: 'var(--senado-dark)',
+            'light': 'var(--senado-dark-light)',
+          }
+        }
+      }
+    }
+  },
+  plugins: [
+    function({ addVariant }) {
+      addVariant('portrait', '@media (orientation: portrait)')
+      addVariant('landscape', '@media (orientation: landscape)')
+    }
+  ]
+} 
+================================= 
+assets\main.css 
+================================= 
+ 
+/* ========================================== */
+/* 🔥 FUENTES LOCALES (OPCIONAL)              */
+/* ========================================== */
+/* Si tienes fuentes locales, descomenta esto: */
+/* @import '~/public/fonts/fonts.css'; */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 🔥 CAMBIA ESTOS COLORES Y SE ACTUALIZA TODO EL SITIO */
+    --senado-primary: #611717;
+    --senado-primary-light: #8f1522;
+    --senado-primary-dark: #3a060d;
+
+    /* Paleta Gold / Cream */
+    --senado-gold-lightest3: #fdfcf9;
+    --senado-gold-lightest2: #fbf8f1;
+    --senado-gold-lightest: #fbf8ef;
+    --senado-gold-lighter: #f9f7ee;
+    --senado-gold-soft: #f9f7eb;
+    --senado-gold-light: #f0e6cc;
+    --senado-gold: #e9e0be;
+    --senado-gold-dark: #e3d194;
+
+    /* Paleta Neutral / Dark */
+    --senado-dark-light: #d9dada;
+    --senado-dark: #000001;
+  }
+
+  /* ✅ FUENTE POR DEFECTO PARA TODO EL SITIO */
+  html {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* ✅ TÍTULOS CON MONTSERRAT (más pesados) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  /* ✅ TEXTOS ESPECÍFICOS */
+  p, span, a, li, button, input, textarea {
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+  }
+}
+
+/* ✅ CLASE PARA FORZAR MONTSERRAT EN CUALQUIER ELEMENTO */
+.font-montserrat {
+  font-family: 'Montserrat', 'Roboto', sans-serif !important;
+}
+
+/* ✅ CLASE PARA TÍTULOS CON PESO ESPECÍFICO */
+.font-montserrat-light { font-family: 'Montserrat', sans-serif; font-weight: 300; }
+.font-montserrat-regular { font-family: 'Montserrat', sans-serif; font-weight: 400; }
+.font-montserrat-medium { font-family: 'Montserrat', sans-serif; font-weight: 500; }
+.font-montserrat-semibold { font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.font-montserrat-bold { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.font-montserrat-extrabold { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+.font-montserrat-black { font-family: 'Montserrat', sans-serif; font-weight: 900; }
+
+/* =======================================================
+   🔥 ESTO ES LO QUE DEBES AGREGAR AL FINAL DEL ARCHIVO 🔥
+   ======================================================= */
+
+/* Clase para la cúpula que debe sobresalir por encima del navbar */
+.cupula-flotante {
+  z-index: 9999 !important;
+  position: relative !important;
+  margin-top: -60px !important;
+  width: 100%;
+  display: block;
+}
+
+/* Navbar superior */
+.navbar-superior {
+  position: relative;
+  z-index: 10;
+}
+
+/* ✅ ANIMACIONES */
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right { animation: slide-right 4s ease-in-out infinite; }
+.animate-slide-left { animation: slide-left 4s ease-in-out infinite; }
+.animate-slide-down { animation: slide-down 4s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 4s ease-in-out infinite; } 
+================================= 
+components\DescubraSenado.vue 
+================================= 
+ 
+<template>
+  <div class="senate-chamber" @mouseleave="handleMouseLeave">
+    <div class="background-container">
+      <!-- ========================================== -->
+      <!-- BOTÓN TITULARES/SUPLENTES                  -->
+      <!-- ========================================== -->
+      <div class="flex justify-start mb-4">
+        <div class="inline-flex rounded-md shadow-sm" role="group">
+          <button
+            @click="setTipoVisualizacion('titulares')"
+            class="px-4 py-2 text-sm font-medium rounded-l-lg transition-colors"
+            :class="tipoVisualizacion === 'titulares' 
+              ? 'bg-senado-primary text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'"
+          >
+            Titulares
+          </button>
+          <button
+            @click="setTipoVisualizacion('suplentes')"
+            class="px-4 py-2 text-sm font-medium rounded-r-lg transition-colors"
+            :class="tipoVisualizacion === 'suplentes' 
+              ? 'bg-senado-primary text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 border-l-0'"
+          >
+            Suplentes
+          </button>
+        </div>
+      </div>
+
+      <div class="hemicycle-wrapper">
+        <div class="hemicycle-container">
+          <!-- SVG del hemiciclo -->
+          <svg 
+            class="hemicycle-svg" 
+            viewBox="250 200 700 400" 
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid meet"
+            @mousemove="updateTooltipPosition"
+          >
+            <rect width="1000" height="600" fill="#fff" rx="20" />
+
+            <g>
+              <!-- ========================================== -->
+              <!-- DIRECTIVA (CENTRO) - SIEMPRE TITULARES     -->
+              <!-- ========================================== -->
+              <g>
+                <!-- 12 - 2da Vicepresidencia -->
+                <circle 
+                  cx="500" cy="240" r="20" 
+                  :fill="getColorDirectiva(12)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 12 }"
+                  @click="goToSenator(12)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                
+                <!-- 6 - 1ra Vicepresidencia -->
+                <circle 
+                  cx="540" cy="240" r="20" 
+                  :fill="getColorDirectiva(6)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 6 }"
+                  @click="goToSenator(6)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
+                
+                <!-- 32 - Presidente -->
+                <circle 
+                  cx="580" cy="240" r="20" 
+                  :fill="getColorDirectiva(32)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 32 }"
+                  @click="goToSenator(32)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
+                
+                <!-- 33 - 1ra Secretaria -->
+                <circle 
+                  cx="620" cy="240" r="20" 
+                  :fill="getColorDirectiva(33)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 33 }"
+                  @click="goToSenator(33)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                
+                <!-- 24 - Julio Diego Romaña Galindo -->
+                <circle 
+                  cx="660" cy="240" r="20" 
+                  :fill="getColorDirectiva(24)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 24 }"
+                  @click="goToSenator(24)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
+                
+                <!-- 13 - 2da Secretaria -->
+                <circle 
+                  cx="700" cy="240" r="20" 
+                  :fill="getColorDirectiva(13)" 
+                  stroke="white" stroke-width="2" 
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === 13 }"
+                  @click="goToSenator(13)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+              </g>
+
+              <!-- ========================================== -->
+              <!-- ARCO (36 SENADORES - TODOS)                -->
+              <!-- ========================================== -->
+              <g v-for="seat in allSeats" :key="seat.id">
+                <circle
+                  :cx="seat.x" :cy="seat.y" r="20"
+                  :fill="seat.partyColor || '#e5e7eb'"
+                  stroke="white" stroke-width="2"
+                  class="senator-circle"
+                  :class="{ 
+                    'selected': hoveredSeat?.id === seat.id,
+                    'suplente': tipoVisualizacion === 'suplentes' && !seat.isEmpty,
+                    'empty-seat': seat.isEmpty
+                  }"
+                  @click="goToSenator(seat.id)"
+                  @mouseenter="handleMouseEnter(seat, $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text
+                  :x="seat.x" :y="seat.y + 5"
+                  text-anchor="middle"
+                  fill="white"
+                  font-size="14"
+                  font-weight="bold"
+                  class="seat-number"
+                >
+                  {{ seat.seatNumber }}
+                </text>
+              </g>
+            </g>
+          </svg>
+
+          <!-- TOOLTIP CON FOTO -->
+          <div 
+            v-if="hoveredSeat && !isNavigating" 
+            class="seat-tooltip"
+            :style="tooltipStyle"
+          >
+            <div class="tooltip-header">
+              <div class="seat-photo">
+                <img 
+                  :src="hoveredSeat.fotoActual || '/images/default-avatar.png'" 
+                  :alt="hoveredSeat.nombreActual || hoveredSeat.name"
+                  class="w-12 h-12 rounded-full object-cover border-2"
+                  :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }"
+                  @error="(e) => e.target.src = '/images/default-avatar.png'"
+                />
+              </div>
+              <div class="senator-info">
+                <h4 class="text-sm font-bold text-gray-800">{{ hoveredSeat.nombreActual || hoveredSeat.name }}</h4>
+                <div class="party-badge text-xs px-2 py-0.5 rounded" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
+                  {{ hoveredSeat.partyShort || 'Sin partido' }}
+                </div>
+                <div v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente" class="text-xs text-gray-500 mt-1">
+                  Suplente de: {{ hoveredSeat.name }}
+                </div>
+                <div v-if="hoveredSeat.isEmpty" class="text-xs text-gray-500 mt-1">
+                  Sin suplente
+                </div>
+              </div>
+            </div>
+            <div class="tooltip-body">
+              <div class="info-row">
+                <span class="label">Departamento:</span>
+                <span class="value">{{ hoveredSeat.department || '-' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Bancada:</span>
+                <span class="value">{{ hoveredSeat.bancada || '-' }}</span>
+              </div>
+              <div class="info-row" v-if="hoveredSeat.cargo">
+                <span class="label">Cargo:</span>
+                <span class="value text-senado-primary font-semibold">{{ hoveredSeat.cargo }}</span>
+              </div>
+              <div class="hint">🖱️ Click para ver más detalles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- LEYENDA DE PARTIDOS CON FILTRO             -->
+    <!-- ========================================== -->
+    <div class="legend-container">
+      <div 
+        v-for="partido in partidos" 
+        :key="partido.nombre"
+        class="legend-item clickable"
+        :class="{ 'active': filtroPartido === partido.nombre }"
+        @click="toggleFiltro(partido.nombre)"
+      >
+        <span class="legend-number" :style="{ color: filtroPartido === partido.nombre ? partido.color : '#000000' }">
+          {{ partido.cantidad }}
+        </span>
+        <div class="legend-color" :style="{ backgroundColor: partido.color, width: '20px', height: '20px' }"></div>
+        <span class="legend-text" :style="{ color: filtroPartido === partido.nombre ? partido.color : '#333' }">
+          {{ partido.nombre }}
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { senadores } from '~/data/senadores'
+
+const router = useRouter()
+
+// ============================================
+// ESTADO
+// ============================================
+const hoveredSeat = ref(null)
+const tooltipPosition = ref({ x: 0, y: 0 })
+const isNavigating = ref(false)
+const filtroPartido = ref(null)
+const tipoVisualizacion = ref('titulares')
+
+// IDs de la directiva (SIEMPRE TITULARES)
+const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
+
+// ============================================
+// SEAT POSITIONS PARA EL ARCO (36 posiciones)
+// ============================================
+const seatPositionsArco = [
+  // upperLeft (7)
+  { x: 399, y: 303 }, { x: 405, y: 343 }, { x: 421, y: 380 },
+  { x: 445, y: 412 }, { x: 477, y: 436 }, { x: 513, y: 455 },
+  { x: 553, y: 465 },
+  // upperRight (7)
+  { x: 647, y: 465 }, { x: 687, y: 455 }, { x: 723, y: 436 },
+  { x: 755, y: 412 }, { x: 779, y: 380 }, { x: 795, y: 343 },
+  { x: 801, y: 303 },
+  // lowerLeft (11)
+  { x: 280, y: 252 }, { x: 283, y: 301 }, { x: 292, y: 349 },
+  { x: 307, y: 395 }, { x: 328, y: 438 }, { x: 355, y: 477 },
+  { x: 388, y: 511 }, { x: 423, y: 538 }, { x: 464, y: 559 },
+  { x: 507, y: 573 }, { x: 553, y: 580 },
+  // lowerRight (11)
+  { x: 647, y: 580 }, { x: 693, y: 573 }, { x: 736, y: 559 },
+  { x: 777, y: 538 }, { x: 812, y: 511 }, { x: 845, y: 477 },
+  { x: 872, y: 438 }, { x: 893, y: 395 }, { x: 908, y: 349 },
+  { x: 917, y: 301 }, { x: 920, y: 252 }
+]
+
+// ============================================
+// FUNCIÓN PARA VERIFICAR SI ES DIRECTIVA
+// ============================================
+const esDirectiva = (id) => {
+  return DIRECTIVA_IDS.includes(id)
+}
+
+// ============================================
+// FUNCIÓN PARA GENERAR SLUG
+// ============================================
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+// ============================================
+// COMPUTED - ARCO (36 SENADORES - TODOS)
+// ============================================
+const allSeats = computed(() => {
+  // TODOS los senadores (incluyendo los de la directiva)
+  const senadoresOrdenados = [...senadores].sort((a, b) => a.seatNumber - b.seatNumber)
+  
+  return senadoresOrdenados.map((senator, index) => {
+    const pos = seatPositionsArco[index] || { x: 400, y: 300 }
+    
+    // Si es modo suplentes
+    if (tipoVisualizacion.value === 'suplentes') {
+      // Si tiene suplente
+      if (senator.suplente && senator.suplente !== null) {
+        return {
+          ...senator,
+          nombreActual: senator.suplente,
+          fotoActual: senator.fotoSuplente || '/images/default-avatar.png',
+          slugSuplente: generarSlug(senator.suplente),
+          x: pos.x,
+          y: pos.y,
+          isEmpty: false,
+          partyColor: senator.partyColor,
+          esSuplente: true
+        }
+      } else {
+        // No tiene suplente (Teresa Alarcón) - círculo gris vacío
+        return {
+          ...senator,
+          nombreActual: 'Sin suplente',
+          fotoActual: '/images/default-avatar.png',
+          x: pos.x,
+          y: pos.y,
+          isEmpty: true,
+          partyColor: '#e5e7eb',
+          partyShort: 'Sin suplente',
+          slugSuplente: null,
+          esSuplente: false
+        }
+      }
+    }
+    
+    // Modo titulares → mostrar titular
+    return {
+      ...senator,
+      nombreActual: senator.name,
+      fotoActual: senator.foto,
+      x: pos.x,
+      y: pos.y,
+      isEmpty: false,
+      partyColor: senator.partyColor,
+      slugSuplente: null,
+      esSuplente: false
+    }
+  })
+})
+
+// ============================================
+// FUNCIONES PARA LA DIRECTIVA
+// ============================================
+const getColorDirectiva = (id) => {
+  const senador = senadores.find(s => s.id === id)
+  return senador?.partyColor || '#cccccc'
+}
+
+const getSeatDirectiva = (id) => {
+  const senador = senadores.find(s => s.id === id)
+  if (!senador) return null
+  return {
+    ...senador,
+    nombreActual: senador.name,
+    fotoActual: senador.foto,
+    isEmpty: false
+  }
+}
+
+// ============================================
+// PARTIDOS (para la leyenda)
+// ============================================
+const partidos = computed(() => {
+  const conteo = {}
+  const baseSenadores = tipoVisualizacion.value === 'suplentes'
+    ? senadores.filter(s => s.suplente && s.suplente !== null)
+    : senadores
+  
+  baseSenadores.forEach(s => {
+    conteo[s.party] = (conteo[s.party] || 0) + 1
+  })
+  
+  const colores = {
+    'Partido Demócrata Cristiano': '#2E7078',
+    'Libre': '#DB3737',
+    'Unidad': '#EFCD04',
+    'Autonomía para Bolivia Súmate': '#611789'
+  }
+  
+  const nombres = {
+    'Partido Demócrata Cristiano': 'Partido Demócrata Cristiano',
+    'Libre': 'Alianza Libre',
+    'Unidad': 'Alianza Unidad',
+    'Autonomía para Bolivia Súmate': 'Autonomía Para Bolivia Súmate'
+  }
+  
+  return Object.entries(conteo).map(([nombre, cantidad]) => ({
+    nombre: nombres[nombre] || nombre,
+    nombreOriginal: nombre,
+    cantidad,
+    color: colores[nombre] || '#000000'
+  }))
+})
+
+// ============================================
+// MÉTODOS
+// ============================================
+const setTipoVisualizacion = (tipo) => {
+  tipoVisualizacion.value = tipo
+  filtroPartido.value = null
+}
+
+const toggleFiltro = (nombrePartido) => {
+  const partido = partidos.value.find(p => p.nombre === nombrePartido)
+  if (!partido) return
+  
+  const nombreOriginal = partido.nombreOriginal
+  
+  if (filtroPartido.value === nombreOriginal) {
+    filtroPartido.value = null
+  } else {
+    filtroPartido.value = nombreOriginal
+  }
+}
+
+const getColorById = (id) => {
+  const senador = allSeats.value.find(s => s.id === id)
+  return senador?.partyColor || '#cccccc'
+}
+
+const getSeatById = (id) => {
+  // Buscar en directiva primero
+  if (esDirectiva(id)) {
+    return getSeatDirectiva(id)
+  }
+  const found = allSeats.value.find(s => s.id === id)
+  return found || null
+}
+
+const handleMouseEnter = (seat, event) => {
+  if (seat) {
+    hoveredSeat.value = seat
+    updateTooltipPosition(event)
+  }
+}
+
+const handleMouseLeave = () => {
+  hoveredSeat.value = null
+}
+
+const updateTooltipPosition = (event) => {
+  if (event && event.clientX && event.clientY) {
+    const offset = event.clientX < 768 ? 35 : -340
+    tooltipPosition.value = {
+      x: event.clientX + offset,
+      y: event.clientY
+    }
+  }
+}
+
+// Dentro de goToSenator en DescubraSenado.vue
+
+const goToSenator = (id) => {
+  const seat = allSeats.value.find(s => s.id === id)
+  if (!seat) return
+  if (seat.isEmpty) return
+  
+  isNavigating.value = true
+  hoveredSeat.value = null
+  
+  // Si está en modo suplentes y tiene suplente
+  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && seat.suplente) {
+    // Redirigir a la página del suplente usando el slug del suplente
+    router.push(`/senador/suplente/${seat.slugSuplente}`)
+    return
+  }
+  
+  // Modo titulares o directiva → redirigir al titular usando su slug
+  router.push(`/senador/${seat.slug}`)
+}
+
+// ============================================
+// TOOLTIP STYLE
+// ============================================
+const tooltipStyle = computed(() => {
+  const isMobile = window.innerWidth < 768
+  return {
+    position: 'fixed',
+    left: tooltipPosition.value.x + 'px',
+    top: tooltipPosition.value.y + 'px',
+    transform: isMobile ? 'translate(-50%, -50%)' : 'translate(10px, -50%)',
+    backgroundColor: 'white',
+    borderRadius: '12px',
+    padding: '1rem',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+    border: '2px solid ' + (hoveredSeat.value?.partyColor || '#ccc'),
+    pointerEvents: 'none',
+    zIndex: 9999,
+    maxWidth: isMobile ? '90%' : '300px',
+    minWidth: '220px',
+    animation: 'fadeIn 0.15s ease'
+  }
+})
+
+// ============================================
+// MONTAJE
+// ============================================
+onMounted(() => {
+  console.log('✅ SenateChamber montado')
+})
+</script>
+
+<style scoped>
+.senate-chamber {
+  width: 100%;
+  background: rgba(255,255,255,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.background-container {
+  background: rgba(255,255,255,0.2);
+  padding: 1rem;
+}
+
+.hemicycle-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.hemicycle-container {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hemicycle-svg {
+  width: 100%;
+  height: auto;
+  max-height: 550px;
+  cursor: pointer;
+}
+
+.senator-circle {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.senator-circle:hover {
+  r: 26;
+  stroke-width: 3;
+}
+
+.senator-circle.suplente {
+  stroke-dasharray: 4 4;
+}
+
+.senator-circle.empty-seat {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.senator-circle.empty-seat:hover {
+  r: 20;
+  stroke-width: 2;
+}
+
+.seat-number {
+  pointer-events: none;
+  user-select: none;
+  font-size: 14px;
+}
+
+.legend-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 1.5rem;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  min-width: 70px;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.legend-item:hover {
+  background-color: rgba(0,0,0,0.05);
+  transform: scale(1.05);
+}
+
+.legend-item.active {
+  background-color: rgba(0,0,0,0.08);
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.legend-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.legend-item.active .legend-color {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px currentColor, 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.legend-text {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 90px;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .legend-container {
+    gap: 0.75rem 1rem;
+  }
+  .legend-number {
+    font-size: 1.25rem;
+  }
+  .legend-text {
+    font-size: 0.5rem;
+    max-width: 60px;
+  }
+  .legend-color {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.seat-tooltip {
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(10px, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(10px, -50%) scale(1);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.seat-photo {
+  flex-shrink: 0;
+}
+
+.seat-photo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+  transition: transform 0.2s ease;
+}
+
+.seat-photo img:hover {
+  transform: scale(1.05);
+}
+
+.senator-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: #1f2937;
+}
+
+.party-badge {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.label {
+  color: #6b7280;
+}
+
+.value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.hint {
+  color: #3b82f6;
+  font-style: italic;
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+  text-align: center;
+  border-top: 1px dashed #e5e7eb;
+  padding-top: 0.4rem;
+}
+
+.directive-seat {
+  cursor: pointer;
+}
+</style> 
+================================= 
+components\Footer.vue 
+================================= 
+ 
+<template>
+  <footer class="bg-white text-senado-dark py-8 mt-10 border-t border-black">
+    <div class="mx-auto w-[90%]">
+      <!-- Contenedor al 80% máximo y centrado -->
+      <div class="max-w-[80%] mx-auto">
+        <!-- Grid de 3 columnas con líneas verticales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 text-center">
+          <div class="flex flex-col items-center px-4 py-2">
+            <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Nuestras Redes Sociales:</h4>
+            <div class="flex justify-center gap-3">
+              <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <Icon name="mdi:facebook" class="text-[1.9vw]" />
+              </a>
+              <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <Icon name="ri:twitter-x-line" class="text-[1.9vw]" />
+              </a>
+              <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <Icon name="mdi:youtube" class="text-[1.9vw]" />
+              </a>
+              <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <Icon name="mdi:instagram" class="text-[1.9vw]" />
+              </a>
+            </div>
+          </div>
+
+          <!-- Columna 2: Contacto (Con borde a ambos lados) -->
+          <div class="flex flex-col items-center px-[.2vw] py-[1.vw] border-x  border-gray-200">
+            <div class="flex-shrink-0 mb-2">
+              <img src="/images/LogoBordo.svg" alt="Senado" class="h-[6vw] w-[6vw] object-contain brightness-0 opacity-50" />
+            </div>
+            <p class="text-[.8vw] text-senado-dark">Calle Comercio esquina Colón</p>
+            <p class="text-[.8vw] text-senado-dark">Telf.: (591) 2158701</p>
+            <p class="text-[.8vw] text-senado-dark">La Paz - Bolivia</p>
+          </div>
+
+          <!-- Columna 3: Sitios de Interés (Sin borde derecho) -->
+          <div class="flex flex-col items-center px-4 py-2 ">
+            <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Sitios de interés</h4>
+            <ul class="text-[.8vw] space-y-1">
+              <li>
+                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                  Portal del Estado
+                </a>
+              </li>
+              <li>
+                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                  Cámara de Diputados
+                </a>
+              </li>
+              <li>
+                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                  Órgano Judicial
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </footer>
+</template> 
+================================= 
+components\Header.vue 
+================================= 
+ 
+<template>
+  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+    <div class="mx-auto w-[80%] py-[1vw]">
+      <div class="flex items-center justify-between gap-[1vw]">
+        <!-- Botón sandwich -->
+        <button 
+          @click="toggleMenu" 
+          class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
+        >
+          <Icon 
+            name="material-symbols:menu-rounded" 
+            class="text-[3vw]" 
+            v-if="!menuAbierto" 
+            style="font-variation-settings: 'wght' 900;"
+          />
+          <Icon 
+            name="material-symbols:close-rounded" 
+            class="text-[3vw]" 
+            v-else 
+          />
+        </button>
+
+        <!-- Logo -->
+        <div class="flex-shrink-0 spin-coin">
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[4vw] w-auto ml-[2vw] mr-[.5vw]" />
+        </div>
+
+        <!-- Título -->
+        <div class="hidden md:block flex-grow text-left">
+          <h1 class="text-[1.7vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
+            Cámara de<br />
+            <span class="font-montserrat-bold">Senadores</span>
+          </h1>
+        </div>
+
+        <!-- Buscador -->
+        <div class="hidden lg:block flex-grow z-[1000] ml-auto">
+          <div class="relative text-right">
+            <input
+              type="text" 
+              placeholder="ENCUENTRA TU SENADOR" 
+              class="w-[12vw] px-[.5vw] py-2 border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
+            />
+          </div>
+        </div>
+
+        <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]"></div>
+
+        <!-- ========================================== -->
+        <!-- REDES SOCIALES - BOTÓN                     -->
+        <!-- ========================================== -->
+        <div 
+          class="relative flex-shrink-0 z-[9999]"
+          @mouseenter="abrirRedes"
+          @mouseleave="cerrarRedes"
+        >
+          <button 
+            ref="redesButton"
+            class="flex items-center gap-[.5vw] text-gray-600 hover:text-senado-primary transition-colors font-medium text-[1.0vw] px-[.5vw] py-1.5 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 bg-senado-gold-light h-[1.2vw]"
+          >
+            <span>Redes Sociales</span>
+            <Icon 
+              name="material-symbols:keyboard-arrow-down" 
+              class="text-[1vw] transition-transform duration-200" 
+              :class="{ 'rotate-180': redesAbiertas }"
+            />
+          </button>
+        </div>
+        <!-- ========================================== -->
+
+      </div>
+
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col items-center gap-2 mt-2">
+        <h1 class="text-xl font-bold text-senado-primary leading-tight text-center">
+          Cámara de<br />
+          <span class="text-2xl">Senadores</span>
+        </h1>
+        <p class="text-xs text-gray-500 font-medium tracking-wider">
+          ENCONTRA TU GANCHO
+        </p>
+        <div class="w-full max-w-xs">
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Buscar..." 
+              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
+              <Icon name="material-symbols:search-rounded" class="text-xl" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MENÚ LATERAL                               -->
+    <!-- ========================================== -->
+    <div
+      v-if="menuAbierto"
+      class="fixed inset-0 z-[99999999] bg-black bg-opacity-50 transition-opacity"
+      @click.self="toggleMenu"
+    >
+      <div class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl">
+        <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
+          <span class="font-bold text-lg">Menú</span>
+          <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors">
+            ✕
+          </button>
+        </div>
+        <nav class="p-4 space-y-6">
+          <!-- Actividad Legislativa -->
+          <div>
+            <button 
+              @click="toggleSubmenu('legislativa')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Actividad Legislativa</span>
+              <span>{{ submenus.legislativa ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.legislativa" class="ml-4 mt-2 space-y-2">
+              <div>
+                <button 
+                  @click="toggleSubmenu('legislacion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Legislación</span>
+                  <span>{{ submenus.legislacion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.legislacion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
+                </div>
+              </div>
+              <div>
+                <button 
+                  @click="toggleSubmenu('gestion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Gestión</span>
+                  <span>{{ submenus.gestion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.gestion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</a>
+                </div>
+              </div>
+              <div>
+                <button 
+                  @click="toggleSubmenu('fiscalizacion')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Fiscalización</span>
+                  <span>{{ submenus.fiscalizacion ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.fiscalizacion" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button 
+              @click="toggleSubmenu('senadores')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Tus senadores</span>
+              <span>{{ submenus.senadores ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.senadores" class="ml-4 mt-2 space-y-1 text-sm text-gray-600">
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Senadoras y senadores</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</a>
+            </div>
+          </div>
+
+          <div>
+            <button 
+              @click="toggleSubmenu('acerca')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Acerca del Senado</span>
+              <span>{{ submenus.acerca ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.acerca" class="ml-4 mt-2 space-y-2">
+              <div>
+                <button 
+                  @click="toggleSubmenu('funciones')" 
+                  class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors"
+                >
+                  <span>Funciones del Senado</span>
+                  <span>{{ submenus.funciones ? '▼' : '►' }}</span>
+                </button>
+                <div v-if="submenus.funciones" class="ml-4 space-y-1 text-sm text-gray-600">
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</a>
+                </div>
+              </div>
+              <a href="#" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-semibold">Antecedentes históricos</a>
+            </div>
+          </div>
+
+          <div>
+            <button 
+              @click="toggleSubmenu('abierto')" 
+              class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors"
+            >
+              <span>▸ Senado abierto</span>
+              <span>{{ submenus.abierto ? '▼' : '►' }}</span>
+            </button>
+            <div v-if="submenus.abierto" class="ml-4 mt-2 space-y-1 text-sm text-gray-600">
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Noticias</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</a>
+            </div>
+          </div>
+
+          <hr class="border-gray-200">
+
+          <div class="space-y-2 text-sm">
+            <a href="/" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">🏠 Inicio</a>
+            <a href="/contacto" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">📞 Contacto</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MENÚ REDES SOCIALES - Teleport al body     -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <div 
+        v-if="redesAbiertas"
+        ref="redesMenu"
+        class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2"
+        :style="menuStyle"
+        @mouseenter="cancelarCierre"
+        @mouseleave="cerrarRedes"
+      >
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+          <span class="text-sm font-medium">Facebook</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+          <span class="text-sm font-medium">Twitter / X</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+          <span class="text-sm font-medium">YouTube</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+          <span class="text-sm font-medium">Instagram</span>
+        </a>
+      </div>
+    </Teleport>
+  </header>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      menuAbierto: false,
+      redesAbiertas: false,
+      hoverTimeout: null,
+      submenus: {
+        legislativa: false,
+        legislacion: false,
+        gestion: false,
+        fiscalizacion: false,
+        senadores: false,
+        acerca: false,
+        funciones: false,
+        abierto: false
+      }
+    }
+  },
+  computed: {
+    menuStyle() {
+      if (process.client) {
+        const button = this.$refs.redesButton
+        if (button) {
+          const rect = button.getBoundingClientRect()
+          return {
+            top: (rect.bottom + 8) + 'px',
+            left: (rect.left - 10) + 'px',
+            zIndex: 9999999999
+          }
+        }
+      }
+      return {
+        top: '50px',
+        right: '20px',
+        zIndex: 9999999999
+      }
+    }
+  },
+  methods: {
+    toggleMenu() {
+      this.menuAbierto = !this.menuAbierto
+      if (!this.menuAbierto) {
+        Object.keys(this.submenus).forEach(key => {
+          this.submenus[key] = false
+        })
+      }
+    },
+    toggleSubmenu(key) {
+      this.submenus[key] = !this.submenus[key]
+    },
+    abrirRedes() {
+      clearTimeout(this.hoverTimeout)
+      this.redesAbiertas = true
+    },
+    cerrarRedes() {
+      this.hoverTimeout = setTimeout(() => {
+        this.redesAbiertas = false
+      }, 300) // ← 300ms de delay para que el mouse pueda llegar al menú
+    },
+    cancelarCierre() {
+      clearTimeout(this.hoverTimeout)
+      this.redesAbiertas = true
+    }
+  },
+  beforeDestroy() {
+    clearTimeout(this.hoverTimeout)
+  }
+}
+</script>
+
+<style scoped>
+.menu-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.menu-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.menu-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+
+@keyframes spin-coin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+.spin-coin {
+  animation: spin-coin 6s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+</style> 
+================================= 
+components\MandatoFuncionesAntecedentes.vue 
+================================= 
+ 
+<template>
+  <div class="mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-[2vw] items-end">
+      <!-- Mandato Constitucional -->
+      <div class="text-center">
+        <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Mandato Constitucional</h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/25.webp" 
+            alt="Mandato Constitucional" 
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </div>
+
+      <!-- Funciones del Senado -->
+      <div class="text-center">
+        <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Funciones del Senado</h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/26.webp" 
+            alt="Funciones del Senado" 
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </div>
+
+      <!-- Antecedentes históricos -->
+      <div class="text-center">
+        <h3 class="text-[2.5vw] font-bold text-senado-primary mb-3 leading-[1.1]">Antecedentes históricos</h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/27.webp" 
+            alt="Antecedentes históricos" 
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita props ni lógica adicional por ahora
+</script>
+
+<style scoped>
+/* Estilos específicos del componente si son necesarios */
+</style> 
+================================= 
+components\NoticiasDinamicas.vue 
+================================= 
+ 
+<!-- components/NoticiasDinamicas.vue -->
+<template>
+  <div class="flex flex-col md:flex-row gap-[1vw]">
+    <!-- COLUMNA IZQUIERDA - 70% -->
+    <div class="md:w-[70%]">
+      <!-- Estado de carga -->
+      <div v-if="loading" class="w-full">
+        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg"></div>
+        <div class="w-full h-[1vw] bg-gray-300"></div>
+        <div class="mt-4">
+          <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+      </div>
+
+      <!-- Noticia Principal -->
+      <div v-else-if="noticiaPrincipal" class="group cursor-pointer" @click="irANoticia(noticiaPrincipal)">
+        <div class="w-full">
+          <div class="relative overflow-hidden rounded-t-lg">
+            <SafeImage 
+              :src="obtenerImagen(noticiaPrincipal)"
+              :alt="limpiarAsteriscos(noticiaPrincipal.titulo)"
+              image-class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              priority="high"
+              loading-strategy="eager"
+              :max-retries="8"
+              :persistent="true"
+            />
+            
+            <!-- Badge "Destacada" -->
+            <!-- <div class="absolute top-4 left-4 bg-[#E03636] text-white text-[.8vw] font-bold px-3 py-1 rounded-full z-10">
+              DESTACADA
+            </div> -->
+          </div>
+          <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
+        </div>
+        
+        <div class="mt-[2vw]">
+          <h2 class="text-[1.5vw] font-bold text-senado-primary group-hover:text-[#A54A4A] transition-colors">
+            {{ limpiarAsteriscos(noticiaPrincipal.titulo) }}
+          </h2>
+          <p class="text-[0.8vw] text-gray-500 mt-1">
+            {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Sin noticias -->
+      <div v-else class="w-full text-center py-12 bg-gray-50 rounded-lg">
+        <p class="text-gray-600">No hay noticias disponibles</p>
+        <button @click="recargarDatos" class="mt-4 px-4 py-2 bg-[#E03636] text-white rounded-lg hover:bg-[#C12F2F] transition">
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA - 30% -->
+    <div class="md:w-[30%] flex flex-col gap-[1vw]">
+      <!-- Estado de carga para secundarias -->
+      <div v-if="loading" class="flex flex-col gap-4">
+        <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
+          <div class="h-[0.6vw] bg-gray-300"></div>
+          <div class="p-4">
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noticias secundarias -->
+      <template v-else-if="noticiasSecundarias.length > 0">
+        <div 
+          v-for="noticia in noticiasSecundarias" 
+          :key="noticia.id"
+          class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
+          @click="irANoticia(noticia)"
+        >
+          <div class="h-[0.6vw] bg-senado-gold-dark"></div>
+          <div class="p-[1vw]">
+            <p class="text-[1.0vw] font-semibold text-gray-800 group-hover:text-senado-primary transition-colors line-clamp-3">
+              {{ limpiarAsteriscos(noticia.titulo) }}
+            </p>
+            <p class="text-[.8vw] text-gray-500 mt-2">
+              {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Sin noticias secundarias -->
+      <div v-else-if="!loading" class="text-center py-8 bg-gray-50 rounded-lg">
+        <p class="text-gray-500 text-sm">No hay noticias secundarias</p>
+      </div>
+
+      <!-- Botón "Ir a todas las noticias" -->
+      <div class="mt-2">
+        <NuxtLink 
+          to="/noticias" 
+          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-[1vw] flex items-center justify-center gap-2 shadow-sm"
+        >
+          Ir a todas las noticias
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useNoticias } from '../composables/useNoticias'
+import SafeImage from './SafeImage.vue'
+
+// Props
+const props = defineProps({
+  secundariasLimit: {
+    type: Number,
+    default: 3
+  },
+  autoLoad: {
+    type: Boolean,
+    default: true
+  }
+})
+
+const router = useRouter()
+
+// 🔥 Usar el composable de noticias
+const { 
+  noticiasImportantes, 
+  loading, 
+  error, 
+  recargarDatos 
+} = useNoticias()
+
+// 🔥 Obtener y ordenar noticias
+const noticias = computed(() => {
+  if (!noticiasImportantes.value) return []
+  
+  // Ordenar por fecha (más reciente primero)
+  const ordenadas = [...noticiasImportantes.value].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+  
+  return ordenadas
+})
+
+// 🔥 Noticia principal (la primera)
+const noticiaPrincipal = computed(() => {
+  return noticias.value.length > 0 ? noticias.value[0] : null
+})
+
+// 🔥 Noticias secundarias (el resto, limitado)
+const noticiasSecundarias = computed(() => {
+  return noticias.value.length > 1 
+    ? noticias.value.slice(1, 1 + props.secundariasLimit)
+    : []
+})
+
+// 🔥 Funciones de utilidad
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return 'Fecha no disponible'
+  try {
+    const date = new Date(fecha)
+    return date.toLocaleDateString('es-ES', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    })
+  } catch {
+    return fecha
+  }
+}
+
+const obtenerImagen = (noticia) => {
+  if (!noticia) return '/images/default-news.jpg'
+  return noticia.featuredImage?.url || 
+         noticia.imagen || 
+         '/images/default-news.jpg'
+}
+
+const irANoticia = (noticia) => {
+  if (noticia?.slug) {
+    router.push(`/noticias/${noticia.slug}`)
+  }
+}
+
+// 🔥 Cargar datos al montar
+onMounted(async () => {
+  if (props.autoLoad && noticiasImportantes.value.length === 0) {
+    await recargarDatos()
+  }
+})
+
+// 🔥 Exponer métodos
+defineExpose({
+  recargarDatos
+})
+</script>
+
+<style scoped>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+components\SafeImage.vue 
+================================= 
+ 
+<!-- components/SafeImage.vue -->
+<template>
+  <div class="relative overflow-hidden" :style="{ width: '100%', height: '100%' }">
+    <!-- Skeleton de carga -->
+    <div v-if="showSkeleton && !loaded" class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+    
+    <!-- Imagen -->
+    <img 
+      v-if="!error && src" 
+      :src="src" 
+      :alt="alt" 
+      :class="imageClass"
+      @error="handleError"
+      @load="handleLoad"
+      :loading="loadingStrategy === 'lazy' ? 'lazy' : 'eager'"
+      :style="{ opacity: loaded || !showSkeleton ? 1 : 0 }"
+    />
+    
+    <!-- Estado de error -->
+    <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+      <span class="text-gray-400 text-sm">Imagen no disponible</span>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    default: ''
+  },
+  imageClass: {
+    type: String,
+    default: ''
+  },
+  priority: {
+    type: String,
+    default: 'low'
+  },
+  loadingStrategy: {
+    type: String,
+    default: 'lazy'
+  },
+  showSkeleton: {
+    type: Boolean,
+    default: false
+  },
+  maxRetries: {
+    type: Number,
+    default: 3
+  },
+  persistent: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const error = ref(false)
+const loaded = ref(false)
+let retryCount = 0
+
+const handleError = () => {
+  if (retryCount < props.maxRetries) {
+    retryCount++
+    // Reintentar después de un delay
+    setTimeout(() => {
+      error.value = false
+      // Forzar recarga de la imagen
+      const img = new Image()
+      img.src = props.src
+      img.onload = () => {
+        loaded.value = true
+        error.value = false
+      }
+      img.onerror = () => {
+        if (retryCount >= props.maxRetries) {
+          error.value = true
+        }
+      }
+    }, 1000 * retryCount)
+  } else {
+    error.value = true
+  }
+}
+
+const handleLoad = () => {
+  loaded.value = true
+  error.value = false
+}
+
+// Resetear estado cuando cambia la src
+watch(() => props.src, () => {
+  error.value = false
+  loaded.value = false
+  retryCount = 0
+})
+</script> 
+================================= 
+composables\useNoticias.js 
+================================= 
+ 
+// composables/useNoticias.js
+import { ref, computed } from 'vue'
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const transformarNoticia = (item) => {
+  if (!item) return null
+  
+  const textoPlano = item.content?.replace(/<[^>]*>/g, '') || ''
+  const esImportante = item.category === 'importante'
+  
+  return {
+    id: item._id || item.id,
+    titulo: item.title || 'Sin título',
+    slug: item.slug,
+    contenido: item.content || '',
+    resumen: item.excerpt || textoPlano.substring(0, 200),
+    descripcion: item.excerpt || textoPlano.substring(0, 150),
+    descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
+    fecha: item.publishedAt || item.createdAt,
+    publishedAt: item.publishedAt || item.createdAt,
+    imagen: item.featuredImage?.url || item.imagen,
+    featuredImage: item.featuredImage,
+    categoria: item.category,
+    importante: esImportante,
+    tipo: item.type || 'noticia',
+    status: item.status,
+    views: item.views || 0,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt
+  }
+}
+
+export const fetchNoticiasImportantes = async () => {
+  console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando importantes:', err)
+    return []
+  }
+}
+
+export const fetchNoticiasUltimas = async () => {
+  console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando últimas:', err)
+    return []
+  }
+}
+
+// 🔥 FUNCIÓN PARA ORDENAR NOTICIAS POR FECHA
+const ordenarPorFecha = (noticias) => {
+  return [...noticias].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+}
+
+export const fetchNoticias = async () => {
+  console.log(`📡 [useNoticias] Cargando todas las noticias...`)
+  
+  const [noticiasImportantes, ultimasNoticias] = await Promise.all([
+    fetchNoticiasImportantes(),
+    fetchNoticiasUltimas()
+  ])
+  
+  const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
+  
+  console.log(`📊 [useNoticias] Total combinado: ${todasLasNoticias.length} noticias`)
+  
+  return {
+    noticiasImportantes: noticiasImportantes.slice(0, 4),
+    ultimasNoticias: ultimasNoticias.slice(0, 4),
+    todasLasNoticias: todasLasNoticias,
+    error: null
+  }
+}
+
+export const useNoticias = () => {
+  const noticiasImportantes = ref([])
+  const ultimasNoticias = ref([])
+  const todasLasNoticias = ref([])
+  const loading = ref(true)
+  const error = ref(null)
+  const loaded = ref(false)
+  
+  const cargarDatos = async () => {
+    if (loaded.value) {
+      console.log('📦 [useNoticias] Datos ya cargados, omitiendo...')
+      return
+    }
+    
+    console.log('🔄 [useNoticias] cargarDatos() ejecutándose...')
+    
+    loading.value = true
+    const result = await fetchNoticias()
+    
+    noticiasImportantes.value = result.noticiasImportantes
+    ultimasNoticias.value = result.ultimasNoticias
+    todasLasNoticias.value = result.todasLasNoticias
+    error.value = result.error
+    loading.value = false
+    loaded.value = true
+    
+    return result
+  }
+  
+  const recargarDatos = async () => {
+    console.log('🔄 [useNoticias] Recargando datos...')
+    loaded.value = false
+    await cargarDatos()
+  }
+  
+  return {
+    noticiasImportantes: computed(() => noticiasImportantes.value),
+    ultimasNoticias: computed(() => ultimasNoticias.value),
+    todasLasNoticias: computed(() => todasLasNoticias.value),
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    loaded: computed(() => loaded.value),
+    cargarDatos,
+    recargarDatos
+  }
+} 
+================================= 
+composables\useSenadores.js 
+================================= 
+ 
+// composables/useSenadores.js
+import { senadores } from '~/data/senadores'
+
+export const useSenadores = () => {
+  // Buscar un senador por slug
+  const getSenadorBySlug = (slug) => {
+    if (!slug) return null
+    console.log('Buscando slug:', slug)
+    console.log('Senadores disponibles:', senadores.map(s => ({ name: s.name, slug: s.slug })))
+    
+    // Buscar por slug exacto
+    let encontrado = senadores.find(s => s.slug === slug)
+    
+    // Si no se encuentra, intentar buscar generando el slug desde el nombre
+    if (!encontrado) {
+      for (const senador of senadores) {
+        // Generar slug manualmente (usando la misma función)
+        const slugGenerado = senador.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/ñ/g, 'n')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/\s+/g, '-')
+        
+        if (slugGenerado === slug) {
+          encontrado = senador
+          break
+        }
+      }
+    }
+    
+    console.log('Senador encontrado:', encontrado)
+    return encontrado || null
+  }
+
+  // Buscar un suplente por slug
+  const getSuplenteBySlug = (slug) => {
+    if (!slug) return null
+    
+    for (const senador of senadores) {
+      if (senador.slugSuplente === slug) {
+        return {
+          ...senador,
+          nombreSuplente: senador.suplente,
+          fotoSuplente: senador.fotoSuplente,
+          esSuplente: true,
+          slug: senador.slugSuplente
+        }
+      }
+    }
+    return null
+  }
+
+  // Obtener todos los senadores
+  const getTodosLosSenadores = () => {
+    return senadores
+  }
+
+  // Obtener todos los suplentes
+  const getTodosLosSuplentes = () => {
+    return senadores
+      .filter(s => s.suplente && s.suplente !== null)
+      .map(s => ({
+        ...s,
+        nombreSuplente: s.suplente,
+        fotoSuplente: s.fotoSuplente,
+        esSuplente: true,
+        slug: s.slugSuplente
+      }))
+  }
+
+  return {
+    getSenadorBySlug,
+    getSuplenteBySlug,
+    getTodosLosSenadores,
+    getTodosLosSuplentes
+  }
+}

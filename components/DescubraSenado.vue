@@ -459,12 +459,11 @@ const updateTooltipPosition = (event) => {
   }
 }
 
+// Dentro de goToSenator en DescubraSenado.vue
+
 const goToSenator = (id) => {
-  // Buscar el asiento
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return
-  
-  // Si está vacío (sin suplente), no hacer nada
   if (seat.isEmpty) return
   
   isNavigating.value = true
@@ -472,14 +471,13 @@ const goToSenator = (id) => {
   
   // Si está en modo suplentes y tiene suplente
   if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && seat.suplente) {
-    // Redirigir a la página del suplente usando el nombre como slug
-    const slug = generarSlug(seat.suplente)
-    router.push(`/senador/suplente/${slug}`)
+    // Redirigir a la página del suplente usando el slug del suplente
+    router.push(`/senador/suplente/${seat.slugSuplente}`)
     return
   }
   
-  // Modo titulares o directiva → redirigir al titular
-  router.push(`/senador/${id}`)
+  // Modo titulares o directiva → redirigir al titular usando su slug
+  router.push(`/senador/${seat.slug}`)
 }
 
 // ============================================

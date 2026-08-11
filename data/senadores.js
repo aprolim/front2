@@ -1,3 +1,18 @@
+// data/senadores.js - Agregar slug a cada senador
+
+// Función para generar slug
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
 export const senadores = [
   // ============================================
   // ORDENADOS POR ASIENTO (1-36)
@@ -6,6 +21,7 @@ export const senadores = [
     id: 1, 
     seatNumber: 1, 
     name: "Wilder Véliz Armas", 
+    slug: generarSlug("Wilder Véliz Armas"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -19,12 +35,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Lenny Mayra Ayala Justiniano",
     fotoSuplente: "/senadores/suplentes/g1/LENNY MAYRA AYALA JUSTINIANO.png",
+    slugSuplente: generarSlug("Lenny Mayra Ayala Justiniano"),
     distritos: ["Cochabamba"]
   },
   { 
     id: 2, 
     seatNumber: 2, 
     name: "Judith Rosario García Coca", 
+    slug: generarSlug("Judith Rosario García Coca"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -38,12 +56,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Royer Ivan Mamani Garcia",
     fotoSuplente: "/senadores/suplentes/g1/ROYER IVAN MAMANI GARCIA.png",
+    slugSuplente: generarSlug("Royer Ivan Mamani Garcia"),
     distritos: ["Cochabamba"]
   },
   { 
     id: 3, 
     seatNumber: 3, 
     name: "Claudia Mallón Vargas", 
+    slug: generarSlug("Claudia Mallón Vargas"),
     party: "Autonomía para Bolivia Súmate", 
     partyShort: "APB", 
     partyColor: "#611789", 
@@ -57,12 +77,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Apolinar Rivera Muñoz",
     fotoSuplente: "/senadores/suplentes/g1/APOLINAR RIVERA MUÑOZ.png",
+    slugSuplente: generarSlug("Apolinar Rivera Muñoz"),
     distritos: ["Cochabamba"]
   },
   { 
     id: 4, 
     seatNumber: 4, 
     name: "Wanda Ximena Medrano Hervas", 
+    slug: generarSlug("Wanda Ximena Medrano Hervas"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -76,12 +98,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Aldo Sergio Villegas Mora",
     fotoSuplente: "/senadores/suplentes/g1/ALDO SERGIO VILLEGAS MORA.png",
+    slugSuplente: generarSlug("Aldo Sergio Villegas Mora"),
     distritos: ["Cochabamba"]
   },
   { 
     id: 5, 
     seatNumber: 5, 
     name: "José Manuel Ormachea Mendieta", 
+    slug: generarSlug("José Manuel Ormachea Mendieta"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -95,12 +119,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Maria Elena Pachacute Ticona",
     fotoSuplente: "/senadores/suplentes/g1/MARIA ELENA PACHACUTE TICONA.png",
+    slugSuplente: generarSlug("Maria Elena Pachacute Ticona"),
     distritos: ["La Paz"]
   },
   { 
     id: 6, 
     seatNumber: 6, 
     name: "Carmen Soledad Chapeton Tancara", 
+    slug: generarSlug("Carmen Soledad Chapeton Tancara"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -114,12 +140,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Nilton Condori Alanoca",
     fotoSuplente: "/senadores/suplentes/g1/NILTON CONDORI ALANOCA.png",
+    slugSuplente: generarSlug("Nilton Condori Alanoca"),
     distritos: ["La Paz"]
   },
   { 
     id: 7, 
     seatNumber: 7, 
     name: "Nicanor Gonzalo Cochi Condorí", 
+    slug: generarSlug("Nicanor Gonzalo Cochi Condorí"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -133,12 +161,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Roxana Mamani Colquehuanca",
     fotoSuplente: "/senadores/suplentes/g1/ROXANA MAMANI COLQUEHUANCA.png",
+    slugSuplente: generarSlug("Roxana Mamani Colquehuanca"),
     distritos: ["La Paz"]
   },
   { 
     id: 8, 
     seatNumber: 8, 
     name: "Tomasa Yarhui Jacome", 
+    slug: generarSlug("Tomasa Yarhui Jacome"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -152,12 +182,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Hugo Marcelo Cortez Calvimontes",
     fotoSuplente: "/senadores/suplentes/g1/HUGO MARCELO CORTEZ CALVIMONTES.png",
+    slugSuplente: generarSlug("Hugo Marcelo Cortez Calvimontes"),
     distritos: ["Chuquisaca"]
   },
   { 
     id: 9, 
     seatNumber: 9, 
     name: "Abdon Porcel Arancibia", 
+    slug: generarSlug("Abdon Porcel Arancibia"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -171,12 +203,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Ilse Fatima Davila Arancibia",
     fotoSuplente: "/senadores/suplentes/g1/ILSE FATIMA DAVILA ARANCIBIA.png",
+    slugSuplente: generarSlug("Ilse Fatima Davila Arancibia"),
     distritos: ["Chuquisaca"]
   },
   { 
     id: 10, 
     seatNumber: 10, 
     name: "Bertha Cartagena Sánchez", 
+    slug: generarSlug("Bertha Cartagena Sánchez"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -190,12 +224,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Manfred Leo Perez Hassenteufel",
     fotoSuplente: "/senadores/suplentes/g1/MANFRED LEO PEREZ HASSENTEUFEL.png",
+    slugSuplente: generarSlug("Manfred Leo Perez Hassenteufel"),
     distritos: ["Chuquisaca"]
   },
   { 
     id: 11, 
     seatNumber: 11, 
     name: "Branko Goran Marinković Jovicevic", 
+    slug: generarSlug("Branko Goran Marinković Jovicevic"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -209,12 +245,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Kathia Natalia Miserendino Romero",
     fotoSuplente: "/senadores/suplentes/g3/KATHIA NATALIA MISERENDINO ROMERO.png",
+    slugSuplente: generarSlug("Kathia Natalia Miserendino Romero"),
     distritos: ["Santa Cruz"]
   },
   { 
     id: 12, 
     seatNumber: 12, 
     name: "Kathia Lizbeth Quiroga Fernández", 
+    slug: generarSlug("Kathia Lizbeth Quiroga Fernández"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -228,12 +266,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Leonardo Roca Eguez",
     fotoSuplente: "/senadores/suplentes/g3/LEONARDO ROCA EGUEZ.png",
+    slugSuplente: generarSlug("Leonardo Roca Eguez"),
     distritos: ["Santa Cruz"]
   },
   { 
     id: 13, 
     seatNumber: 13, 
     name: "Rosa Tatiana Áñez Carrasco", 
+    slug: generarSlug("Rosa Tatiana Áñez Carrasco"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -247,12 +287,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Lorgio Fernando Pareja Saucedo",
     fotoSuplente: "/senadores/suplentes/g3/LORGIO FERNANDO PAREJA SAUCEDO.png",
+    slugSuplente: generarSlug("Lorgio Fernando Pareja Saucedo"),
     distritos: ["Santa Cruz"]
   },
   { 
     id: 14, 
     seatNumber: 14, 
     name: "Paola Limbania López Zeballos", 
+    slug: generarSlug("Paola Limbania López Zeballos"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -266,12 +308,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Richard Espada Ugarte",
     fotoSuplente: "/senadores/suplentes/g3/RICHARD ESPADA UGARTE.png",
+    slugSuplente: generarSlug("Richard Espada Ugarte"),
     distritos: ["Santa Cruz"]
   },
   { 
     id: 15, 
     seatNumber: 15, 
     name: "Betty Canaviri Villanueva", 
+    slug: generarSlug("Betty Canaviri Villanueva"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -285,12 +329,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Roger Mamani Coronado",
     fotoSuplente: "/senadores/suplentes/g2/ROGER MAMANI CORONADO.png",
+    slugSuplente: generarSlug("Roger Mamani Coronado"),
     distritos: ["Potosí"]
   },
   { 
     id: 16, 
     seatNumber: 16, 
     name: "Teresa Alarcón Arana", 
+    slug: generarSlug("Teresa Alarcón Arana"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -304,12 +350,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: null,
     fotoSuplente: null,
+    slugSuplente: null,
     distritos: ["Potosí"]
   },
   { 
     id: 17, 
     seatNumber: 17, 
     name: "Marcelino Flores Ordoñez", 
+    slug: generarSlug("Marcelino Flores Ordoñez"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -323,12 +371,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Susana Gabriela Ruiz Zuleta",
     fotoSuplente: "/senadores/suplentes/g2/SUSANA GABRIELA RUIZ ZULETA.png",
+    slugSuplente: generarSlug("Susana Gabriela Ruiz Zuleta"),
     distritos: ["Potosí"]
   },
   { 
     id: 18, 
     seatNumber: 18, 
     name: "Bertha Nurmy Gutiérrez Meneces", 
+    slug: generarSlug("Bertha Nurmy Gutiérrez Meneces"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -342,12 +392,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Freddy Rioja Melgar",
     fotoSuplente: "/senadores/suplentes/g2/FREDDY RIOJA MELGAR.png",
+    slugSuplente: generarSlug("Freddy Rioja Melgar"),
     distritos: ["Potosí"]
   },
   { 
     id: 19, 
     seatNumber: 19, 
     name: "Erick Nelson Soruco Alpire", 
+    slug: generarSlug("Erick Nelson Soruco Alpire"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -361,12 +413,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Cesia Roca Escalante",
     fotoSuplente: "/senadores/suplentes/g3/CESIA ROCA ESCALANTE.png",
+    slugSuplente: generarSlug("Cesia Roca Escalante"),
     distritos: ["Beni"]
   },
   { 
     id: 20, 
     seatNumber: 20, 
     name: "José Roca Haensel", 
+    slug: generarSlug("José Roca Haensel"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -380,12 +434,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Mabel Giordano Sonnenschein",
     fotoSuplente: "/senadores/suplentes/g3/MABEL GIORDANO SONNENSCHEIN.png",
+    slugSuplente: generarSlug("Mabel Giordano Sonnenschein"),
     distritos: ["Beni"]
   },
   { 
     id: 21, 
     seatNumber: 21, 
     name: "Ana Karina Velasco Añez", 
+    slug: generarSlug("Ana Karina Velasco Añez"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -399,12 +455,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Marcelo Matias Cardona Ibañez",
     fotoSuplente: "/senadores/suplentes/g3/MARCELO MATIAS CARDONA IBAÑEZ.png",
+    slugSuplente: generarSlug("Marcelo Matias Cardona Ibañez"),
     distritos: ["Beni"]
   },
   { 
     id: 22, 
     seatNumber: 22, 
     name: "Ernesto Suarez Sattori", 
+    slug: generarSlug("Ernesto Suarez Sattori"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -418,12 +476,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Claudia Cardenas Velasquez",
     fotoSuplente: "/senadores/suplentes/g3/CLAUDIA CARDENAS VELASQUEZ.png",
+    slugSuplente: generarSlug("Claudia Cardenas Velasquez"),
     distritos: ["Beni"]
   },
   { 
     id: 23, 
     seatNumber: 23, 
     name: "Ana María Crispin Choque", 
+    slug: generarSlug("Ana María Crispin Choque"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -437,12 +497,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Victor Severo Quispe Santander",
     fotoSuplente: "/senadores/suplentes/g1/VICTOR SEVERO QUISPE SANTANDER.png",
+    slugSuplente: generarSlug("Victor Severo Quispe Santander"),
     distritos: ["La Paz"]
   },
   { 
     id: 24, 
     seatNumber: 24, 
     name: "Julio Diego Romaña Galindo", 
+    slug: generarSlug("Julio Diego Romaña Galindo"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -456,12 +518,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Carolina Giese Urresti",
     fotoSuplente: "/senadores/suplentes/g3/CAROLINA GIESE URRESTI.png",
+    slugSuplente: generarSlug("Carolina Giese Urresti"),
     distritos: ["Pando"]
   },
   { 
     id: 25, 
     seatNumber: 25, 
     name: "Carol Carlo Durán", 
+    slug: generarSlug("Carol Carlo Durán"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -475,12 +539,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Jorge Antonio Quispe Flores",
     fotoSuplente: "/senadores/suplentes/g3/JORGE ANTONIO QUISPE FLORES.png",
+    slugSuplente: generarSlug("Jorge Antonio Quispe Flores"),
     distritos: ["Pando"]
   },
   { 
     id: 26, 
     seatNumber: 26, 
     name: "Cinthia Mónica Puerta Campos", 
+    slug: generarSlug("Cinthia Mónica Puerta Campos"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -494,12 +560,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Jesus Humberto Suarez Eguez",
     fotoSuplente: "/senadores/suplentes/g3/JESUS HUMBERTO SUAREZ EGUEZ.png",
+    slugSuplente: generarSlug("Jesus Humberto Suarez Eguez"),
     distritos: ["Pando"]
   },
   { 
     id: 27, 
     seatNumber: 27, 
     name: "Eliana Rina Acosta Quispe", 
+    slug: generarSlug("Eliana Rina Acosta Quispe"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -513,12 +581,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Sichard Hans Soraide Castedo",
     fotoSuplente: "/senadores/suplentes/g3/SICHARD HANS SORAIDE CASTEDO.png",
+    slugSuplente: generarSlug("Sichard Hans Soraide Castedo"),
     distritos: ["Pando"]
   },
   { 
     id: 28, 
     seatNumber: 28, 
     name: "Daniel Antonio Ortiz Velásquez", 
+    slug: generarSlug("Daniel Antonio Ortiz Velásquez"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -532,12 +602,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Reina Isabel Pallares Morales",
     fotoSuplente: "/senadores/suplentes/g1/REINA ISABEL PALLARES MORALES.png",
+    slugSuplente: generarSlug("Reina Isabel Pallares Morales"),
     distritos: ["Chuquisaca"]
   },
   { 
     id: 29, 
     seatNumber: 29, 
     name: "María Isabel Moreno Cortez", 
+    slug: generarSlug("María Isabel Moreno Cortez"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -551,12 +623,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Rolando Vacaflor Gabriel Arana",
     fotoSuplente: "/senadores/suplentes/g2/ROLANDO VACAFLOR GABRIEL ARANA.png",
+    slugSuplente: generarSlug("Rolando Vacaflor Gabriel Arana"),
     distritos: ["Tarija"]
   },
   { 
     id: 30, 
     seatNumber: 30, 
     name: "César Mentasti Padilla", 
+    slug: generarSlug("César Mentasti Padilla"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -570,12 +644,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Marcela Guerrero Vilca",
     fotoSuplente: "/senadores/suplentes/g2/MARCELA GUERRERO VILCA.png",
+    slugSuplente: generarSlug("Marcela Guerrero Vilca"),
     distritos: ["Tarija"]
   },
   { 
     id: 31, 
     seatNumber: 31, 
     name: "Leonor Rosalva Romero Gutiérrez", 
+    slug: generarSlug("Leonor Rosalva Romero Gutiérrez"),
     party: "Unidad", 
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
@@ -589,12 +665,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Marco Antonio Segovia Vargas",
     fotoSuplente: "/senadores/suplentes/g2/MARCO ANTONIO SEGOVIA VARGAS.png",
+    slugSuplente: generarSlug("Marco Antonio Segovia Vargas"),
     distritos: ["Tarija"]
   },
   { 
     id: 32, 
     seatNumber: 32, 
     name: "Diego Esteban Mateo Ávila Navajas", 
+    slug: generarSlug("Diego Esteban Mateo Ávila Navajas"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -608,6 +686,7 @@ export const senadores = [
     ocupacion: "Economista",
     suplente: "Luzmaya Zelaya Vega",
     fotoSuplente: "/senadores/suplentes/g2/LUZMAYA ZELAYA VEGA.png",
+    slugSuplente: generarSlug("Luzmaya Zelaya Vega"),
     distritos: ["Cercado", "Tarija"],
     facebook: "https://facebook.com/diegoavila",
     twitter: "https://twitter.com/diegoavila",
@@ -619,6 +698,7 @@ export const senadores = [
     id: 33, 
     seatNumber: 33, 
     name: "Yasmín Estivariz Villarroel", 
+    slug: generarSlug("Yasmín Estivariz Villarroel"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -632,12 +712,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Ramiro Mamani Ramirez",
     fotoSuplente: "/senadores/suplentes/g2/RAMIRO MAMANI RAMIREZ.png",
+    slugSuplente: generarSlug("Ramiro Mamani Ramirez"),
     distritos: ["Oruro"]
   },
   { 
     id: 34, 
     seatNumber: 34, 
     name: "Freddy Castillo Chávez", 
+    slug: generarSlug("Freddy Castillo Chávez"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -651,12 +733,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Villma Colque Camacho",
     fotoSuplente: "/senadores/suplentes/g2/VILLMA COLQUE CAMACHO.png",
+    slugSuplente: generarSlug("Villma Colque Camacho"),
     distritos: ["Oruro"]
   },
   { 
     id: 35, 
     seatNumber: 35, 
     name: "Maria Antonieta Alcón Sánchez", 
+    slug: generarSlug("Maria Antonieta Alcón Sánchez"),
     party: "Partido Demócrata Cristiano", 
     partyShort: "PDC", 
     partyColor: "#2E7078", 
@@ -670,12 +754,14 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Edwin Lopez Quiroga",
     fotoSuplente: "/senadores/suplentes/g2/EDWIN LOPEZ QUIROGA.png",
+    slugSuplente: generarSlug("Edwin Lopez Quiroga"),
     distritos: ["Oruro"]
   },
   { 
     id: 36, 
     seatNumber: 36, 
     name: "José Sánchez Aguilar", 
+    slug: generarSlug("José Sánchez Aguilar"),
     party: "Libre", 
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
@@ -689,6 +775,7 @@ export const senadores = [
     ocupacion: "No disponible",
     suplente: "Cinthya Inga Gutierrez Guzman",
     fotoSuplente: "/senadores/suplentes/g2/CINTHYA INGA GUTIERREZ GUZMAN.png",
+    slugSuplente: generarSlug("Cinthya Inga Gutierrez Guzman"),
     distritos: ["Oruro"]
   }
 ]

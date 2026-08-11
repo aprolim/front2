@@ -1,0 +1,1574 @@
+COMPILADO DE ARCHIVOS - Parte 2 
+ 
+ 
+================================= 
+data\senadores.js 
+================================= 
+ 
+// data/senadores.js - Agregar slug a cada senador
+
+// Función para generar slug
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+export const senadores = [
+  // ============================================
+  // ORDENADOS POR ASIENTO (1-36)
+  // ============================================
+  { 
+    id: 1, 
+    seatNumber: 1, 
+    name: "Wilder Véliz Armas", 
+    slug: generarSlug("Wilder Véliz Armas"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Cochabamba", 
+    bancada: "Gobierno", 
+    comite: "Comité de Justicia Plural y Consejo de la Magistratura.", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g1/WILDER VELIZ ARMAS.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Cochabamba",
+    ocupacion: "No disponible",
+    suplente: "Lenny Mayra Ayala Justiniano",
+    fotoSuplente: "/senadores/suplentes/g1/LENNY MAYRA AYALA JUSTINIANO.png",
+    slugSuplente: generarSlug("Lenny Mayra Ayala Justiniano"),
+    distritos: ["Cochabamba"]
+  },
+  { 
+    id: 2, 
+    seatNumber: 2, 
+    name: "Judith Rosario García Coca", 
+    slug: generarSlug("Judith Rosario García Coca"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Cochabamba", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Seguridad del Estado", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g1/JUDITH ROSARIO GARCIA COCA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Cochabamba",
+    ocupacion: "No disponible",
+    suplente: "Royer Ivan Mamani Garcia",
+    fotoSuplente: "/senadores/suplentes/g1/ROYER IVAN MAMANI GARCIA.png",
+    slugSuplente: generarSlug("Royer Ivan Mamani Garcia"),
+    distritos: ["Cochabamba"]
+  },
+  { 
+    id: 3, 
+    seatNumber: 3, 
+    name: "Claudia Mallón Vargas", 
+    slug: generarSlug("Claudia Mallón Vargas"),
+    party: "Autonomía para Bolivia Súmate", 
+    partyShort: "APB", 
+    partyColor: "#611789", 
+    department: "Cochabamba", 
+    bancada: "Aliados", 
+    comite: "Comité de Vivienda, Regimen Laboral, Seguridad Industrial y Seguridad Social", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g1/CLAUDIA MALLON VARGAS.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Cochabamba",
+    ocupacion: "No disponible",
+    suplente: "Apolinar Rivera Muñoz",
+    fotoSuplente: "/senadores/suplentes/g1/APOLINAR RIVERA MUÑOZ.png",
+    slugSuplente: generarSlug("Apolinar Rivera Muñoz"),
+    distritos: ["Cochabamba"]
+  },
+  { 
+    id: 4, 
+    seatNumber: 4, 
+    name: "Wanda Ximena Medrano Hervas", 
+    slug: generarSlug("Wanda Ximena Medrano Hervas"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Cochabamba", 
+    bancada: "Oposición", 
+    comite: "Comité de Relaciones Económicas Internacionales", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g1/WANDA XIMENA MEDRANO HERVAS.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Cochabamba",
+    ocupacion: "No disponible",
+    suplente: "Aldo Sergio Villegas Mora",
+    fotoSuplente: "/senadores/suplentes/g1/ALDO SERGIO VILLEGAS MORA.png",
+    slugSuplente: generarSlug("Aldo Sergio Villegas Mora"),
+    distritos: ["Cochabamba"]
+  },
+  { 
+    id: 5, 
+    seatNumber: 5, 
+    name: "José Manuel Ormachea Mendieta", 
+    slug: generarSlug("José Manuel Ormachea Mendieta"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "La Paz", 
+    bancada: "Oposición", 
+    comision: "Comisión de Naciones y Pueblos Indígena Originario Campesinos, Culturas e Interculturalidad", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g1/JOSE MANUEL ORMACHEA MENDIETA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "La Paz",
+    ocupacion: "No disponible",
+    suplente: "Maria Elena Pachacute Ticona",
+    fotoSuplente: "/senadores/suplentes/g1/MARIA ELENA PACHACUTE TICONA.png",
+    slugSuplente: generarSlug("Maria Elena Pachacute Ticona"),
+    distritos: ["La Paz"]
+  },
+  { 
+    id: 6, 
+    seatNumber: 6, 
+    name: "Carmen Soledad Chapeton Tancara", 
+    slug: generarSlug("Carmen Soledad Chapeton Tancara"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "La Paz", 
+    bancada: "Aliados", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Primera Vicepresidencia",
+    foto: "/senadores/titulares/g1/CARMEN SOLEDAD CHAPETÓN TANCARA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "La Paz",
+    ocupacion: "No disponible",
+    suplente: "Nilton Condori Alanoca",
+    fotoSuplente: "/senadores/suplentes/g1/NILTON CONDORI ALANOCA.png",
+    slugSuplente: generarSlug("Nilton Condori Alanoca"),
+    distritos: ["La Paz"]
+  },
+  { 
+    id: 7, 
+    seatNumber: 7, 
+    name: "Nicanor Gonzalo Cochi Condorí", 
+    slug: generarSlug("Nicanor Gonzalo Cochi Condorí"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "La Paz", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Política Internacional y Protección al Migrante", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g1/NICANOR GONZALO COCHI CONDORI.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "La Paz",
+    ocupacion: "No disponible",
+    suplente: "Roxana Mamani Colquehuanca",
+    fotoSuplente: "/senadores/suplentes/g1/ROXANA MAMANI COLQUEHUANCA.png",
+    slugSuplente: generarSlug("Roxana Mamani Colquehuanca"),
+    distritos: ["La Paz"]
+  },
+  { 
+    id: 8, 
+    seatNumber: 8, 
+    name: "Tomasa Yarhui Jacome", 
+    slug: generarSlug("Tomasa Yarhui Jacome"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Chuquisaca", 
+    bancada: "Oposición", 
+    comite: "Comité de Sistema Electoral, Derechos Humanos y Equidad Social", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g1/TOMASA YARHUI JACOME.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Chuquisaca",
+    ocupacion: "No disponible",
+    suplente: "Hugo Marcelo Cortez Calvimontes",
+    fotoSuplente: "/senadores/suplentes/g1/HUGO MARCELO CORTEZ CALVIMONTES.png",
+    slugSuplente: generarSlug("Hugo Marcelo Cortez Calvimontes"),
+    distritos: ["Chuquisaca"]
+  },
+  { 
+    id: 9, 
+    seatNumber: 9, 
+    name: "Abdon Porcel Arancibia", 
+    slug: generarSlug("Abdon Porcel Arancibia"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Chuquisaca", 
+    bancada: "Oposición", 
+    comite: "Comité de Políticas Financiera, Monetaria, Tributaria y Seguros", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g1/ABDON PORCEL ARANCIBIA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Chuquisaca",
+    ocupacion: "No disponible",
+    suplente: "Ilse Fatima Davila Arancibia",
+    fotoSuplente: "/senadores/suplentes/g1/ILSE FATIMA DAVILA ARANCIBIA.png",
+    slugSuplente: generarSlug("Ilse Fatima Davila Arancibia"),
+    distritos: ["Chuquisaca"]
+  },
+  { 
+    id: 10, 
+    seatNumber: 10, 
+    name: "Bertha Cartagena Sánchez", 
+    slug: generarSlug("Bertha Cartagena Sánchez"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Chuquisaca", 
+    bancada: "Gobierno", 
+    comite: "Comité de Culturas, Interculturalidad y Patrimonio Cultural", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g1/BERTHA CARTAGENA SANCHEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Chuquisaca",
+    ocupacion: "No disponible",
+    suplente: "Manfred Leo Perez Hassenteufel",
+    fotoSuplente: "/senadores/suplentes/g1/MANFRED LEO PEREZ HASSENTEUFEL.png",
+    slugSuplente: generarSlug("Manfred Leo Perez Hassenteufel"),
+    distritos: ["Chuquisaca"]
+  },
+  { 
+    id: 11, 
+    seatNumber: 11, 
+    name: "Branko Goran Marinković Jovicevic", 
+    slug: generarSlug("Branko Goran Marinković Jovicevic"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Santa Cruz", 
+    bancada: "Oposición", 
+    comision: "Comisión de Tierra y Territorio / Región Amazónica", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g3/BRANKO GORAN MARINKOVIC JOVICEVIC.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Santa Cruz",
+    ocupacion: "No disponible",
+    suplente: "Kathia Natalia Miserendino Romero",
+    fotoSuplente: "/senadores/suplentes/g3/KATHIA NATALIA MISERENDINO ROMERO.png",
+    slugSuplente: generarSlug("Kathia Natalia Miserendino Romero"),
+    distritos: ["Santa Cruz"]
+  },
+  { 
+    id: 12, 
+    seatNumber: 12, 
+    name: "Kathia Lizbeth Quiroga Fernández", 
+    slug: generarSlug("Kathia Lizbeth Quiroga Fernández"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Santa Cruz", 
+    bancada: "Oposición", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Segunda Vicepresidencia",
+    foto: "/senadores/titulares/g3/KATHIA LISBETH QUIROGA FERNÁNDEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Santa Cruz",
+    ocupacion: "No disponible",
+    suplente: "Leonardo Roca Eguez",
+    fotoSuplente: "/senadores/suplentes/g3/LEONARDO ROCA EGUEZ.png",
+    slugSuplente: generarSlug("Leonardo Roca Eguez"),
+    distritos: ["Santa Cruz"]
+  },
+  { 
+    id: 13, 
+    seatNumber: 13, 
+    name: "Rosa Tatiana Áñez Carrasco", 
+    slug: generarSlug("Rosa Tatiana Áñez Carrasco"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Santa Cruz", 
+    bancada: "Aliados", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Tercera Secretaria",
+    foto: "/senadores/titulares/g3/ROSA TATIANA AÑEZ CARRASCO.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Santa Cruz",
+    ocupacion: "No disponible",
+    suplente: "Lorgio Fernando Pareja Saucedo",
+    fotoSuplente: "/senadores/suplentes/g3/LORGIO FERNANDO PAREJA SAUCEDO.png",
+    slugSuplente: generarSlug("Lorgio Fernando Pareja Saucedo"),
+    distritos: ["Santa Cruz"]
+  },
+  { 
+    id: 14, 
+    seatNumber: 14, 
+    name: "Paola Limbania López Zeballos", 
+    slug: generarSlug("Paola Limbania López Zeballos"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Santa Cruz", 
+    bancada: "Gobierno", 
+    comite: "Comité de Seguridad del Estado y Lucha Contra el Narcotráfico", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g3/PAOLA LIMBANIA LOPEZ ZEBALLOS.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Santa Cruz",
+    ocupacion: "No disponible",
+    suplente: "Richard Espada Ugarte",
+    fotoSuplente: "/senadores/suplentes/g3/RICHARD ESPADA UGARTE.png",
+    slugSuplente: generarSlug("Richard Espada Ugarte"),
+    distritos: ["Santa Cruz"]
+  },
+  { 
+    id: 15, 
+    seatNumber: 15, 
+    name: "Betty Canaviri Villanueva", 
+    slug: generarSlug("Betty Canaviri Villanueva"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Potosí", 
+    bancada: "Oposición", 
+    comite: "Comité de Economía Plural, Desarrollo Productivo, Obras Públicas e Infraestructura", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/BETTY CANAVIRI VILLANUEVA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Potosí",
+    ocupacion: "No disponible",
+    suplente: "Roger Mamani Coronado",
+    fotoSuplente: "/senadores/suplentes/g2/ROGER MAMANI CORONADO.png",
+    slugSuplente: generarSlug("Roger Mamani Coronado"),
+    distritos: ["Potosí"]
+  },
+  { 
+    id: 16, 
+    seatNumber: 16, 
+    name: "Teresa Alarcón Arana", 
+    slug: generarSlug("Teresa Alarcón Arana"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Potosí", 
+    bancada: "Oposición", 
+    comite: "Comité de Asuntos Exteriores Interpelatorios y Organismos Internacionales", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/TERESA ALARCON ARANA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Potosí",
+    ocupacion: "No disponible",
+    suplente: null,
+    fotoSuplente: null,
+    slugSuplente: null,
+    distritos: ["Potosí"]
+  },
+  { 
+    id: 17, 
+    seatNumber: 17, 
+    name: "Marcelino Flores Ordoñez", 
+    slug: generarSlug("Marcelino Flores Ordoñez"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Potosí", 
+    bancada: "Gobierno", 
+    comite: "Comité de Energía, Hidrocarburos, Minería y Metalurgia", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g2/MARCELINO FLORES ORDOÑEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Potosí",
+    ocupacion: "No disponible",
+    suplente: "Susana Gabriela Ruiz Zuleta",
+    fotoSuplente: "/senadores/suplentes/g2/SUSANA GABRIELA RUIZ ZULETA.png",
+    slugSuplente: generarSlug("Susana Gabriela Ruiz Zuleta"),
+    distritos: ["Potosí"]
+  },
+  { 
+    id: 18, 
+    seatNumber: 18, 
+    name: "Bertha Nurmy Gutiérrez Meneces", 
+    slug: generarSlug("Bertha Nurmy Gutiérrez Meneces"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Potosí", 
+    bancada: "Gobierno", 
+    comite: "Comité de Naciones y Pueblos Indígena Originario Campesinos", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/BERTHA NURMY GUTIERREZ MENESES.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Potosí",
+    ocupacion: "No disponible",
+    suplente: "Freddy Rioja Melgar",
+    fotoSuplente: "/senadores/suplentes/g2/FREDDY RIOJA MELGAR.png",
+    slugSuplente: generarSlug("Freddy Rioja Melgar"),
+    distritos: ["Potosí"]
+  },
+  { 
+    id: 19, 
+    seatNumber: 19, 
+    name: "Erick Nelson Soruco Alpire", 
+    slug: generarSlug("Erick Nelson Soruco Alpire"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Beni", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Justicia Plural, Ministerio Público y Defensa del Estado", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g3/ERICK NELSON SORUCO ALPIRE.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Beni",
+    ocupacion: "No disponible",
+    suplente: "Cesia Roca Escalante",
+    fotoSuplente: "/senadores/suplentes/g3/CESIA ROCA ESCALANTE.png",
+    slugSuplente: generarSlug("Cesia Roca Escalante"),
+    distritos: ["Beni"]
+  },
+  { 
+    id: 20, 
+    seatNumber: 20, 
+    name: "José Roca Haensel", 
+    slug: generarSlug("José Roca Haensel"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Beni", 
+    bancada: "Aliados", 
+    comite: "Comité de Autonomías Municipales, Indigena Originario Campesinas y Regionales", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g3/JOSE ROCA HAENSEL.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Beni",
+    ocupacion: "No disponible",
+    suplente: "Mabel Giordano Sonnenschein",
+    fotoSuplente: "/senadores/suplentes/g3/MABEL GIORDANO SONNENSCHEIN.png",
+    slugSuplente: generarSlug("Mabel Giordano Sonnenschein"),
+    distritos: ["Beni"]
+  },
+  { 
+    id: 21, 
+    seatNumber: 21, 
+    name: "Ana Karina Velasco Añez", 
+    slug: generarSlug("Ana Karina Velasco Añez"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Beni", 
+    bancada: "Aliados", 
+    comite: "Comité de Fuerzas Armadas y Policía Boliviana", 
+    cargo: "Secretaria de comite",
+    foto: "/senadores/titulares/g3/ANA KARINA VELASCO ÁÑEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Beni",
+    ocupacion: "No disponible",
+    suplente: "Marcelo Matias Cardona Ibañez",
+    fotoSuplente: "/senadores/suplentes/g3/MARCELO MATIAS CARDONA IBAÑEZ.png",
+    slugSuplente: generarSlug("Marcelo Matias Cardona Ibañez"),
+    distritos: ["Beni"]
+  },
+  { 
+    id: 22, 
+    seatNumber: 22, 
+    name: "Ernesto Suarez Sattori", 
+    slug: generarSlug("Ernesto Suarez Sattori"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Beni", 
+    bancada: "Oposición", 
+    comite: "Comité de Autonomías Departamentales", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g3/ERNESTO SUAREZ SATTORI.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Beni",
+    ocupacion: "No disponible",
+    suplente: "Claudia Cardenas Velasquez",
+    fotoSuplente: "/senadores/suplentes/g3/CLAUDIA CARDENAS VELASQUEZ.png",
+    slugSuplente: generarSlug("Claudia Cardenas Velasquez"),
+    distritos: ["Beni"]
+  },
+  { 
+    id: 23, 
+    seatNumber: 23, 
+    name: "Ana María Crispin Choque", 
+    slug: generarSlug("Ana María Crispin Choque"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "La Paz", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Economía Plural, Producción e Industria", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g1/ANA MARIA CRISPIN CHOQUE.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "La Paz",
+    ocupacion: "No disponible",
+    suplente: "Victor Severo Quispe Santander",
+    fotoSuplente: "/senadores/suplentes/g1/VICTOR SEVERO QUISPE SANTANDER.png",
+    slugSuplente: generarSlug("Victor Severo Quispe Santander"),
+    distritos: ["La Paz"]
+  },
+  { 
+    id: 24, 
+    seatNumber: 24, 
+    name: "Julio Diego Romaña Galindo", 
+    slug: generarSlug("Julio Diego Romaña Galindo"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Pando", 
+    bancada: "Oposición", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Segunda Secretaria",
+    foto: "/senadores/titulares/g3/JULIO DIEGO ROMAÑA GALINDO.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Pando",
+    ocupacion: "No disponible",
+    suplente: "Carolina Giese Urresti",
+    fotoSuplente: "/senadores/suplentes/g3/CAROLINA GIESE URRESTI.png",
+    slugSuplente: generarSlug("Carolina Giese Urresti"),
+    distritos: ["Pando"]
+  },
+  { 
+    id: 25, 
+    seatNumber: 25, 
+    name: "Carol Carlo Durán", 
+    slug: generarSlug("Carol Carlo Durán"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Pando", 
+    bancada: "Oposición", 
+    comite: "Comité de Tierra y Territorio, Recursos Naturales y Hoja de la Coca", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g3/CAROL CARLO DURAN.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Pando",
+    ocupacion: "No disponible",
+    suplente: "Jorge Antonio Quispe Flores",
+    fotoSuplente: "/senadores/suplentes/g3/JORGE ANTONIO QUISPE FLORES.png",
+    slugSuplente: generarSlug("Jorge Antonio Quispe Flores"),
+    distritos: ["Pando"]
+  },
+  { 
+    id: 26, 
+    seatNumber: 26, 
+    name: "Cinthia Mónica Puerta Campos", 
+    slug: generarSlug("Cinthia Mónica Puerta Campos"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Pando", 
+    bancada: "Gobierno", 
+    comite: "Comité de Medio Ambiente, Biodiversidad, Amazonía, Áreas Protegidas y Cambio Climático", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g3/CINTIA MONICA PUERTA CAMPOS.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Pando",
+    ocupacion: "No disponible",
+    suplente: "Jesus Humberto Suarez Eguez",
+    fotoSuplente: "/senadores/suplentes/g3/JESUS HUMBERTO SUAREZ EGUEZ.png",
+    slugSuplente: generarSlug("Jesus Humberto Suarez Eguez"),
+    distritos: ["Pando"]
+  },
+  { 
+    id: 27, 
+    seatNumber: 27, 
+    name: "Eliana Rina Acosta Quispe", 
+    slug: generarSlug("Eliana Rina Acosta Quispe"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Pando", 
+    bancada: "Aliados", 
+    comision: "Comisión de Planificación, Política Económica y Finanzas", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g3/ELIANA RINA ACOSTA QUISPE.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Pando",
+    ocupacion: "No disponible",
+    suplente: "Sichard Hans Soraide Castedo",
+    fotoSuplente: "/senadores/suplentes/g3/SICHARD HANS SORAIDE CASTEDO.png",
+    slugSuplente: generarSlug("Sichard Hans Soraide Castedo"),
+    distritos: ["Pando"]
+  },
+  { 
+    id: 28, 
+    seatNumber: 28, 
+    name: "Daniel Antonio Ortiz Velásquez", 
+    slug: generarSlug("Daniel Antonio Ortiz Velásquez"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Chuquisaca", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g1/DANIEL ANTONIO ORTIZ VELASQUEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Chuquisaca",
+    ocupacion: "No disponible",
+    suplente: "Reina Isabel Pallares Morales",
+    fotoSuplente: "/senadores/suplentes/g1/REINA ISABEL PALLARES MORALES.png",
+    slugSuplente: generarSlug("Reina Isabel Pallares Morales"),
+    distritos: ["Chuquisaca"]
+  },
+  { 
+    id: 29, 
+    seatNumber: 29, 
+    name: "María Isabel Moreno Cortez", 
+    slug: generarSlug("María Isabel Moreno Cortez"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Tarija", 
+    bancada: "Oposición", 
+    comite: "Comité de Ministerio Público y Defensa Legal del Estado", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/MARIA ISABEL MORENO CORTEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Tarija",
+    ocupacion: "No disponible",
+    suplente: "Rolando Vacaflor Gabriel Arana",
+    fotoSuplente: "/senadores/suplentes/g2/ROLANDO VACAFLOR GABRIEL ARANA.png",
+    slugSuplente: generarSlug("Rolando Vacaflor Gabriel Arana"),
+    distritos: ["Tarija"]
+  },
+  { 
+    id: 30, 
+    seatNumber: 30, 
+    name: "César Mentasti Padilla", 
+    slug: generarSlug("César Mentasti Padilla"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Tarija", 
+    bancada: "Aliados", 
+    comision: "Comisión de Organización Territorial del Estado y Autonomías", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g2/CESAR MENTASTI PADILLA.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Tarija",
+    ocupacion: "No disponible",
+    suplente: "Marcela Guerrero Vilca",
+    fotoSuplente: "/senadores/suplentes/g2/MARCELA GUERRERO VILCA.png",
+    slugSuplente: generarSlug("Marcela Guerrero Vilca"),
+    distritos: ["Tarija"]
+  },
+  { 
+    id: 31, 
+    seatNumber: 31, 
+    name: "Leonor Rosalva Romero Gutiérrez", 
+    slug: generarSlug("Leonor Rosalva Romero Gutiérrez"),
+    party: "Unidad", 
+    partyShort: "UNIDAD", 
+    partyColor: "#EFCD04", 
+    department: "Tarija", 
+    bancada: "Aliados", 
+    comite: "Comité de Planificación, Presupuesto, Inversión Pública y Contraloría General del Estado", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/LEONOR ROSALVA ROMERO GUTIERREZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Tarija",
+    ocupacion: "No disponible",
+    suplente: "Marco Antonio Segovia Vargas",
+    fotoSuplente: "/senadores/suplentes/g2/MARCO ANTONIO SEGOVIA VARGAS.png",
+    slugSuplente: generarSlug("Marco Antonio Segovia Vargas"),
+    distritos: ["Tarija"]
+  },
+  { 
+    id: 32, 
+    seatNumber: 32, 
+    name: "Diego Esteban Mateo Ávila Navajas", 
+    slug: generarSlug("Diego Esteban Mateo Ávila Navajas"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Tarija", 
+    bancada: "Gobierno", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Presidente del Senado",
+    foto: "/senadores/titulares/g2/DIEGO ESTEBAN MATEO ÁVILA NAVAJAS.png",
+    fechaNacimiento: "Jueves, 21 septiembre, 1961",
+    nacidoEn: "Tarija - Cercado",
+    ocupacion: "Economista",
+    suplente: "Luzmaya Zelaya Vega",
+    fotoSuplente: "/senadores/suplentes/g2/LUZMAYA ZELAYA VEGA.png",
+    slugSuplente: generarSlug("Luzmaya Zelaya Vega"),
+    distritos: ["Cercado", "Tarija"],
+    facebook: "https://facebook.com/diegoavila",
+    twitter: "https://twitter.com/diegoavila",
+    instagram: "https://instagram.com/diegoavila",
+    youtube: "https://youtube.com/diegoavila",
+    tiktok: "https://tiktok.com/@diegoavila"
+  },
+  { 
+    id: 33, 
+    seatNumber: 33, 
+    name: "Yasmín Estivariz Villarroel", 
+    slug: generarSlug("Yasmín Estivariz Villarroel"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Oruro", 
+    bancada: "Gobierno", 
+    comision: "Directiva Legislatura 2025-2026", 
+    cargo: "Primera Secretaria",
+    foto: "/senadores/titulares/g2/YASMIN ESTIVARIZ VILLARROEL.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Oruro",
+    ocupacion: "No disponible",
+    suplente: "Ramiro Mamani Ramirez",
+    fotoSuplente: "/senadores/suplentes/g2/RAMIRO MAMANI RAMIREZ.png",
+    slugSuplente: generarSlug("Ramiro Mamani Ramirez"),
+    distritos: ["Oruro"]
+  },
+  { 
+    id: 34, 
+    seatNumber: 34, 
+    name: "Freddy Castillo Chávez", 
+    slug: generarSlug("Freddy Castillo Chávez"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Oruro", 
+    bancada: "Gobierno", 
+    comite: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.", 
+    cargo: "Secretario de Comite",
+    foto: "/senadores/titulares/g2/FREDDY CASTILLO CHAVEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Oruro",
+    ocupacion: "No disponible",
+    suplente: "Villma Colque Camacho",
+    fotoSuplente: "/senadores/suplentes/g2/VILLMA COLQUE CAMACHO.png",
+    slugSuplente: generarSlug("Villma Colque Camacho"),
+    distritos: ["Oruro"]
+  },
+  { 
+    id: 35, 
+    seatNumber: 35, 
+    name: "Maria Antonieta Alcón Sánchez", 
+    slug: generarSlug("Maria Antonieta Alcón Sánchez"),
+    party: "Partido Demócrata Cristiano", 
+    partyShort: "PDC", 
+    partyColor: "#2E7078", 
+    department: "Oruro", 
+    bancada: "Gobierno", 
+    comite: "Comité de Educación, Salud, Ciencia, Tecnología y Deporte", 
+    cargo: "Secretaria de Comite",
+    foto: "/senadores/titulares/g2/MARIA ANTONIETA ALCON SANCHEZ.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Oruro",
+    ocupacion: "No disponible",
+    suplente: "Edwin Lopez Quiroga",
+    fotoSuplente: "/senadores/suplentes/g2/EDWIN LOPEZ QUIROGA.png",
+    slugSuplente: generarSlug("Edwin Lopez Quiroga"),
+    distritos: ["Oruro"]
+  },
+  { 
+    id: 36, 
+    seatNumber: 36, 
+    name: "José Sánchez Aguilar", 
+    slug: generarSlug("José Sánchez Aguilar"),
+    party: "Libre", 
+    partyShort: "LIBRE", 
+    partyColor: "#DB3737", 
+    department: "Oruro", 
+    bancada: "Gobierno", 
+    comision: "Comisión de Política Social", 
+    cargo: "Presidente de Comisión",
+    foto: "/senadores/titulares/g2/JOSE SANCHEZ AGUILAR.png",
+    fechaNacimiento: "No disponible",
+    nacidoEn: "Oruro",
+    ocupacion: "No disponible",
+    suplente: "Cinthya Inga Gutierrez Guzman",
+    fotoSuplente: "/senadores/suplentes/g2/CINTHYA INGA GUTIERREZ GUZMAN.png",
+    slugSuplente: generarSlug("Cinthya Inga Gutierrez Guzman"),
+    distritos: ["Oruro"]
+  }
+] 
+================================= 
+layouts\default.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-[#fff] overflow-visible">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</template>
+
+<script>
+import Header from '~/components/Header.vue'
+import Footer from '~/components/Footer.vue'
+
+export default {
+  components: {
+    Header,
+    Footer
+  }
+}
+</script>
+
+<style scoped>
+</style> 
+================================= 
+pages\index.vue 
+================================= 
+ 
+<template>
+  <div class="overflow-visible">
+    <!-- ========================================== -->
+    <!-- BANNER DE BIENVENIDA (ancho completo)      -->
+    <!-- ========================================== -->
+    <div class="w-full bg-[#f2f2f2] relative h-[19vw] " style="overflow: visible !important;">
+
+      <!-- Contenedor del 70% centrado -->
+      <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
+        
+        <!-- ========================================== -->
+        <!-- IMAGEN IZQUIERDA (Logo Blanco)             -->
+        <!-- ========================================== -->
+        <!-- IMAGEN IZQUIERDA - MITAD SUPERIOR RECORTADA -->
+        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
+          <div 
+            class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
+          ></div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- CÚPULA DERECHA (Alineada por su base)      -->
+        <!-- ========================================== -->
+        <div 
+          class="absolute right-0 z-[60] w-[22vw]"
+          style="bottom: 0; pointer-events: none;"
+        >
+          <img 
+            src="/images/Cupula.png" 
+            alt="Senado derecha" 
+            style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
+          />
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TEXTO CENTRADO                              -->
+        <!-- ========================================== -->
+        <div class="flex-1 text-center z-20">
+          <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
+            Bienvenido al sitio web oficial <br> del
+            <span class="text-senado-primary text-[4vw] text-justify font-bold">Senado de Bolivia</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Línea dorada inferior -->
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BARRA DE SESIÓN (ancho completo)           -->
+    <!-- ========================================== -->
+    <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
+      <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
+        <span class="text-senado-primary font-medium">Sesión -</span>
+        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-gold-dark">|</span>
+        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
+          Mira en directo
+        </a>
+        <span class="text-senado-gold-dark">|</span>
+        <a href="#" class="text-black hover:underline font-thin underline">
+          ORDEN DEL DÍA
+        </a>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- COLUMNAS: 70% - 30%                        -->
+    <!-- ========================================== -->
+    <div class="mx-auto w-[75%] py-[2vw]">
+      <NoticiasDinamicas />
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+
+      <!-- ACTIVIDAD LEGISLATIVA -->
+      <div class="mt-6">
+        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Actividad Legislativa</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- LEGISLACIÓN -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- GESTIÓN (COMPLETO) -->
+          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Aprobados
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- FISCALIZACIÓN -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Oral
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LÍNEA ANTES DE DESCRUBRA EL SENADO -->
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+
+      <!-- DESCRUBRA EL SENADO -->
+      <DescubraSenado />
+
+      <!-- LÍNEA DESPUÉS DE DESCRUBRA EL SENADO -->
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+      <MandatoFuncionesAntecedentes />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import DescubraSenado from '~/components/DescubraSenado.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+</script> 
+================================= 
+pages\senador\[id].vue 
+================================= 
+ 
+<template>
+  <div class="py-10">
+    <div v-if="senator" class="max-w-6xl mx-auto">
+      <!-- Botón volver -->
+      <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6">
+        ← Volver al hemiciclo
+      </NuxtLink>
+
+      <!-- Tarjeta del senador -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- PRIMERA FILA: 3 columnas -->
+        <div class="bg-[#EDEEED]">
+          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+            <!-- Columna 1: Foto -->
+            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
+              <img 
+                v-if="senator.foto"
+                :src="senator.foto" 
+                :alt="senator.name"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
+                :style="{ borderColor: senator.partyColor }"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+              <div 
+                v-else
+                class="w-40 h-40 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-lg"
+                :style="{ backgroundColor: senator.partyColor }"
+              >
+                {{ getInitials(senator.name) }}
+              </div>
+            </div>
+
+            <!-- Columna 2: Nombre y cargo -->
+            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ senator.name }}</h1>
+              <p class="text-[1.1vw] text-black">Senador por {{ senator.department }}</p>
+              <p v-if="senator.cargo" class="font-semibold text-[1.0vw] leading-tight">
+                {{ senator.cargo }}
+              </p>
+            </div>
+
+            <!-- Columna 3: Partido -->
+            <div class="md:col-span-3 flex flex-col items-center justify-center">
+              <div class="relative inline-block group">
+                <img 
+                  :src="getLogoPartido(senator.partyShort)" 
+                  :alt="senator.partyShort"
+                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  :class="{'group-hover:opacity-0': getLogoPartidoHover(senator.partyShort)}"
+                  @error="(e) => e.target.src = ''"
+                />
+                <img 
+                  :src="getLogoPartidoHover(senator.partyShort)" 
+                  :alt="senator.partyShort + ' hover'"
+                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  @error="(e) => e.target.style.display = 'none'"
+                />
+              </div>
+              <span 
+                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+              >
+                {{ senator.party?.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDA FILA: 3 columnas iguales -->
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Columna 1: Datos personales -->
+          <div class="p-[.2vw] border-r border-gray-200">
+            <div class="grid grid-cols-2 text-[1.8vw] pt-[2vw]">
+              <div class="space-y-3 text-[.5em]">
+                <div><span class="font-semibold text-gray-600">Fecha de Nacimiento:</span></div>
+                <div><span class="font-semibold text-gray-600">Nacido en:</span></div>
+                <div><span class="font-semibold text-gray-600">Ocupación:</span></div>
+                <div><span class="font-semibold text-gray-600">Brigada:</span></div>
+                <div><span class="font-semibold text-gray-600">Contacto:</span></div>
+                <div><span class="font-semibold text-gray-600">Senador Suplente:</span></div>
+              </div>
+              
+              <div class="space-y-3 text-[.5em]">
+                <div><span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span></div>
+                <div><span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span></div>
+                <div><span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span></div>
+                <div><span class="text-gray-800">{{ senator.department }}</span></div>
+                <div>
+                  <div class="flex gap-2 flex-wrap text-[.5em]">
+                    <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                    </a>
+                  </div>
+                </div>
+                <div><span class="text-gray-800">{{ senator.suplente || 'No disponible' }}</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Mapa -->
+          <div class="p-6 border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
+            <img 
+              :src="getMapaDepartamento(senator.department)" 
+              :alt="'Mapa de ' + senator.department"
+              class="h-[12vw] w-auto object-contain"
+              @error="(e) => e.target.src = '/images/mapa-default.svg'"
+            />
+          </div>
+
+          <!-- Columna 3: Asiento en el Hemiciclo -->
+          <div class="p-6 flex flex-col justify-center">
+            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <div class="flex flex-col items-center">
+              <img 
+                :src="getAsientoHemiciclo(senator.seatNumber)" 
+                :alt="'Asiento ' + senator.seatNumber"
+                class="h-[15vw] w-[15vw] object-contain"
+                @error="(e) => e.target.src = ''"
+              />
+              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ senator.seatNumber }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <div v-else class="text-center py-20">
+      <h2 class="text-2xl font-bold text-gray-600">Senador no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-4 inline-block">
+        Volver al inicio
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useSenadores } from '~/composables/useSenadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const route = useRoute()
+const { getSenadorBySlug } = useSenadores()
+
+const slug = computed(() => route.params.slug)
+
+const senator = computed(() => {
+  return getSenadorBySlug(slug.value)
+})
+
+const getInitials = (name) => {
+  if (!name) return '?'
+  const parts = name.split(' ')
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
+}
+
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || '/mapas/default.svg'
+}
+
+const getLogoPartido = (partyShort) => {
+  const logos = {
+    'PDC': '/logos FuerzasPoliticas/PDC.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
+    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
+    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+  }
+  return logos[partyShort] || ''
+}
+
+const getLogoPartidoHover = (partyShort) => {
+  const logosHover = {
+    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
+    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
+    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+  }
+  return logosHover[partyShort] || ''
+}
+
+const getAsientoHemiciclo = (seatNumber) => {
+  const asientos = {
+    1: '/hemiciclo/1WilderVeliz.svg',
+    2: '/hemiciclo/2JudithGarci╠üa.svg',
+    3: '/hemiciclo/3ClaudiaMallon.svg',
+    4: '/hemiciclo/4WandaMedrano.svg',
+    5: '/hemiciclo/5JoseOrmachea.svg',
+    6: '/hemiciclo/6SoledadChapeton.svg',
+    7: '/hemiciclo/7NicanorCochisvg.svg',
+    8: '/hemiciclo/8TomasaYarhui.svg',
+    9: '/hemiciclo/9AbdonPorcel.svg',
+    10: '/hemiciclo/10BerthaCartagena.svg',
+    11: '/hemiciclo/11BrankoMarinkovic.svg',
+    12: '/hemiciclo/12KhatiaQuiroga.svg',
+    13: '/hemiciclo/13TatianaAnez.svg',
+    14: '/hemiciclo/14PaolaLopez.svg',
+    15: '/hemiciclo/15BettyCanaviri.svg',
+    16: '/hemiciclo/16TeresaAlarcon.svg',
+    17: '/hemiciclo/17MarcelinoFlores.svg',
+    18: '/hemiciclo/18BerthaNurmy.svg',
+    19: '/hemiciclo/19ErickSoruco.svg',
+    20: '/hemiciclo/20JoseRoca.svg',
+    21: '/hemiciclo/21KarinaVelasco.svg',
+    22: '/hemiciclo/22ErnestoSuarez.svg',
+    23: '/hemiciclo/23AnaCrispin.svg',
+    24: '/hemiciclo/24DiegoRomana.svg',
+    25: '/hemiciclo/25CarolCarlo.svg',
+    26: '/hemiciclo/26MonicaPuerta.svg',
+    27: '/hemiciclo/27ElianaAcosta.svg',
+    28: '/hemiciclo/28DanielOrtiz.svg',
+    29: '/hemiciclo/29IsabelMoreno.svg',
+    30: '/hemiciclo/30CesarMentasti.svg',
+    31: '/hemiciclo/31RosalvaRomero.svg',
+    32: '/hemiciclo/32DiegoAvila.svg',
+    33: '/hemiciclo/33YasminEstivariz.svg',
+    34: '/hemiciclo/34FreddyCastillo.svg',
+    35: '/hemiciclo/35MariaAlcon.svg',
+    36: '/hemiciclo/36JoseSanchez.svg'
+  }
+  return asientos[seatNumber] || ''
+}
+</script>
+
+<style scoped>
+</style> 
+================================= 
+pages\senador\suplente\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="py-10">
+    <div v-if="suplente" class="max-w-6xl mx-auto">
+      <!-- Botón volver -->
+      <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6">
+        ← Volver al hemiciclo
+      </NuxtLink>
+
+      <!-- Tarjeta del suplente -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- PRIMERA FILA: 3 columnas -->
+        <div class="bg-[#EDEEED]">
+          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+            <!-- Columna 1: Foto -->
+            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
+              <img 
+                :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
+                :alt="suplente.nombreSuplente"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
+                :style="{ borderColor: suplente.partyColor }"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+            </div>
+
+            <!-- Columna 2: Nombre y cargo -->
+            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.nombreSuplente }}</h1>
+              <p class="text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
+              <p class="text-[0.9vw] text-gray-500">Suplente de: {{ suplente.name }}</p>
+              <p v-if="suplente.cargo" class="font-semibold text-[1.0vw] leading-tight">
+                {{ suplente.cargo }}
+              </p>
+            </div>
+
+            <!-- Columna 3: Partido -->
+            <div class="md:col-span-3 flex flex-col items-center justify-center">
+              <div class="relative inline-block group">
+                <img 
+                  :src="getLogoPartido(suplente.partyShort)" 
+                  :alt="suplente.partyShort"
+                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  :class="{'group-hover:opacity-0': getLogoPartidoHover(suplente.partyShort)}"
+                  @error="(e) => e.target.src = ''"
+                />
+                <img 
+                  :src="getLogoPartidoHover(suplente.partyShort)" 
+                  :alt="suplente.partyShort + ' hover'"
+                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  @error="(e) => e.target.style.display = 'none'"
+                />
+              </div>
+              <span 
+                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+              >
+                {{ suplente.party?.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDA FILA: 3 columnas iguales -->
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Columna 1: Datos personales -->
+          <div class="p-[.2vw] border-r border-gray-200">
+            <div class="grid grid-cols-2 text-[1.8vw] pt-[2vw]">
+              <div class="space-y-3 text-[.5em]">
+                <div><span class="font-semibold text-gray-600">Nombres:</span></div>
+                <div><span class="font-semibold text-gray-600">Departamento:</span></div>
+                <div><span class="font-semibold text-gray-600">Partido:</span></div>
+                <div><span class="font-semibold text-gray-600">Bancada:</span></div>
+                <div><span class="font-semibold text-gray-600">Suplente de:</span></div>
+              </div>
+              
+              <div class="space-y-3 text-[.5em]">
+                <div><span class="text-gray-800">{{ suplente.nombreSuplente }}</span></div>
+                <div><span class="text-gray-800">{{ suplente.department }}</span></div>
+                <div><span class="text-gray-800">{{ suplente.party }}</span></div>
+                <div><span class="text-gray-800">{{ suplente.bancada }}</span></div>
+                <div>
+                  <NuxtLink :to="`/senador/${suplente.slug}`" class="text-senado-primary hover:underline">
+                    {{ suplente.name }}
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Mapa -->
+          <div class="p-6 border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
+            <img 
+              :src="getMapaDepartamento(suplente.department)" 
+              :alt="'Mapa de ' + suplente.department"
+              class="h-[12vw] w-auto object-contain"
+              @error="(e) => e.target.src = '/images/mapa-default.svg'"
+            />
+          </div>
+
+          <!-- Columna 3: Asiento en el Hemiciclo -->
+          <div class="p-6 flex flex-col justify-center">
+            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <div class="flex flex-col items-center">
+              <img 
+                :src="getAsientoHemiciclo(suplente.seatNumber)" 
+                :alt="'Asiento ' + suplente.seatNumber"
+                class="h-[15vw] w-[15vw] object-contain"
+                @error="(e) => e.target.src = ''"
+              />
+              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ suplente.seatNumber }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <div v-else class="text-center py-20">
+      <h2 class="text-2xl font-bold text-gray-600">Suplente no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-4 inline-block">
+        Volver al inicio
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useSenadores } from '~/composables/useSenadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const route = useRoute()
+const { getSuplenteBySlug } = useSenadores()
+
+const slug = computed(() => route.params.slug)
+
+const suplente = computed(() => {
+  return getSuplenteBySlug(slug.value)
+})
+
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || '/mapas/default.svg'
+}
+
+const getLogoPartido = (partyShort) => {
+  const logos = {
+    'PDC': '/logos FuerzasPoliticas/PDC.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
+    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
+    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+  }
+  return logos[partyShort] || ''
+}
+
+const getLogoPartidoHover = (partyShort) => {
+  const logosHover = {
+    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
+    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
+    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+  }
+  return logosHover[partyShort] || ''
+}
+
+const getAsientoHemiciclo = (seatNumber) => {
+  const asientos = {
+    1: '/hemiciclo/1WilderVeliz.svg',
+    2: '/hemiciclo/2JudithGarci╠üa.svg',
+    3: '/hemiciclo/3ClaudiaMallon.svg',
+    4: '/hemiciclo/4WandaMedrano.svg',
+    5: '/hemiciclo/5JoseOrmachea.svg',
+    6: '/hemiciclo/6SoledadChapeton.svg',
+    7: '/hemiciclo/7NicanorCochisvg.svg',
+    8: '/hemiciclo/8TomasaYarhui.svg',
+    9: '/hemiciclo/9AbdonPorcel.svg',
+    10: '/hemiciclo/10BerthaCartagena.svg',
+    11: '/hemiciclo/11BrankoMarinkovic.svg',
+    12: '/hemiciclo/12KhatiaQuiroga.svg',
+    13: '/hemiciclo/13TatianaAnez.svg',
+    14: '/hemiciclo/14PaolaLopez.svg',
+    15: '/hemiciclo/15BettyCanaviri.svg',
+    16: '/hemiciclo/16TeresaAlarcon.svg',
+    17: '/hemiciclo/17MarcelinoFlores.svg',
+    18: '/hemiciclo/18BerthaNurmy.svg',
+    19: '/hemiciclo/19ErickSoruco.svg',
+    20: '/hemiciclo/20JoseRoca.svg',
+    21: '/hemiciclo/21KarinaVelasco.svg',
+    22: '/hemiciclo/22ErnestoSuarez.svg',
+    23: '/hemiciclo/23AnaCrispin.svg',
+    24: '/hemiciclo/24DiegoRomana.svg',
+    25: '/hemiciclo/25CarolCarlo.svg',
+    26: '/hemiciclo/26MonicaPuerta.svg',
+    27: '/hemiciclo/27ElianaAcosta.svg',
+    28: '/hemiciclo/28DanielOrtiz.svg',
+    29: '/hemiciclo/29IsabelMoreno.svg',
+    30: '/hemiciclo/30CesarMentasti.svg',
+    31: '/hemiciclo/31RosalvaRomero.svg',
+    32: '/hemiciclo/32DiegoAvila.svg',
+    33: '/hemiciclo/33YasminEstivariz.svg',
+    34: '/hemiciclo/34FreddyCastillo.svg',
+    35: '/hemiciclo/35MariaAlcon.svg',
+    36: '/hemiciclo/36JoseSanchez.svg'
+  }
+  return asientos[seatNumber] || ''
+}
+</script>
+
+<style scoped>
+</style> 
+================================= 
+public\robots.txt 
+================================= 
+ 
+User-Agent: *
+Disallow: 
+================================= 
+public\fonts\fonts.css 
+================================= 
+ 
+/* MONTSERRAT REGULAR (para Montserrat Alternates usa 'Montserrat Alternates' como font-family) */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* MONTSERRAT ALTERNATES (si prefieres esta variante) */
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} 
