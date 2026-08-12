@@ -34,17 +34,22 @@
         </div>
 
         <!-- Buscador -->
-        <div class="hidden lg:block flex-grow z-[1000] ml-auto">
+        <div class="hidden lg:block flex-grow z-[1000] ml-auto relative">
           <div class="relative text-right">
             <input
+              ref="searchInput"
               type="text" 
               placeholder="ENCUENTRA TU SENADOR" 
-              class="w-[12vw] px-[.5vw] py-2 border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
+              class="w-[16vw] mr-[3.5vw] py-2 border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
+              v-model="searchQuery"
+              @input="handleSearch"
+              @focus="showResults = true"
+              @blur="handleBlur"
             />
           </div>
         </div>
 
-        <div class="hidden lg:block flex-grow max-w-[8vw] z-[1000]"></div>
+        <div class="hidden lg:block flex-grow max-w-[4vw] z-[1000]"></div>
 
         <!-- Redes Sociales -->
         <div class="relative flex-shrink-0 z-[9999]">
@@ -66,14 +71,19 @@
           <span class="text-2xl">Senadores</span>
         </h1>
         <p class="text-xs text-gray-500 font-medium tracking-wider">
-          ENCONTRA TU GANCHO
+          ENCUENTRA TU SENADOR
         </p>
-        <div class="w-full max-w-xs">
+        <div class="w-full max-w-xs relative">
           <div class="relative">
             <input 
+              ref="searchInputMobile"
               type="text" 
-              placeholder="Buscar..." 
+              placeholder="Buscar senador..." 
               class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+              v-model="searchQuery"
+              @input="handleSearch"
+              @focus="showResults = true"
+              @blur="handleBlur"
             />
             <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
               <Icon name="material-symbols:search-rounded" class="text-xl" />
@@ -102,6 +112,28 @@
           </button>
         </div>
         <nav class="p-4 space-y-6">
+          <!-- ========================================== -->
+          <!-- INSTITUCIONAL - NUEVO ITEM                 -->
+          <!-- ========================================== -->
+          <div>
+            <div 
+              @click="toggleSubmenu('institucional')"
+              class="cursor-pointer"
+            >
+              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+                <span>▸ Institucional</span>
+                <span class="transition-transform duration-300" :class="submenus.institucional ? 'rotate-180' : ''">▼</span>
+              </div>
+            </div>
+            <div 
+              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              :class="submenus.institucional ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
+            >
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Misión</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visión</a>
+            </div>
+          </div>
+
           <!-- ========================================== -->
           <!-- FACULTADES LEGISLATIVAS                    -->
           <!-- ========================================== -->
@@ -133,28 +165,7 @@
                 </div>
                 <div 
                   class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-                  :class="submenus.legislacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
-                >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
-                </div>
-              </div>
-
-              <!-- Gestión -->
-              <div>
-                <div 
-                  @click="toggleSubmenu('gestion')"
-                  class="cursor-pointer"
-                >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
-                    <span>Gestión</span>
-                    <span class="transition-transform duration-300" :class="submenus.gestion ? 'rotate-180' : ''">▼</span>
-                  </div>
-                </div>
-                <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-                  :class="submenus.gestion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+                  :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                 >
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</a>
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</a>
@@ -182,6 +193,27 @@
                 >
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</a>
                   <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</a>
+                </div>
+              </div>
+
+              <!-- Gestión -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('gestion')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                    <span>Gestión</span>
+                    <span class="transition-transform duration-300" :class="submenus.gestion ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
+                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
                 </div>
               </div>
             </div>
@@ -265,10 +297,12 @@
             </div>
             <div 
               class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-              :class="submenus.abierto ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
+              :class="submenus.abierto ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <a href="#" class="block hover:text-senado-primary transition-colors py-1">Noticias</a>
               <a href="#" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</a>
+              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</a>
             </div>
           </div>
 
@@ -283,7 +317,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ REDES SOCIALES                        -->
+    <!-- MENÚ REDES SOCIALES (con Teleport)        -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -319,20 +353,101 @@
         </div>
       </transition>
     </Teleport>
+
+    <!-- ========================================== -->
+    <!-- RESULTADOS DE BÚSQUEDA (con Teleport)      -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-all duration-200 ease-out"
+        enter-from-class="opacity-0 scale-95 -translate-y-2"
+        enter-to-class="opacity-100 scale-100 translate-y-0"
+        leave-active-class="transition-all duration-150 ease-in"
+        leave-from-class="opacity-100 scale-100 translate-y-0"
+        leave-to-class="opacity-0 scale-95 -translate-y-2"
+      >
+        <div 
+          v-if="showResults && searchResults.length > 0"
+          class="fixed bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[99999999]"
+          :style="searchResultsStyle"
+        >
+          <div class="max-h-[50vh] overflow-y-auto">
+            <div 
+              v-for="result in searchResults" 
+              :key="result.id + (result.esSuplente ? '-suplente' : '')"
+              class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-0"
+              @mousedown.prevent="selectResult(result)"
+            >
+              <img 
+                :src="result.foto || defaultAvatar" 
+                :alt="result.name"
+                class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-gray-800 truncate">{{ result.name }}</div>
+                <div class="text-xs text-gray-500 flex items-center gap-2 flex-wrap">
+                  <span>{{ result.department || 'Sin departamento' }}</span>
+                  <span class="w-1 h-1 bg-gray-300 rounded-full flex-shrink-0"></span>
+                  <span 
+                    class="px-2 py-0.5 rounded text-[10px] font-medium"
+                    :style="{ backgroundColor: result.partyColor + '20', color: result.partyColor || '#666' }"
+                  >
+                    {{ result.partyShort || result.party || 'Sin partido' }}
+                  </span>
+                  <span v-if="result.esSuplente" class="text-[10px] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
+                </div>
+              </div>
+              <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-xl flex-shrink-0" />
+            </div>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
+
+    <!-- Sin resultados con Teleport -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-all duration-200 ease-out"
+        enter-from-class="opacity-0 scale-95 -translate-y-2"
+        enter-to-class="opacity-100 scale-100 translate-y-0"
+        leave-active-class="transition-all duration-150 ease-in"
+        leave-from-class="opacity-100 scale-100 translate-y-0"
+        leave-to-class="opacity-0 scale-95 -translate-y-2"
+      >
+        <div 
+          v-if="showResults && searchQuery && searchResults.length === 0"
+          class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-4 text-center z-[99999999]"
+          :style="searchResultsStyle"
+        >
+          <div class="text-4xl mb-2">🔍</div>
+          <p class="text-sm text-gray-600 font-medium">No se encontraron senadores</p>
+          <p class="text-xs text-gray-400 mt-1">Intenta con otro término de búsqueda</p>
+        </div>
+      </transition>
+    </Teleport>
   </header>
 </template>
 
 <script>
+// Importar los senadores
+import { senadores } from '~/data/senadores'
+
 export default {
   data() {
     return {
       menuAbierto: false,
       redesAbiertas: false,
+      searchQuery: '',
+      showResults: false,
+      searchResults: [],
+      defaultAvatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E',
       submenus: {
+        institucional: false,
         legislativa: false,
         legislacion: false,
-        gestion: false,
         fiscalizacion: false,
+        gestion: false,
         senadores: false,
         acerca: false,
         funciones: false,
@@ -358,6 +473,40 @@ export default {
         right: '20px',
         zIndex: 9999999999
       }
+    },
+    searchResultsStyle() {
+      if (process.client) {
+        const input = this.$refs.searchInput
+        if (input) {
+          const rect = input.getBoundingClientRect()
+          const isMobile = window.innerWidth < 768
+          
+          // Usar vw para el marginRight (3.5vw = 3.5% del viewport width)
+          const marginRightVw = 3.5 // 3.5vw
+          const marginRightPx = (window.innerWidth * marginRightVw) / 100
+          
+          return {
+            top: (rect.bottom + 8) + 'px',
+            // Alinear a la derecha del input, restando el margen derecho
+            right: (window.innerWidth - rect.right - marginRightPx) + 'px',
+            left: 'auto',
+            transform: 'none',
+            width: (rect.width) + 'px',
+            maxWidth: isMobile ? '90vw' : '40vw',
+            minWidth: isMobile ? '280px' : '20vw',
+            zIndex: 9999999999
+          }
+        }
+      }
+      return {
+        top: '50px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90vw',
+        maxWidth: '40vw',
+        minWidth: '280px',
+        zIndex: 9999999999
+      }
     }
   },
   methods: {
@@ -374,7 +523,205 @@ export default {
     },
     toggleRedes() {
       this.redesAbiertas = !this.redesAbiertas
+    },
+    generarSlug(nombre) {
+      if (!nombre) return ''
+      return nombre
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/ñ/g, 'n')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+    },
+    normalizeText(text) {
+      if (!text) return ''
+      return text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+    },
+    levenshteinDistance(a, b) {
+      if (a.length === 0) return b.length
+      if (b.length === 0) return a.length
+
+      const matrix = []
+      for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i]
+      }
+      for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j
+      }
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b[i - 1] === a[j - 1]) {
+            matrix[i][j] = matrix[i - 1][j - 1]
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            )
+          }
+        }
+      }
+
+      return matrix[b.length][a.length]
+    },
+    getSimilarity(text1, text2) {
+      if (!text1 || !text2) return 0
+      const maxLen = Math.max(text1.length, text2.length)
+      if (maxLen === 0) return 1
+      const distance = this.levenshteinDistance(text1, text2)
+      return 1 - (distance / maxLen)
+    },
+    handleSearch() {
+      const query = this.searchQuery.trim()
+      
+      if (!query) {
+        this.searchResults = []
+        this.showResults = false
+        return
+      }
+
+      const queryNormalized = this.normalizeText(query)
+      const searchTerms = queryNormalized.split(/\s+/).filter(term => term.length > 0)
+
+      const allCandidates = []
+      
+      if (!senadores || senadores.length === 0) {
+        this.searchResults = []
+        this.showResults = true
+        return
+      }
+      
+      senadores.forEach(s => {
+        allCandidates.push({
+          ...s,
+          esSuplente: false,
+          tipo: 'titular',
+          foto: s.foto || this.defaultAvatar,
+          nameNormalized: this.normalizeText(s.name),
+          departmentNormalized: this.normalizeText(s.department),
+          partyNormalized: this.normalizeText(s.party),
+          partyShortNormalized: this.normalizeText(s.partyShort)
+        })
+        
+        if (s.suplente && s.suplente !== 'null' && s.suplente !== null && s.suplente.trim() !== '') {
+          const suplenteNormalized = this.normalizeText(s.suplente)
+          allCandidates.push({
+            id: s.id,
+            name: s.suplente,
+            nameNormalized: suplenteNormalized,
+            slug: s.slug,
+            slugSuplente: this.generarSlug(s.suplente),
+            department: s.department,
+            departmentNormalized: this.normalizeText(s.department),
+            party: s.party,
+            partyNormalized: this.normalizeText(s.party),
+            partyColor: s.partyColor,
+            partyShort: s.partyShort,
+            partyShortNormalized: this.normalizeText(s.partyShort),
+            foto: s.fotoSuplente || this.defaultAvatar,
+            esSuplente: true,
+            tipo: 'suplente',
+            titular: s.name,
+            titularSlug: s.slug,
+            titularNormalized: this.normalizeText(s.name)
+          })
+        }
+      })
+
+      const results = allCandidates.filter(candidate => {
+        const textsToCheck = [
+          { text: candidate.nameNormalized, weight: 1.0 },
+          { text: candidate.departmentNormalized, weight: 0.6 },
+          { text: candidate.partyNormalized, weight: 0.5 },
+          { text: candidate.partyShortNormalized, weight: 0.5 },
+          { text: candidate.titularNormalized, weight: 0.8 }
+        ].filter(item => item.text && item.text.length > 0)
+
+        let bestMatch = false
+
+        for (const term of searchTerms) {
+          for (const item of textsToCheck) {
+            if (item.text.includes(term)) {
+              bestMatch = true
+              break
+            }
+            
+            const similarity = this.getSimilarity(term, item.text)
+            if (similarity > 0.65) {
+              bestMatch = true
+              break
+            }
+          }
+          if (bestMatch) break
+        }
+
+        return bestMatch
+      })
+
+      const getRelevance = (candidate) => {
+        let score = 0
+        const name = candidate.nameNormalized || ''
+        const queryLower = queryNormalized
+        
+        if (name === queryLower) score += 100
+        
+        const nameParts = name.split(' ')
+        const lastName = nameParts[nameParts.length - 1] || ''
+        if (lastName === queryLower) score += 80
+        
+        const firstName = nameParts[0] || ''
+        if (firstName === queryLower) score += 70
+        
+        if (name.startsWith(queryLower)) score += 50
+        if (name.includes(queryLower)) score += 30
+        
+        const similarity = this.getSimilarity(queryLower, name)
+        if (similarity > 0.7) {
+          score += Math.round(similarity * 40)
+        }
+        
+        if ((candidate.departmentNormalized || '').includes(queryLower)) score += 20
+        if ((candidate.partyNormalized || '').includes(queryLower)) score += 15
+        if (candidate.tipo === 'titular') score += 10
+        
+        return score
+      }
+
+      results.sort((a, b) => {
+        const scoreA = getRelevance(a)
+        const scoreB = getRelevance(b)
+        if (scoreA !== scoreB) return scoreB - scoreA
+        return (a.nameNormalized || '').localeCompare(b.nameNormalized || '')
+      })
+
+      this.searchResults = results.slice(0, 10)
+      this.showResults = true
+    },
+    handleBlur() {
+      setTimeout(() => {
+        this.showResults = false
+      }, 200)
+    },
+    selectResult(result) {
+      this.showResults = false
+      this.searchQuery = result.name
+      
+      if (result.esSuplente) {
+        this.$router.push(`/senador/suplente/${result.slugSuplente}`)
+      } else {
+        this.$router.push(`/senador/${result.slug}`)
+      }
     }
+  },
+  mounted() {
+    console.log('✅ Header montado, senadores disponibles:', senadores ? senadores.length : 0)
   }
 }
 </script>
@@ -404,5 +751,19 @@ export default {
 
 .rotate-180 {
   transform: rotate(180deg);
+}
+
+/* Scroll personalizado para resultados de búsqueda */
+.max-h-\[50vh\]::-webkit-scrollbar {
+  width: 6px;
+}
+
+.max-h-\[50vh\]::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+.max-h-\[50vh\]::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="py-10">
-    <div v-if="senator" class="max-w-6xl mx-auto">
-      <!-- Botón volver con history.back() y fallback -->
+  <div class="py-[2vw]">
+    <div v-if="senator" class="w-[80%] mx-auto">
+      <!-- Botón volver -->
       <button 
         @click="volver"
-        class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6 cursor-pointer"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] cursor-pointer text-[1.1vw]"
       >
-        ← Volver al hemiciclo
+        ← Volver atras
       </button>
 
       <!-- Tarjeta del senador -->
@@ -26,7 +26,7 @@
               />
               <div 
                 v-else
-                class="w-40 h-40 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-lg"
+                class="w-[12vw] h-[12vw] rounded-full flex items-center justify-center text-white text-[4vw] font-bold shadow-lg"
                 :style="{ backgroundColor: senator.partyColor }"
               >
                 {{ getInitials(senator.name) }}
@@ -71,49 +71,67 @@
         <!-- SEGUNDA FILA: 3 columnas iguales -->
         <div class="grid grid-cols-1 md:grid-cols-3">
           <!-- Columna 1: Datos personales -->
-          <div class="p-[.2vw] border-r border-gray-200">
-            <div class="grid grid-cols-2 text-[1.8vw] pt-[2vw]">
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="font-semibold text-gray-600">Fecha de Nacimiento:</span></div>
-                <div><span class="font-semibold text-gray-600">Nacido en:</span></div>
-                <div><span class="font-semibold text-gray-600">Ocupación:</span></div>
-                <div><span class="font-semibold text-gray-600">Brigada:</span></div>
-                <div><span class="font-semibold text-gray-600">Contacto:</span></div>
-                <div><span class="font-semibold text-gray-600">Senador Suplente:</span></div>
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span>
               </div>
-              
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span></div>
-                <div><span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span></div>
-                <div><span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span></div>
-                <div><span class="text-gray-800">{{ senator.department }}</span></div>
-                <div>
-                  <div class="flex gap-2 flex-wrap text-[.5em]">
-                    <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                    <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                    </a>
-                    <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </a>
-                    <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
-                    </a>
-                  </div>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
                 </div>
-                <div><span class="text-gray-800">{{ senator.suplente || 'No disponible' }}</span></div>
+              </div>
+              <!-- Fila 6: Senador Suplente -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Suplente:</span>
+                <NuxtLink 
+                  v-if="senator.slugSuplente" 
+                  :to="`/senador/suplente/${senator.slugSuplente}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ senator.suplente }}
+                </NuxtLink>
+                <span v-else class="text-gray-800">No disponible</span>
               </div>
             </div>
           </div>
 
           <!-- Columna 2: Mapa -->
-          <div class="p-6 border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
             <img 
               :src="getMapaDepartamento(senator.department)" 
               :alt="'Mapa de ' + senator.department"
@@ -123,7 +141,7 @@
           </div>
 
           <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-6 flex flex-col justify-center">
+          <div class="p-[1.2vw] flex flex-col justify-center">
             <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
             <div class="flex flex-col items-center">
               <img 
@@ -137,20 +155,22 @@
           </div>
         </div>
       </div>
+
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-10">
+      <div class="flex items-center justify-center my-[2vw]">
         <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0">
+        <div class="flex-shrink-0 mx-[1vw]">
           <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
+      
       <MandatoFuncionesAntecedentes />
     </div>
 
-    <div v-else class="text-center py-20">
-      <h2 class="text-2xl font-bold text-gray-600">Senador no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-4 inline-block">
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
         Volver al inicio
       </NuxtLink>
     </div>
@@ -171,13 +191,10 @@ const senator = computed(() => {
   return getSenadorBySlug(slug.value)
 })
 
-// Función para volver atrás o ir al inicio
 const volver = () => {
-  // Si hay historial (viene de otra página), volver atrás
   if (window.history.length > 1) {
     window.history.back()
   } else {
-    // Si no hay historial (ej: abierto en nueva pestaña), ir a inicio
     navigateTo('/')
   }
 }

@@ -35,18 +35,44 @@ export const useSenadores = () => {
     return encontrado || null
   }
 
-  // Buscar un suplente por slug
+  // Buscar un suplente por slug - CORREGIDO CON TODOS LOS CAMPOS
   const getSuplenteBySlug = (slug) => {
     if (!slug) return null
     
     for (const senador of senadores) {
       if (senador.slugSuplente === slug) {
         return {
-          ...senador,
-          nombreSuplente: senador.suplente,
+          // ===== DATOS DEL TITULAR (heredados) =====
+          id: senador.id,
+          seatNumber: senador.seatNumber,
+          name: senador.name,
+          slug: senador.slug, // slug del TITULAR (para link)
+          slugTitular: senador.slug, // 🔥 EXPLÍCITAMENTE EL SLUG DEL TITULAR
+          party: senador.party,
+          partyShort: senador.partyShort,
+          partyColor: senador.partyColor,
+          department: senador.department,
+          distritos: senador.distritos,
+          
+          // ===== DATOS DEL SUPLENTE (propios) =====
+          suplente: senador.suplente,
+          slugSuplente: senador.slugSuplente,
           fotoSuplente: senador.fotoSuplente,
-          esSuplente: true,
-          slug: senador.slugSuplente
+          fechaNacimientoSuplente: senador.fechaNacimientoSuplente || 'No disponible',
+          nacidoEnSuplente: senador.nacidoEnSuplente || senador.department,
+          ocupacionSuplente: senador.ocupacionSuplente || 'No disponible',
+          comiteSuplente: senador.comiteSuplente || 'No disponible',
+          cargoSuplente: senador.cargoSuplente || 'No disponible',
+          
+          // ===== REDES SOCIALES DEL SUPLENTE =====
+          facebookSuplente: senador.facebookSuplente || null,
+          twitterSuplente: senador.twitterSuplente || null,
+          instagramSuplente: senador.instagramSuplente || null,
+          youtubeSuplente: senador.youtubeSuplente || null,
+          tiktokSuplente: senador.tiktokSuplente || null,
+          
+          // ===== FLAG PARA IDENTIFICAR QUE ES SUPLENTE =====
+          esSuplente: true
         }
       }
     }
@@ -63,11 +89,37 @@ export const useSenadores = () => {
     return senadores
       .filter(s => s.suplente && s.suplente !== null)
       .map(s => ({
-        ...s,
-        nombreSuplente: s.suplente,
+        // ===== DATOS DEL TITULAR (heredados) =====
+        id: s.id,
+        seatNumber: s.seatNumber,
+        name: s.name,
+        slug: s.slug,
+        slugTitular: s.slug,
+        party: s.party,
+        partyShort: s.partyShort,
+        partyColor: s.partyColor,
+        department: s.department,
+        distritos: s.distritos,
+        
+        // ===== DATOS DEL SUPLENTE (propios) =====
+        suplente: s.suplente,
+        slugSuplente: s.slugSuplente,
         fotoSuplente: s.fotoSuplente,
-        esSuplente: true,
-        slug: s.slugSuplente
+        fechaNacimientoSuplente: s.fechaNacimientoSuplente || 'No disponible',
+        nacidoEnSuplente: s.nacidoEnSuplente || s.department,
+        ocupacionSuplente: s.ocupacionSuplente || 'No disponible',
+        comiteSuplente: s.comiteSuplente || 'No disponible',
+        cargoSuplente: s.cargoSuplente || 'No disponible',
+        
+        // ===== REDES SOCIALES DEL SUPLENTE =====
+        facebookSuplente: s.facebookSuplente || null,
+        twitterSuplente: s.twitterSuplente || null,
+        instagramSuplente: s.instagramSuplente || null,
+        youtubeSuplente: s.youtubeSuplente || null,
+        tiktokSuplente: s.tiktokSuplente || null,
+        
+        // ===== FLAG =====
+        esSuplente: true
       }))
   }
 
