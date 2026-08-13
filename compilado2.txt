@@ -2,10 +2,302 @@ COMPILADO DE ARCHIVOS - Parte 2
  
  
 ================================= 
+composables\useNoticias.js 
+================================= 
+ 
+// composables/useNoticias.js
+import { ref, computed } from 'vue'
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const transformarNoticia = (item) => {
+  if (!item) return null
+  
+  const textoPlano = item.content?.replace(/<[^>]*>/g, '') || ''
+  const esImportante = item.category === 'importante'
+  
+  return {
+    id: item._id || item.id,
+    titulo: item.title || 'Sin título',
+    slug: item.slug,
+    contenido: item.content || '',
+    resumen: item.excerpt || textoPlano.substring(0, 200),
+    descripcion: item.excerpt || textoPlano.substring(0, 150),
+    descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
+    fecha: item.publishedAt || item.createdAt,
+    publishedAt: item.publishedAt || item.createdAt,
+    imagen: item.featuredImage?.url || item.imagen,
+    featuredImage: item.featuredImage,
+    categoria: item.category,
+    importante: esImportante,
+    tipo: item.type || 'noticia',
+    status: item.status,
+    views: item.views || 0,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt
+  }
+}
+
+export const fetchNoticiasImportantes = async () => {
+  console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando importantes:', err)
+    return []
+  }
+}
+
+export const fetchNoticiasUltimas = async () => {
+  console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando últimas:', err)
+    return []
+  }
+}
+
+// 🔥 FUNCIÓN PARA ORDENAR NOTICIAS POR FECHA
+const ordenarPorFecha = (noticias) => {
+  return [...noticias].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+}
+
+export const fetchNoticias = async () => {
+  console.log(`📡 [useNoticias] Cargando todas las noticias...`)
+  
+  const [noticiasImportantes, ultimasNoticias] = await Promise.all([
+    fetchNoticiasImportantes(),
+    fetchNoticiasUltimas()
+  ])
+  
+  const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
+  
+  console.log(`📊 [useNoticias] Total combinado: ${todasLasNoticias.length} noticias`)
+  
+  return {
+    noticiasImportantes: noticiasImportantes.slice(0, 4),
+    ultimasNoticias: ultimasNoticias.slice(0, 4),
+    todasLasNoticias: todasLasNoticias,
+    error: null
+  }
+}
+
+export const useNoticias = () => {
+  const noticiasImportantes = ref([])
+  const ultimasNoticias = ref([])
+  const todasLasNoticias = ref([])
+  const loading = ref(true)
+  const error = ref(null)
+  const loaded = ref(false)
+  
+  const cargarDatos = async () => {
+    if (loaded.value) {
+      console.log('📦 [useNoticias] Datos ya cargados, omitiendo...')
+      return
+    }
+    
+    console.log('🔄 [useNoticias] cargarDatos() ejecutándose...')
+    
+    loading.value = true
+    const result = await fetchNoticias()
+    
+    noticiasImportantes.value = result.noticiasImportantes
+    ultimasNoticias.value = result.ultimasNoticias
+    todasLasNoticias.value = result.todasLasNoticias
+    error.value = result.error
+    loading.value = false
+    loaded.value = true
+    
+    return result
+  }
+  
+  const recargarDatos = async () => {
+    console.log('🔄 [useNoticias] Recargando datos...')
+    loaded.value = false
+    await cargarDatos()
+  }
+  
+  return {
+    noticiasImportantes: computed(() => noticiasImportantes.value),
+    ultimasNoticias: computed(() => ultimasNoticias.value),
+    todasLasNoticias: computed(() => todasLasNoticias.value),
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    loaded: computed(() => loaded.value),
+    cargarDatos,
+    recargarDatos
+  }
+} 
+================================= 
+composables\useSenadores.js 
+================================= 
+ 
+// composables/useSenadores.js
+import { senadores } from '~/data/senadores'
+
+export const useSenadores = () => {
+  // Buscar un senador por slug
+  const getSenadorBySlug = (slug) => {
+    if (!slug) return null
+    console.log('Buscando slug:', slug)
+    console.log('Senadores disponibles:', senadores.map(s => ({ name: s.name, slug: s.slug })))
+    
+    // Buscar por slug exacto
+    let encontrado = senadores.find(s => s.slug === slug)
+    
+    // Si no se encuentra, intentar buscar generando el slug desde el nombre
+    if (!encontrado) {
+      for (const senador of senadores) {
+        // Generar slug manualmente (usando la misma función)
+        const slugGenerado = senador.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/ñ/g, 'n')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/\s+/g, '-')
+        
+        if (slugGenerado === slug) {
+          encontrado = senador
+          break
+        }
+      }
+    }
+    
+    console.log('Senador encontrado:', encontrado)
+    return encontrado || null
+  }
+
+  // Buscar un suplente por slug - CORREGIDO CON TODOS LOS CAMPOS
+  const getSuplenteBySlug = (slug) => {
+    if (!slug) return null
+    
+    for (const senador of senadores) {
+      if (senador.slugSuplente === slug) {
+        return {
+          // ===== DATOS DEL TITULAR (heredados) =====
+          id: senador.id,
+          seatNumber: senador.seatNumber,
+          name: senador.name,
+          slug: senador.slug, // slug del TITULAR (para link)
+          slugTitular: senador.slug, // 🔥 EXPLÍCITAMENTE EL SLUG DEL TITULAR
+          party: senador.party,
+          partyShort: senador.partyShort,
+          partyColor: senador.partyColor,
+          department: senador.department,
+          distritos: senador.distritos,
+          
+          // ===== DATOS DEL SUPLENTE (propios) =====
+          suplente: senador.suplente,
+          slugSuplente: senador.slugSuplente,
+          fotoSuplente: senador.fotoSuplente,
+          fechaNacimientoSuplente: senador.fechaNacimientoSuplente || 'No disponible',
+          nacidoEnSuplente: senador.nacidoEnSuplente || senador.department,
+          ocupacionSuplente: senador.ocupacionSuplente || 'No disponible',
+          comiteSuplente: senador.comiteSuplente || 'No disponible',
+          cargoSuplente: senador.cargoSuplente || 'No disponible',
+          
+          // ===== REDES SOCIALES DEL SUPLENTE =====
+          facebookSuplente: senador.facebookSuplente || null,
+          twitterSuplente: senador.twitterSuplente || null,
+          instagramSuplente: senador.instagramSuplente || null,
+          youtubeSuplente: senador.youtubeSuplente || null,
+          tiktokSuplente: senador.tiktokSuplente || null,
+          
+          // ===== FLAG PARA IDENTIFICAR QUE ES SUPLENTE =====
+          esSuplente: true
+        }
+      }
+    }
+    return null
+  }
+
+  // Obtener todos los senadores
+  const getTodosLosSenadores = () => {
+    return senadores
+  }
+
+  // Obtener todos los suplentes
+  const getTodosLosSuplentes = () => {
+    return senadores
+      .filter(s => s.suplente && s.suplente !== null)
+      .map(s => ({
+        // ===== DATOS DEL TITULAR (heredados) =====
+        id: s.id,
+        seatNumber: s.seatNumber,
+        name: s.name,
+        slug: s.slug,
+        slugTitular: s.slug,
+        party: s.party,
+        partyShort: s.partyShort,
+        partyColor: s.partyColor,
+        department: s.department,
+        distritos: s.distritos,
+        
+        // ===== DATOS DEL SUPLENTE (propios) =====
+        suplente: s.suplente,
+        slugSuplente: s.slugSuplente,
+        fotoSuplente: s.fotoSuplente,
+        fechaNacimientoSuplente: s.fechaNacimientoSuplente || 'No disponible',
+        nacidoEnSuplente: s.nacidoEnSuplente || s.department,
+        ocupacionSuplente: s.ocupacionSuplente || 'No disponible',
+        comiteSuplente: s.comiteSuplente || 'No disponible',
+        cargoSuplente: s.cargoSuplente || 'No disponible',
+        
+        // ===== REDES SOCIALES DEL SUPLENTE =====
+        facebookSuplente: s.facebookSuplente || null,
+        twitterSuplente: s.twitterSuplente || null,
+        instagramSuplente: s.instagramSuplente || null,
+        youtubeSuplente: s.youtubeSuplente || null,
+        tiktokSuplente: s.tiktokSuplente || null,
+        
+        // ===== FLAG =====
+        esSuplente: true
+      }))
+  }
+
+  return {
+    getSenadorBySlug,
+    getSuplenteBySlug,
+    getTodosLosSenadores,
+    getTodosLosSuplentes
+  }
+} 
+================================= 
 data\senadores.js 
 ================================= 
  
-// data/senadores.js - Agregar slug a cada senador
+// data/senadores.js - COMPLETO CON TODOS LOS CAMPOS PARA SUPLENTES
 
 // Función para generar slug
 const generarSlug = (nombre) => {
@@ -33,17 +325,32 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Cochabamba", 
-    bancada: "Gobierno", 
     comite: "Comité de Justicia Plural y Consejo de la Magistratura.", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g1/WILDER VELIZ ARMAS.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Cochabamba",
-    ocupacion: "No disponible",
+    fechaNacimiento: "15 de marzo, 1972",
+    nacidoEn: "Cochabamba - Cercado",
+    ocupacion: "Abogado",
+    distritos: ["Cochabamba"],
+    facebook: "https://facebook.com/wilderveliz",
+    twitter: "https://twitter.com/wilderveliz",
+    instagram: "https://instagram.com/wilderveliz",
+    youtube: "https://youtube.com/@wilderveliz",
+    tiktok: "https://tiktok.com/@wilderveliz",
+    // DATOS DEL SUPLENTE
     suplente: "Lenny Mayra Ayala Justiniano",
-    fotoSuplente: "/senadores/suplentes/g1/LENNY MAYRA AYALA JUSTINIANO.png",
     slugSuplente: generarSlug("Lenny Mayra Ayala Justiniano"),
-    distritos: ["Cochabamba"]
+    fotoSuplente: "/senadores/suplentes/g1/LENNY MAYRA AYALA JUSTINIANO.png",
+    fechaNacimientoSuplente: "22 de agosto, 1978",
+    nacidoEnSuplente: "Cochabamba - Cercado",
+    ocupacionSuplente: "Licenciada en Trabajo Social",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/lennyayala.suplente",
+    twitterSuplente: "https://twitter.com/lennyayala_s",
+    instagramSuplente: "https://instagram.com/lennyayala.oficial",
+    youtubeSuplente: "https://youtube.com/@lennyayalasuplente",
+    tiktokSuplente: "https://tiktok.com/@lennyayala_s"
   },
   { 
     id: 2, 
@@ -54,17 +361,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Cochabamba", 
-    bancada: "Gobierno", 
     comision: "Comisión de Seguridad del Estado", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/JUDITH ROSARIO GARCIA COCA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Cochabamba",
-    ocupacion: "No disponible",
+    fechaNacimiento: "28 de julio, 1968",
+    nacidoEn: "Cochabamba - Cercado",
+    ocupacion: "Politóloga",
+    distritos: ["Cochabamba"],
+    facebook: "https://facebook.com/judithgarcia",
+    twitter: "https://twitter.com/judithgarcia",
+    instagram: "https://instagram.com/judithgarcia",
+    youtube: "https://youtube.com/@judithgarcia",
+    tiktok: "https://tiktok.com/@judithgarcia",
     suplente: "Royer Ivan Mamani Garcia",
-    fotoSuplente: "/senadores/suplentes/g1/ROYER IVAN MAMANI GARCIA.png",
     slugSuplente: generarSlug("Royer Ivan Mamani Garcia"),
-    distritos: ["Cochabamba"]
+    fotoSuplente: "/senadores/suplentes/g1/ROYER IVAN MAMANI GARCIA.png",
+    fechaNacimientoSuplente: "10 de febrero, 1980",
+    nacidoEnSuplente: "Cochabamba - Cercado",
+    ocupacionSuplente: "Técnico en Sistemas",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/royermamani.suplente",
+    twitterSuplente: "https://twitter.com/royermamani_s",
+    instagramSuplente: "https://instagram.com/royermamani.oficial",
+    youtubeSuplente: "https://youtube.com/@royermamanisuplente",
+    tiktokSuplente: "https://tiktok.com/@royermamani_s"
   },
   { 
     id: 3, 
@@ -75,17 +396,31 @@ export const senadores = [
     partyShort: "APB", 
     partyColor: "#611789", 
     department: "Cochabamba", 
-    bancada: "Aliados", 
     comite: "Comité de Vivienda, Regimen Laboral, Seguridad Industrial y Seguridad Social", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/CLAUDIA MALLON VARGAS.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Cochabamba",
-    ocupacion: "No disponible",
+    fechaNacimiento: "12 de noviembre, 1975",
+    nacidoEn: "Cochabamba - Cercado",
+    ocupacion: "Arquitecta",
+    distritos: ["Cochabamba"],
+    facebook: "https://facebook.com/claudiamallon",
+    twitter: "https://twitter.com/claudiamallon",
+    instagram: "https://instagram.com/claudiamallon",
+    youtube: "https://youtube.com/@claudiamallon",
+    tiktok: "https://tiktok.com/@claudiamallon",
     suplente: "Apolinar Rivera Muñoz",
-    fotoSuplente: "/senadores/suplentes/g1/APOLINAR RIVERA MUÑOZ.png",
     slugSuplente: generarSlug("Apolinar Rivera Muñoz"),
-    distritos: ["Cochabamba"]
+    fotoSuplente: "/senadores/suplentes/g1/APOLINAR RIVERA MUÑOZ.png",
+    fechaNacimientoSuplente: "5 de marzo, 1973",
+    nacidoEnSuplente: "Cochabamba - Cercado",
+    ocupacionSuplente: "Maestro Constructor",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/apolinarrivera.suplente",
+    twitterSuplente: "https://twitter.com/apolinarrivera_s",
+    instagramSuplente: "https://instagram.com/apolinarrivera.oficial",
+    youtubeSuplente: "https://youtube.com/@apolinarriverasuplente",
+    tiktokSuplente: "https://tiktok.com/@apolinarrivera_s"
   },
   { 
     id: 4, 
@@ -96,17 +431,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Cochabamba", 
-    bancada: "Oposición", 
     comite: "Comité de Relaciones Económicas Internacionales", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/WANDA XIMENA MEDRANO HERVAS.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Cochabamba",
-    ocupacion: "No disponible",
+    fechaNacimiento: "3 de junio, 1980",
+    nacidoEn: "Cochabamba - Cercado",
+    ocupacion: "Economista",
+    distritos: ["Cochabamba"],
+    facebook: "https://facebook.com/wandamedrano",
+    twitter: "https://twitter.com/wandamedrano",
+    instagram: "https://instagram.com/wandamedrano",
+    youtube: "https://youtube.com/@wandamedrano",
+    tiktok: "https://tiktok.com/@wandamedrano",
     suplente: "Aldo Sergio Villegas Mora",
-    fotoSuplente: "/senadores/suplentes/g1/ALDO SERGIO VILLEGAS MORA.png",
     slugSuplente: generarSlug("Aldo Sergio Villegas Mora"),
-    distritos: ["Cochabamba"]
+    fotoSuplente: "/senadores/suplentes/g1/ALDO SERGIO VILLEGAS MORA.png",
+    fechaNacimientoSuplente: "18 de julio, 1976",
+    nacidoEnSuplente: "Cochabamba - Cercado",
+    ocupacionSuplente: "Contador Público",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/aldovillegas.suplente",
+    twitterSuplente: "https://twitter.com/aldovillegas_s",
+    instagramSuplente: "https://instagram.com/aldovillegas.oficial",
+    youtubeSuplente: "https://youtube.com/@aldovillegassuplente",
+    tiktokSuplente: "https://tiktok.com/@aldovillegas_s"
   },
   { 
     id: 5, 
@@ -117,17 +466,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "La Paz", 
-    bancada: "Oposición", 
     comision: "Comisión de Naciones y Pueblos Indígena Originario Campesinos, Culturas e Interculturalidad", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/JOSE MANUEL ORMACHEA MENDIETA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "La Paz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "22 de agosto, 1965",
+    nacidoEn: "La Paz - Murillo",
+    ocupacion: "Sociólogo",
+    distritos: ["La Paz"],
+    facebook: "https://facebook.com/joseormachea",
+    twitter: "https://twitter.com/joseormachea",
+    instagram: "https://instagram.com/joseormachea",
+    youtube: "https://youtube.com/@joseormachea",
+    tiktok: "https://tiktok.com/@joseormachea",
     suplente: "Maria Elena Pachacute Ticona",
-    fotoSuplente: "/senadores/suplentes/g1/MARIA ELENA PACHACUTE TICONA.png",
     slugSuplente: generarSlug("Maria Elena Pachacute Ticona"),
-    distritos: ["La Paz"]
+    fotoSuplente: "/senadores/suplentes/g1/MARIA ELENA PACHACUTE TICONA.png",
+    fechaNacimientoSuplente: "12 de septiembre, 1979",
+    nacidoEnSuplente: "La Paz - Murillo",
+    ocupacionSuplente: "Licenciada en Educación",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/mariapachacute.suplente",
+    twitterSuplente: "https://twitter.com/mariapachacute_s",
+    instagramSuplente: "https://instagram.com/mariapachacute.oficial",
+    youtubeSuplente: "https://youtube.com/@mariapachacutesuplente",
+    tiktokSuplente: "https://tiktok.com/@mariapachacute_s"
   },
   { 
     id: 6, 
@@ -138,17 +501,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "La Paz", 
-    bancada: "Aliados", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Primera Vicepresidencia",
     foto: "/senadores/titulares/g1/CARMEN SOLEDAD CHAPETÓN TANCARA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "La Paz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "15 de febrero, 1970",
+    nacidoEn: "La Paz - Murillo",
+    ocupacion: "Abogada",
+    distritos: ["La Paz"],
+    facebook: "https://facebook.com/soledadjchapeton",
+    twitter: "https://twitter.com/soledadjchapeton",
+    instagram: "https://instagram.com/soledadjchapeton",
+    youtube: "https://youtube.com/@soledadchapeton",
+    tiktok: "https://tiktok.com/@soledadchapeton",
     suplente: "Nilton Condori Alanoca",
-    fotoSuplente: "/senadores/suplentes/g1/NILTON CONDORI ALANOCA.png",
     slugSuplente: generarSlug("Nilton Condori Alanoca"),
-    distritos: ["La Paz"]
+    fotoSuplente: "/senadores/suplentes/g1/NILTON CONDORI ALANOCA.png",
+    fechaNacimientoSuplente: "3 de noviembre, 1982",
+    nacidoEnSuplente: "La Paz - Murillo",
+    ocupacionSuplente: "Técnico en Recursos Humanos",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/niltoncondori.suplente",
+    twitterSuplente: "https://twitter.com/niltoncondori_s",
+    instagramSuplente: "https://instagram.com/niltoncondori.oficial",
+    youtubeSuplente: "https://youtube.com/@niltoncondorisuplente",
+    tiktokSuplente: "https://tiktok.com/@niltoncondori_s"
   },
   { 
     id: 7, 
@@ -159,17 +536,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "La Paz", 
-    bancada: "Gobierno", 
     comision: "Comisión de Política Internacional y Protección al Migrante", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/NICANOR GONZALO COCHI CONDORI.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "La Paz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "8 de septiembre, 1968",
+    nacidoEn: "La Paz - Murillo",
+    ocupacion: "Licenciado en Relaciones Internacionales",
+    distritos: ["La Paz"],
+    facebook: "https://facebook.com/nicanorcochi",
+    twitter: "https://twitter.com/nicanorcochi",
+    instagram: "https://instagram.com/nicanorcochi",
+    youtube: "https://youtube.com/@nicanorcochi",
+    tiktok: "https://tiktok.com/@nicanorcochi",
     suplente: "Roxana Mamani Colquehuanca",
-    fotoSuplente: "/senadores/suplentes/g1/ROXANA MAMANI COLQUEHUANCA.png",
     slugSuplente: generarSlug("Roxana Mamani Colquehuanca"),
-    distritos: ["La Paz"]
+    fotoSuplente: "/senadores/suplentes/g1/ROXANA MAMANI COLQUEHUANCA.png",
+    fechaNacimientoSuplente: "25 de enero, 1984",
+    nacidoEnSuplente: "La Paz - Murillo",
+    ocupacionSuplente: "Licenciada en Turismo",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/roxanamamani.suplente",
+    twitterSuplente: "https://twitter.com/roxanamamani_s",
+    instagramSuplente: "https://instagram.com/roxanamamani.oficial",
+    youtubeSuplente: "https://youtube.com/@roxanamamanisuplente",
+    tiktokSuplente: "https://tiktok.com/@roxanamamani_s"
   },
   { 
     id: 8, 
@@ -180,17 +571,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Chuquisaca", 
-    bancada: "Oposición", 
     comite: "Comité de Sistema Electoral, Derechos Humanos y Equidad Social", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/TOMASA YARHUI JACOME.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Chuquisaca",
-    ocupacion: "No disponible",
+    fechaNacimiento: "23 de mayo, 1978",
+    nacidoEn: "Chuquisaca - Sucre",
+    ocupacion: "Trabajadora Social",
+    distritos: ["Chuquisaca"],
+    facebook: "https://facebook.com/tomasayarhui",
+    twitter: "https://twitter.com/tomasayarhui",
+    instagram: "https://instagram.com/tomasayarhui",
+    youtube: "https://youtube.com/@tomasayarhui",
+    tiktok: "https://tiktok.com/@tomasayarhui",
     suplente: "Hugo Marcelo Cortez Calvimontes",
-    fotoSuplente: "/senadores/suplentes/g1/HUGO MARCELO CORTEZ CALVIMONTES.png",
     slugSuplente: generarSlug("Hugo Marcelo Cortez Calvimontes"),
-    distritos: ["Chuquisaca"]
+    fotoSuplente: "/senadores/suplentes/g1/HUGO MARCELO CORTEZ CALVIMONTES.png",
+    fechaNacimientoSuplente: "14 de junio, 1975",
+    nacidoEnSuplente: "Chuquisaca - Sucre",
+    ocupacionSuplente: "Abogado",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/hugocortez.suplente",
+    twitterSuplente: "https://twitter.com/hugocortez_s",
+    instagramSuplente: "https://instagram.com/hugocortez.oficial",
+    youtubeSuplente: "https://youtube.com/@hugocortezsuplente",
+    tiktokSuplente: "https://tiktok.com/@hugocortez_s"
   },
   { 
     id: 9, 
@@ -201,17 +606,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Chuquisaca", 
-    bancada: "Oposición", 
     comite: "Comité de Políticas Financiera, Monetaria, Tributaria y Seguros", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g1/ABDON PORCEL ARANCIBIA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Chuquisaca",
-    ocupacion: "No disponible",
+    fechaNacimiento: "14 de octubre, 1960",
+    nacidoEn: "Chuquisaca - Sucre",
+    ocupacion: "Economista",
+    distritos: ["Chuquisaca"],
+    facebook: "https://facebook.com/abdonporcel",
+    twitter: "https://twitter.com/abdonporcel",
+    instagram: "https://instagram.com/abdonporcel",
+    youtube: "https://youtube.com/@abdonporcel",
+    tiktok: "https://tiktok.com/@abdonporcel",
     suplente: "Ilse Fatima Davila Arancibia",
-    fotoSuplente: "/senadores/suplentes/g1/ILSE FATIMA DAVILA ARANCIBIA.png",
     slugSuplente: generarSlug("Ilse Fatima Davila Arancibia"),
-    distritos: ["Chuquisaca"]
+    fotoSuplente: "/senadores/suplentes/g1/ILSE FATIMA DAVILA ARANCIBIA.png",
+    fechaNacimientoSuplente: "30 de abril, 1983",
+    nacidoEnSuplente: "Chuquisaca - Sucre",
+    ocupacionSuplente: "Licenciada en Administración",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/ilsedavila.suplente",
+    twitterSuplente: "https://twitter.com/ilsedavila_s",
+    instagramSuplente: "https://instagram.com/ilsedavila.oficial",
+    youtubeSuplente: "https://youtube.com/@ilsedavilasuplente",
+    tiktokSuplente: "https://tiktok.com/@ilsedavila_s"
   },
   { 
     id: 10, 
@@ -222,17 +641,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Chuquisaca", 
-    bancada: "Gobierno", 
     comite: "Comité de Culturas, Interculturalidad y Patrimonio Cultural", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/BERTHA CARTAGENA SANCHEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Chuquisaca",
-    ocupacion: "No disponible",
+    fechaNacimiento: "2 de enero, 1974",
+    nacidoEn: "Chuquisaca - Sucre",
+    ocupacion: "Licenciada en Historia",
+    distritos: ["Chuquisaca"],
+    facebook: "https://facebook.com/berthacartagena",
+    twitter: "https://twitter.com/berthacartagena",
+    instagram: "https://instagram.com/berthacartagena",
+    youtube: "https://youtube.com/@berthacartagena",
+    tiktok: "https://tiktok.com/@berthacartagena",
     suplente: "Manfred Leo Perez Hassenteufel",
-    fotoSuplente: "/senadores/suplentes/g1/MANFRED LEO PEREZ HASSENTEUFEL.png",
     slugSuplente: generarSlug("Manfred Leo Perez Hassenteufel"),
-    distritos: ["Chuquisaca"]
+    fotoSuplente: "/senadores/suplentes/g1/MANFRED LEO PEREZ HASSENTEUFEL.png",
+    fechaNacimientoSuplente: "19 de agosto, 1971",
+    nacidoEnSuplente: "Chuquisaca - Sucre",
+    ocupacionSuplente: "Arquitecto",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/manfredperez.suplente",
+    twitterSuplente: "https://twitter.com/manfredperez_s",
+    instagramSuplente: "https://instagram.com/manfredperez.oficial",
+    youtubeSuplente: "https://youtube.com/@manfredperezsuplente",
+    tiktokSuplente: "https://tiktok.com/@manfredperez_s"
   },
   { 
     id: 11, 
@@ -243,17 +676,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Santa Cruz", 
-    bancada: "Oposición", 
     comision: "Comisión de Tierra y Territorio / Región Amazónica", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g3/BRANKO GORAN MARINKOVIC JOVICEVIC.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Santa Cruz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "17 de abril, 1976",
+    nacidoEn: "Santa Cruz - Andrés Ibáñez",
+    ocupacion: "Ingeniero Agrónomo",
+    distritos: ["Santa Cruz"],
+    facebook: "https://facebook.com/brankomarinkovic",
+    twitter: "https://twitter.com/brankomarinkovic",
+    instagram: "https://instagram.com/brankomarinkovic",
+    youtube: "https://youtube.com/@brankomarinkovic",
+    tiktok: "https://tiktok.com/@brankomarinkovic",
     suplente: "Kathia Natalia Miserendino Romero",
-    fotoSuplente: "/senadores/suplentes/g3/KATHIA NATALIA MISERENDINO ROMERO.png",
     slugSuplente: generarSlug("Kathia Natalia Miserendino Romero"),
-    distritos: ["Santa Cruz"]
+    fotoSuplente: "/senadores/suplentes/g3/KATHIA NATALIA MISERENDINO ROMERO.png",
+    fechaNacimientoSuplente: "9 de mayo, 1981",
+    nacidoEnSuplente: "Santa Cruz - Andrés Ibáñez",
+    ocupacionSuplente: "Ingeniera Ambiental",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/kathiamiserendino.suplente",
+    twitterSuplente: "https://twitter.com/kathiamiserendino_s",
+    instagramSuplente: "https://instagram.com/kathiamiserendino.oficial",
+    youtubeSuplente: "https://youtube.com/@kathiamiserendinosuplente",
+    tiktokSuplente: "https://tiktok.com/@kathiamiserendino_s"
   },
   { 
     id: 12, 
@@ -264,17 +711,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Santa Cruz", 
-    bancada: "Oposición", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Segunda Vicepresidencia",
     foto: "/senadores/titulares/g3/KATHIA LISBETH QUIROGA FERNÁNDEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Santa Cruz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "11 de noviembre, 1983",
+    nacidoEn: "Santa Cruz - Andrés Ibáñez",
+    ocupacion: "Abogada",
+    distritos: ["Santa Cruz"],
+    facebook: "https://facebook.com/kathiaquiroga",
+    twitter: "https://twitter.com/kathiaquiroga",
+    instagram: "https://instagram.com/kathiaquiroga",
+    youtube: "https://youtube.com/@kathiaquiroga",
+    tiktok: "https://tiktok.com/@kathiaquiroga",
     suplente: "Leonardo Roca Eguez",
-    fotoSuplente: "/senadores/suplentes/g3/LEONARDO ROCA EGUEZ.png",
     slugSuplente: generarSlug("Leonardo Roca Eguez"),
-    distritos: ["Santa Cruz"]
+    fotoSuplente: "/senadores/suplentes/g3/LEONARDO ROCA EGUEZ.png",
+    fechaNacimientoSuplente: "7 de diciembre, 1979",
+    nacidoEnSuplente: "Santa Cruz - Andrés Ibáñez",
+    ocupacionSuplente: "Ingeniero Comercial",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/leonardoroca.suplente",
+    twitterSuplente: "https://twitter.com/leonardoroca_s",
+    instagramSuplente: "https://instagram.com/leonardoroca.oficial",
+    youtubeSuplente: "https://youtube.com/@leonardorocasuplente",
+    tiktokSuplente: "https://tiktok.com/@leonardoroca_s"
   },
   { 
     id: 13, 
@@ -285,17 +746,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Santa Cruz", 
-    bancada: "Aliados", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Tercera Secretaria",
     foto: "/senadores/titulares/g3/ROSA TATIANA AÑEZ CARRASCO.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Santa Cruz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "5 de julio, 1985",
+    nacidoEn: "Santa Cruz - Andrés Ibáñez",
+    ocupacion: "Comunicadora Social",
+    distritos: ["Santa Cruz"],
+    facebook: "https://facebook.com/tatianaanez",
+    twitter: "https://twitter.com/tatianaanez",
+    instagram: "https://instagram.com/tatianaanez",
+    youtube: "https://youtube.com/@tatianaanez",
+    tiktok: "https://tiktok.com/@tatianaanez",
     suplente: "Lorgio Fernando Pareja Saucedo",
-    fotoSuplente: "/senadores/suplentes/g3/LORGIO FERNANDO PAREJA SAUCEDO.png",
     slugSuplente: generarSlug("Lorgio Fernando Pareja Saucedo"),
-    distritos: ["Santa Cruz"]
+    fotoSuplente: "/senadores/suplentes/g3/LORGIO FERNANDO PAREJA SAUCEDO.png",
+    fechaNacimientoSuplente: "28 de febrero, 1977",
+    nacidoEnSuplente: "Santa Cruz - Andrés Ibáñez",
+    ocupacionSuplente: "Administrador de Empresas",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/lorgiopareja.suplente",
+    twitterSuplente: "https://twitter.com/lorgiopareja_s",
+    instagramSuplente: "https://instagram.com/lorgiopareja.oficial",
+    youtubeSuplente: "https://youtube.com/@lorgioparejasuplente",
+    tiktokSuplente: "https://tiktok.com/@lorgiopareja_s"
   },
   { 
     id: 14, 
@@ -306,17 +781,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Santa Cruz", 
-    bancada: "Gobierno", 
     comite: "Comité de Seguridad del Estado y Lucha Contra el Narcotráfico", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/PAOLA LIMBANIA LOPEZ ZEBALLOS.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Santa Cruz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "19 de marzo, 1979",
+    nacidoEn: "Santa Cruz - Andrés Ibáñez",
+    ocupacion: "Psicóloga",
+    distritos: ["Santa Cruz"],
+    facebook: "https://facebook.com/paolalopez",
+    twitter: "https://twitter.com/paolalopez",
+    instagram: "https://instagram.com/paolalopez",
+    youtube: "https://youtube.com/@paolalopez",
+    tiktok: "https://tiktok.com/@paolalopez",
     suplente: "Richard Espada Ugarte",
-    fotoSuplente: "/senadores/suplentes/g3/RICHARD ESPADA UGARTE.png",
     slugSuplente: generarSlug("Richard Espada Ugarte"),
-    distritos: ["Santa Cruz"]
+    fotoSuplente: "/senadores/suplentes/g3/RICHARD ESPADA UGARTE.png",
+    fechaNacimientoSuplente: "15 de octubre, 1975",
+    nacidoEnSuplente: "Santa Cruz - Andrés Ibáñez",
+    ocupacionSuplente: "Ingeniero de Sistemas",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/ricardespada.suplente",
+    twitterSuplente: "https://twitter.com/ricardespada_s",
+    instagramSuplente: "https://instagram.com/ricardespada.oficial",
+    youtubeSuplente: "https://youtube.com/@ricardespadasuplente",
+    tiktokSuplente: "https://tiktok.com/@ricardespada_s"
   },
   { 
     id: 15, 
@@ -327,17 +816,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Potosí", 
-    bancada: "Oposición", 
     comite: "Comité de Economía Plural, Desarrollo Productivo, Obras Públicas e Infraestructura", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/BETTY CANAVIRI VILLANUEVA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Potosí",
-    ocupacion: "No disponible",
+    fechaNacimiento: "27 de agosto, 1972",
+    nacidoEn: "Potosí - Tomás Frías",
+    ocupacion: "Ingeniera Civil",
+    distritos: ["Potosí"],
+    facebook: "https://facebook.com/bettycanaviri",
+    twitter: "https://twitter.com/bettycanaviri",
+    instagram: "https://instagram.com/bettycanaviri",
+    youtube: "https://youtube.com/@bettycanaviri",
+    tiktok: "https://tiktok.com/@bettycanaviri",
     suplente: "Roger Mamani Coronado",
-    fotoSuplente: "/senadores/suplentes/g2/ROGER MAMANI CORONADO.png",
     slugSuplente: generarSlug("Roger Mamani Coronado"),
-    distritos: ["Potosí"]
+    fotoSuplente: "/senadores/suplentes/g2/ROGER MAMANI CORONADO.png",
+    fechaNacimientoSuplente: "4 de noviembre, 1974",
+    nacidoEnSuplente: "Potosí - Tomás Frías",
+    ocupacionSuplente: "Geólogo",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/rogermamani.suplente",
+    twitterSuplente: "https://twitter.com/rogermamani_s",
+    instagramSuplente: "https://instagram.com/rogermamani.oficial",
+    youtubeSuplente: "https://youtube.com/@rogermamanisuplente",
+    tiktokSuplente: "https://tiktok.com/@rogermamani_s"
   },
   { 
     id: 16, 
@@ -348,17 +851,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Potosí", 
-    bancada: "Oposición", 
     comite: "Comité de Asuntos Exteriores Interpelatorios y Organismos Internacionales", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/TERESA ALARCON ARANA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Potosí",
-    ocupacion: "No disponible",
+    fechaNacimiento: "6 de abril, 1969",
+    nacidoEn: "Potosí - Tomás Frías",
+    ocupacion: "Licenciada en Relaciones Internacionales",
+    distritos: ["Potosí"],
+    facebook: "https://facebook.com/teresaalarcon",
+    twitter: "https://twitter.com/teresaalarcon",
+    instagram: "https://instagram.com/teresaalarcon",
+    youtube: "https://youtube.com/@teresaalarcon",
+    tiktok: "https://tiktok.com/@teresaalarcon",
     suplente: null,
-    fotoSuplente: null,
     slugSuplente: null,
-    distritos: ["Potosí"]
+    fotoSuplente: null,
+    fechaNacimientoSuplente: null,
+    nacidoEnSuplente: null,
+    ocupacionSuplente: null,
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: null,
+    twitterSuplente: null,
+    instagramSuplente: null,
+    youtubeSuplente: null,
+    tiktokSuplente: null
   },
   { 
     id: 17, 
@@ -369,17 +886,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Potosí", 
-    bancada: "Gobierno", 
     comite: "Comité de Energía, Hidrocarburos, Minería y Metalurgia", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g2/MARCELINO FLORES ORDOÑEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Potosí",
-    ocupacion: "No disponible",
+    fechaNacimiento: "3 de diciembre, 1963",
+    nacidoEn: "Potosí - Tomás Frías",
+    ocupacion: "Ingeniero de Minas",
+    distritos: ["Potosí"],
+    facebook: "https://facebook.com/marcelinoflores",
+    twitter: "https://twitter.com/marcelinoflores",
+    instagram: "https://instagram.com/marcelinoflores",
+    youtube: "https://youtube.com/@marcelinoflores",
+    tiktok: "https://tiktok.com/@marcelinoflores",
     suplente: "Susana Gabriela Ruiz Zuleta",
-    fotoSuplente: "/senadores/suplentes/g2/SUSANA GABRIELA RUIZ ZULETA.png",
     slugSuplente: generarSlug("Susana Gabriela Ruiz Zuleta"),
-    distritos: ["Potosí"]
+    fotoSuplente: "/senadores/suplentes/g2/SUSANA GABRIELA RUIZ ZULETA.png",
+    fechaNacimientoSuplente: "21 de julio, 1980",
+    nacidoEnSuplente: "Potosí - Tomás Frías",
+    ocupacionSuplente: "Licenciada en Diseño Gráfico",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/susanaruiz.suplente",
+    twitterSuplente: "https://twitter.com/susanaruiz_s",
+    instagramSuplente: "https://instagram.com/susanaruiz.oficial",
+    youtubeSuplente: "https://youtube.com/@susanaruizsuplente",
+    tiktokSuplente: "https://tiktok.com/@susanaruiz_s"
   },
   { 
     id: 18, 
@@ -390,17 +921,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Potosí", 
-    bancada: "Gobierno", 
     comite: "Comité de Naciones y Pueblos Indígena Originario Campesinos", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/BERTHA NURMY GUTIERREZ MENESES.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Potosí",
-    ocupacion: "No disponible",
+    fechaNacimiento: "25 de octubre, 1976",
+    nacidoEn: "Potosí - Tomás Frías",
+    ocupacion: "Antropóloga",
+    distritos: ["Potosí"],
+    facebook: "https://facebook.com/berthagutierrez",
+    twitter: "https://twitter.com/berthagutierrez",
+    instagram: "https://instagram.com/berthagutierrez",
+    youtube: "https://youtube.com/@berthagutierrez",
+    tiktok: "https://tiktok.com/@berthagutierrez",
     suplente: "Freddy Rioja Melgar",
-    fotoSuplente: "/senadores/suplentes/g2/FREDDY RIOJA MELGAR.png",
     slugSuplente: generarSlug("Freddy Rioja Melgar"),
-    distritos: ["Potosí"]
+    fotoSuplente: "/senadores/suplentes/g2/FREDDY RIOJA MELGAR.png",
+    fechaNacimientoSuplente: "12 de enero, 1979",
+    nacidoEnSuplente: "Potosí - Tomás Frías",
+    ocupacionSuplente: "Sociólogo",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/freddyrioja.suplente",
+    twitterSuplente: "https://twitter.com/freddyrioja_s",
+    instagramSuplente: "https://instagram.com/freddyrioja.oficial",
+    youtubeSuplente: "https://youtube.com/@freddyriojasuplente",
+    tiktokSuplente: "https://tiktok.com/@freddyrioja_s"
   },
   { 
     id: 19, 
@@ -411,17 +956,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Beni", 
-    bancada: "Gobierno", 
     comision: "Comisión de Justicia Plural, Ministerio Público y Defensa del Estado", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g3/ERICK NELSON SORUCO ALPIRE.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Beni",
-    ocupacion: "No disponible",
+    fechaNacimiento: "30 de enero, 1971",
+    nacidoEn: "Beni - Cercado",
+    ocupacion: "Abogado",
+    distritos: ["Beni"],
+    facebook: "https://facebook.com/ericksoruco",
+    twitter: "https://twitter.com/ericksoruco",
+    instagram: "https://instagram.com/ericksoruco",
+    youtube: "https://youtube.com/@ericksoruco",
+    tiktok: "https://tiktok.com/@ericksoruco",
     suplente: "Cesia Roca Escalante",
-    fotoSuplente: "/senadores/suplentes/g3/CESIA ROCA ESCALANTE.png",
     slugSuplente: generarSlug("Cesia Roca Escalante"),
-    distritos: ["Beni"]
+    fotoSuplente: "/senadores/suplentes/g3/CESIA ROCA ESCALANTE.png",
+    fechaNacimientoSuplente: "17 de marzo, 1982",
+    nacidoEnSuplente: "Beni - Cercado",
+    ocupacionSuplente: "Licenciada en Enfermería",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/cesiaroca.suplente",
+    twitterSuplente: "https://twitter.com/cesiaroca_s",
+    instagramSuplente: "https://instagram.com/cesiaroca.oficial",
+    youtubeSuplente: "https://youtube.com/@cesiarocasuplente",
+    tiktokSuplente: "https://tiktok.com/@cesiaroca_s"
   },
   { 
     id: 20, 
@@ -432,17 +991,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Beni", 
-    bancada: "Aliados", 
     comite: "Comité de Autonomías Municipales, Indigena Originario Campesinas y Regionales", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g3/JOSE ROCA HAENSEL.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Beni",
-    ocupacion: "No disponible",
+    fechaNacimiento: "9 de septiembre, 1967",
+    nacidoEn: "Beni - Cercado",
+    ocupacion: "Ingeniero Forestal",
+    distritos: ["Beni"],
+    facebook: "https://facebook.com/joseroca",
+    twitter: "https://twitter.com/joseroca",
+    instagram: "https://instagram.com/joseroca",
+    youtube: "https://youtube.com/@joseroca",
+    tiktok: "https://tiktok.com/@joseroca",
     suplente: "Mabel Giordano Sonnenschein",
-    fotoSuplente: "/senadores/suplentes/g3/MABEL GIORDANO SONNENSCHEIN.png",
     slugSuplente: generarSlug("Mabel Giordano Sonnenschein"),
-    distritos: ["Beni"]
+    fotoSuplente: "/senadores/suplentes/g3/MABEL GIORDANO SONNENSCHEIN.png",
+    fechaNacimientoSuplente: "23 de abril, 1978",
+    nacidoEnSuplente: "Beni - Cercado",
+    ocupacionSuplente: "Arquitecta",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/mabelgiordano.suplente",
+    twitterSuplente: "https://twitter.com/mabelgiordano_s",
+    instagramSuplente: "https://instagram.com/mabelgiordano.oficial",
+    youtubeSuplente: "https://youtube.com/@mabelgiordanosuplente",
+    tiktokSuplente: "https://tiktok.com/@mabelgiordano_s"
   },
   { 
     id: 21, 
@@ -453,17 +1026,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Beni", 
-    bancada: "Aliados", 
     comite: "Comité de Fuerzas Armadas y Policía Boliviana", 
     cargo: "Secretaria de comite",
     foto: "/senadores/titulares/g3/ANA KARINA VELASCO ÁÑEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Beni",
-    ocupacion: "No disponible",
+    fechaNacimiento: "14 de febrero, 1982",
+    nacidoEn: "Beni - Cercado",
+    ocupacion: "Licenciada en Administración",
+    distritos: ["Beni"],
+    facebook: "https://facebook.com/karinavelasco",
+    twitter: "https://twitter.com/karinavelasco",
+    instagram: "https://instagram.com/karinavelasco",
+    youtube: "https://youtube.com/@karinavelasco",
+    tiktok: "https://tiktok.com/@karinavelasco",
     suplente: "Marcelo Matias Cardona Ibañez",
-    fotoSuplente: "/senadores/suplentes/g3/MARCELO MATIAS CARDONA IBAÑEZ.png",
     slugSuplente: generarSlug("Marcelo Matias Cardona Ibañez"),
-    distritos: ["Beni"]
+    fotoSuplente: "/senadores/suplentes/g3/MARCELO MATIAS CARDONA IBAÑEZ.png",
+    fechaNacimientoSuplente: "8 de junio, 1983",
+    nacidoEnSuplente: "Beni - Cercado",
+    ocupacionSuplente: "Ingeniero Industrial",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/marcelocardona.suplente",
+    twitterSuplente: "https://twitter.com/marcelocardona_s",
+    instagramSuplente: "https://instagram.com/marcelocardona.oficial",
+    youtubeSuplente: "https://youtube.com/@marcelocardonasuplente",
+    tiktokSuplente: "https://tiktok.com/@marcelocardona_s"
   },
   { 
     id: 22, 
@@ -474,17 +1061,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Beni", 
-    bancada: "Oposición", 
     comite: "Comité de Autonomías Departamentales", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g3/ERNESTO SUAREZ SATTORI.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Beni",
-    ocupacion: "No disponible",
+    fechaNacimiento: "21 de junio, 1970",
+    nacidoEn: "Beni - Cercado",
+    ocupacion: "Abogado",
+    distritos: ["Beni"],
+    facebook: "https://facebook.com/ernestosuarez",
+    twitter: "https://twitter.com/ernestosuarez",
+    instagram: "https://instagram.com/ernestosuarez",
+    youtube: "https://youtube.com/@ernestosuarez",
+    tiktok: "https://tiktok.com/@ernestosuarez",
     suplente: "Claudia Cardenas Velasquez",
-    fotoSuplente: "/senadores/suplentes/g3/CLAUDIA CARDENAS VELASQUEZ.png",
     slugSuplente: generarSlug("Claudia Cardenas Velasquez"),
-    distritos: ["Beni"]
+    fotoSuplente: "/senadores/suplentes/g3/CLAUDIA CARDENAS VELASQUEZ.png",
+    fechaNacimientoSuplente: "29 de septiembre, 1980",
+    nacidoEnSuplente: "Beni - Cercado",
+    ocupacionSuplente: "Licenciada en Psicología",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/claudiacardenas.suplente",
+    twitterSuplente: "https://twitter.com/claudiacardenas_s",
+    instagramSuplente: "https://instagram.com/claudiacardenas.oficial",
+    youtubeSuplente: "https://youtube.com/@claudiacardenassuplente",
+    tiktokSuplente: "https://tiktok.com/@claudiacardenas_s"
   },
   { 
     id: 23, 
@@ -495,17 +1096,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "La Paz", 
-    bancada: "Gobierno", 
     comision: "Comisión de Economía Plural, Producción e Industria", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/ANA MARIA CRISPIN CHOQUE.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "La Paz",
-    ocupacion: "No disponible",
+    fechaNacimiento: "18 de julio, 1973",
+    nacidoEn: "La Paz - Murillo",
+    ocupacion: "Economista",
+    distritos: ["La Paz"],
+    facebook: "https://facebook.com/anacrispin",
+    twitter: "https://twitter.com/anacrispin",
+    instagram: "https://instagram.com/anacrispin",
+    youtube: "https://youtube.com/@anacrispin",
+    tiktok: "https://tiktok.com/@anacrispin",
     suplente: "Victor Severo Quispe Santander",
-    fotoSuplente: "/senadores/suplentes/g1/VICTOR SEVERO QUISPE SANTANDER.png",
     slugSuplente: generarSlug("Victor Severo Quispe Santander"),
-    distritos: ["La Paz"]
+    fotoSuplente: "/senadores/suplentes/g1/VICTOR SEVERO QUISPE SANTANDER.png",
+    fechaNacimientoSuplente: "3 de agosto, 1977",
+    nacidoEnSuplente: "La Paz - Murillo",
+    ocupacionSuplente: "Ingeniero de Sistemas",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/victorquispe.suplente",
+    twitterSuplente: "https://twitter.com/victorquispe_s",
+    instagramSuplente: "https://instagram.com/victorquispe.oficial",
+    youtubeSuplente: "https://youtube.com/@victorquispesuplente",
+    tiktokSuplente: "https://tiktok.com/@victorquispe_s"
   },
   { 
     id: 24, 
@@ -516,17 +1131,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Pando", 
-    bancada: "Oposición", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Segunda Secretaria",
     foto: "/senadores/titulares/g3/JULIO DIEGO ROMAÑA GALINDO.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Pando",
-    ocupacion: "No disponible",
+    fechaNacimiento: "7 de mayo, 1978",
+    nacidoEn: "Pando - Nicolás Suárez",
+    ocupacion: "Ingeniero Ambiental",
+    distritos: ["Pando"],
+    facebook: "https://facebook.com/julioromana",
+    twitter: "https://twitter.com/julioromana",
+    instagram: "https://instagram.com/julioromana",
+    youtube: "https://youtube.com/@julioromana",
+    tiktok: "https://tiktok.com/@julioromana",
     suplente: "Carolina Giese Urresti",
-    fotoSuplente: "/senadores/suplentes/g3/CAROLINA GIESE URRESTI.png",
     slugSuplente: generarSlug("Carolina Giese Urresti"),
-    distritos: ["Pando"]
+    fotoSuplente: "/senadores/suplentes/g3/CAROLINA GIESE URRESTI.png",
+    fechaNacimientoSuplente: "14 de noviembre, 1982",
+    nacidoEnSuplente: "Pando - Nicolás Suárez",
+    ocupacionSuplente: "Licenciada en Derecho",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/carolinagiese.suplente",
+    twitterSuplente: "https://twitter.com/carolinagiese_s",
+    instagramSuplente: "https://instagram.com/carolinagiese.oficial",
+    youtubeSuplente: "https://youtube.com/@carolinagiesesuplente",
+    tiktokSuplente: "https://tiktok.com/@carolinagiese_s"
   },
   { 
     id: 25, 
@@ -537,17 +1166,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Pando", 
-    bancada: "Oposición", 
     comite: "Comité de Tierra y Territorio, Recursos Naturales y Hoja de la Coca", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/CAROL CARLO DURAN.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Pando",
-    ocupacion: "No disponible",
+    fechaNacimiento: "29 de diciembre, 1980",
+    nacidoEn: "Pando - Nicolás Suárez",
+    ocupacion: "Bióloga",
+    distritos: ["Pando"],
+    facebook: "https://facebook.com/carolcarlo",
+    twitter: "https://twitter.com/carolcarlo",
+    instagram: "https://instagram.com/carolcarlo",
+    youtube: "https://youtube.com/@carolcarlo",
+    tiktok: "https://tiktok.com/@carolcarlo",
     suplente: "Jorge Antonio Quispe Flores",
-    fotoSuplente: "/senadores/suplentes/g3/JORGE ANTONIO QUISPE FLORES.png",
     slugSuplente: generarSlug("Jorge Antonio Quispe Flores"),
-    distritos: ["Pando"]
+    fotoSuplente: "/senadores/suplentes/g3/JORGE ANTONIO QUISPE FLORES.png",
+    fechaNacimientoSuplente: "26 de marzo, 1979",
+    nacidoEnSuplente: "Pando - Nicolás Suárez",
+    ocupacionSuplente: "Médico General",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/jorgequispe.suplente",
+    twitterSuplente: "https://twitter.com/jorgequispe_s",
+    instagramSuplente: "https://instagram.com/jorgequispe.oficial",
+    youtubeSuplente: "https://youtube.com/@jorgequispesuplente",
+    tiktokSuplente: "https://tiktok.com/@jorgequispe_s"
   },
   { 
     id: 26, 
@@ -558,17 +1201,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Pando", 
-    bancada: "Gobierno", 
     comite: "Comité de Medio Ambiente, Biodiversidad, Amazonía, Áreas Protegidas y Cambio Climático", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/CINTIA MONICA PUERTA CAMPOS.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Pando",
-    ocupacion: "No disponible",
+    fechaNacimiento: "13 de marzo, 1975",
+    nacidoEn: "Pando - Nicolás Suárez",
+    ocupacion: "Ecóloga",
+    distritos: ["Pando"],
+    facebook: "https://facebook.com/cinthiapuerta",
+    twitter: "https://twitter.com/cinthiapuerta",
+    instagram: "https://instagram.com/cinthiapuerta",
+    youtube: "https://youtube.com/@cinthiapuerta",
+    tiktok: "https://tiktok.com/@cinthiapuerta",
     suplente: "Jesus Humberto Suarez Eguez",
-    fotoSuplente: "/senadores/suplentes/g3/JESUS HUMBERTO SUAREZ EGUEZ.png",
     slugSuplente: generarSlug("Jesus Humberto Suarez Eguez"),
-    distritos: ["Pando"]
+    fotoSuplente: "/senadores/suplentes/g3/JESUS HUMBERTO SUAREZ EGUEZ.png",
+    fechaNacimientoSuplente: "31 de julio, 1976",
+    nacidoEnSuplente: "Pando - Nicolás Suárez",
+    ocupacionSuplente: "Ingeniero Agrónomo",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/jesussuarez.suplente",
+    twitterSuplente: "https://twitter.com/jesussuarez_s",
+    instagramSuplente: "https://instagram.com/jesussuarez.oficial",
+    youtubeSuplente: "https://youtube.com/@jesussuarezsuplente",
+    tiktokSuplente: "https://tiktok.com/@jesussuarez_s"
   },
   { 
     id: 27, 
@@ -579,17 +1236,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Pando", 
-    bancada: "Aliados", 
     comision: "Comisión de Planificación, Política Económica y Finanzas", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g3/ELIANA RINA ACOSTA QUISPE.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Pando",
-    ocupacion: "No disponible",
+    fechaNacimiento: "1 de octubre, 1977",
+    nacidoEn: "Pando - Nicolás Suárez",
+    ocupacion: "Economista",
+    distritos: ["Pando"],
+    facebook: "https://facebook.com/elianaacosta",
+    twitter: "https://twitter.com/elianaacosta",
+    instagram: "https://instagram.com/elianaacosta",
+    youtube: "https://youtube.com/@elianaacosta",
+    tiktok: "https://tiktok.com/@elianaacosta",
     suplente: "Sichard Hans Soraide Castedo",
-    fotoSuplente: "/senadores/suplentes/g3/SICHARD HANS SORAIDE CASTEDO.png",
     slugSuplente: generarSlug("Sichard Hans Soraide Castedo"),
-    distritos: ["Pando"]
+    fotoSuplente: "/senadores/suplentes/g3/SICHARD HANS SORAIDE CASTEDO.png",
+    fechaNacimientoSuplente: "16 de febrero, 1981",
+    nacidoEnSuplente: "Pando - Nicolás Suárez",
+    ocupacionSuplente: "Licenciado en Economía",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/sichardsoraide.suplente",
+    twitterSuplente: "https://twitter.com/sichardsoraide_s",
+    instagramSuplente: "https://instagram.com/sichardsoraide.oficial",
+    youtubeSuplente: "https://youtube.com/@sichardsoraidesuplente",
+    tiktokSuplente: "https://tiktok.com/@sichardsoraide_s"
   },
   { 
     id: 28, 
@@ -600,17 +1271,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Chuquisaca", 
-    bancada: "Gobierno", 
     comision: "Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/DANIEL ANTONIO ORTIZ VELASQUEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Chuquisaca",
-    ocupacion: "No disponible",
+    fechaNacimiento: "16 de junio, 1966",
+    nacidoEn: "Chuquisaca - Sucre",
+    ocupacion: "Abogado Constitucionalista",
+    distritos: ["Chuquisaca"],
+    facebook: "https://facebook.com/danielortiz",
+    twitter: "https://twitter.com/danielortiz",
+    instagram: "https://instagram.com/danielortiz",
+    youtube: "https://youtube.com/@danielortiz",
+    tiktok: "https://tiktok.com/@danielortiz",
     suplente: "Reina Isabel Pallares Morales",
-    fotoSuplente: "/senadores/suplentes/g1/REINA ISABEL PALLARES MORALES.png",
     slugSuplente: generarSlug("Reina Isabel Pallares Morales"),
-    distritos: ["Chuquisaca"]
+    fotoSuplente: "/senadores/suplentes/g1/REINA ISABEL PALLARES MORALES.png",
+    fechaNacimientoSuplente: "9 de mayo, 1978",
+    nacidoEnSuplente: "Chuquisaca - Sucre",
+    ocupacionSuplente: "Licenciada en Ciencias Políticas",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/reinapallares.suplente",
+    twitterSuplente: "https://twitter.com/reinapallares_s",
+    instagramSuplente: "https://instagram.com/reinapallares.oficial",
+    youtubeSuplente: "https://youtube.com/@reinapallaresuplente",
+    tiktokSuplente: "https://tiktok.com/@reinapallares_s"
   },
   { 
     id: 29, 
@@ -621,17 +1306,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Tarija", 
-    bancada: "Oposición", 
     comite: "Comité de Ministerio Público y Defensa Legal del Estado", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/MARIA ISABEL MORENO CORTEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Tarija",
-    ocupacion: "No disponible",
+    fechaNacimiento: "10 de septiembre, 1981",
+    nacidoEn: "Tarija - Cercado",
+    ocupacion: "Abogada",
+    distritos: ["Tarija"],
+    facebook: "https://facebook.com/isabelmoreno",
+    twitter: "https://twitter.com/isabelmoreno",
+    instagram: "https://instagram.com/isabelmoreno",
+    youtube: "https://youtube.com/@isabelmoreno",
+    tiktok: "https://tiktok.com/@isabelmoreno",
     suplente: "Rolando Vacaflor Gabriel Arana",
-    fotoSuplente: "/senadores/suplentes/g2/ROLANDO VACAFLOR GABRIEL ARANA.png",
     slugSuplente: generarSlug("Rolando Vacaflor Gabriel Arana"),
-    distritos: ["Tarija"]
+    fotoSuplente: "/senadores/suplentes/g2/ROLANDO VACAFLOR GABRIEL ARANA.png",
+    fechaNacimientoSuplente: "15 de abril, 1976",
+    nacidoEnSuplente: "Tarija - Cercado",
+    ocupacionSuplente: "Ingeniero Civil",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/rolandovacaflor.suplente",
+    twitterSuplente: "https://twitter.com/rolandovacaflor_s",
+    instagramSuplente: "https://instagram.com/rolandovacaflor.oficial",
+    youtubeSuplente: "https://youtube.com/@rolandovacaflorsuplente",
+    tiktokSuplente: "https://tiktok.com/@rolandovacaflor_s"
   },
   { 
     id: 30, 
@@ -642,17 +1341,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Tarija", 
-    bancada: "Aliados", 
     comision: "Comisión de Organización Territorial del Estado y Autonomías", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g2/CESAR MENTASTI PADILLA.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Tarija",
-    ocupacion: "No disponible",
+    fechaNacimiento: "8 de agosto, 1969",
+    nacidoEn: "Tarija - Cercado",
+    ocupacion: "Ingeniero Civil",
+    distritos: ["Tarija"],
+    facebook: "https://facebook.com/cesarmentasti",
+    twitter: "https://twitter.com/cesarmentasti",
+    instagram: "https://instagram.com/cesarmentasti",
+    youtube: "https://youtube.com/@cesarmentasti",
+    tiktok: "https://tiktok.com/@cesarmentasti",
     suplente: "Marcela Guerrero Vilca",
-    fotoSuplente: "/senadores/suplentes/g2/MARCELA GUERRERO VILCA.png",
     slugSuplente: generarSlug("Marcela Guerrero Vilca"),
-    distritos: ["Tarija"]
+    fotoSuplente: "/senadores/suplentes/g2/MARCELA GUERRERO VILCA.png",
+    fechaNacimientoSuplente: "27 de diciembre, 1980",
+    nacidoEnSuplente: "Tarija - Cercado",
+    ocupacionSuplente: "Licenciada en Comunicación",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/marcelaguerrero.suplente",
+    twitterSuplente: "https://twitter.com/marcelaguerrero_s",
+    instagramSuplente: "https://instagram.com/marcelaguerrero.oficial",
+    youtubeSuplente: "https://youtube.com/@marcelaguerrerosuplente",
+    tiktokSuplente: "https://tiktok.com/@marcelaguerrero_s"
   },
   { 
     id: 31, 
@@ -663,17 +1376,31 @@ export const senadores = [
     partyShort: "UNIDAD", 
     partyColor: "#EFCD04", 
     department: "Tarija", 
-    bancada: "Aliados", 
     comite: "Comité de Planificación, Presupuesto, Inversión Pública y Contraloría General del Estado", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/LEONOR ROSALVA ROMERO GUTIERREZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Tarija",
-    ocupacion: "No disponible",
+    fechaNacimiento: "22 de noviembre, 1974",
+    nacidoEn: "Tarija - Cercado",
+    ocupacion: "Administradora de Empresas",
+    distritos: ["Tarija"],
+    facebook: "https://facebook.com/leonorromero",
+    twitter: "https://twitter.com/leonorromero",
+    instagram: "https://instagram.com/leonorromero",
+    youtube: "https://youtube.com/@leonorromero",
+    tiktok: "https://tiktok.com/@leonorromero",
     suplente: "Marco Antonio Segovia Vargas",
-    fotoSuplente: "/senadores/suplentes/g2/MARCO ANTONIO SEGOVIA VARGAS.png",
     slugSuplente: generarSlug("Marco Antonio Segovia Vargas"),
-    distritos: ["Tarija"]
+    fotoSuplente: "/senadores/suplentes/g2/MARCO ANTONIO SEGOVIA VARGAS.png",
+    fechaNacimientoSuplente: "4 de octubre, 1979",
+    nacidoEnSuplente: "Tarija - Cercado",
+    ocupacionSuplente: "Auditor Financiero",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/marcosegovia.suplente",
+    twitterSuplente: "https://twitter.com/marcosegovia_s",
+    instagramSuplente: "https://instagram.com/marcosegovia.oficial",
+    youtubeSuplente: "https://youtube.com/@marcosegoviasuplente",
+    tiktokSuplente: "https://tiktok.com/@marcosegovia_s"
   },
   { 
     id: 32, 
@@ -684,22 +1411,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Tarija", 
-    bancada: "Gobierno", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Presidente del Senado",
     foto: "/senadores/titulares/g2/DIEGO ESTEBAN MATEO ÁVILA NAVAJAS.png",
-    fechaNacimiento: "Jueves, 21 septiembre, 1961",
+    fechaNacimiento: "21 de septiembre, 1961",
     nacidoEn: "Tarija - Cercado",
     ocupacion: "Economista",
-    suplente: "Luzmaya Zelaya Vega",
-    fotoSuplente: "/senadores/suplentes/g2/LUZMAYA ZELAYA VEGA.png",
-    slugSuplente: generarSlug("Luzmaya Zelaya Vega"),
     distritos: ["Cercado", "Tarija"],
     facebook: "https://facebook.com/diegoavila",
     twitter: "https://twitter.com/diegoavila",
     instagram: "https://instagram.com/diegoavila",
     youtube: "https://youtube.com/diegoavila",
-    tiktok: "https://tiktok.com/@diegoavila"
+    tiktok: "https://tiktok.com/@diegoavila",
+    suplente: "Luzmaya Zelaya Vega",
+    slugSuplente: generarSlug("Luzmaya Zelaya Vega"),
+    fotoSuplente: "/senadores/suplentes/g2/LUZMAYA ZELAYA VEGA.png",
+    fechaNacimientoSuplente: "12 de enero, 1975",
+    nacidoEnSuplente: "Tarija - Cercado",
+    ocupacionSuplente: "Abogada",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/luzmayazelaya.suplente",
+    twitterSuplente: "https://twitter.com/luzmayazelaya_s",
+    instagramSuplente: "https://instagram.com/luzmayazelaya.oficial",
+    youtubeSuplente: "https://youtube.com/@luzmayazelayasuplente",
+    tiktokSuplente: "https://tiktok.com/@luzmayazelaya_s"
   },
   { 
     id: 33, 
@@ -710,17 +1446,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Oruro", 
-    bancada: "Gobierno", 
     comision: "Directiva Legislatura 2025-2026", 
     cargo: "Primera Secretaria",
     foto: "/senadores/titulares/g2/YASMIN ESTIVARIZ VILLARROEL.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Oruro",
-    ocupacion: "No disponible",
+    fechaNacimiento: "4 de abril, 1979",
+    nacidoEn: "Oruro - Cercado",
+    ocupacion: "Comunicadora Social",
+    distritos: ["Oruro"],
+    facebook: "https://facebook.com/yasminestivariz",
+    twitter: "https://twitter.com/yasminestivariz",
+    instagram: "https://instagram.com/yasminestivariz",
+    youtube: "https://youtube.com/@yasminestivariz",
+    tiktok: "https://tiktok.com/@yasminestivariz",
     suplente: "Ramiro Mamani Ramirez",
-    fotoSuplente: "/senadores/suplentes/g2/RAMIRO MAMANI RAMIREZ.png",
     slugSuplente: generarSlug("Ramiro Mamani Ramirez"),
-    distritos: ["Oruro"]
+    fotoSuplente: "/senadores/suplentes/g2/RAMIRO MAMANI RAMIREZ.png",
+    fechaNacimientoSuplente: "18 de mayo, 1980",
+    nacidoEnSuplente: "Oruro - Cercado",
+    ocupacionSuplente: "Técnico en Electrónica",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/ramiromamani.suplente",
+    twitterSuplente: "https://twitter.com/ramiromamani_s",
+    instagramSuplente: "https://instagram.com/ramiromamani.oficial",
+    youtubeSuplente: "https://youtube.com/@ramiromamanisuplente",
+    tiktokSuplente: "https://tiktok.com/@ramiromamani_s"
   },
   { 
     id: 34, 
@@ -731,17 +1481,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Oruro", 
-    bancada: "Gobierno", 
     comite: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.", 
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g2/FREDDY CASTILLO CHAVEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Oruro",
-    ocupacion: "No disponible",
+    fechaNacimiento: "11 de febrero, 1970",
+    nacidoEn: "Oruro - Cercado",
+    ocupacion: "Abogado",
+    distritos: ["Oruro"],
+    facebook: "https://facebook.com/freddycastillo",
+    twitter: "https://twitter.com/freddycastillo",
+    instagram: "https://instagram.com/freddycastillo",
+    youtube: "https://youtube.com/@freddycastillo",
+    tiktok: "https://tiktok.com/@freddycastillo",
     suplente: "Villma Colque Camacho",
-    fotoSuplente: "/senadores/suplentes/g2/VILLMA COLQUE CAMACHO.png",
     slugSuplente: generarSlug("Villma Colque Camacho"),
-    distritos: ["Oruro"]
+    fotoSuplente: "/senadores/suplentes/g2/VILLMA COLQUE CAMACHO.png",
+    fechaNacimientoSuplente: "2 de septiembre, 1982",
+    nacidoEnSuplente: "Oruro - Cercado",
+    ocupacionSuplente: "Licenciada en Sociología",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/villmacolque.suplente",
+    twitterSuplente: "https://twitter.com/villmacolque_s",
+    instagramSuplente: "https://instagram.com/villmacolque.oficial",
+    youtubeSuplente: "https://youtube.com/@villmacolquesuplente",
+    tiktokSuplente: "https://tiktok.com/@villmacolque_s"
   },
   { 
     id: 35, 
@@ -752,17 +1516,31 @@ export const senadores = [
     partyShort: "PDC", 
     partyColor: "#2E7078", 
     department: "Oruro", 
-    bancada: "Gobierno", 
     comite: "Comité de Educación, Salud, Ciencia, Tecnología y Deporte", 
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/MARIA ANTONIETA ALCON SANCHEZ.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Oruro",
-    ocupacion: "No disponible",
+    fechaNacimiento: "26 de mayo, 1973",
+    nacidoEn: "Oruro - Cercado",
+    ocupacion: "Médica",
+    distritos: ["Oruro"],
+    facebook: "https://facebook.com/mariaalcon",
+    twitter: "https://twitter.com/mariaalcon",
+    instagram: "https://instagram.com/mariaalcon",
+    youtube: "https://youtube.com/@mariaalcon",
+    tiktok: "https://tiktok.com/@mariaalcon",
     suplente: "Edwin Lopez Quiroga",
-    fotoSuplente: "/senadores/suplentes/g2/EDWIN LOPEZ QUIROGA.png",
     slugSuplente: generarSlug("Edwin Lopez Quiroga"),
-    distritos: ["Oruro"]
+    fotoSuplente: "/senadores/suplentes/g2/EDWIN LOPEZ QUIROGA.png",
+    fechaNacimientoSuplente: "15 de noviembre, 1978",
+    nacidoEnSuplente: "Oruro - Cercado",
+    ocupacionSuplente: "Farmacéutico",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/edwinlopez.suplente",
+    twitterSuplente: "https://twitter.com/edwinlopez_s",
+    instagramSuplente: "https://instagram.com/edwinlopez.oficial",
+    youtubeSuplente: "https://youtube.com/@edwinlopezsuplente",
+    tiktokSuplente: "https://tiktok.com/@edwinlopez_s"
   },
   { 
     id: 36, 
@@ -773,17 +1551,31 @@ export const senadores = [
     partyShort: "LIBRE", 
     partyColor: "#DB3737", 
     department: "Oruro", 
-    bancada: "Gobierno", 
     comision: "Comisión de Política Social", 
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g2/JOSE SANCHEZ AGUILAR.png",
-    fechaNacimiento: "No disponible",
-    nacidoEn: "Oruro",
-    ocupacion: "No disponible",
+    fechaNacimiento: "19 de agosto, 1976",
+    nacidoEn: "Oruro - Cercado",
+    ocupacion: "Sociólogo",
+    distritos: ["Oruro"],
+    facebook: "https://facebook.com/josesanchez",
+    twitter: "https://twitter.com/josesanchez",
+    instagram: "https://instagram.com/josesanchez",
+    youtube: "https://youtube.com/@josesanchez",
+    tiktok: "https://tiktok.com/@josesanchez",
     suplente: "Cinthya Inga Gutierrez Guzman",
-    fotoSuplente: "/senadores/suplentes/g2/CINTHYA INGA GUTIERREZ GUZMAN.png",
     slugSuplente: generarSlug("Cinthya Inga Gutierrez Guzman"),
-    distritos: ["Oruro"]
+    fotoSuplente: "/senadores/suplentes/g2/CINTHYA INGA GUTIERREZ GUZMAN.png",
+    fechaNacimientoSuplente: "23 de octubre, 1984",
+    nacidoEnSuplente: "Oruro - Cercado",
+    ocupacionSuplente: "Psicóloga",
+    comiteSuplente: null,
+    cargoSuplente: null,
+    facebookSuplente: "https://facebook.com/cinthyainga.suplente",
+    twitterSuplente: "https://twitter.com/cinthyainga_s",
+    instagramSuplente: "https://instagram.com/cinthyainga.oficial",
+    youtubeSuplente: "https://youtube.com/@cinthyaingasuplente",
+    tiktokSuplente: "https://tiktok.com/@cinthyainga_s"
   }
 ] 
 ================================= 
@@ -815,6 +1607,77 @@ export default {
 <style scoped>
 </style> 
 ================================= 
+pages\funciones-del-senado.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Funciones del Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            El Rol del Senado en la Asamblea Legislativa Plurinacional
+          </p>
+
+          <!-- Introducción -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              El Reglamento General de la Cámara de Senadores establece:
+            </p>
+          </div>
+
+          <!-- Artículo 2 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 2.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>(Marco Constitucional).</b> En el marco de lo establecido por la Constitución Política del Estado, la Cámara de Senadores de la Asamblea Legislativa Plurinacional reside en el Órgano Legislativo y ejerce las atribuciones de legislación, fiscalización y gestión, bajo los principios de coordinación y cooperación, promoviendo la participación activa de la ciudadanía en todo el territorio boliviano.
+            </p>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-stretch">
+          <div class="w-full rounded-xl overflow-hidden shadow-lg flex">
+            <img 
+              src="/Mandato Constitucional Senado/27.JPG" 
+              alt="Funciones del Senado"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
 pages\index.vue 
 ================================= 
  
@@ -823,24 +1686,19 @@ pages\index.vue
     <!-- ========================================== -->
     <!-- BANNER DE BIENVENIDA (ancho completo)      -->
     <!-- ========================================== -->
-    <div class="w-full bg-[#f2f2f2] relative h-[19vw] " style="overflow: visible !important;">
+    <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
 
       <!-- Contenedor del 70% centrado -->
       <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
         
-        <!-- ========================================== -->
-        <!-- IMAGEN IZQUIERDA (Logo Blanco)             -->
-        <!-- ========================================== -->
-        <!-- IMAGEN IZQUIERDA - MITAD SUPERIOR RECORTADA -->
+        <!-- IMAGEN IZQUIERDA (Logo Blanco) -->
         <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
           <div 
             class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
           ></div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- CÚPULA DERECHA (Alineada por su base)      -->
-        <!-- ========================================== -->
+        <!-- CÚPULA DERECHA -->
         <div 
           class="absolute right-0 z-[60] w-[22vw]"
           style="bottom: 0; pointer-events: none;"
@@ -852,9 +1710,7 @@ pages\index.vue
           />
         </div>
 
-        <!-- ========================================== -->
-        <!-- TEXTO CENTRADO                              -->
-        <!-- ========================================== -->
+        <!-- TEXTO CENTRADO -->
         <div class="flex-1 text-center z-20">
           <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
             Bienvenido al sitio web oficial <br> del
@@ -862,12 +1718,10 @@ pages\index.vue
           </h1>
         </div>
       </div>
-
-      <!-- Línea dorada inferior -->
     </div>
 
     <!-- ========================================== -->
-    <!-- BARRA DE SESIÓN (ancho completo)           -->
+    <!-- BARRA DE SESIÓN                            -->
     <!-- ========================================== -->
     <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
       <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
@@ -885,64 +1739,121 @@ pages\index.vue
     </div>
 
     <!-- ========================================== -->
-    <!-- COLUMNAS: 70% - 30%                        -->
+    <!-- 🔥 VIDEO DE FONDO CON 4 ESTADÍSTICAS      -->
+    <!-- ========================================== -->
+    <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
+      <!-- Video de fondo -->
+      <video
+        ref="videoRef"
+        class="absolute top-0 left-0 w-full h-full object-cover"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="/videos/fondo-senado.mp4" type="video/mp4" />
+        <div class="absolute inset-0 bg-senado-primary-dark"></div>
+      </video>
+
+      <!-- Overlay oscuro -->
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <!-- ========================================== -->
+      <!-- CUADRADO CON 4 ESTADÍSTICAS               -->
+      <!-- ========================================== -->
+      <div 
+        class="absolute bottom-0 left-1/2 -translate-x-1/2"
+        style="width: 90%; height: 30%;"
+      >
+        <div 
+          class="w-full h-full bg-black/10 backdrop-blur-sm"
+          style="border: 2px solid #e3d194; border-bottom: none; border-radius: 16px 16px 0 0;"
+        >
+          <!-- Grid de 4 columnas -->
+          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4">
+            
+            <!-- 1. PROYECTOS EN TRATAMIENTO -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />en Tratamiento
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.enTratamiento }}
+              </div>
+            </div>
+
+            <!-- 2. PROYECTOS APROBADOS -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />Aprobados
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.aprobados }}
+              </div>
+            </div>
+
+            <!-- 3. LEYES SANCIONADAS -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />Sancionadas
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.sancionadas }}
+              </div>
+            </div>
+
+            <!-- 4. PETICIONES DE INFORME -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Peticiones de<br />Informe
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.peticionesInforme }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL                       -->
     <!-- ========================================== -->
     <div class="mx-auto w-[75%] py-[2vw]">
-      <NoticiasDinamicas />
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-10">
-        <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
-        </div>
-        <div class="flex-1 h-px bg-[#000]"></div>
-      </div>
-
       <!-- ACTIVIDAD LEGISLATIVA -->
-      <div class="mt-6">
-        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Actividad Legislativa</h2>
+      <div>
+        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          <!-- LEGISLACIÓN -->
-          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+          <!-- LEGISLACION -->
+          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-[1.2vw]">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
-                </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
-                </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- GESTIÓN (COMPLETO) -->
-          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
-            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
-            <div class="p-4">
-              <ul class="mt-3 space-y-2 text-[1.2vw]">
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.enTratamiento }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Aprobados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.aprobados }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.sancionadas }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.promulgadas }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.modificaciones }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.rechazados }}</span>
                 </li>
               </ul>
             </div>
@@ -955,49 +1866,214 @@ pages\index.vue
               <ul class="mt-3 space-y-2 text-[1.2vw]">
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesEscrito }}</span>
                 </li>
                 <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
                   <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Oral
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesOral }}</span>
                 </li>
               </ul>
             </div>
           </div>
+
+          <!-- GESTION -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.resoluciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.declaraciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.minutas }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        
         </div>
       </div>
+      
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <NoticiasDinamicas />
 
-      <!-- LÍNEA ANTES DE DESCRUBRA EL SENADO -->
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
 
-      <!-- DESCRUBRA EL SENADO -->
       <DescubraSenado />
 
-      <!-- LÍNEA DESPUÉS DE DESCRUBRA EL SENADO -->
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
+      
       <MandatoFuncionesAntecedentes />
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, reactive, onMounted } from 'vue'
 import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const videoRef = ref(null)
+
+// ========================================== //
+// 🔥 ESTADÍSTICAS SIMULADAS (HARDCODEADAS)  //
+// ========================================== //
+const estadisticas = reactive({
+  enTratamiento: 15,
+  aprobados: 42,
+  sancionadas: 28,
+  promulgadas: 18,
+  modificaciones: 7,
+  rechazados: 5,
+  peticionesEscrito: 12,
+  peticionesOral: 8,
+  peticionesInforme: 20,
+  resoluciones: 45,
+  declaraciones: 23,
+  minutas: 67
+})
+
+// ========================================== //
+// 🔥 INICIALIZACIÓN                         //
+// ========================================== //
+onMounted(() => {
+  // Restaurar scroll
+  if (process.client) {
+    const scrollPos = sessionStorage.getItem('scrollPosicion')
+    if (scrollPos) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(scrollPos),
+          behavior: 'smooth'
+        })
+        sessionStorage.removeItem('scrollPosicion')
+      }, 400)
+    }
+  }
+  
+  // Reproducir video
+  if (videoRef.value) {
+    videoRef.value.play().catch(error => {
+      console.log('Autoplay bloqueado:', error)
+    })
+  }
+})
 </script> 
 ================================= 
-pages\senador\[id].vue 
+pages\mandato-constitucional.vue 
 ================================= 
  
 <template>
-  <div class="py-10">
-    <div v-if="senator" class="max-w-6xl mx-auto">
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Mandato Constitucional Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            La Constitución Política del Estado establece:
+          </p>
+
+          <!-- Artículo 12 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 12.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>I.</b>  El Estado se organiza y estructura su poder público a través de los órganos Legislativo, Ejecutivo, Judicial y Electoral. La organización del Estado está fundamentada en la independencia, separación, coordinación y cooperación de estos órganos.
+            </p>
+          </div>
+
+          <!-- Artículo 148 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 148.
+            </h2>
+            <div class="space-y-4 text-[1.1vw] text-gray-700 leading-relaxed">
+              <p>
+                <b>I.</b> La Cámara de Senadores estará conformada por un total de 36 miembros.
+              </p>
+              <p>
+                <b>II.</b> En cada departamento se eligen 4 Senadores en circunscripción departamental, por votación universal, directa y secreta.
+              </p>
+              <p>
+                <b>III.</b> La asignación de los escaños de Senadores en cada departamento se hará mediante el sistema proporcional, de acuerdo a la Ley.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-start">
+          <div class="w-full max-w-[500px] rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src="/Mandato Constitucional Senado/6.png" 
+              alt="Mandato Constitucional Senado"
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\senador\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="py-[2vw]">
+    <div v-if="senator" class="w-[80%] mx-auto">
       <!-- Botón volver -->
-      <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6">
-        ← Volver al hemiciclo
-      </NuxtLink>
+      <button 
+        @click="volver"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] cursor-pointer text-[1.1vw]"
+      >
+        ← Volver atras
+      </button>
 
       <!-- Tarjeta del senador -->
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -1016,7 +2092,7 @@ pages\senador\[id].vue
               />
               <div 
                 v-else
-                class="w-40 h-40 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-lg"
+                class="w-[12vw] h-[12vw] rounded-full flex items-center justify-center text-white text-[4vw] font-bold shadow-lg"
                 :style="{ backgroundColor: senator.partyColor }"
               >
                 {{ getInitials(senator.name) }}
@@ -1061,49 +2137,67 @@ pages\senador\[id].vue
         <!-- SEGUNDA FILA: 3 columnas iguales -->
         <div class="grid grid-cols-1 md:grid-cols-3">
           <!-- Columna 1: Datos personales -->
-          <div class="p-[.2vw] border-r border-gray-200">
-            <div class="grid grid-cols-2 text-[1.8vw] pt-[2vw]">
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="font-semibold text-gray-600">Fecha de Nacimiento:</span></div>
-                <div><span class="font-semibold text-gray-600">Nacido en:</span></div>
-                <div><span class="font-semibold text-gray-600">Ocupación:</span></div>
-                <div><span class="font-semibold text-gray-600">Brigada:</span></div>
-                <div><span class="font-semibold text-gray-600">Contacto:</span></div>
-                <div><span class="font-semibold text-gray-600">Senador Suplente:</span></div>
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span>
               </div>
-              
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span></div>
-                <div><span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span></div>
-                <div><span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span></div>
-                <div><span class="text-gray-800">{{ senator.department }}</span></div>
-                <div>
-                  <div class="flex gap-2 flex-wrap text-[.5em]">
-                    <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                    <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                    </a>
-                    <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </a>
-                    <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
-                    </a>
-                  </div>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
                 </div>
-                <div><span class="text-gray-800">{{ senator.suplente || 'No disponible' }}</span></div>
+              </div>
+              <!-- Fila 6: Senador Suplente -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Suplente:</span>
+                <NuxtLink 
+                  v-if="senator.slugSuplente" 
+                  :to="`/senador/suplente/${senator.slugSuplente}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ senator.suplente }}
+                </NuxtLink>
+                <span v-else class="text-gray-800">No disponible</span>
               </div>
             </div>
           </div>
 
           <!-- Columna 2: Mapa -->
-          <div class="p-6 border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
             <img 
               :src="getMapaDepartamento(senator.department)" 
               :alt="'Mapa de ' + senator.department"
@@ -1113,7 +2207,7 @@ pages\senador\[id].vue
           </div>
 
           <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-6 flex flex-col justify-center">
+          <div class="p-[1.2vw] flex flex-col justify-center">
             <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
             <div class="flex flex-col items-center">
               <img 
@@ -1127,20 +2221,22 @@ pages\senador\[id].vue
           </div>
         </div>
       </div>
+
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-10">
+      <div class="flex items-center justify-center my-[2vw]">
         <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0">
+        <div class="flex-shrink-0 mx-[1vw]">
           <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
+      
       <MandatoFuncionesAntecedentes />
     </div>
 
-    <div v-else class="text-center py-20">
-      <h2 class="text-2xl font-bold text-gray-600">Senador no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-4 inline-block">
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
         Volver al inicio
       </NuxtLink>
     </div>
@@ -1160,6 +2256,14 @@ const slug = computed(() => route.params.slug)
 const senator = computed(() => {
   return getSenadorBySlug(slug.value)
 })
+
+const volver = () => {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigateTo('/')
+  }
+}
 
 const getInitials = (name) => {
   if (!name) return '?'
@@ -1255,23 +2359,26 @@ pages\senador\suplente\[slug].vue
 ================================= 
  
 <template>
-  <div class="py-10">
-    <div v-if="suplente" class="max-w-6xl mx-auto">
+  <div class="py-[2vw]">
+    <div v-if="suplente" class="w-[80%] mx-auto">
       <!-- Botón volver -->
-      <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:underline mb-6">
-        ← Volver al hemiciclo
-      </NuxtLink>
+      <button 
+        @click="volver"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] text-[1.1vw] cursor-pointer"
+      >
+        ← Volver atras
+      </button>
 
       <!-- Tarjeta del suplente -->
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- PRIMERA FILA: 3 columnas -->
         <div class="bg-[#EDEEED]">
           <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
-            <!-- Columna 1: Foto -->
+            <!-- Columna 1: Foto del suplente -->
             <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
               <img 
                 :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
-                :alt="suplente.nombreSuplente"
+                :alt="suplente.suplente"
                 class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
                 :style="{ borderColor: suplente.partyColor }"
                 @error="(e) => e.target.src = '/images/default-avatar.png'"
@@ -1280,11 +2387,19 @@ pages\senador\suplente\[slug].vue
 
             <!-- Columna 2: Nombre y cargo -->
             <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
-              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.nombreSuplente }}</h1>
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.suplente }}</h1>
               <p class="text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
-              <p class="text-[0.9vw] text-gray-500">Suplente de: {{ suplente.name }}</p>
-              <p v-if="suplente.cargo" class="font-semibold text-[1.0vw] leading-tight">
-                {{ suplente.cargo }}
+              <p class="text-[0.9vw] text-gray-500">
+                Senador Titular: 
+                <NuxtLink 
+                  :to="`/senador/${suplente.slugTitular}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ suplente.name }}
+                </NuxtLink>
+              </p>
+              <p v-if="suplente.cargoSuplente && suplente.cargoSuplente !== 'No disponible'" class="font-semibold text-[1.0vw] leading-tight">
+                {{ suplente.cargoSuplente }}
               </p>
             </div>
 
@@ -1316,34 +2431,66 @@ pages\senador\suplente\[slug].vue
 
         <!-- SEGUNDA FILA: 3 columnas iguales -->
         <div class="grid grid-cols-1 md:grid-cols-3">
-          <!-- Columna 1: Datos personales -->
-          <div class="p-[.2vw] border-r border-gray-200">
-            <div class="grid grid-cols-2 text-[1.8vw] pt-[2vw]">
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="font-semibold text-gray-600">Nombres:</span></div>
-                <div><span class="font-semibold text-gray-600">Departamento:</span></div>
-                <div><span class="font-semibold text-gray-600">Partido:</span></div>
-                <div><span class="font-semibold text-gray-600">Bancada:</span></div>
-                <div><span class="font-semibold text-gray-600">Suplente de:</span></div>
+          <!-- Columna 1: Datos personales del suplente -->
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ suplente.fechaNacimientoSuplente || 'No disponible' }}</span>
               </div>
-              
-              <div class="space-y-3 text-[.5em]">
-                <div><span class="text-gray-800">{{ suplente.nombreSuplente }}</span></div>
-                <div><span class="text-gray-800">{{ suplente.department }}</span></div>
-                <div><span class="text-gray-800">{{ suplente.party }}</span></div>
-                <div><span class="text-gray-800">{{ suplente.bancada }}</span></div>
-                <div>
-                  <NuxtLink :to="`/senador/${suplente.slug}`" class="text-senado-primary hover:underline">
-                    {{ suplente.name }}
-                  </NuxtLink>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ suplente.nacidoEnSuplente || suplente.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ suplente.ocupacionSuplente || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ suplente.comiteSuplente || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="suplente.facebookSuplente" :href="suplente.facebookSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="suplente.twitterSuplente" :href="suplente.twitterSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="suplente.instagramSuplente" :href="suplente.instagramSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="suplente.youtubeSuplente" :href="suplente.youtubeSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="suplente.tiktokSuplente" :href="suplente.tiktokSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
                 </div>
+              </div>
+              <!-- Fila 6: Senador Titular -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Titular:</span>
+                <NuxtLink 
+                  :to="`/senador/${suplente.slugTitular}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ suplente.name }}
+                </NuxtLink>
               </div>
             </div>
           </div>
 
           <!-- Columna 2: Mapa -->
-          <div class="p-6 border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
             <img 
               :src="getMapaDepartamento(suplente.department)" 
               :alt="'Mapa de ' + suplente.department"
@@ -1353,7 +2500,7 @@ pages\senador\suplente\[slug].vue
           </div>
 
           <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-6 flex flex-col justify-center">
+          <div class="p-[1.2vw] flex flex-col justify-center">
             <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
             <div class="flex flex-col items-center">
               <img 
@@ -1367,20 +2514,22 @@ pages\senador\suplente\[slug].vue
           </div>
         </div>
       </div>
+
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-10">
+      <div class="flex items-center justify-center my-[2vw]">
         <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0">
+        <div class="flex-shrink-0 mx-[1vw]">
           <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
+      
       <MandatoFuncionesAntecedentes />
     </div>
 
-    <div v-else class="text-center py-20">
-      <h2 class="text-2xl font-bold text-gray-600">Suplente no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-4 inline-block">
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Suplente no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
         Volver al inicio
       </NuxtLink>
     </div>
@@ -1400,6 +2549,14 @@ const slug = computed(() => route.params.slug)
 const suplente = computed(() => {
   return getSuplenteBySlug(slug.value)
 })
+
+const volver = () => {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigateTo('/')
+  }
+}
 
 const getMapaDepartamento = (departamento) => {
   const mapas = {
@@ -1572,3 +2729,60 @@ public\fonts\fonts.css
   font-style: normal;
   font-display: swap;
 } 
+================================= 
+stores\senadoStore.js 
+================================= 
+ 
+// stores/senadoStore.js
+import { defineStore } from 'pinia'
+
+export const useSenadoStore = defineStore('senado', {
+  state: () => ({
+    tipoVisualizacion: 'titulares', // 'titulares' | 'suplentes'
+    filtroPartido: null,
+    scrollPosicion: 0
+  }),
+  
+  actions: {
+    setTipoVisualizacion(tipo) {
+      this.tipoVisualizacion = tipo
+    },
+    
+    setFiltroPartido(filtro) {
+      this.filtroPartido = filtro
+    },
+    
+    toggleFiltroPartido(nombrePartido) {
+      if (this.filtroPartido === nombrePartido) {
+        this.filtroPartido = null
+      } else {
+        this.filtroPartido = nombrePartido
+      }
+    },
+    
+    guardarScrollPosicion() {
+      if (process.client) {
+        this.scrollPosicion = window.scrollY
+      }
+    },
+    
+    restaurarScrollPosicion() {
+      if (process.client && this.scrollPosicion > 0) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: this.scrollPosicion,
+            behavior: 'smooth'
+          })
+        }, 300)
+      }
+    },
+    
+    reset() {
+      this.tipoVisualizacion = 'titulares'
+      this.filtroPartido = null
+      this.scrollPosicion = 0
+    }
+  },
+  
+  persist: true // Si usas persistencia
+}) 

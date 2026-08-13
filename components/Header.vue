@@ -1,29 +1,35 @@
 <template>
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
-    <div class="mx-auto w-[80%] py-[1vw]">
+    <div class="mx-auto w-[80%] py-[.5vw]">
       <div class="flex items-center justify-between gap-[1vw]">
         <!-- Botón sandwich -->
         <button 
           @click="toggleMenu"
           class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
         >
-          <Icon 
-            name="material-symbols:menu-rounded" 
-            class="text-[3vw]" 
-            v-if="!menuAbierto" 
-            style="font-variation-settings: 'wght' 900;"
-          />
-          <Icon 
-            name="material-symbols:close-rounded" 
-            class="text-[3vw]" 
-            v-else 
-          />
+          <ClientOnly>
+            <Icon 
+              name="material-symbols:menu-rounded" 
+              class="text-[3vw]" 
+              v-if="!menuAbierto" 
+              style="font-variation-settings: 'wght' 900;"
+            />
+            <Icon 
+              name="material-symbols:close-rounded" 
+              class="text-[3vw]" 
+              v-else 
+            />
+            <template #fallback>
+              <span class="text-[3vw]">☰</span>
+            </template>
+          </ClientOnly>
         </button>
 
         <!-- Logo -->
-        <div class="flex-shrink-0 spin-coin">
-          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[4vw] w-auto ml-[2vw] mr-[.5vw]" />
-        </div>
+        <div class="w-[1vw]"></div>
+        <NuxtLink to="/" class="flex-shrink-0 spin-coin block">
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[7.5vw] w-auto" />
+        </NuxtLink>
 
         <!-- Título -->
         <div class="hidden md:block flex-grow text-left">
@@ -40,10 +46,10 @@
               ref="searchInput"
               type="text" 
               placeholder="ENCUENTRA TU SENADOR" 
-              class="w-[16vw] mr-[3.5vw] py-2 border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
+              class="w-[16vw] mr-[3.5vw] py-2 pl-[1vw] border border-[#cdcdcd] rounded-full focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent h-[1.2vw] text-[0.75vw]"
               v-model="searchQuery"
               @input="handleSearch"
-              @focus="showResults = true"
+              @focus="handleFocus"
               @blur="handleBlur"
             />
           </div>
@@ -82,11 +88,16 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
               v-model="searchQuery"
               @input="handleSearch"
-              @focus="showResults = true"
+              @focus="handleFocus"
               @blur="handleBlur"
             />
             <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
-              <Icon name="material-symbols:search-rounded" class="text-xl" />
+              <ClientOnly>
+                <Icon name="material-symbols:search-rounded" class="text-xl" />
+                <template #fallback>
+                  <span class="text-xl">🔍</span>
+                </template>
+              </ClientOnly>
             </button>
           </div>
         </div>
@@ -94,7 +105,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ LATERAL - VERSIÓN CLICK              -->
+    <!-- MENÚ LATERAL                              -->
     <!-- ========================================== -->
     <div
       v-if="menuAbierto"
@@ -113,24 +124,24 @@
         </div>
         <nav class="p-4 space-y-6">
           <!-- ========================================== -->
-          <!-- INSTITUCIONAL - NUEVO ITEM                 -->
+          <!-- INSTITUCIONAL                              -->
           <!-- ========================================== -->
           <div>
             <div 
               @click="toggleSubmenu('institucional')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Institucional</span>
                 <span class="transition-transform duration-300" :class="submenus.institucional ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
               :class="submenus.institucional ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Misión</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visión</a>
+              <NuxtLink to="/mision" class="block hover:text-senado-primary transition-colors py-1">Misión</NuxtLink>
+              <NuxtLink to="/vision" class="block hover:text-senado-primary transition-colors py-1">Visión</NuxtLink>
             </div>
           </div>
 
@@ -142,7 +153,7 @@
               @click="toggleSubmenu('legislativa')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Facultades Legislativas</span>
                 <span class="transition-transform duration-300" :class="submenus.legislativa ? 'rotate-180' : ''">▼</span>
               </div>
@@ -158,21 +169,21 @@
                   @click="toggleSubmenu('legislacion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Legislación</span>
                     <span class="transition-transform duration-300" :class="submenus.legislacion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</a>
+                  <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</NuxtLink>
+                  <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</NuxtLink>
+                  <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</NuxtLink>
+                  <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</NuxtLink>
+                  <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</NuxtLink>
+                  <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</NuxtLink>
                 </div>
               </div>
 
@@ -182,17 +193,17 @@
                   @click="toggleSubmenu('fiscalizacion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Fiscalización</span>
                     <span class="transition-transform duration-300" :class="submenus.fiscalizacion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</a>
+                  <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</NuxtLink>
+                  <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</NuxtLink>
                 </div>
               </div>
 
@@ -202,18 +213,18 @@
                   @click="toggleSubmenu('gestion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Gestión</span>
                     <span class="transition-transform duration-300" :class="submenus.gestion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
+                  <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</NuxtLink>
+                  <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</NuxtLink>
+                  <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</NuxtLink>
                 </div>
               </div>
             </div>
@@ -227,19 +238,19 @@
               @click="toggleSubmenu('senadores')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Tus senadores</span>
                 <span class="transition-transform duration-300" :class="submenus.senadores ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
               :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Quien me representa?</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</a>
+              <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary transition-colors py-1">¿Quién me representa?</NuxtLink>
+              <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</NuxtLink>
+              <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</NuxtLink>
+              <NuxtLink to="/brigadas-bancadas" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</NuxtLink>
             </div>
           </div>
 
@@ -251,13 +262,13 @@
               @click="toggleSubmenu('acerca')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Acerca del Senado</span>
                 <span class="transition-transform duration-300" :class="submenus.acerca ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out text-[1.1vw]"
               :class="submenus.acerca ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <div>
@@ -265,20 +276,20 @@
                   @click="toggleSubmenu('funciones')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors">
                     <span>Funciones del Senado</span>
                     <span class="transition-transform duration-300" :class="submenus.funciones ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1.0vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</a>
+                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</NuxtLink>
+                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</NuxtLink>
                 </div>
               </div>
-              <a href="#" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-semibold">Antecedentes históricos</a>
+              <NuxtLink to="/antecedentes-historicos" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-[600]">Antecedentes históricos</NuxtLink>
             </div>
           </div>
 
@@ -290,27 +301,43 @@
               @click="toggleSubmenu('abierto')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Senado abierto</span>
                 <span class="transition-transform duration-300" :class="submenus.abierto ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
               :class="submenus.abierto ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Noticias</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</a>
+              <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1">Noticias</NuxtLink>
+              <NuxtLink to="/productos-digitales" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
+              <NuxtLink to="/consulta-tramites" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
+              <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</NuxtLink>
             </div>
           </div>
 
           <hr class="border-gray-200">
 
-          <div class="space-y-2 text-sm">
-            <a href="/" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">🏠 Inicio</a>
-            <a href="/contacto" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">📞 Contacto</a>
+          <!-- ========================================== -->
+          <!-- INICIO Y CONTACTO (CON COLORES DE LA PALETA) -->
+          <!-- ========================================== -->
+          <div class="space-y-3 mt-2">
+            <!-- 🔥 INICIO CON DORADO -->
+            <NuxtLink 
+              to="/" 
+              class="flex items-center gap-3 bg-senado-gold-lightest text-senado-primary hover:bg-senado-gold hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[900] text-[1.4vw] shadow-sm hover:shadow-md"
+            >
+              <span>Inicio</span>
+            </NuxtLink>
+            
+            <!-- 🔥 CONTACTO CON BORDE DORADO -->
+            <NuxtLink 
+              to="/contacto" 
+              class="flex items-center gap-3 text-senado-primary hover:bg-senado-gold-soft hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[800] text-[1.4vw]"
+            >
+              <span>Contacto</span>
+            </NuxtLink>
           </div>
         </nav>
       </div>
@@ -335,19 +362,39 @@
           :style="menuStyle"
         >
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+            <ClientOnly>
+              <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+              <template #fallback>
+                <span class="text-2xl">f</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Facebook</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+            <ClientOnly>
+              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+              <template #fallback>
+                <span class="text-2xl">𝕏</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Twitter / X</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+            <ClientOnly>
+              <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+              <template #fallback>
+                <span class="text-2xl">▶️</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">YouTube</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+            <ClientOnly>
+              <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+              <template #fallback>
+                <span class="text-2xl">📷</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Instagram</span>
           </a>
         </div>
@@ -398,7 +445,12 @@
                   <span v-if="result.esSuplente" class="text-[10px] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
                 </div>
               </div>
-              <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-xl flex-shrink-0" />
+              <ClientOnly>
+                <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-xl flex-shrink-0" />
+                <template #fallback>
+                  <span class="text-gray-400 text-xl">›</span>
+                </template>
+              </ClientOnly>
             </div>
           </div>
         </div>
@@ -481,13 +533,11 @@ export default {
           const rect = input.getBoundingClientRect()
           const isMobile = window.innerWidth < 768
           
-          // Usar vw para el marginRight (3.5vw = 3.5% del viewport width)
-          const marginRightVw = 3.5 // 3.5vw
+          const marginRightVw = 3.5
           const marginRightPx = (window.innerWidth * marginRightVw) / 100
           
           return {
-            top: (rect.bottom + 8) + 'px',
-            // Alinear a la derecha del input, restando el margen derecho
+            top: (rect.bottom + 4) + 'px',
             right: (window.innerWidth - rect.right - marginRightPx) + 'px',
             left: 'auto',
             transform: 'none',
@@ -702,7 +752,18 @@ export default {
       })
 
       this.searchResults = results.slice(0, 10)
+      this.lastSearchQuery = query
       this.showResults = true
+    },
+    handleFocus() {
+      if (this.searchQuery.trim() && this.searchResults.length > 0) {
+        this.showResults = true
+        return
+      }
+      
+      if (this.searchQuery.trim()) {
+        this.handleSearch()
+      }
     },
     handleBlur() {
       setTimeout(() => {
@@ -710,18 +771,28 @@ export default {
       }, 200)
     },
     selectResult(result) {
+      this.searchQuery = ''
+      this.searchResults = []
       this.showResults = false
-      this.searchQuery = result.name
       
       if (result.esSuplente) {
         this.$router.push(`/senador/suplente/${result.slugSuplente}`)
       } else {
         this.$router.push(`/senador/${result.slug}`)
       }
+    },
+    handleKeydown(event) {
+      if (event.key === 'Escape') {
+        this.showResults = false
+      }
     }
   },
   mounted() {
     console.log('✅ Header montado, senadores disponibles:', senadores ? senadores.length : 0)
+    document.addEventListener('keydown', this.handleKeydown)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.handleKeydown)
   }
 }
 </script>
@@ -753,7 +824,6 @@ export default {
   transform: rotate(180deg);
 }
 
-/* Scroll personalizado para resultados de búsqueda */
 .max-h-\[50vh\]::-webkit-scrollbar {
   width: 6px;
 }

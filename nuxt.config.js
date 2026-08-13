@@ -5,6 +5,10 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   // ✅ CORREGIDO: compatibilityDate
+  icon: {
+    serverBundle: 'local', // 🔥 Cambiar a 'local'
+    clientBundle: 'auto'
+  },
   compatibilityDate: '2026-08-02',
   
   devtools: { enabled: true },
@@ -81,11 +85,6 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536
     }
-  },
-  
-  icon: {
-    serverBundle: 'remote',
-    clientBundle: 'auto'
   },
   
   app: {
