@@ -156,6 +156,13 @@
         </div>
       </div>
 
+      <!-- 🔥 NOTICIAS RELACIONADAS CON EL SENADOR -->
+      <NoticiasSenador 
+        :senador-id="senator.id" 
+        :nombre-senador="senator.name"
+        :limit="6"
+      />
+
       <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-[2vw]">
         <div class="flex-1 h-px bg-[#000]"></div>
@@ -181,6 +188,7 @@
 import { computed } from 'vue'
 import { useSenadores } from '~/composables/useSenadores'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+import NoticiasSenador from '~/components/NoticiasSenador.vue'
 
 const route = useRoute()
 const { getSenadorBySlug } = useSenadores()

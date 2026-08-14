@@ -71,6 +71,24 @@
         >
           {{ ctx.etiqueta }}
         </button>
+        <button
+          @click="cargarCategorias"
+          class="px-4 py-2 text-sm font-medium rounded-full bg-senado-gold-soft text-gray-700 hover:bg-senado-gold transition-all"
+        >
+          🔄 Cargar categorías
+        </button>
+      </div>
+      
+      <!-- Mostrar categorías disponibles -->
+      <div v-if="categorias.length > 0" class="mt-3 flex flex-wrap gap-1">
+        <span class="text-xs text-gray-500">Categorías disponibles:</span>
+        <span 
+          v-for="cat in categorias" 
+          :key="cat"
+          class="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600"
+        >
+          {{ cat }}
+        </span>
       </div>
     </div>
 
@@ -107,7 +125,7 @@
     </div>
 
     <div class="mt-12 text-center text-sm text-gray-400 border-t border-gray-200 pt-6">
-      Plataforma de Inteligencia Legislativa — Motor Vectorial con Streaming
+      Plataforma de Inteligencia Legislativa — Motor de Búsqueda Normativa
       <br />
       <span class="font-medium text-gray-500">Cámara de Senadores · Asamblea Legislativa Plurinacional de Bolivia</span>
     </div>
@@ -115,12 +133,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useApiLegislativa } from '~/composables/useApiLegislativa'
 
 const consulta = ref('')
 const loading = ref(false)
 const contextoActual = ref('Toda la Base Normativa')
 const historial = ref([])
+const categorias = ref([])
+const resultadosCache = ref([])
+
+const { buscarLeyes, obtenerCategorias, loading: apiLoading } = useApiLegislativa()
 
 const contextos = [
   { valor: 'Toda la Base Normativa', etiqueta: 'Toda la Base Normativa' },
@@ -129,8 +152,18 @@ const contextos = [
   { valor: 'Proyectos Rechazados', etiqueta: 'Proyectos Rechazados' },
 ]
 
-const API_URL = '/api/consultar'
+// Cargar categorías disponibles
+const cargarCategorias = async () => {
+  try {
+    const cats = await obtenerCategorias()
+    categorias.value = cats
+    console.log('📚 Categorías cargadas:', cats)
+  } catch (error) {
+    console.error('Error cargando categorías:', error)
+  }
+}
 
+// Procesar consulta
 const procesarConsulta = async () => {
   const texto = consulta.value.trim()
   if (!texto) {
@@ -141,22 +174,69 @@ const procesarConsulta = async () => {
   loading.value = true
 
   try {
-    const response = await $fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: {
-        consulta: texto,
-        contexto: contextoActual.value,
-      }
-    })
+    // Mapear contexto a estado para filtrar
+    let estado = null
+    if (contextoActual.value === 'Leyes Promulgadas (Vigentes)') {
+      estado = 'Promulgada'
+    } else if (contextoActual.value === 'Proyectos En Tratamiento') {
+      estado = 'En Tratamiento'
+    } else if (contextoActual.value === 'Proyectos Rechazados') {
+      estado = 'Rechazado'
+    }
 
-    const respuestaTexto = response.respuesta || response.message || 'No se pudo obtener una respuesta.'
+    // Buscar en la API
+    const result = await buscarLeyes(texto, estado)
+    resultadosCache.value = result.resultados
+
+    let respuestaHtml = ''
+
+    if (result.total === 0) {
+      respuestaHtml = `
+        <div class="text-gray-600">
+          <p>No se encontraron resultados para "<strong>${texto}</strong>".</p>
+          <p class="text-sm text-gray-400 mt-2">Sugerencias:</p>
+          <ul class="text-sm text-gray-400 list-disc pl-5">
+            <li>Revisa la ortografía de tu consulta</li>
+            <li>Prueba con términos más generales</li>
+            <li>Selecciona otro contexto de búsqueda</li>
+          </ul>
+        </div>
+      `
+    } else {
+      // Mostrar los primeros 5 resultados
+      const mostrar = result.resultados.slice(0, 5)
+      
+      respuestaHtml = `
+        <div>
+          <p class="font-medium text-gray-700 mb-2">
+            Encontrados <strong>${result.total}</strong> documento${result.total > 1 ? 's' : ''}:
+          </p>
+          <ul class="space-y-2">
+            ${mostrar.map((doc, idx) => `
+              <li class="border-b border-gray-100 pb-2">
+                <div class="flex items-start gap-2">
+                  <span class="text-senado-primary font-bold text-sm">${idx + 1}.</span>
+                  <div>
+                    <p class="font-medium text-gray-800">${doc.nombre_documento || 'Documento sin título'}</p>
+                    <p class="text-sm text-gray-600">${doc.texto_preview ? doc.texto_preview.substring(0, 150) + '...' : ''}</p>
+                    <div class="flex flex-wrap gap-1 mt-1">
+                      ${doc.estado ? `<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">${doc.estado}</span>` : ''}
+                      ${doc.fecha ? `<span class="text-xs text-gray-400">${doc.fecha}</span>` : ''}
+                    </div>
+                    ${doc.url_descarga ? `<a href="${doc.url_descarga}" target="_blank" class="text-xs text-senado-primary hover:underline">📄 Ver documento</a>` : ''}
+                  </div>
+                </div>
+              </li>
+            `).join('')}
+          </ul>
+          ${result.total > 5 ? `<p class="text-sm text-gray-500 mt-2">... y ${result.total - 5} más</p>` : ''}
+        </div>
+      `
+    }
 
     historial.value.push({
       pregunta: texto,
-      respuesta: respuestaTexto,
+      respuesta: respuestaHtml,
     })
 
     consulta.value = ''
@@ -206,6 +286,11 @@ const exportarFicha = () => {
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
+
+// Cargar categorías al montar
+onMounted(() => {
+  cargarCategorias()
+})
 </script>
 
 <style scoped>
@@ -238,10 +323,13 @@ const exportarFicha = () => {
   margin: 0.5rem 0;
 }
 
-.chat-bubble-bot :deep(ul),
-.chat-bubble-bot :deep(ol) {
+.chat-bubble-bot :deep(ul) {
   padding-left: 1.5rem;
   margin: 0.5rem 0;
+}
+
+.chat-bubble-bot :deep(li) {
+  margin: 0.3rem 0;
 }
 
 .chat-bubble-bot :deep(strong) {
@@ -256,15 +344,5 @@ const exportarFicha = () => {
   border-radius: 6px;
   border: 1px solid var(--senado-gold);
   font-size: 0.8rem;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 0.8s linear infinite;
 }
 </style>

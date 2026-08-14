@@ -26,6 +26,7 @@ const transformarNoticia = (item) => {
     tipo: item.type || 'noticia',
     status: item.status,
     views: item.views || 0,
+    participantes: item.participantes || [],
     createdAt: item.createdAt,
     updatedAt: item.updatedAt
   }
@@ -104,6 +105,29 @@ export const fetchNoticias = async () => {
   }
 }
 
+// 🔥 NUEVO: OBTENER NOTICIAS POR SENADOR
+export const fetchNoticiasPorSenador = async (senadorId) => {
+  console.log(`📡 [useNoticias] Buscando noticias del senador ID: ${senadorId}...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content/senador/${senadorId}?limit=10`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias para el senador ${senadorId}`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error(`❌ Error cargando noticias del senador ${senadorId}:`, err)
+    return []
+  }
+}
+
 export const useNoticias = () => {
   const noticiasImportantes = ref([])
   const ultimasNoticias = ref([])
@@ -147,6 +171,7 @@ export const useNoticias = () => {
     error: computed(() => error.value),
     loaded: computed(() => loaded.value),
     cargarDatos,
-    recargarDatos
+    recargarDatos,
+    fetchNoticiasPorSenador // 🔥 NUEVO
   }
 }

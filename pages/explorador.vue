@@ -8,8 +8,8 @@
         <p class="text-gray-600 text-lg mt-2">
           Búsqueda semántica con trazabilidad · Cámara de Senadores
         </p>
-        <div class="mt-2 inline-block bg-yellow-50 border border-yellow-200 text-yellow-700 text-xs px-3 py-1 rounded-full">
-          ⚡ Modo demostración
+        <div class="mt-2 inline-block bg-green-50 border border-green-200 text-green-700 text-xs px-3 py-1 rounded-full">
+          ✅ Conectado a la API de Leyes
         </div>
       </div>
 
