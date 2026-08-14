@@ -142,6 +142,7 @@
             >
               <NuxtLink to="/mision" class="block hover:text-senado-primary transition-colors py-1">Misión</NuxtLink>
               <NuxtLink to="/vision" class="block hover:text-senado-primary transition-colors py-1">Visión</NuxtLink>
+              <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary transition-colors py-1">Marco Normativo</NuxtLink>
             </div>
           </div>
 
