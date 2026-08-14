@@ -137,6 +137,10 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   // ✅ CORREGIDO: compatibilityDate
+  icon: {
+    serverBundle: 'local', // 🔥 Cambiar a 'local'
+    clientBundle: 'auto'
+  },
   compatibilityDate: '2026-08-02',
   
   devtools: { enabled: true },
@@ -213,11 +217,6 @@ export default defineNuxtConfig({
       xl: 1280,
       xxl: 1536
     }
-  },
-  
-  icon: {
-    serverBundle: 'remote',
-    clientBundle: 'auto'
   },
   
   app: {
@@ -1628,7 +1627,7 @@ components\Footer.vue
 ================================= 
  
 <template>
-  <footer class="bg-white text-senado-dark py-8 mt-10 border-t border-black">
+  <footer class="bg-white text-senado-dark py-8 mt-10 border-t border-black" style="background: #ffffff !important;">
     <div class="mx-auto w-[90%]">
       <!-- Contenedor al 80% máximo y centrado -->
       <div class="max-w-[80%] mx-auto">
@@ -1638,22 +1637,42 @@ components\Footer.vue
             <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Nuestras Redes Sociales:</h4>
             <div class="flex justify-center gap-3">
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:facebook" class="text-[1.9vw]" />
+                <ClientOnly>
+                  <Icon name="mdi:facebook" class="text-[1.9vw]" />
+                  <template #fallback>
+                    <span class="text-[1.9vw]">f</span>
+                  </template>
+                </ClientOnly>
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="ri:twitter-x-line" class="text-[1.9vw]" />
+                <ClientOnly>
+                  <Icon name="ri:twitter-x-line" class="text-[1.9vw]" />
+                  <template #fallback>
+                    <span class="text-[1.9vw]">𝕏</span>
+                  </template>
+                </ClientOnly>
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:youtube" class="text-[1.9vw]" />
+                <ClientOnly>
+                  <Icon name="mdi:youtube" class="text-[1.9vw]" />
+                  <template #fallback>
+                    <span class="text-[1.9vw]">▶️</span>
+                  </template>
+                </ClientOnly>
               </a>
               <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                <Icon name="mdi:instagram" class="text-[1.9vw]" />
+                <ClientOnly>
+                  <Icon name="mdi:instagram" class="text-[1.9vw]" />
+                  <template #fallback>
+                    <span class="text-[1.9vw]">📷</span>
+                  </template>
+                </ClientOnly>
               </a>
             </div>
           </div>
 
           <!-- Columna 2: Contacto (Con borde a ambos lados) -->
-          <div class="flex flex-col items-center px-[.2vw] py-[1.vw] border-x  border-gray-200">
+          <div class="flex flex-col items-center px-[.2vw] py-[1.vw] border-x border-gray-200">
             <div class="flex-shrink-0 mb-2">
               <img src="/images/LogoBordo.svg" alt="Senado" class="h-[6vw] w-[6vw] object-contain brightness-0 opacity-50" />
             </div>
@@ -1663,7 +1682,7 @@ components\Footer.vue
           </div>
 
           <!-- Columna 3: Sitios de Interés (Sin borde derecho) -->
-          <div class="flex flex-col items-center px-4 py-2 ">
+          <div class="flex flex-col items-center px-4 py-2">
             <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Sitios de interés</h4>
             <ul class="text-[.8vw] space-y-1">
               <li>
@@ -1683,10 +1702,8 @@ components\Footer.vue
               </li>
             </ul>
           </div>
-
         </div>
       </div>
-
     </div>
   </footer>
 </template> 
@@ -1703,20 +1720,25 @@ components\Header.vue
           @click="toggleMenu"
           class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
         >
-          <Icon 
-            name="material-symbols:menu-rounded" 
-            class="text-[3vw]" 
-            v-if="!menuAbierto" 
-            style="font-variation-settings: 'wght' 900;"
-          />
-          <Icon 
-            name="material-symbols:close-rounded" 
-            class="text-[3vw]" 
-            v-else 
-          />
+          <ClientOnly>
+            <Icon 
+              name="material-symbols:menu-rounded" 
+              class="text-[3vw]" 
+              v-if="!menuAbierto" 
+              style="font-variation-settings: 'wght' 900;"
+            />
+            <Icon 
+              name="material-symbols:close-rounded" 
+              class="text-[3vw]" 
+              v-else 
+            />
+            <template #fallback>
+              <span class="text-[3vw]">☰</span>
+            </template>
+          </ClientOnly>
         </button>
 
-        <!-- Logo - MÁS GRANDE -->
+        <!-- Logo -->
         <div class="w-[1vw]"></div>
         <NuxtLink to="/" class="flex-shrink-0 spin-coin block">
           <img src="/images/LogoDorado.svg" alt="Senado" class="h-[7.5vw] w-auto" />
@@ -1783,7 +1805,12 @@ components\Header.vue
               @blur="handleBlur"
             />
             <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
-              <Icon name="material-symbols:search-rounded" class="text-xl" />
+              <ClientOnly>
+                <Icon name="material-symbols:search-rounded" class="text-xl" />
+                <template #fallback>
+                  <span class="text-xl">🔍</span>
+                </template>
+              </ClientOnly>
             </button>
           </div>
         </div>
@@ -1791,7 +1818,7 @@ components\Header.vue
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ LATERAL - VERSIÓN CLICK              -->
+    <!-- MENÚ LATERAL                              -->
     <!-- ========================================== -->
     <div
       v-if="menuAbierto"
@@ -1810,24 +1837,24 @@ components\Header.vue
         </div>
         <nav class="p-4 space-y-6">
           <!-- ========================================== -->
-          <!-- INSTITUCIONAL - NUEVO ITEM                 -->
+          <!-- INSTITUCIONAL                              -->
           <!-- ========================================== -->
           <div>
             <div 
               @click="toggleSubmenu('institucional')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Institucional</span>
                 <span class="transition-transform duration-300" :class="submenus.institucional ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
               :class="submenus.institucional ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Misión</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visión</a>
+              <NuxtLink to="/mision" class="block hover:text-senado-primary transition-colors py-1">Misión</NuxtLink>
+              <NuxtLink to="/vision" class="block hover:text-senado-primary transition-colors py-1">Visión</NuxtLink>
             </div>
           </div>
 
@@ -1839,7 +1866,7 @@ components\Header.vue
               @click="toggleSubmenu('legislativa')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Facultades Legislativas</span>
                 <span class="transition-transform duration-300" :class="submenus.legislativa ? 'rotate-180' : ''">▼</span>
               </div>
@@ -1855,21 +1882,21 @@ components\Header.vue
                   @click="toggleSubmenu('legislacion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Legislación</span>
                     <span class="transition-transform duration-300" :class="submenus.legislacion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</a>
+                  <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</NuxtLink>
+                  <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</NuxtLink>
+                  <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</NuxtLink>
+                  <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</NuxtLink>
+                  <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</NuxtLink>
+                  <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</NuxtLink>
                 </div>
               </div>
 
@@ -1879,17 +1906,17 @@ components\Header.vue
                   @click="toggleSubmenu('fiscalizacion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Fiscalización</span>
                     <span class="transition-transform duration-300" :class="submenus.fiscalizacion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</a>
+                  <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</NuxtLink>
+                  <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</NuxtLink>
                 </div>
               </div>
 
@@ -1899,18 +1926,18 @@ components\Header.vue
                   @click="toggleSubmenu('gestion')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Gestión</span>
                     <span class="transition-transform duration-300" :class="submenus.gestion ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</a>
+                  <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</NuxtLink>
+                  <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</NuxtLink>
+                  <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</NuxtLink>
                 </div>
               </div>
             </div>
@@ -1924,19 +1951,18 @@ components\Header.vue
               @click="toggleSubmenu('senadores')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Tus senadores</span>
                 <span class="transition-transform duration-300" :class="submenus.senadores ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
               :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Quien me representa?</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</a>
+              <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary transition-colors py-1">¿Quién me representa?</NuxtLink>
+              <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</NuxtLink>
+              <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</NuxtLink>
             </div>
           </div>
 
@@ -1948,13 +1974,13 @@ components\Header.vue
               @click="toggleSubmenu('acerca')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Acerca del Senado</span>
                 <span class="transition-transform duration-300" :class="submenus.acerca ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out text-[1.1vw]"
               :class="submenus.acerca ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <div>
@@ -1962,20 +1988,20 @@ components\Header.vue
                   @click="toggleSubmenu('funciones')"
                   class="cursor-pointer"
                 >
-                  <div class="flex items-center justify-between w-full text-left font-semibold text-gray-700 hover:text-senado-primary transition-colors">
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors">
                     <span>Funciones del Senado</span>
                     <span class="transition-transform duration-300" :class="submenus.funciones ? 'rotate-180' : ''">▼</span>
                   </div>
                 </div>
                 <div 
-                  class="ml-4 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  class="ml-4 space-y-1 text-[1.0vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</a>
-                  <a href="#" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</a>
+                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</NuxtLink>
+                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</NuxtLink>
                 </div>
               </div>
-              <a href="#" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-semibold">Antecedentes históricos</a>
+              <NuxtLink to="/antecedentes-historicos" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-[600]">Antecedentes históricos</NuxtLink>
             </div>
           </div>
 
@@ -1987,27 +2013,43 @@ components\Header.vue
               @click="toggleSubmenu('abierto')"
               class="cursor-pointer"
             >
-              <div class="flex items-center justify-between w-full text-left font-bold text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Senado abierto</span>
                 <span class="transition-transform duration-300" :class="submenus.abierto ? 'rotate-180' : ''">▼</span>
               </div>
             </div>
             <div 
-              class="ml-4 mt-2 space-y-1 text-sm text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
               :class="submenus.abierto ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Noticias</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</a>
-              <a href="#" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</a>
+              <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1">Noticias</NuxtLink>
+              <NuxtLink to="/productos-digitales" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
+              <NuxtLink to="/consulta-tramites" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
+              <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</NuxtLink>
             </div>
           </div>
 
           <hr class="border-gray-200">
 
-          <div class="space-y-2 text-[1.5vw]">
-            <a href="/" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">🏠 Inicio</a>
-            <a href="/contacto" class="block text-gray-600 hover:text-senado-primary transition-colors py-1">📞 Contacto</a>
+          <!-- ========================================== -->
+          <!-- INICIO Y CONTACTO (CON COLORES DE LA PALETA) -->
+          <!-- ========================================== -->
+          <div class="space-y-3 mt-2">
+            <!-- 🔥 INICIO CON DORADO -->
+            <NuxtLink 
+              to="/" 
+              class="flex items-center gap-3 bg-senado-gold-lightest text-senado-primary hover:bg-senado-gold hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[900] text-[1.4vw] shadow-sm hover:shadow-md"
+            >
+              <span>Inicio</span>
+            </NuxtLink>
+            
+            <!-- 🔥 CONTACTO CON BORDE DORADO -->
+            <NuxtLink 
+              to="/contacto" 
+              class="flex items-center gap-3 text-senado-primary hover:bg-senado-gold-soft hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[800] text-[1.4vw]"
+            >
+              <span>Contacto</span>
+            </NuxtLink>
           </div>
         </nav>
       </div>
@@ -2032,19 +2074,39 @@ components\Header.vue
           :style="menuStyle"
         >
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+            <ClientOnly>
+              <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
+              <template #fallback>
+                <span class="text-2xl">f</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Facebook</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+            <ClientOnly>
+              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+              <template #fallback>
+                <span class="text-2xl">𝕏</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Twitter / X</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+            <ClientOnly>
+              <Icon name="mdi:youtube" class="text-2xl text-red-600" />
+              <template #fallback>
+                <span class="text-2xl">▶️</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">YouTube</span>
           </a>
           <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-            <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+            <ClientOnly>
+              <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
+              <template #fallback>
+                <span class="text-2xl">📷</span>
+              </template>
+            </ClientOnly>
             <span class="text-sm font-medium">Instagram</span>
           </a>
         </div>
@@ -2095,7 +2157,12 @@ components\Header.vue
                   <span v-if="result.esSuplente" class="text-[10px] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
                 </div>
               </div>
-              <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-xl flex-shrink-0" />
+              <ClientOnly>
+                <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-xl flex-shrink-0" />
+                <template #fallback>
+                  <span class="text-gray-400 text-xl">›</span>
+                </template>
+              </ClientOnly>
             </div>
           </div>
         </div>
@@ -2396,19 +2463,16 @@ export default {
         return (a.nameNormalized || '').localeCompare(b.nameNormalized || '')
       })
 
-      // ✅ Guardar resultados y el query que los generó
       this.searchResults = results.slice(0, 10)
-      this.lastSearchQuery = query // Guardar el query que generó estos resultados
+      this.lastSearchQuery = query
       this.showResults = true
     },
     handleFocus() {
-      // ✅ Si hay texto en el input Y ya hay resultados guardados, mostrarlos
       if (this.searchQuery.trim() && this.searchResults.length > 0) {
         this.showResults = true
         return
       }
       
-      // Si hay texto pero no hay resultados, buscar
       if (this.searchQuery.trim()) {
         this.handleSearch()
       }
@@ -2432,7 +2496,6 @@ export default {
     handleKeydown(event) {
       if (event.key === 'Escape') {
         this.showResults = false
-        // ✅ NO limpiamos searchResults para que al hacer focus vuelvan a aparecer
       }
     }
   },

@@ -1,0 +1,2907 @@
+COMPILADO DE ARCHIVOS - Parte 3 
+ 
+ 
+================================= 
+pages\comisiones-comites.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-[2vw]">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-[3vw]">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-[0.9vw] font-bold px-[1.2vw] py-[0.4vw] rounded-full mb-[0.8vw]">
+          📋 Comisiones y Comités
+        </div>
+        <h1 class="text-[4.5vw] font-bold text-senado-primary leading-tight">
+          Comisiones y Comités
+        </h1>
+        <p class="text-gray-600 text-[1.5vw] mt-[0.8vw] max-w-3xl">
+          Conoce las comisiones y comités de la Cámara de Senadores y los senadores que las integran.
+          <span class="block text-gray-400 text-[1.1vw] mt-[0.3vw]">Haz clic en una comisión para ver sus miembros.</span>
+        </p>
+        <div class="w-[6vw] h-[0.2vw] bg-senado-gold-dark mt-[1vw] rounded-full"></div>
+      </div>
+
+      <!-- Buscador -->
+      <div class="max-w-3xl mx-auto mb-[2vw]">
+        <div class="relative">
+          <input
+            v-model="busqueda"
+            type="text"
+            placeholder="🔍 Buscar comisión o comité..."
+            class="w-full px-[1.8vw] py-[1vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
+            @input="filtrarComisiones"
+          />
+          <button
+            v-if="busqueda"
+            @click="limpiarBusqueda"
+            class="absolute right-[1.8vw] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[1.5vw]"
+          >
+            ✕
+          </button>
+        </div>
+        <div v-if="busqueda" class="text-[1vw] text-gray-500 mt-[0.5vw] text-center">
+          {{ resultadosCount }} resultado{{ resultadosCount !== 1 ? 's' : '' }} encontrado{{ resultadosCount !== 1 ? 's' : '' }}
+        </div>
+      </div>
+
+      <!-- Lista de Comisiones -->
+      <div class="max-w-6xl mx-auto space-y-[0.8vw]">
+        <div
+          v-for="comision in comisionesFiltradas"
+          :key="comision.nombre"
+          class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+          :class="comision.destacado ? 'border-senado-primary border-2' : ''"
+        >
+          <!-- Cabecera -->
+          <div
+            @click="toggleItem(comision.nombre)"
+            class="flex items-center justify-between px-[2vw] py-[0.7vw] cursor-pointer hover:bg-gray-50 transition-colors"
+            :class="isOpen(comision.nombre) ? 'bg-senado-gold-lightest' : ''"
+          >
+            <div class="flex items-center gap-[1vw] flex-wrap">
+              <div class="flex items-center gap-[0.6vw]">
+                <span
+                  class="text-[1.3vw] font-bold"
+                  :class="isOpen(comision.nombre) ? 'text-senado-primary' : 'text-gray-500'"
+                >
+                  {{ isOpen(comision.nombre) ? '▾' : '▸' }}
+                </span>
+                <h2 class="text-[1.3vw] font-bold text-senado-primary" v-html="resaltarTexto(comision.nombre)">
+                </h2>
+              </div>
+              <span class="text-[0.7vw] font-semibold px-[0.7vw] py-[0.15vw] rounded-full bg-blue-100 text-blue-700">
+                Comisión
+              </span>
+              <span class="text-[0.7vw] text-gray-400">
+                {{ (comision.comites || []).length }} comités
+              </span>
+              <span v-if="comision.destacado" class="text-[0.6vw] font-semibold px-[0.5vw] py-[0.1vw] rounded-full bg-yellow-100 text-yellow-700">
+                ✦ Coincidencia
+              </span>
+            </div>
+            <div class="text-gray-400 text-[0.8vw]">
+              {{ isOpen(comision.nombre) ? 'Cerrar ▲' : 'Abrir ▼' }}
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <transition
+            enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="max-h-0 opacity-0"
+            enter-to-class="max-h-[5000px] opacity-100"
+            leave-active-class="transition-all duration-200 ease-in"
+            leave-from-class="max-h-[5000px] opacity-100"
+            leave-to-class="max-h-0 opacity-0"
+          >
+            <div v-if="isOpen(comision.nombre)" class="overflow-hidden">
+              <div class="px-[1.8vw] pb-[1.8vw] pt-[0.5vw]">
+                <!-- Presidente y Suplente LADO A LADO -->
+                <div v-if="comision.presidente" class="mb-[1vw]">
+                  <div class="flex flex-wrap gap-[0.8vw]">
+                    <!-- Titular (Presidente) -->
+                    <div class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
+                      <div class="flex items-center gap-[1.2vw]">
+                        <NuxtLink
+                          :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                          class="flex-shrink-0"
+                        >
+                          <img
+                            :src="comision.presidente.foto || defaultAvatar"
+                            :alt="comision.presidente.nombreCompleto"
+                            class="foto-titular mx-[1vw]"
+                            :style="{ borderColor: comision.presidente.color || '#ccc' }"
+                            @error="(e) => e.target.src = defaultAvatar"
+                          />
+                        </NuxtLink>
+                        <div class="flex-1 min-w-0">
+                          <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <NuxtLink
+                              :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                              class="text-[1.1vw] font-bold text-senado-primary hover:underline truncate"
+                            >
+                              {{ comision.presidente.nombreCompleto }}
+                            </NuxtLink>
+                            <span class="badge-titular">Titular</span>
+                          </div>
+                          <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <span
+                              class="badge-partido"
+                              :style="{
+                                backgroundColor: comision.presidente.color + '20',
+                                color: comision.presidente.color || '#666'
+                              }"
+                            >
+                              {{ comision.presidente.partido }}
+                            </span>
+                            <span class="text-[0.7vw] text-gray-500 font-medium">
+                              {{ comision.presidente.cargo }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Suplente del Presidente -->
+                    <div v-if="comision.presidente.suplente" class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
+                      <div class="flex items-center gap-[1.2vw]">
+                        <NuxtLink
+                          :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
+                          class="flex-shrink-0"
+                        >
+                          <img
+                            :src="comision.presidente.fotoSuplente || defaultAvatar"
+                            :alt="comision.presidente.suplenteNombre"
+                            class="foto-suplente mx-[1vw]"
+                            :style="{ borderColor: comision.presidente.color || '#ccc' }"
+                            @error="(e) => e.target.src = defaultAvatar"
+                          />
+                        </NuxtLink>
+                        <div class="flex-1 min-w-0">
+                          <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <NuxtLink
+                              :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
+                              class="text-[0.95vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                            >
+                              {{ comision.presidente.suplenteNombre }}
+                            </NuxtLink>
+                            <span class="badge-suplente">Suplente</span>
+                          </div>
+                          <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <span
+                              class="badge-partido"
+                              :style="{
+                                backgroundColor: comision.presidente.color + '20',
+                                color: comision.presidente.color || '#666'
+                              }"
+                            >
+                              {{ comision.presidente.partido }}
+                            </span>
+                            <span class="text-[0.7vw] text-gray-500 font-medium">
+                              {{ comision.presidente.cargoSuplente || 'Senador Suplente' }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comités -->
+                <div v-if="comision.comites && comision.comites.length > 0" class="border-t border-gray-100 pt-[0.8vw]">
+                  <div class="space-y-[0.6vw]">
+                    <div
+                      v-for="comite in comision.comites"
+                      :key="comite.nombre"
+                      class="bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100"
+                      :class="comite.destacado ? 'border-senado-primary border-2 bg-senado-gold-lightest' : ''"
+                    >
+                      <div class="flex items-center gap-[0.4vw] flex-wrap mb-[0.4vw]">
+                        <h4 class="font-semibold text-gray-800 text-[1vw]" v-html="resaltarTexto(comite.nombre)">
+                        </h4>
+                        <span class="text-[0.55vw] font-semibold px-[0.4vw] py-[0.08vw] rounded-full bg-green-100 text-green-700">
+                          Comité
+                        </span>
+                        <span v-if="comite.destacado" class="text-[0.5vw] font-semibold px-[0.35vw] py-[0.08vw] rounded-full bg-yellow-100 text-yellow-700">
+                          ✦ Coincidencia
+                        </span>
+                      </div>
+
+                      <!-- Secretario y Suplente LADO A LADO -->
+                      <div v-if="comite.secretario" class="flex flex-wrap gap-[0.8vw]">
+                        <!-- Secretario (Titular) -->
+                        <div class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
+                          <div class="flex items-center gap-[1vw]">
+                            <NuxtLink
+                              :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
+                              class="flex-shrink-0"
+                            >
+                              <img
+                                :src="comite.secretario.foto || defaultAvatar"
+                                :alt="comite.secretario.nombreCompleto"
+                                class="foto-secretario mx-[1vw]"
+                                :style="{ borderColor: comite.secretario.color || '#ccc' }"
+                                @error="(e) => e.target.src = defaultAvatar"
+                              />
+                            </NuxtLink>
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <NuxtLink
+                                  :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
+                                  class="text-[0.95vw] font-bold text-senado-primary hover:underline truncate"
+                                >
+                                  {{ comite.secretario.nombreCompleto }}
+                                </NuxtLink>
+                                <span class="badge-titular-sm">Titular</span>
+                              </div>
+                              <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <span
+                                  class="badge-partido-sm"
+                                  :style="{
+                                    backgroundColor: comite.secretario.color + '20',
+                                    color: comite.secretario.color || '#666'
+                                  }"
+                                >
+                                  {{ comite.secretario.partido }}
+                                </span>
+                                <span class="text-[0.6vw] text-gray-500 font-medium">
+                                  {{ comite.secretario.cargo }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Suplente del Secretario -->
+                        <div v-if="comite.secretario.suplente" class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
+                          <div class="flex items-center gap-[1vw]">
+                            <NuxtLink
+                              :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
+                              class="flex-shrink-0"
+                            >
+                              <img
+                                :src="comite.secretario.fotoSuplente || defaultAvatar"
+                                :alt="comite.secretario.suplenteNombre"
+                                class="foto-suplente-sm mx-[1vw]"
+                                :style="{ borderColor: comite.secretario.color || '#ccc' }"
+                                @error="(e) => e.target.src = defaultAvatar"
+                              />
+                            </NuxtLink>
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <NuxtLink
+                                  :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
+                                  class="text-[0.85vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                                >
+                                  {{ comite.secretario.suplenteNombre }}
+                                </NuxtLink>
+                                <span class="badge-suplente-sm">Suplente</span>
+                              </div>
+                              <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <span
+                                  class="badge-partido-sm"
+                                  :style="{
+                                    backgroundColor: comite.secretario.color + '20',
+                                    color: comite.secretario.color || '#666'
+                                  }"
+                                >
+                                  {{ comite.secretario.partido }}
+                                </span>
+                                <span class="text-[0.6vw] text-gray-500 font-medium">
+                                  {{ comite.secretario.cargoSuplente || 'Senador Suplente' }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-if="comisionesFiltradas.length === 0" class="text-center py-[4vw]">
+        <div class="text-[4vw] mb-[1vw]">🔍</div>
+        <h3 class="text-[2.2vw] font-bold text-gray-700 mb-[0.5vw]">No se encontraron resultados</h3>
+        <p class="text-gray-500 text-[1.2vw]">No hay comisiones o comités que coincidan con "<strong>{{ busqueda }}</strong>"</p>
+        <button
+          @click="limpiarBusqueda"
+          class="mt-[1.5vw] text-senado-primary hover:underline text-[1.1vw] font-medium"
+        >
+          Limpiar búsqueda
+        </button>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="mt-[3vw] text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-[0.5vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+
+// ========================================== //
+// CONSTANTES
+// ========================================== //
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// ESTADO
+// ========================================== //
+const itemsAbiertos = ref(new Set())
+const busqueda = ref('')
+
+// ========================================== //
+// FUNCIONES
+// ========================================== //
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+const toggleItem = (nombre) => {
+  if (itemsAbiertos.value.has(nombre)) {
+    itemsAbiertos.value.delete(nombre)
+  } else {
+    itemsAbiertos.value.add(nombre)
+  }
+}
+
+const isOpen = (nombre) => {
+  return itemsAbiertos.value.has(nombre)
+}
+
+const limpiarBusqueda = () => {
+  busqueda.value = ''
+}
+
+const normalizarTexto = (texto) => {
+  if (!texto) return ''
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
+const resaltarTexto = (texto) => {
+  if (!busqueda.value || !texto) return texto
+  const busquedaNormalizada = normalizarTexto(busqueda.value)
+  const textoNormalizado = normalizarTexto(texto)
+  const index = textoNormalizado.indexOf(busquedaNormalizada)
+  if (index === -1) return texto
+  const inicio = texto.substring(0, index)
+  const coincidencia = texto.substring(index, index + busqueda.value.length)
+  const fin = texto.substring(index + busqueda.value.length)
+  return `${inicio}<span class="bg-yellow-200 font-bold">${coincidencia}</span>${fin}`
+}
+
+// ========================================== //
+// DATOS DE COMISIONES Y COMITÉS
+// ========================================== //
+const comisionesData = [
+  {
+    nombre: 'Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral',
+    presidente: {
+      nombre: 'Daniel Antonio',
+      nombreCompleto: 'Daniel Antonio Ortiz Velasquez',
+      foto: '/senadores/titulares/g1/DANIEL ANTONIO ORTIZ VELASQUEZ.png',
+      partido: 'PDC',
+      color: '#2E7078',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Reina Isabel Pallares Morales',
+      fotoSuplente: '/senadores/suplentes/g1/REINA ISABEL PALLARES MORALES.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE CONSTITUCIÓN, LEGISLACIÓN E INTERPRETACIÓN LEGISLATIVA Y CONSTITUCIONAL',
+        secretario: {
+          nombre: 'Freddy',
+          nombreCompleto: 'Freddy Castillo Chavez',
+          foto: '/senadores/titulares/g2/FREDDY CASTILLO CHAVEZ.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Villma Colque Camacho',
+          fotoSuplente: '/senadores/suplentes/g2/VILLMA COLQUE CAMACHO.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE SISTEMA ELECTORAL, DERECHOS HUMANOS Y EQUIDAD SOCIAL',
+        secretario: {
+          nombre: 'Tomasa',
+          nombreCompleto: 'Tomasa Yarhui Jacome',
+          foto: '/senadores/titulares/g1/TOMASA YARHUI JACOME.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Hugo Marcelo Cortez Calvimontes',
+          fotoSuplente: '/senadores/suplentes/g1/HUGO MARCELO CORTEZ CALVIMONTES.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Justicia Plural, Ministerio Público y Defensa Legal del Estado',
+    presidente: {
+      nombre: 'Erick Nelson',
+      nombreCompleto: 'Erick Nelson Soruco Alpire',
+      foto: '/senadores/titulares/g3/ERICK NELSON SORUCO ALPIRE.png',
+      partido: 'PDC',
+      color: '#2E7078',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Cesia Roca Escalante',
+      fotoSuplente: '/senadores/suplentes/g3/CESIA ROCA ESCALANTE.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE JUSTICIA PLURAL Y CONSEJO DE LA MAGISTRATURA',
+        secretario: {
+          nombre: 'Wilder',
+          nombreCompleto: 'Wilder Veliz Armas',
+          foto: '/senadores/titulares/g1/WILDER VELIZ ARMAS.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Lenny Mayra Ayala Justiniano',
+          fotoSuplente: '/senadores/suplentes/g1/LENNY MAYRA AYALA JUSTINIANO.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE MINISTERIO PÚBLICO Y DEFENSA LEGAL DEL ESTADO',
+        secretario: {
+          nombre: 'Maria Isabel',
+          nombreCompleto: 'Maria Isabel Moreno Cortez',
+          foto: '/senadores/titulares/g2/MARIA ISABEL MORENO CORTEZ.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Rolando Vacaflor Gabriel Arana',
+          fotoSuplente: '/senadores/suplentes/g2/ROLANDO VACAFLOR GABRIEL ARANA.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Seguridad del Estado, Fuerzas Armadas y Policía Boliviana',
+    presidente: {
+      nombre: 'Judith Rosario',
+      nombreCompleto: 'Judith Rosario Garcia Coca',
+      foto: '/senadores/titulares/g1/JUDITH ROSARIO GARCIA COCA.png',
+      partido: 'PDC',
+      color: '#2E7078',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Royer Ivan Mamani Garcia',
+      fotoSuplente: '/senadores/suplentes/g1/ROYER IVAN MAMANI GARCIA.png',
+      cargoSuplente: 'SENADOR SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE FUERZAS ARMADAS Y POLICÍA BOLIVIANA',
+        secretario: {
+          nombre: 'Ana Karina',
+          nombreCompleto: 'Ana Karina Velasco Áñez',
+          foto: '/senadores/titulares/g3/ANA KARINA VELASCO ÁÑEZ.png',
+          partido: 'UNIDAD',
+          color: '#EFCD04',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Marcelo Matias Cardona Ibañez',
+          fotoSuplente: '/senadores/suplentes/g3/MARCELO MATIAS CARDONA IBAÑEZ.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE SEGURIDAD DEL ESTADO Y LUCHA CONTRA EL NARCOTRÁFICO',
+        secretario: {
+          nombre: 'Paola Limbania',
+          nombreCompleto: 'Paola Limbania Lopez Zeballos',
+          foto: '/senadores/titulares/g3/PAOLA LIMBANIA LOPEZ ZEBALLOS.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Richard Espada Ugarte',
+          fotoSuplente: '/senadores/suplentes/g3/RICHARD ESPADA UGARTE.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Organización Territorial del Estado y Autonomías',
+    presidente: {
+      nombre: 'Cesar',
+      nombreCompleto: 'Cesar Mentasti Padilla',
+      foto: '/senadores/titulares/g2/CESAR MENTASTI PADILLA.png',
+      partido: 'UNIDAD',
+      color: '#EFCD04',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Marcela Guerrero Vilca',
+      fotoSuplente: '/senadores/suplentes/g2/MARCELA GUERRERO VILCA.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE AUTONOMÍAS MUNICIPALES, INDÍGENA ORIGINARIO CAMPESINAS Y REGIONALES',
+        secretario: {
+          nombre: 'Jose',
+          nombreCompleto: 'Jose Roca Haensel',
+          foto: '/senadores/titulares/g3/JOSE ROCA HAENSEL.png',
+          partido: 'UNIDAD',
+          color: '#EFCD04',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Mabel Giordano Sonnenschein',
+          fotoSuplente: '/senadores/suplentes/g3/MABEL GIORDANO SONNENSCHEIN.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE AUTONOMÍAS DEPARTAMENTALES',
+        secretario: {
+          nombre: 'Ernesto',
+          nombreCompleto: 'Ernesto Suarez Sattori',
+          foto: '/senadores/titulares/g3/ERNESTO SUAREZ SATTORI.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Claudia Cardenas Velasquez',
+          fotoSuplente: '/senadores/suplentes/g3/CLAUDIA CARDENAS VELASQUEZ.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Planificación, Política Económica y Finanzas',
+    presidente: {
+      nombre: 'Eliana Rina',
+      nombreCompleto: 'Eliana Rina Acosta Quispe',
+      foto: '/senadores/titulares/g3/ELIANA RINA ACOSTA QUISPE.png',
+      partido: 'UNIDAD',
+      color: '#EFCD04',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Sichard Hans Soraide Castedo',
+      fotoSuplente: '/senadores/suplentes/g3/SICHARD HANS SORAIDE CASTEDO.png',
+      cargoSuplente: 'SENADOR SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE PLANIFICACIÓN, PRESUPUESTO, INVERSIÓN PÚBLICA Y CONTRALORÍA GENERAL DEL ESTADO',
+        secretario: {
+          nombre: 'Leonor Rosalva',
+          nombreCompleto: 'Leonor Rosalva Romero Gutierrez',
+          foto: '/senadores/titulares/g2/LEONOR ROSALVA ROMERO GUTIERREZ.png',
+          partido: 'UNIDAD',
+          color: '#EFCD04',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Marco Antonio Segovia Vargas',
+          fotoSuplente: '/senadores/suplentes/g2/MARCO ANTONIO SEGOVIA VARGAS.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE POLÍTICAS FINANCIERA, MONETARIA, TRIBUTARIA Y SEGUROS',
+        secretario: {
+          nombre: 'Abdon',
+          nombreCompleto: 'Abdon Porcel Arancibia',
+          foto: '/senadores/titulares/g1/ABDON PORCEL ARANCIBIA.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Ilse Fatima Davila Arancibia',
+          fotoSuplente: '/senadores/suplentes/g1/ILSE FATIMA DAVILA ARANCIBIA.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Economía Plural, Producción, Industria e Industrialización',
+    presidente: {
+      nombre: 'Ana Maria',
+      nombreCompleto: 'Ana Maria Crispin Choque',
+      foto: '/senadores/titulares/g1/ANA MARIA CRISPIN CHOQUE.png',
+      partido: 'PDC',
+      color: '#2E7078',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Victor Severo Quispe Santander',
+      fotoSuplente: '/senadores/suplentes/g1/VICTOR SEVERO QUISPE SANTANDER.png',
+      cargoSuplente: 'SENADOR SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE ENERGÍA, HIDROCARBUROS, MINERÍA Y METALURGIA',
+        secretario: {
+          nombre: 'Marcelino',
+          nombreCompleto: 'Marcelino Flores Ordoñez',
+          foto: '/senadores/titulares/g2/MARCELINO FLORES ORDOÑEZ.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIO DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Susana Gabriela Ruiz Zuleta',
+          fotoSuplente: '/senadores/suplentes/g2/SUSANA GABRIELA RUIZ ZULETA.png',
+          cargoSuplente: 'SENADORA SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE ECONOMÍA PLURAL, DESARROLLO PRODUCTIVO, OBRAS PÚBLICAS E INFRAESTRUCTURA',
+        secretario: {
+          nombre: 'Betty',
+          nombreCompleto: 'Betty Canaviri Villanueva',
+          foto: '/senadores/titulares/g2/BETTY CANAVIRI VILLANUEVA.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Roger Mamani Coronado',
+          fotoSuplente: '/senadores/suplentes/g2/ROGER MAMANI CORONADO.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Naciones y Pueblos Indígena Originario Campesinos e Interculturalidad',
+    presidente: {
+      nombre: 'Jose Manuel',
+      nombreCompleto: 'Jose Manuel Ormachea Mendieta',
+      foto: '/senadores/titulares/g1/JOSE MANUEL ORMACHEA MENDIETA.png',
+      partido: 'LIBRE',
+      color: '#DB3737',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Maria Elena Pachacute Ticona',
+      fotoSuplente: '/senadores/suplentes/g1/MARIA ELENA PACHACUTE TICONA.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE NACIONES Y PUEBLOS INDÍGENA ORIGINARIO CAMPESINOS',
+        secretario: {
+          nombre: 'Bertha Nurmy',
+          nombreCompleto: 'Bertha Nurmy Gutierrez Meneses',
+          foto: '/senadores/titulares/g2/BERTHA NURMY GUTIERREZ MENESES.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Freddy Rioja Melgar',
+          fotoSuplente: '/senadores/suplentes/g2/FREDDY RIOJA MELGAR.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE CULTURAS, INTERCULTURALIDAD Y PATRIMONIO CULTURAL',
+        secretario: {
+          nombre: 'Bertha',
+          nombreCompleto: 'Bertha Cartagena Sanchez',
+          foto: '/senadores/titulares/g1/BERTHA CARTAGENA SANCHEZ.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Manfred Leo Perez Hassenteufel',
+          fotoSuplente: '/senadores/suplentes/g1/MANFRED LEO PEREZ HASSENTEUFEL.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Política Social, Educación y Salud',
+    presidente: {
+      nombre: 'Jose',
+      nombreCompleto: 'Jose Sanchez Aguilar',
+      foto: '/senadores/titulares/g2/JOSE SANCHEZ AGUILAR.png',
+      partido: 'LIBRE',
+      color: '#DB3737',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Cinthya Inga Gutierrez Guzman',
+      fotoSuplente: '/senadores/suplentes/g2/CINTHYA INGA GUTIERREZ GUZMAN.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE EDUCACIÓN, SALUD, CIENCIA, TECNOLOGÍA Y DEPORTES',
+        secretario: {
+          nombre: 'Maria Antonieta',
+          nombreCompleto: 'Maria Antonieta Alcon Sanchez',
+          foto: '/senadores/titulares/g2/MARIA ANTONIETA ALCON SANCHEZ.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Edwin Lopez Quiroga',
+          fotoSuplente: '/senadores/suplentes/g2/EDWIN LOPEZ QUIROGA.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE VIVIENDA, RÉGIMEN LABORAL, SEGURIDAD INDUSTRIAL Y SEGURIDAD SOCIAL',
+        secretario: {
+          nombre: 'Claudia',
+          nombreCompleto: 'Claudia Mallon Vargas',
+          foto: '/senadores/titulares/g1/CLAUDIA MALLON VARGAS.png',
+          partido: 'APB SUMATE',
+          color: '#611789',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Apolinar Rivera Muñoz',
+          fotoSuplente: '/senadores/suplentes/g1/APOLINAR RIVERA MUÑOZ.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Política Internacional',
+    presidente: {
+      nombre: 'Nicanor Gonzalo',
+      nombreCompleto: 'Nicanor Gonzalo Cochi Condori',
+      foto: '/senadores/titulares/g1/NICANOR GONZALO COCHI CONDORI.png',
+      partido: 'PDC',
+      color: '#2E7078',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Roxana Mamani Colquehuanca',
+      fotoSuplente: '/senadores/suplentes/g1/ROXANA MAMANI COLQUEHUANCA.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE ASUNTOS EXTERIORES, INTERPARLAMENTARIOS Y ORGANISMOS INTERNACIONALES',
+        secretario: {
+          nombre: 'Teresa',
+          nombreCompleto: 'Teresa Alarcon Arana',
+          foto: '/senadores/titulares/g2/TERESA ALARCON ARANA.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: false
+        }
+      },
+      {
+        nombre: 'COMITÉ DE RELACIONES ECONÓMICAS INTERNACIONALES',
+        secretario: {
+          nombre: 'Wanda Ximena',
+          nombreCompleto: 'Wanda Ximena Medrano Hervas',
+          foto: '/senadores/titulares/g1/WANDA XIMENA MEDRANO HERVAS.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Aldo Sergio Villegas Mora',
+          fotoSuplente: '/senadores/suplentes/g1/ALDO SERGIO VILLEGAS MORA.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  },
+  {
+    nombre: 'Comisión de Tierra y Territorio, Recursos Naturales y Medio Ambiente',
+    presidente: {
+      nombre: 'Branko Goran',
+      nombreCompleto: 'Branko Goran Marinkovic Jovicevic',
+      foto: '/senadores/titulares/g3/BRANKO GORAN MARINKOVIC JOVICEVIC.png',
+      partido: 'LIBRE',
+      color: '#DB3737',
+      cargo: 'PRESIDENTE DE COMISIÓN',
+      suplente: true,
+      suplenteNombre: 'Kathia Natalia Miserendino Romero',
+      fotoSuplente: '/senadores/suplentes/g3/KATHIA NATALIA MISERENDINO ROMERO.png',
+      cargoSuplente: 'SENADORA SUPLENTE'
+    },
+    comites: [
+      {
+        nombre: 'COMITÉ DE TIERRA Y TERRITORIO, RECURSOS NATURALES Y HOJA DE LA COCA',
+        secretario: {
+          nombre: 'Carol',
+          nombreCompleto: 'Carol Carlo Duran',
+          foto: '/senadores/titulares/g3/CAROL CARLO DURAN.png',
+          partido: 'LIBRE',
+          color: '#DB3737',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Jorge Antonio Quispe Flores',
+          fotoSuplente: '/senadores/suplentes/g3/JORGE ANTONIO QUISPE FLORES.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      },
+      {
+        nombre: 'COMITÉ DE MEDIO AMBIENTE, BIODIVERSIDAD, AMAZONÍA, ÁREAS PROTEGIDAS Y CAMBIO CLIMÁTICO',
+        secretario: {
+          nombre: 'Cintia Monica',
+          nombreCompleto: 'Cintia Monica Puerta Campos',
+          foto: '/senadores/titulares/g3/CINTIA MONICA PUERTA CAMPOS.png',
+          partido: 'PDC',
+          color: '#2E7078',
+          cargo: 'SECRETARIA DE COMITÉ',
+          suplente: true,
+          suplenteNombre: 'Jesus Humberto Suarez Eguez',
+          fotoSuplente: '/senadores/suplentes/g3/JESUS HUMBERTO SUAREZ EGUEZ.png',
+          cargoSuplente: 'SENADOR SUPLENTE'
+        }
+      }
+    ]
+  }
+]
+
+// ========================================== //
+// FILTRADO
+// ========================================== //
+const comisionesFiltradas = computed(() => {
+  if (!busqueda.value.trim()) {
+    return comisionesData
+  }
+
+  const busquedaNormalizada = normalizarTexto(busqueda.value)
+  const palabras = busquedaNormalizada.split(/\s+/).filter(p => p.length > 0)
+
+  return comisionesData.map(comision => {
+    const comisionNombre = normalizarTexto(comision.nombre)
+    let comisionCoincide = false
+    let comitesCoinciden = false
+
+    for (const palabra of palabras) {
+      if (comisionNombre.includes(palabra)) {
+        comisionCoincide = true
+        break
+      }
+    }
+
+    const comitesFiltrados = (comision.comites || []).map(comite => {
+      const comiteNombre = normalizarTexto(comite.nombre)
+      let coincide = false
+      for (const palabra of palabras) {
+        if (comiteNombre.includes(palabra)) {
+          coincide = true
+          comitesCoinciden = true
+          break
+        }
+      }
+      return { ...comite, destacado: coincide }
+    })
+
+    if (comisionCoincide || comitesCoinciden) {
+      return {
+        ...comision,
+        destacado: comisionCoincide,
+        comites: comitesFiltrados
+      }
+    }
+
+    return null
+  }).filter(Boolean)
+})
+
+const resultadosCount = computed(() => {
+  return comisionesFiltradas.value.length
+})
+</script>
+
+<style scoped>
+/* ========================================== */
+/* TAMAÑOS DE FOTOS - DOBLE DE TAMAÑO        */
+/* ========================================== */
+.foto-titular {
+  width: 12vw !important;
+  height: 12vw !important;
+  min-width: 12vw !important;
+  min-height: 12vw !important;
+  max-width: 12vw !important;
+  max-height: 12vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-suplente {
+  width: 10.8vw !important;
+  height: 10.8vw !important;
+  min-width: 10.8vw !important;
+  min-height: 10.8vw !important;
+  max-width: 10.8vw !important;
+  max-height: 10.8vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-secretario {
+  width: 10.8vw !important;
+  height: 10.8vw !important;
+  min-width: 10.8vw !important;
+  min-height: 10.8vw !important;
+  max-width: 10.8vw !important;
+  max-height: 10.8vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-suplente-sm {
+  width: 9.6vw !important;
+  height: 9.6vw !important;
+  min-width: 9.6vw !important;
+  min-height: 9.6vw !important;
+  max-width: 9.6vw !important;
+  max-height: 9.6vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+/* ========================================== */
+/* BADGES                                     */
+/* ========================================== */
+.badge-titular {
+  font-size: 0.75vw;
+  color: #16a34a;
+  font-weight: 600;
+  background: #dcfce7;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-suplente {
+  font-size: 0.75vw;
+  color: #ea580c;
+  font-weight: 600;
+  background: #ffedd5;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-titular-sm {
+  font-size: 0.65vw;
+  color: #16a34a;
+  font-weight: 600;
+  background: #dcfce7;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-suplente-sm {
+  font-size: 0.65vw;
+  color: #ea580c;
+  font-weight: 600;
+  background: #ffedd5;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-partido {
+  font-size: 0.75vw;
+  font-weight: 500;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-partido-sm {
+  font-size: 0.65vw;
+  font-weight: 500;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+/* ========================================== */
+/* TRANSICIONES                               */
+/* ========================================== */
+.max-h-0 {
+  max-height: 0;
+}
+.max-h-\[5000px\] {
+  max-height: 5000px;
+}
+.transition-all {
+  transition-property: all;
+}
+.duration-300 {
+  transition-duration: 300ms;
+}
+.ease-out {
+  transition-timing-function: ease-out;
+}
+.ease-in {
+  transition-timing-function: ease-in;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
+}
+
+/* ========================================== */
+/* RESPONSIVE - MÓVIL                         */
+/* ========================================== */
+@media (max-width: 768px) {
+  .foto-titular {
+    width: 25vw !important;
+    height: 25vw !important;
+    min-width: 25vw !important;
+    min-height: 25vw !important;
+    max-width: 25vw !important;
+    max-height: 25vw !important;
+  }
+  .foto-suplente {
+    width: 22vw !important;
+    height: 22vw !important;
+    min-width: 22vw !important;
+    min-height: 22vw !important;
+    max-width: 22vw !important;
+    max-height: 22vw !important;
+  }
+  .foto-secretario {
+    width: 22vw !important;
+    height: 22vw !important;
+    min-width: 22vw !important;
+    min-height: 22vw !important;
+    max-width: 22vw !important;
+    max-height: 22vw !important;
+  }
+  .foto-suplente-sm {
+    width: 19vw !important;
+    height: 19vw !important;
+    min-width: 19vw !important;
+    min-height: 19vw !important;
+    max-width: 19vw !important;
+    max-height: 19vw !important;
+  }
+  .badge-titular,
+  .badge-suplente {
+    font-size: 2.5vw;
+  }
+  .badge-titular-sm,
+  .badge-suplente-sm {
+    font-size: 2.2vw;
+  }
+  .badge-partido,
+  .badge-partido-sm {
+    font-size: 2.2vw;
+  }
+}
+</style> 
+================================= 
+pages\directiva-camaral.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          🏛️ Directiva Camaral
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Directiva Camaral
+        </h1>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
+          Conoce a los miembros de la Directiva de la Cámara de Senadores para la Legislatura 2025-2026
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Presidente -->
+      <div class="max-w-4xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Presidente</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div
+          v-if="presidente"
+          class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
+        >
+          <div class="flex flex-col md:flex-row items-center p-8 gap-8">
+            <div class="flex-shrink-0">
+              <img
+                :src="presidente.foto || defaultAvatar"
+                :alt="presidente.name"
+                class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 shadow-lg"
+                :style="{ borderColor: presidente.partyColor || '#e3d194' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+            </div>
+            <div class="flex-1 text-center md:text-left">
+              <h2 class="text-2xl md:text-3xl font-bold text-senado-primary">
+                {{ presidente.name }}
+              </h2>
+              <div class="flex items-center justify-center md:justify-start gap-3 mt-2 flex-wrap">
+                <span
+                  class="text-sm font-medium px-3 py-1 rounded-full"
+                  :style="{
+                    backgroundColor: presidente.partyColor + '20',
+                    color: presidente.partyColor || '#666'
+                  }"
+                >
+                  {{ presidente.partyShort || presidente.party || 'Sin partido' }}
+                </span>
+                <span class="text-sm text-gray-500">
+                  {{ presidente.department }}
+                </span>
+              </div>
+              <p class="text-senado-primary font-semibold mt-3 text-lg">
+                Presidente del Senado
+              </p>
+              <NuxtLink
+                :to="`/senador/${presidente.slug}`"
+                class="inline-flex items-center gap-2 mt-4 text-senado-primary hover:text-senado-primary-dark font-medium transition-colors"
+              >
+                Ver perfil completo →
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vicepresidencias -->
+      <div class="max-w-5xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Vicepresidencias</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            v-for="cargo in vicepresidencias"
+            :key="cargo.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div class="flex items-center gap-4 p-6">
+              <img
+                :src="cargo.foto || defaultAvatar"
+                :alt="cargo.name"
+                class="w-20 h-20 rounded-full object-cover border-2 flex-shrink-0"
+                :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-bold text-senado-primary truncate">
+                  {{ cargo.name }}
+                </h3>
+                <div class="flex items-center gap-2 flex-wrap mt-1">
+                  <span
+                    class="text-xs font-medium px-2 py-0.5 rounded"
+                    :style="{
+                      backgroundColor: cargo.partyColor + '20',
+                      color: cargo.partyColor || '#666'
+                    }"
+                  >
+                    {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    {{ cargo.department }}
+                  </span>
+                </div>
+                <p class="text-sm font-semibold text-senado-primary mt-2">
+                  {{ cargo.cargo }}
+                </p>
+                <NuxtLink
+                  :to="`/senador/${cargo.slug}`"
+                  class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-1"
+                >
+                  Ver perfil →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secretarías -->
+      <div class="max-w-5xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Secretarías</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            v-for="cargo in secretarias"
+            :key="cargo.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div class="flex flex-col items-center p-6 text-center">
+              <img
+                :src="cargo.foto || defaultAvatar"
+                :alt="cargo.name"
+                class="w-20 h-20 rounded-full object-cover border-2 flex-shrink-0"
+                :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <h3 class="text-base font-bold text-senado-primary mt-3 truncate w-full">
+                {{ cargo.name }}
+              </h3>
+              <div class="flex items-center gap-2 flex-wrap mt-1 justify-center">
+                <span
+                  class="text-xs font-medium px-2 py-0.5 rounded"
+                  :style="{
+                    backgroundColor: cargo.partyColor + '20',
+                    color: cargo.partyColor || '#666'
+                  }"
+                >
+                  {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                </span>
+              </div>
+              <p class="text-sm font-semibold text-senado-primary mt-2">
+                {{ cargo.cargo }}
+              </p>
+              <NuxtLink
+                :to="`/senador/${cargo.slug}`"
+                class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-2"
+              >
+                Ver perfil →
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { senadores } from '~/data/senadores'
+
+// ========================================== //
+// CONSTANTES
+// ========================================== //
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// IDS DE LA DIRECTIVA
+// ========================================== //
+const DIRECTIVA_IDS = {
+  presidente: 32,      // Diego Esteban Mateo Ávila Navajas
+  primeraVice: 6,      // Carmen Soledad Chapeton Tancara
+  segundaVice: 12,     // Kathia Lizbeth Quiroga Fernández
+  primeraSecretaria: 33, // Yasmín Estivariz Villarroel
+  segundaSecretaria: 13, // Rosa Tatiana Áñez Carrasco
+  terceraSecretaria: 24 // Julio Diego Romaña Galindo
+}
+
+// ========================================== //
+// OBTENER SENADOR POR ID
+// ========================================== //
+const getSenadorById = (id) => {
+  return senadores.find(s => s.id === id) || null
+}
+
+// ========================================== //
+// COMPUTADAS
+// ========================================== //
+const presidente = computed(() => {
+  return getSenadorById(DIRECTIVA_IDS.presidente)
+})
+
+const vicepresidencias = computed(() => {
+  const cargos = []
+  const primera = getSenadorById(DIRECTIVA_IDS.primeraVice)
+  const segunda = getSenadorById(DIRECTIVA_IDS.segundaVice)
+
+  if (primera) {
+    cargos.push({
+      ...primera,
+      cargo: 'Primera Vicepresidencia'
+    })
+  }
+  if (segunda) {
+    cargos.push({
+      ...segunda,
+      cargo: 'Segunda Vicepresidencia'
+    })
+  }
+  return cargos
+})
+
+const secretarias = computed(() => {
+  const cargos = []
+  const primera = getSenadorById(DIRECTIVA_IDS.primeraSecretaria)
+  const segunda = getSenadorById(DIRECTIVA_IDS.segundaSecretaria)
+  const tercera = getSenadorById(DIRECTIVA_IDS.terceraSecretaria)
+
+  if (primera) {
+    cargos.push({
+      ...primera,
+      cargo: 'Primera Secretaria'
+    })
+  }
+  if (segunda) {
+    cargos.push({
+      ...segunda,
+      cargo: 'Segunda Secretaria'
+    })
+  }
+  if (tercera) {
+    cargos.push({
+      ...tercera,
+      cargo: 'Tercera Secretaria'
+    })
+  }
+  return cargos
+})
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\explorador.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-8">
+    <div class="mx-auto w-[85%]">
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-senado-primary">
+          Asistente Legislativo
+        </h1>
+        <p class="text-gray-600 text-lg mt-2">
+          Búsqueda semántica con trazabilidad · Cámara de Senadores
+        </p>
+        <div class="mt-2 inline-block bg-yellow-50 border border-yellow-200 text-yellow-700 text-xs px-3 py-1 rounded-full">
+          ⚡ Modo demostración
+        </div>
+      </div>
+
+      <ConsultaLegislativa />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import ConsultaLegislativa from '~/components/asistente/ConsultaLegislativa.vue'
+</script> 
+================================= 
+pages\funciones-del-senado.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Funciones del Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            El Rol del Senado en la Asamblea Legislativa Plurinacional
+          </p>
+
+          <!-- Introducción -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              El Reglamento General de la Cámara de Senadores establece:
+            </p>
+          </div>
+
+          <!-- Artículo 2 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 2.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>(Marco Constitucional).</b> En el marco de lo establecido por la Constitución Política del Estado, la Cámara de Senadores de la Asamblea Legislativa Plurinacional reside en el Órgano Legislativo y ejerce las atribuciones de legislación, fiscalización y gestión, bajo los principios de coordinación y cooperación, promoviendo la participación activa de la ciudadanía en todo el territorio boliviano.
+            </p>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-stretch">
+          <div class="w-full rounded-xl overflow-hidden shadow-lg flex">
+            <img 
+              src="/Mandato Constitucional Senado/27.JPG" 
+              alt="Funciones del Senado"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\index.vue 
+================================= 
+ 
+<template>
+  <div class="overflow-visible">
+    <!-- ========================================== -->
+    <!-- BANNER DE BIENVENIDA (ancho completo)      -->
+    <!-- ========================================== -->
+    <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
+
+      <!-- Contenedor del 70% centrado -->
+      <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
+        
+        <!-- IMAGEN IZQUIERDA (Logo Blanco) -->
+        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
+          <div 
+            class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
+          ></div>
+        </div>
+
+        <!-- CÚPULA DERECHA -->
+        <div 
+          class="absolute right-0 z-[60] w-[22vw]"
+          style="bottom: 0; pointer-events: none;"
+        >
+          <img 
+            src="/images/Cupula.png" 
+            alt="Senado derecha" 
+            style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
+          />
+        </div>
+
+        <!-- TEXTO CENTRADO -->
+        <div class="flex-1 text-center z-20">
+          <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
+            Bienvenido al sitio web oficial <br> del
+            <span class="text-senado-primary text-[4vw] text-justify font-bold">Senado de Bolivia</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BARRA DE SESIÓN                            -->
+    <!-- ========================================== -->
+    <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
+      <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
+        <span class="text-senado-primary font-medium">Sesión -</span>
+        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-gold-dark">|</span>
+        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
+          Mira en directo
+        </a>
+        <span class="text-senado-gold-dark">|</span>
+        <a href="#" class="text-black hover:underline font-thin underline">
+          ORDEN DEL DÍA
+        </a>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 🔥 VIDEO DE FONDO CON 4 ESTADÍSTICAS      -->
+    <!-- ========================================== -->
+    <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
+      <!-- Video de fondo -->
+      <video
+        ref="videoRef"
+        class="absolute top-0 left-0 w-full h-full object-cover"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="/videos/fondo-senado.mp4" type="video/mp4" />
+        <div class="absolute inset-0 bg-senado-primary-dark"></div>
+      </video>
+
+      <!-- Overlay oscuro -->
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <!-- ========================================== -->
+      <!-- CUADRADO CON 4 ESTADÍSTICAS               -->
+      <!-- ========================================== -->
+      <div 
+        class="absolute bottom-0 left-1/2 -translate-x-1/2"
+        style="width: 90%; height: 30%;"
+      >
+        <div 
+          class="w-full h-full bg-black/10 backdrop-blur-sm"
+          style="border: 2px solid #e3d194; border-bottom: none; border-radius: 16px 16px 0 0;"
+        >
+          <!-- Grid de 4 columnas -->
+          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4">
+            
+            <!-- 1. PROYECTOS EN TRATAMIENTO -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />en Tratamiento
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.enTratamiento }}
+              </div>
+            </div>
+
+            <!-- 2. PROYECTOS APROBADOS -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />Aprobados
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.aprobados }}
+              </div>
+            </div>
+
+            <!-- 3. LEYES SANCIONADAS -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Proyectos de Ley<br />Sancionadas
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.sancionadas }}
+              </div>
+            </div>
+
+            <!-- 4. PETICIONES DE INFORME -->
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
+                Peticiones de<br />Informe
+              </div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
+                {{ estadisticas.peticionesInforme }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL                       -->
+    <!-- ========================================== -->
+    <div class="mx-auto w-[75%] py-[2vw]">
+      <!-- ACTIVIDAD LEGISLATIVA -->
+      <div>
+        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- LEGISLACION -->
+          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.enTratamiento }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Aprobados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.aprobados }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.sancionadas }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.promulgadas }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.modificaciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.rechazados }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- FISCALIZACIÓN -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesEscrito }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Oral
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesOral }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- GESTION -->
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.resoluciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.declaraciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.minutas }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        
+        </div>
+      </div>
+      
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <NoticiasDinamicas />
+
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+
+      <DescubraSenado />
+
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+      
+      <MandatoFuncionesAntecedentes />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
+import DescubraSenado from '~/components/DescubraSenado.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const videoRef = ref(null)
+
+// ========================================== //
+// 🔥 ESTADÍSTICAS SIMULADAS (HARDCODEADAS)  //
+// ========================================== //
+const estadisticas = reactive({
+  enTratamiento: 15,
+  aprobados: 42,
+  sancionadas: 28,
+  promulgadas: 18,
+  modificaciones: 7,
+  rechazados: 5,
+  peticionesEscrito: 12,
+  peticionesOral: 8,
+  peticionesInforme: 20,
+  resoluciones: 45,
+  declaraciones: 23,
+  minutas: 67
+})
+
+// ========================================== //
+// 🔥 INICIALIZACIÓN                         //
+// ========================================== //
+onMounted(() => {
+  // Restaurar scroll
+  if (process.client) {
+    const scrollPos = sessionStorage.getItem('scrollPosicion')
+    if (scrollPos) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(scrollPos),
+          behavior: 'smooth'
+        })
+        sessionStorage.removeItem('scrollPosicion')
+      }, 400)
+    }
+  }
+  
+  // Reproducir video
+  if (videoRef.value) {
+    videoRef.value.play().catch(error => {
+      console.log('Autoplay bloqueado:', error)
+    })
+  }
+})
+</script> 
+================================= 
+pages\mandato-constitucional.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Mandato Constitucional Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            La Constitución Política del Estado establece:
+          </p>
+
+          <!-- Artículo 12 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 12.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>I.</b>  El Estado se organiza y estructura su poder público a través de los órganos Legislativo, Ejecutivo, Judicial y Electoral. La organización del Estado está fundamentada en la independencia, separación, coordinación y cooperación de estos órganos.
+            </p>
+          </div>
+
+          <!-- Artículo 148 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 148.
+            </h2>
+            <div class="space-y-4 text-[1.1vw] text-gray-700 leading-relaxed">
+              <p>
+                <b>I.</b> La Cámara de Senadores estará conformada por un total de 36 miembros.
+              </p>
+              <p>
+                <b>II.</b> En cada departamento se eligen 4 Senadores en circunscripción departamental, por votación universal, directa y secreta.
+              </p>
+              <p>
+                <b>III.</b> La asignación de los escaños de Senadores en cada departamento se hará mediante el sistema proporcional, de acuerdo a la Ley.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-start">
+          <div class="w-full max-w-[500px] rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src="/Mandato Constitucional Senado/6.png" 
+              alt="Mandato Constitucional Senado"
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\mision.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          📜 Institucional
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Misión
+        </h1>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
+            <p class="text-xl font-semibold text-senado-primary">
+              “El horizonte estratégico del Estado Plurinacional es el Vivir Bien como modelo civilizatorio alternativo al capitalismo y al colonialismo; la legislación y fiscalización democrática y participativa nos permitirá consolidar la arquitectura de nuestro nuevo Estado al conmemorar los 200 años de fundación de la Patria.”
+            </p>
+            <p>
+              La democracia deliberativa y comunitaria es la esencia de nuestro Estado Plurinacional y de nuestros pueblos, la <strong>Cámara de Senadores</strong>, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera.
+            </p>
+          </div>
+        </div>
+
+        <!-- Cita destacada -->
+        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
+          <p class="text-gray-600 text-sm italic">
+            "La Cámara de Senadores, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera."
+          </p>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-12 text-center">
+          <NuxtLink 
+            to="/" 
+            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          >
+            <ClientOnly>
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <template #fallback>
+                <span class="text-[1.5vw]">←</span>
+              </template>
+            </ClientOnly>
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+<!-- 77235736 -->
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\quien-me-representa.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          👥 Tus Senadores
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          ¿Quién me representa?
+        </h1>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
+          Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Selector de Departamento -->
+      <div class="max-w-2xl mx-auto mb-12">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Selecciona tu departamento
+        </label>
+        <select
+          v-model="departamentoSeleccionado"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-transparent text-gray-700 bg-white shadow-sm text-lg"
+          @change="onDepartamentoChange"
+        >
+          <option value="">— Selecciona un departamento —</option>
+          <option
+            v-for="dept in departamentosOrdenados"
+            :key="dept"
+            :value="dept"
+          >
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Contenido -->
+      <div v-if="departamentoSeleccionado" class="max-w-5xl mx-auto">
+        <!-- Encabezado del departamento -->
+        <div class="bg-senado-gold-lightest rounded-2xl p-6 mb-8 border border-senado-gold-light">
+          <div class="flex items-center gap-4">
+            <img
+              :src="getMapaDepartamento(departamentoSeleccionado)"
+              :alt="'Mapa de ' + departamentoSeleccionado"
+              class="h-16 w-16 object-contain"
+              @error="(e) => e.target.src = ''"
+            />
+            <div>
+              <h2 class="text-2xl font-bold text-senado-primary">
+                {{ departamentoSeleccionado }}
+              </h2>
+              <p class="text-gray-600">
+                {{ senadoresPorDepartamento.length }} senadores representan a este departamento
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de Senadores -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            v-for="senador in senadoresPorDepartamento"
+            :key="senador.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <!-- Cabecera del senador -->
+            <div class="flex items-center gap-4 p-4 border-b border-gray-100">
+              <img
+                :src="senador.foto || defaultAvatar"
+                :alt="senador.name"
+                class="w-16 h-16 rounded-full object-cover border-2"
+                :style="{ borderColor: senador.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-bold text-senado-primary truncate">
+                  {{ senador.name }}
+                </h3>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span
+                    class="text-xs font-medium px-2 py-0.5 rounded"
+                    :style="{
+                      backgroundColor: senador.partyColor + '20',
+                      color: senador.partyColor || '#666'
+                    }"
+                  >
+                    {{ senador.partyShort || senador.party || 'Sin partido' }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    Asiento {{ senador.seatNumber }}
+                  </span>
+                </div>
+              </div>
+              <NuxtLink
+                :to="`/senador/${senador.slug}`"
+                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
+              >
+                Ver perfil →
+              </NuxtLink>
+            </div>
+
+            <!-- Detalles -->
+            <div class="p-4 space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-500">Departamento:</span>
+                <span class="font-medium">{{ senador.department }}</span>
+              </div>
+              <div v-if="senador.cargo" class="flex justify-between">
+                <span class="text-gray-500">Cargo:</span>
+                <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
+              </div>
+              <div v-if="senador.comite || senador.comision" class="flex justify-between">
+                <span class="text-gray-500">Comité/Comisión:</span>
+                <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Estado:</span>
+                <span class="font-medium text-green-600">● Titular</span>
+              </div>
+
+              <!-- Suplente -->
+              <div
+                v-if="senador.suplente && senador.suplente !== 'null'"
+                class="mt-3 pt-3 border-t border-gray-100"
+              >
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="text-gray-500">🔄 Suplente:</span>
+                  <NuxtLink
+                    :to="`/senador/suplente/${senador.slugSuplente}`"
+                    class="font-medium text-senado-primary hover:underline"
+                  >
+                    {{ senador.suplente }}
+                  </NuxtLink>
+                </div>
+              </div>
+              <div v-else class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-sm text-gray-400">Sin suplente asignado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sin senadores -->
+        <div v-if="senadoresPorDepartamento.length === 0" class="text-center py-12">
+          <div class="text-4xl mb-4">🔍</div>
+          <p class="text-gray-600 text-lg">No se encontraron senadores para este departamento</p>
+        </div>
+      </div>
+
+      <!-- Estado inicial -->
+      <div v-else class="text-center py-16">
+        <div class="text-6xl mb-6">🗳️</div>
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">Selecciona un departamento</h3>
+        <p class="text-gray-500">Elige tu departamento para conocer a tus representantes en el Senado</p>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { senadores } from '~/data/senadores'
+
+// ========================================== //
+// ESTADO
+// ========================================== //
+const departamentoSeleccionado = ref('')
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// DEPARTAMENTOS
+// ========================================== //
+const departamentos = [
+  'Beni',
+  'Chuquisaca',
+  'Cochabamba',
+  'La Paz',
+  'Oruro',
+  'Pando',
+  'Potosí',
+  'Santa Cruz',
+  'Tarija'
+]
+
+const departamentosOrdenados = computed(() => {
+  return [...departamentos].sort()
+})
+
+// ========================================== //
+// MAPAS POR DEPARTAMENTO
+// ========================================== //
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || ''
+}
+
+// ========================================== //
+// FILTRAR SENADORES POR DEPARTAMENTO
+// ========================================== //
+const senadoresPorDepartamento = computed(() => {
+  if (!departamentoSeleccionado.value) return []
+
+  return senadores
+    .filter(s => s.department === departamentoSeleccionado.value)
+    .sort((a, b) => a.seatNumber - b.seatNumber)
+})
+
+// ========================================== //
+// MÉTODOS
+// ========================================== //
+const onDepartamentoChange = () => {
+  // Guardar selección en localStorage si quieres persistencia
+  if (process.client) {
+    localStorage.setItem('departamentoSeleccionado', departamentoSeleccionado.value)
+  }
+}
+
+// ========================================== //
+// RESTAURAR SELECCIÓN GUARDADA
+// ========================================== //
+onMounted(() => {
+  if (process.client) {
+    const guardado = localStorage.getItem('departamentoSeleccionado')
+    if (guardado && departamentos.includes(guardado)) {
+      departamentoSeleccionado.value = guardado
+    }
+  }
+})
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\vision.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          📜 Institucional
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Visión
+        </h1>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
+            <p>
+              Al <strong>2025</strong>, conmemorando los <strong>200 años de fundación de la Patria</strong>, <strong>21 años del Estado Plurinacional</strong>, la Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo <strong>Estado Unitario, Social de Derecho Plurinacional, Comunitario, libre, independiente, soberano, democrático, intercultural, descentralizado con autonomías</strong>, como expresión de la pluralidad democrática, representativa, participativa y comunitaria.
+            </p>
+            <p>
+              Ejerciendo el principio deliberativo en la discusión, análisis de los proyectos de ley para su aprobación, modificación y/o rechazo; fiscalizando al Órgano Ejecutivo propositivamente; acompañando y canalizando constantemente al pueblo en sus demandas.
+            </p>
+          </div>
+        </div>
+
+        <!-- Cita destacada -->
+        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
+          <p class="text-gray-600 text-sm italic">
+            "La Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo Estado Plurinacional, ejerciendo el principio deliberativo en la discusión y análisis de los proyectos de ley."
+          </p>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-12 text-center">
+          <NuxtLink 
+            to="/" 
+            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          >
+            <ClientOnly>
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <template #fallback>
+                <span class="text-[1.5vw]">←</span>
+              </template>
+            </ClientOnly>
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\noticias\index.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen" style="background: transparent !important;">
+    <!-- Fondo fijo -->
+    <div class="global-fixed-background"></div>
+    
+    <div class="container-vw">
+
+      <!-- Título -->
+      <div class="text-center pb-[6vw] pt-[4vw]">
+        <h1 class="text-[5vw] font-bold text-white drop-shadow-lg tracking-wide">
+          Todas las <span class="text-[#8f1522]">Noticias</span>
+        </h1>
+        <div class="w-[6vw] h-[0.2vw] bg-[#611717] mx-auto mt-[1vw]"></div>
+        <p class="text-white/80 drop-shadow-md mt-[1.5vw] text-[1.4vw] font-light tracking-wide">
+          Explora todas las noticias del Senado de Bolivia
+        </p>
+      </div>
+
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
+        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
+      </div>
+
+      <!-- Estado de error -->
+      <div v-else-if="error" class="text-center py-[10vw]">
+        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
+        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Grid de noticias -->
+      <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
+        <div class="grid grid-cols-4 gap-[1.5vw]">
+          <div 
+            v-for="noticia in noticiasPaginadas" 
+            :key="noticia._id || noticia.id"
+            class="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] relative"
+            @click="verNoticia(noticia)"
+          >
+            <div class="relative aspect-[4/5] w-full">
+              <img 
+                :src="noticia.featuredImage?.url || noticia.imagen || '/images/default-news.jpg'" 
+                :alt="limpiarAsteriscos(noticia.titulo || noticia.title)"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              
+              <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/60 to-transparent"></div>
+              
+              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
+                <p class="text-white/90 text-[0.7em] mb-[0.3em] font-light">
+                  {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
+                </p>
+                
+                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
+                  {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
+                </h3>
+                
+                <div class="mt-[0.8em] flex justify-end">
+                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
+                    Leer más
+                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
+        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
+        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Paginación -->
+      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
+        <button 
+          @click="cambiarPagina(paginaActual - 1)" 
+          :disabled="paginaActual === 1" 
+          class="text-[1vw] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          :class="paginaActual === 1 ? 'text-white/30' : 'text-white hover:text-[#8f1522]'"
+        >
+          Anterior
+        </button>
+        
+        <button 
+          v-for="p in paginasMostradas" 
+          :key="p" 
+          @click="cambiarPagina(p)" 
+          :class="[
+            'w-[2.8vw] h-[2.8vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold',
+            paginaActual === p 
+              ? 'bg-[#611717] text-white' 
+              : 'text-white/60 hover:text-white hover:bg-white/10'
+          ]"
+        >
+          {{ p }}
+        </button>
+        
+        <button 
+          @click="cambiarPagina(paginaActual + 1)" 
+          :disabled="paginaActual === totalPaginas" 
+          class="text-[1vw] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          :class="paginaActual === totalPaginas ? 'text-white/30' : 'text-white hover:text-[#8f1522]'"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+
+// 🔥 USA EL LAYOUT DEFAULT (CON HEADER Y FOOTER)
+definePageMeta({ layout: 'default' })
+
+const router = useRouter()
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const todasLasNoticias = ref([])
+const loading = ref(false)
+const error = ref(null)
+const paginaActual = ref(1)
+const itemsPorPagina = ref(12)
+
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-ES', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  })
+}
+
+const noticiasPaginadas = computed(() => {
+  const start = (paginaActual.value - 1) * itemsPorPagina.value
+  const end = start + itemsPorPagina.value
+  return todasLasNoticias.value.slice(start, end)
+})
+
+const totalPaginas = computed(() => {
+  return Math.ceil(todasLasNoticias.value.length / itemsPorPagina.value)
+})
+
+const paginasMostradas = computed(() => {
+  const total = totalPaginas.value
+  const actual = paginaActual.value
+  const rango = 5
+  
+  let start = Math.max(1, actual - Math.floor(rango / 2))
+  let end = Math.min(total, start + rango - 1)
+  
+  if (end - start + 1 < rango) {
+    start = Math.max(1, end - rango + 1)
+  }
+  
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
+
+const cambiarPagina = (pagina) => {
+  if (pagina >= 1 && pagina <= totalPaginas.value) {
+    paginaActual.value = pagina
+    setTimeout(forceScrollToTop, 100)
+  }
+}
+
+const forceScrollToTop = () => {
+  if (process.client) {
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  }
+}
+
+const verNoticia = (noticia) => {
+  const slug = noticia.slug || noticia._id
+  if (slug) {
+    router.push(`/noticias/${slug}`)
+  }
+}
+
+const fetchTodasLasNoticias = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?limit=100`)
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`)
+    }
+    
+    const result = await response.json()
+    
+    if (result.success && result.data?.contents) {
+      todasLasNoticias.value = result.data.contents.sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.createdAt)
+        const dateB = new Date(b.publishedAt || b.createdAt)
+        return dateB - dateA
+      })
+    } else {
+      todasLasNoticias.value = []
+    }
+  } catch (err) {
+    console.error('Error fetching noticias:', err)
+    error.value = err.message || 'Error al cargar las noticias'
+    todasLasNoticias.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+const recargar = async () => {
+  await fetchTodasLasNoticias()
+  forceScrollToTop()
+}
+
+useHead({
+  title: 'Todas las Noticias - Senado Bolivia',
+  meta: [
+    { name: 'description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:title', content: 'Todas las Noticias - Senado Bolivia' },
+    { property: 'og:description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Senado de Bolivia' },
+    { name: 'twitter:card', content: 'summary_large_image' }
+  ]
+})
+
+onMounted(async () => {
+  await fetchTodasLasNoticias()
+  await nextTick()
+  forceScrollToTop()
+})
+</script>
+
+<style scoped>
+.container-vw {
+  width: 90vw;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2vw;
+  position: relative;
+  z-index: 10;
+}
+
+.global-fixed-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/background/fondo departamentos.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.global-fixed-background::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.min-h-screen {
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+.grid-cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5vw;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.aspect-\[4\/5\] {
+  aspect-ratio: 4 / 5;
+}
+</style>
+
+<style>
+html, body {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+}
+
+#__nuxt,
+#__layout,
+#__layout > div,
+#__nuxt > div {
+  background: transparent !important;
+}
+
+.global-fixed-background {
+  z-index: 0 !important;
+}
+</style> 
+================================= 
+pages\senador\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="py-[2vw]">
+    <div v-if="senator" class="w-[80%] mx-auto">
+      <!-- Botón volver -->
+      <button 
+        @click="volver"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] cursor-pointer text-[1.1vw]"
+      >
+        ← Volver atras
+      </button>
+
+      <!-- Tarjeta del senador -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- PRIMERA FILA: 3 columnas -->
+        <div class="bg-[#EDEEED]">
+          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+            <!-- Columna 1: Foto -->
+            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
+              <img 
+                v-if="senator.foto"
+                :src="senator.foto" 
+                :alt="senator.name"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
+                :style="{ borderColor: senator.partyColor }"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+              <div 
+                v-else
+                class="w-[12vw] h-[12vw] rounded-full flex items-center justify-center text-white text-[4vw] font-bold shadow-lg"
+                :style="{ backgroundColor: senator.partyColor }"
+              >
+                {{ getInitials(senator.name) }}
+              </div>
+            </div>
+
+            <!-- Columna 2: Nombre y cargo -->
+            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ senator.name }}</h1>
+              <p class="text-[1.1vw] text-black">Senador por {{ senator.department }}</p>
+              <p v-if="senator.cargo" class="font-semibold text-[1.0vw] leading-tight">
+                {{ senator.cargo }}
+              </p>
+            </div>
+
+            <!-- Columna 3: Partido -->
+            <div class="md:col-span-3 flex flex-col items-center justify-center">
+              <div class="relative inline-block group">
+                <img 
+                  :src="getLogoPartido(senator.partyShort)" 
+                  :alt="senator.partyShort"
+                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  :class="{'group-hover:opacity-0': getLogoPartidoHover(senator.partyShort)}"
+                  @error="(e) => e.target.src = ''"
+                />
+                <img 
+                  :src="getLogoPartidoHover(senator.partyShort)" 
+                  :alt="senator.partyShort + ' hover'"
+                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  @error="(e) => e.target.style.display = 'none'"
+                />
+              </div>
+              <span 
+                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+              >
+                {{ senator.party?.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDA FILA: 3 columnas iguales -->
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Columna 1: Datos personales -->
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
+                </div>
+              </div>
+              <!-- Fila 6: Senador Suplente -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Suplente:</span>
+                <NuxtLink 
+                  v-if="senator.slugSuplente" 
+                  :to="`/senador/suplente/${senator.slugSuplente}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ senator.suplente }}
+                </NuxtLink>
+                <span v-else class="text-gray-800">No disponible</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Mapa -->
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
+            <img 
+              :src="getMapaDepartamento(senator.department)" 
+              :alt="'Mapa de ' + senator.department"
+              class="h-[12vw] w-auto object-contain"
+              @error="(e) => e.target.src = '/images/mapa-default.svg'"
+            />
+          </div>
+
+          <!-- Columna 3: Asiento en el Hemiciclo -->
+          <div class="p-[1.2vw] flex flex-col justify-center">
+            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <div class="flex flex-col items-center">
+              <img 
+                :src="getAsientoHemiciclo(senator.seatNumber)" 
+                :alt="'Asiento ' + senator.seatNumber"
+                class="h-[15vw] w-[15vw] object-contain"
+                @error="(e) => e.target.src = ''"
+              />
+              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ senator.seatNumber }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-[2vw]">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0 mx-[1vw]">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
+        Volver al inicio
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useSenadores } from '~/composables/useSenadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const route = useRoute()
+const { getSenadorBySlug } = useSenadores()
+
+const slug = computed(() => route.params.slug)
+
+const senator = computed(() => {
+  return getSenadorBySlug(slug.value)
+})
+
+const volver = () => {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigateTo('/')
+  }
+}
+
+const getInitials = (name) => {
+  if (!name) return '?'
+  const parts = name.split(' ')
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
+}
+
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || '/mapas/default.svg'
+}
+
+const getLogoPartido = (partyShort) => {
+  const logos = {
+    'PDC': '/logos FuerzasPoliticas/PDC.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
+    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
+    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+  }
+  return logos[partyShort] || ''
+}
+
+const getLogoPartidoHover = (partyShort) => {
+  const logosHover = {
+    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
+    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
+    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+  }
+  return logosHover[partyShort] || ''
+}
+
+const getAsientoHemiciclo = (seatNumber) => {
+  const asientos = {
+    1: '/hemiciclo/1WilderVeliz.svg',
+    2: '/hemiciclo/2JudithGarci╠üa.svg',
+    3: '/hemiciclo/3ClaudiaMallon.svg',
+    4: '/hemiciclo/4WandaMedrano.svg',
+    5: '/hemiciclo/5JoseOrmachea.svg',
+    6: '/hemiciclo/6SoledadChapeton.svg',
+    7: '/hemiciclo/7NicanorCochisvg.svg',
+    8: '/hemiciclo/8TomasaYarhui.svg',
+    9: '/hemiciclo/9AbdonPorcel.svg',
+    10: '/hemiciclo/10BerthaCartagena.svg',
+    11: '/hemiciclo/11BrankoMarinkovic.svg',
+    12: '/hemiciclo/12KhatiaQuiroga.svg',
+    13: '/hemiciclo/13TatianaAnez.svg',
+    14: '/hemiciclo/14PaolaLopez.svg',
+    15: '/hemiciclo/15BettyCanaviri.svg',
+    16: '/hemiciclo/16TeresaAlarcon.svg',
+    17: '/hemiciclo/17MarcelinoFlores.svg',
+    18: '/hemiciclo/18BerthaNurmy.svg',
+    19: '/hemiciclo/19ErickSoruco.svg',
+    20: '/hemiciclo/20JoseRoca.svg',
+    21: '/hemiciclo/21KarinaVelasco.svg',
+    22: '/hemiciclo/22ErnestoSuarez.svg',
+    23: '/hemiciclo/23AnaCrispin.svg',
+    24: '/hemiciclo/24DiegoRomana.svg',
+    25: '/hemiciclo/25CarolCarlo.svg',
+    26: '/hemiciclo/26MonicaPuerta.svg',
+    27: '/hemiciclo/27ElianaAcosta.svg',
+    28: '/hemiciclo/28DanielOrtiz.svg',
+    29: '/hemiciclo/29IsabelMoreno.svg',
+    30: '/hemiciclo/30CesarMentasti.svg',
+    31: '/hemiciclo/31RosalvaRomero.svg',
+    32: '/hemiciclo/32DiegoAvila.svg',
+    33: '/hemiciclo/33YasminEstivariz.svg',
+    34: '/hemiciclo/34FreddyCastillo.svg',
+    35: '/hemiciclo/35MariaAlcon.svg',
+    36: '/hemiciclo/36JoseSanchez.svg'
+  }
+  return asientos[seatNumber] || ''
+}
+</script>
+
+<style scoped>
+</style>

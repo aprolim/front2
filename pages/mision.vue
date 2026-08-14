@@ -55,7 +55,6 @@
 <script setup>
 // No necesita lógica adicional
 </script>
-
 <style scoped>
 /* Estilos específicos si son necesarios */
 </style>

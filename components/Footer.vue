@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-white text-senado-dark py-8 mt-10 border-t border-black">
+  <footer class="bg-white text-senado-dark py-8 mt-10 border-t border-black" style="background: #ffffff !important;">
     <div class="mx-auto w-[90%]">
       <!-- Contenedor al 80% máximo y centrado -->
       <div class="max-w-[80%] mx-auto">

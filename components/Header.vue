@@ -250,7 +250,6 @@
               <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary transition-colors py-1">¿Quién me representa?</NuxtLink>
               <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</NuxtLink>
               <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</NuxtLink>
-              <NuxtLink to="/brigadas-bancadas" class="block hover:text-senado-primary transition-colors py-1">Brigadas y Bancadas</NuxtLink>
             </div>
           </div>
 
@@ -312,7 +311,7 @@
             >
               <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1">Noticias</NuxtLink>
               <NuxtLink to="/productos-digitales" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
-              <NuxtLink to="/consulta-tramites" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
+              <NuxtLink to="https://systemdemo.es/track-document" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
               <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</NuxtLink>
             </div>
           </div>
