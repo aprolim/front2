@@ -1,17 +1,16 @@
 <template>
-  <div class="min-h-screen" style="background: transparent !important;">
+  <div class="min-h-screen">
     <!-- Fondo fijo -->
-    <div class="global-fixed-background"></div>
     
     <div class="container-vw">
 
       <!-- Título -->
       <div class="text-center pb-[3vw] pt-[3vw]">
-        <h1 class="text-[5vw] font-bold text-white drop-shadow-lg tracking-wide">
-          Todas las <span class="text-[#8f1522]">Noticias</span>
+        <h1 class="text-[5vw] font-bolddrop-shadow-lg tracking-wide">
+          Todas las <span class="text-senado-primary-light">Noticias</span>
         </h1>
-        <div class="w-[6vw] h-[0.2vw] bg-[#611717] mx-auto mt-[1vw]"></div>
-        <p class="text-white drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
+        <div class="w-[6vw] h-[0.2vw] bg-senado-primary-light mx-auto mt-[1vw]"></div>
+        <p class="text-senado-primary drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
           Explora todas las noticias del Senado de Bolivia
         </p>
       </div>
@@ -257,34 +256,11 @@ onMounted(async () => {
   z-index: 10;
 }
 
-.global-fixed-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/background/fondo departamentos.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
-  pointer-events: none;
-}
 
-.global-fixed-background::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.4) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
+
 
 .min-h-screen {
-  background: transparent !important;
+  background: rgba(250, 250, 250, 1);
   min-height: 100vh;
 }
 
@@ -321,9 +297,7 @@ html, body {
   background: transparent !important;
 }
 
-.global-fixed-background {
-  z-index: 0 !important;
-}
+
 
 footer {
   position: relative;

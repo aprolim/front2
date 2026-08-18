@@ -1,33 +1,20 @@
 <template>
   <div class="overflow-visible">
-    <!-- ========================================== -->
-    <!-- BANNER DE BIENVENIDA (ancho completo)      -->
-    <!-- ========================================== -->
+    <!-- BANNER DE BIENVENIDA -->
     <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
-
-      <!-- Contenedor del 70% centrado -->
       <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
-        
-        <!-- IMAGEN IZQUIERDA (Logo Blanco) -->
         <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
           <div 
             class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
           ></div>
         </div>
-
-        <!-- CÚPULA DERECHA -->
-        <div 
-          class="absolute right-0 z-[60] w-[22vw]"
-          style="bottom: 0; pointer-events: none;"
-        >
+        <div class="absolute right-0 z-[60] w-[22vw]" style="bottom: 0; pointer-events: none;">
           <img 
             src="/images/Cupula.png" 
             alt="Senado derecha" 
             style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
           />
         </div>
-
-        <!-- TEXTO CENTRADO -->
         <div class="flex-1 text-center z-20">
           <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
             Bienvenido al sitio web oficial <br> del
@@ -37,29 +24,41 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- BARRA DE SESIÓN                            -->
-    <!-- ========================================== -->
+    <!-- BARRA DE SESIÓN -->
     <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
       <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
-        <span class="text-senado-primary font-medium">Sesión -</span>
-        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-primary font-medium">
+          {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} -
+        </span>
+        <span class="text-gray-700 font-normal">
+          {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }}
+        </span>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
+        <a 
+          v-if="sessionData?.path"
+          :href="sessionData.path" 
+          target="_blank"
+          class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline"
+        >
           Mira en directo
         </a>
-        <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-black hover:underline font-thin underline">
+        <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
+        <button 
+          @click="openModal"
+          :disabled="!hasValidData"
+          class="text-black hover:underline font-thin underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           ORDEN DEL DÍA
-        </a>
+        </button>
+        <!-- Mostrar mensaje de error si no hay datos -->
+        <span v-if="errorMessage && !isLoading" class="text-red-500 text-xs ml-2">
+          {{ errorMessage }}
+        </span>
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 🔥 VIDEO DE FONDO CON 4 ESTADÍSTICAS      -->
-    <!-- ========================================== -->
+    <!-- VIDEO CON ESTADÍSTICAS -->
     <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
-      <!-- Video de fondo -->
       <video
         ref="videoRef"
         class="absolute top-0 left-0 w-full h-full object-cover"
@@ -70,80 +69,50 @@
         preload="auto"
       >
         <source src="/videos/fondo-senado.mp4" type="video/mp4" />
-        <div class="absolute inset-0 bg-senado-primary-dark"></div>
       </video>
-
-      <!-- Overlay oscuro -->
       <div class="absolute inset-0 bg-black/50"></div>
 
-      <!-- ========================================== -->
-      <!-- CUADRADO CON 4 ESTADÍSTICAS               -->
-      <!-- ========================================== -->
-      <div 
-        class="absolute bottom-0 left-1/2 -translate-x-1/2"
-        style="width: 90%; height: 30%;"
-      >
-        <div 
-          class="w-full h-full bg-black/10 backdrop-blur-sm"
-          style="border: 2px solid #e3d194; border-bottom: none; border-radius: 16px 16px 0 0;"
-        >
-          <!-- Grid de 4 columnas -->
-          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4">
-            
-            <!-- 1. PROYECTOS EN TRATAMIENTO -->
-            <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />en Tratamiento
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.enTratamiento }}
-              </div>
-            </div>
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
+        <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
+            <defs>
+              <linearGradient id="comet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
+                <stop offset="20%" stop-color="#e3d194" stop-opacity="0.4" />
+                <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-1" />
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-2" />
+          </svg>
 
-            <!-- 2. PROYECTOS APROBADOS -->
+          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />Aprobados
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.aprobados }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.enTratamiento }}</div>
             </div>
-
-            <!-- 3. LEYES SANCIONADAS -->
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />Sancionadas
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.sancionadas }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.aprobados }}</div>
             </div>
-
-            <!-- 4. PETICIONES DE INFORME -->
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Peticiones de<br />Informe
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.peticionesInforme }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.sancionadas }}</div>
             </div>
-
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Peticiones de<br />Informe</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.peticionesInforme }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- CONTENIDO PRINCIPAL                       -->
-    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="mx-auto w-[75%] py-[2vw]">
-      <!-- ACTIVIDAD LEGISLATIVA -->
       <div>
         <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- LEGISLACION -->
           <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
@@ -176,7 +145,6 @@
             </div>
           </div>
 
-          <!-- FISCALIZACIÓN -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
             <div class="p-4">
@@ -193,7 +161,6 @@
             </div>
           </div>
 
-          <!-- GESTION -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
             <div class="p-4">
@@ -213,11 +180,9 @@
               </ul>
             </div>
           </div>
-        
         </div>
       </div>
       
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
@@ -227,71 +192,169 @@
       </div>
       
       <NoticiasDinamicas />
-
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
-
       <DescubraSenado />
-
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
-      
       <MandatoFuncionesAntecedentes />
+    </div>
+
+    <!-- MODAL DE ORDEN DEL DÍA - Solo se muestra si hay datos válidos -->
+    <div 
+      v-if="showModal && hasValidData && modalData" 
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      @click.self="closeModal"
+    >
+      <div class="relative bg-white rounded-2xl shadow-2xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-8 md:p-10" style="width: 520px;">
+        <button @click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors text-3xl font-light z-10">×</button>
+        
+        <div class="text-center">
+          <!-- BANDA TRICOLOR -->
+          <div class="w-full h-[6px] flex rounded-full overflow-hidden mb-4">
+            <div class="flex-1 bg-[#D52B1E]"></div>
+            <div class="flex-1 bg-[#F9E300]"></div>
+            <div class="flex-1 bg-[#007A36]"></div>
+          </div>
+          
+          <!-- ESCUDO -->
+          <img 
+            src="/logo/log2_colores.png" 
+            alt="Senado de Bolivia" 
+            class="w-[90px] h-auto mx-auto mb-3"
+          />
+          
+          <!-- TÍTULO -->
+          <h2 class="text-2xl font-bold text-[#1a2b4c] mb-2 tracking-wide">
+            {{ modalData?.title || 'SESIÓN ORDINARIA' }}
+          </h2>
+          
+          <!-- LÍNEA DORADA -->
+          <div class="w-[60px] h-[3px] bg-[#c9a84c] mx-auto mb-4 rounded-full"></div>
+          
+          <!-- ORDEN DEL DÍA -->
+          <h3 class="text-sm font-semibold text-[#1a2b4c] mb-4 tracking-wider">
+            - ORDEN DEL DÍA -
+          </h3>
+          
+          <!-- ÍTEMS -->
+          <div class="text-left max-w-[380px] mx-auto text-sm text-gray-700">
+            <div 
+              v-for="(item, index) in modalData?.agendaItems || []" 
+              :key="index" 
+              class="flex items-start gap-3 py-1.5 border-b border-gray-100 last:border-0"
+            >
+              <span class="font-bold text-[#c9a84c] min-w-[22px]">{{ index + 1 }}.</span>
+              <span class="leading-relaxed">{{ item }}</span>
+            </div>
+          </div>
+
+          <!-- NOTA -->
+          <p class="text-sm text-gray-600 italic mt-4">
+            {{ modalData?.note || 'Nota: La sesión se desarrollará bajo la modalidad presencial.' }}
+          </p>
+
+          <!-- FECHA Y HORA -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <p class="text-sm font-bold text-[#1a2b4c] tracking-wide">
+              {{ modalData?.dateFormattedShort || 'FECHA NO DISPONIBLE' }}
+            </p>
+            <p class="text-sm text-gray-600 font-semibold">
+              HORA: {{ modalData?.time || '--:--' }}
+            </p>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="mt-4 pt-3 border-t border-gray-200">
+            <p class="text-[10px] text-gray-400 font-light tracking-wider">
+              Dirección de Comunicación y Prensa
+            </p>
+          </div>
+
+          <!-- BOTÓN DESCARGAR PDF -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <button 
+              @click="downloadPDF"
+              class="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a2b4c] hover:bg-[#2a3b5c] text-white text-sm font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useSessionData } from '~/composables/useSessionData'
 import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 
+const {
+  sessionData,
+  formattedDate,
+  isLoading,
+  errorMessage,
+  showModal,
+  modalData,
+  estadisticas,
+  hasValidData,
+  fetchSessionData,
+  openModal,
+  closeModal,
+  handleKeydown,
+  downloadPDF
+} = useSessionData()
+
 const videoRef = ref(null)
 
-// ========================================== //
-// 🔥 ESTADÍSTICAS SIMULADAS (HARDCODEADAS)  //
-// ========================================== //
-const estadisticas = reactive({
-  enTratamiento: 15,
-  aprobados: 42,
-  sancionadas: 28,
-  promulgadas: 18,
-  modificaciones: 7,
-  rechazados: 5,
-  peticionesEscrito: 12,
-  peticionesOral: 8,
-  peticionesInforme: 20,
-  resoluciones: 45,
-  declaraciones: 23,
-  minutas: 67
-})
-
-// ========================================== //
-// 🔥 INICIALIZACIÓN                         //
-// ========================================== //
 onMounted(() => {
-  // Restaurar scroll
+  fetchSessionData()
+  
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
       setTimeout(() => {
-        window.scrollTo({
-          top: parseInt(scrollPos),
-          behavior: 'smooth'
-        })
+        window.scrollTo({ top: parseInt(scrollPos), behavior: 'smooth' })
         sessionStorage.removeItem('scrollPosicion')
       }, 400)
     }
   }
   
-  // Reproducir video
   if (videoRef.value) {
-    videoRef.value.play().catch(error => {
-      console.log('Autoplay bloqueado:', error)
-    })
+    videoRef.value.play().catch(() => {})
   }
+  
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = 'auto'
 })
 </script>
+
+<style scoped>
+.comet-animation-1 {
+  animation: cometLoop1 10s linear infinite;
+}
+.comet-animation-2 {
+  animation: cometLoop2 10s linear infinite;
+}
+@keyframes cometLoop1 {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+@keyframes cometLoop2 {
+  from { stroke-dashoffset: -50; }
+  to { stroke-dashoffset: -150; }
+}
+</style>

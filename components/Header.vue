@@ -143,6 +143,8 @@
               <NuxtLink to="/mision" class="block hover:text-senado-primary transition-colors py-1">Misión</NuxtLink>
               <NuxtLink to="/vision" class="block hover:text-senado-primary transition-colors py-1">Visión</NuxtLink>
               <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary transition-colors py-1">Marco Normativo</NuxtLink>
+              <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary transition-colors py-1">Galeria de Imagenes</NuxtLink>
+              <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary transition-colors py-1">Memoria Institucional - Redactor</NuxtLink>
             </div>
           </div>
 
@@ -311,7 +313,7 @@
               :class="submenus.abierto ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1">Noticias</NuxtLink>
-              <NuxtLink to="/productos-digitales" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
+              <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
               <NuxtLink to="https://systemdemo.es/track-document" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
               <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</NuxtLink>
             </div>
