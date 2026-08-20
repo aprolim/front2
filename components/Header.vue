@@ -319,6 +319,69 @@
             </div>
           </div>
 
+          <!-- ========================================== -->
+          <!-- ÁREA ADMINISTRATIVA                        -->
+          <!-- ========================================== -->
+          <div>
+            <div 
+              @click="toggleSubmenu('administrativa')"
+              class="cursor-pointer"
+            >
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+                <span>▸ Área Administrativa</span>
+                <span class="transition-transform duration-300" :class="submenus.administrativa ? 'rotate-180' : ''">▼</span>
+              </div>
+            </div>
+            <div 
+              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out"
+              :class="submenus.administrativa ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
+            >
+              <!-- Auditoría -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('auditoria')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Auditoría</span>
+                    <span class="transition-transform duration-300" :class="submenus.auditoria ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.auditoria ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary transition-colors py-1">POA-UAI</NuxtLink>
+                  <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary transition-colors py-1">Auditorías Ejecutadas</NuxtLink>
+                  <NuxtLink to="/auditoria/informes-actividades" class="block hover:text-senado-primary transition-colors py-1">Informes de Actividades</NuxtLink>
+                  <NuxtLink to="/auditoria/otras-actividades" class="block hover:text-senado-primary transition-colors py-1">Otras Actividades</NuxtLink>
+                </div>
+              </div>
+
+              <!-- Transparencia y Lucha contra la Corrupción -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('transparencia')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Transparencia y Lucha contra la Corrupción</span>
+                    <span class="transition-transform duration-300" :class="submenus.transparencia ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.transparencia ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/unidad-transparencia" class="block hover:text-senado-primary transition-colors py-1">Unidad de Transparencia y Lucha contra la Corrupción</NuxtLink>
+                  <NuxtLink to="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary transition-colors py-1">Gestión de Denuncia de Actos/Hechos de Corrupción</NuxtLink>
+                  <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary transition-colors py-1">Solicitud de Información</NuxtLink>
+                  <NuxtLink to="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary transition-colors py-1">Rendición Pública de Cuentas</NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <hr class="border-gray-200">
 
           <!-- ========================================== -->
@@ -505,7 +568,10 @@ export default {
         senadores: false,
         acerca: false,
         funciones: false,
-        abierto: false
+        abierto: false,
+        administrativa: false,
+        auditoria: false,
+        transparencia: false
       }
     }
   },

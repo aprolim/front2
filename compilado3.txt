@@ -2,6 +2,330 @@ COMPILADO DE ARCHIVOS - Parte 3
  
  
 ================================= 
+pages\antecedentes-historicos.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <h1 class="text-[4vw] font-bold text-senado-primary text-center leading-tight">
+          Antecedentes Históricos
+        </h1>
+        <p class="text-center text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
+          Conoce la historia y evolución del Senado de Bolivia, desde sus orígenes hasta la actualidad
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN 1: RESEÑA HISTÓRICA               -->
+      <!-- ========================================== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mb-20">
+        <div class="space-y-6 order-2 lg:order-1 flex flex-col justify-center">
+          <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full w-fit">
+            📜 Reseña Histórica
+          </div>
+          <h2 class="text-3xl font-bold text-senado-primary">
+            Historia del Senado de Bolivia
+          </h2>
+          <div class="w-16 h-1 bg-senado-gold-dark rounded"></div>
+          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-4">
+            <p>
+              El <strong>9 de febrero de 1825</strong>, por decreto del <strong>Mariscal Antonio José de Sucre</strong>, se convoca a la primera Asamblea Nacional con el objetivo de dirimir el destino de las provincias de la futura República de Bolivia, por lo cual se establece la fundación del Poder Legislativo un <strong>10 de julio de 1825</strong>.
+            </p>
+            <p>
+              El día <strong>6 de agosto de 1825</strong>, se aprobó la independencia de la República de Bolívar por amplia mayoría. En consecuencia, en la sesión del <strong>13 de agosto de 1825</strong>, Bolivia es declarada como una República representativa, la cual contaría con tres poderes: <strong>Ejecutivo, Judicial y Legislativo</strong>.
+            </p>
+            <div class="bg-senado-gold-lightest p-6 rounded-xl border-l-4 border-senado-primary">
+              <p class="text-sm text-gray-600 italic">
+                "Luego de varias interrupciones del orden democrático en el país, el día <strong>10 de octubre de 1982</strong> se posesiona al congreso electo en las elecciones realizadas en 1980."
+              </p>
+              <p class="text-sm text-gray-600 mt-2">
+                Desde entonces, la Asamblea Legislativa y el Senado trabajan de manera continua en favor de la <strong>legislación, fiscalización y gestión</strong> de la nación.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="order-1 lg:order-2 flex items-stretch">
+          <div class="rounded-xl overflow-hidden shadow-lg w-full flex flex-col">
+            <img 
+              src="/reseña historica del senado/17.webp" 
+              alt="Palacio Legislativo Restaurado - 1940"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+              @error="(e) => e.target.src = '/images/LogoDorado.svg'"
+            />
+            <div class="bg-senado-gold-soft px-4 py-2 text-sm text-gray-600 text-center flex-shrink-0">
+              🏛️ Palacio Legislativo Restaurado, año 1940
+              <br />
+              <span class="text-xs text-gray-400">Fuente: Colección Fotográfica de la Vicepresidencia del Estado Plurinacional de Bolivia.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN 2: LÍNEA DE TIEMPO                -->
+      <!-- ========================================== -->
+      <div class="mb-20">
+        <div class="text-center mb-12">
+          <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full">
+            📅 Línea de Tiempo
+          </div>
+          <h2 class="text-3xl font-bold text-senado-primary mt-3">
+            Hitos Históricos del Senado
+          </h2>
+          <p class="text-gray-600 mt-2">Los momentos más importantes en la historia del Senado boliviano</p>
+        </div>
+
+        <div class="relative">
+          <!-- Línea vertical -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-senado-gold-dark"></div>
+
+          <!-- 1825 - Fundación -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8 text-right">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">9 de febrero 1825</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Convocatoria a la Asamblea</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Por decreto del Mariscal Antonio José de Sucre se convoca a la primera Asamblea Nacional.
+                </p>
+              </div>
+            </div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8"></div>
+          </div>
+
+          <!-- 10 de julio 1825 -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8"></div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">10 de julio 1825</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Fundación del Poder Legislativo</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Se establece la fundación del Poder Legislativo de la futura República de Bolivia.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 de agosto 1825 -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8 text-right">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">6 de agosto 1825</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Independencia de Bolivia</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Se aprueba la independencia de la República de Bolívar por amplia mayoría.
+                </p>
+              </div>
+            </div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8"></div>
+          </div>
+
+          <!-- 13 de agosto 1825 -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8"></div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">13 de agosto 1825</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Declaración de la República</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Bolivia es declarada como una República representativa con tres poderes: Ejecutivo, Judicial y Legislativo.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1940 - Restauración -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8 text-right">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">1940</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Restauración del Palacio</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Restauración del Palacio Legislativo, símbolo de la institucionalidad boliviana.
+                </p>
+              </div>
+            </div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8"></div>
+          </div>
+
+          <!-- 1982 - Retorno a la democracia -->
+          <div class="relative flex flex-col md:flex-row items-center mb-12">
+            <div class="md:w-1/2 pr-8"></div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-primary rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8">
+              <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                <span class="text-senado-primary font-bold text-sm">10 de octubre 1982</span>
+                <h3 class="text-xl font-bold text-senado-primary mt-1">Retorno a la Democracia</h3>
+                <p class="text-gray-600 text-sm mt-2">
+                  Se posesiona al congreso electo en las elecciones de 1980. El Senado trabaja de manera continua en favor de la legislación, fiscalización y gestión de la nación.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actualidad -->
+          <div class="relative flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 pr-8 text-right">
+              <div class="bg-senado-primary text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <span class="text-senado-gold font-bold text-sm">Actualidad</span>
+                <h3 class="text-xl font-bold text-white mt-1">Senado Plurinacional</h3>
+                <p class="text-gray-200 text-sm mt-2">
+                  36 senadores representan a los 9 departamentos, trabajando por el desarrollo de Bolivia bajo el Estado Plurinacional.
+                </p>
+              </div>
+            </div>
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-senado-gold-dark rounded-full border-4 border-white shadow-md"></div>
+            <div class="md:w-1/2 pl-8"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN 3: ANTIGUO HEMICICLO              -->
+      <!-- ========================================== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <div class="order-1 lg:order-1">
+          <div class="rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src="/reseña historica del senado/63.webp" 
+              alt="Antiguo Hemiciclo de la Cámara de Senadores"
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+              @error="(e) => e.target.src = '/images/LogoDorado.svg'"
+            />
+            <div class="bg-senado-gold-soft px-4 py-2 text-sm text-gray-600 text-center">
+              🪑 Antiguo Hemiciclo de la Honorable Cámara de Senadores
+              <br />
+              <span class="text-xs text-gray-400">Fuente: Colección Fotográfica del Honorable Senado del Estado Plurinacional de Bolivia.</span>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-6 order-2 lg:order-2">
+          <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full">
+            🪑 Historia Parlamentaria
+          </div>
+          <h2 class="text-3xl font-bold text-senado-primary">
+            Antiguo Hemiciclo
+          </h2>
+          <div class="w-16 h-1 bg-senado-gold-dark rounded"></div>
+          <p class="text-gray-700 text-lg leading-relaxed">
+            El antiguo hemiciclo de la Cámara de Senadores fue el escenario donde se debatieron y aprobaron las leyes que forjaron la nación boliviana durante décadas.
+          </p>
+          <p class="text-gray-700 text-lg leading-relaxed">
+            Este espacio histórico fue testigo de los momentos más importantes de la vida política del país, desde la consolidación de la democracia hasta las grandes reformas constitucionales.
+          </p>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN 4: NUEVO HEMICICLO                -->
+      <!-- ========================================== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <div class="space-y-6 order-2 lg:order-1">
+          <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full">
+            🏛️ Arquitectura Contemporánea
+          </div>
+          <h2 class="text-3xl font-bold text-senado-primary">
+            Nuevo Hemiciclo
+          </h2>
+          <div class="w-16 h-1 bg-senado-gold-dark rounded"></div>
+          <p class="text-gray-700 text-lg leading-relaxed">
+            El nuevo hemiciclo de la Cámara de Senadores representa la modernización del Poder Legislativo, con una infraestructura que combina tecnología y funcionalidad para el debate democrático.
+          </p>
+          <p class="text-gray-700 text-lg leading-relaxed">
+            Este espacio renovado refleja el compromiso del Senado con la transparencia, la participación ciudadana y el fortalecimiento de la democracia en el Estado Plurinacional de Bolivia.
+          </p>
+        </div>
+        <div class="order-1 lg:order-2">
+          <div class="rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src="/reseña historica del senado/118.webp" 
+              alt="Nuevo Hemiciclo de la Cámara de Senadores"
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+              @error="(e) => e.target.src = '/images/LogoDorado.svg'"
+            />
+            <div class="bg-senado-gold-soft px-4 py-2 text-sm text-gray-600 text-center">
+              🏛️ Nuevo Hemiciclo de la Honorable Cámara de Senadores
+              <br />
+              <span class="text-xs text-gray-400">Fuente: Colección Fotográfica del Honorable Senado del Estado Plurinacional de Bolivia.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- SECCIÓN 5: DATOS CLAVE                    -->
+      <!-- ========================================== -->
+      <div class="bg-senado-gold-lightest rounded-2xl p-10 mb-16">
+        <div class="text-center mb-10">
+          <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full">
+            📊 Datos Clave
+          </div>
+          <h2 class="text-3xl font-bold text-senado-primary mt-3">
+            El Senado en Cifras
+          </h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="text-4xl font-bold text-senado-primary">36</div>
+            <p class="text-gray-600 text-sm mt-1">Senadores</p>
+          </div>
+          <div class="text-center">
+            <div class="text-4xl font-bold text-senado-primary">9</div>
+            <p class="text-gray-600 text-sm mt-1">Departamentos</p>
+          </div>
+          <div class="text-center">
+            <div class="text-4xl font-bold text-senado-primary">200+</div>
+            <p class="text-gray-600 text-sm mt-1">Años de historia</p>
+          </div>
+          <div class="text-center">
+            <div class="text-4xl font-bold text-senado-primary">3</div>
+            <p class="text-gray-600 text-sm mt-1">Poderes del Estado</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- BOTÓN VOLVER                              -->
+      <!-- ========================================== -->
+      <div class="text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional por ahora
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
 pages\comisiones-comites.vue 
 ================================= 
  
@@ -1415,8 +1739,8 @@ pages\explorador.vue
         <p class="text-gray-600 text-lg mt-2">
           Búsqueda semántica con trazabilidad · Cámara de Senadores
         </p>
-        <div class="mt-2 inline-block bg-yellow-50 border border-yellow-200 text-yellow-700 text-xs px-3 py-1 rounded-full">
-          ⚡ Modo demostración
+        <div class="mt-2 inline-block bg-green-50 border border-green-200 text-green-700 text-xs px-3 py-1 rounded-full">
+          ✅ Conectado a la API de Leyes
         </div>
       </div>
 
@@ -1500,39 +1824,412 @@ pages\funciones-del-senado.vue
 /* Estilos específicos si son necesarios */
 </style> 
 ================================= 
+pages\galeria-de-imagenes.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-100">
+    <!-- ============================================ -->
+    <!-- TÍTULO CON ESTILO SENADO -->
+    <!-- ============================================ -->
+    <div class="relative w-full" ref="topSection">
+      <div class="relative w-full">
+        <!-- Líneas animadas estilo Senado -->
+        <div class="absolute top-0 left-0 h-[2px] bg-[#E4D294] animate-slide-right" style="width: 100%;"></div>
+        <div class="absolute bottom-0 right-0 h-[2px] bg-[#E4D294] animate-slide-left" style="width: 100%;"></div>
+        <div class="absolute top-0 right-0 w-[2px] bg-[#E4D294] animate-slide-down" style="height: 100%;"></div>
+        <div class="absolute bottom-0 left-0 w-[2px] bg-[#E4D294] animate-slide-up" style="height: 100%;"></div>
+        
+        <div class="py-[0.8vw] text-center">
+          <h1 class="text-[3vw] text-senado-primary font-semibold">
+            Galería Institucional
+          </h1>
+        </div>
+      </div>
+      
+      <p class="text-gray-600 text-lg text-center max-w-2xl mx-auto mt-6 px-4">
+        Conoce la historia y el patrimonio del Senado de Bolivia
+      </p>
+      <p class="text-gray-500 text-sm text-center mt-2 px-4">
+        {{ totalImages }} imágenes | Página {{ currentPage }} de {{ totalPages }}
+        <span v-if="!useApi" class="ml-2 text-xs text-gray-400">(datos locales)</span>
+      </p>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- Loading -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#E03636] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-3 text-gray-600">Cargando galería...</p>
+      </div>
+
+      <!-- Grid de imágenes -->
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+        <div 
+          v-for="img in paginatedImages" 
+          :key="img.id"
+          class="gallery-item cursor-pointer group"
+          @click="openImageModal(img)"
+        >
+          <div class="relative overflow-hidden rounded-xl shadow-lg bg-gray-200" style="aspect-ratio: 4/3">
+            <img 
+              :src="`/G-Institucional/${img.id}.webp`"
+              :alt="img.description"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              @error="handleImageError"
+            />
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-senado-gold-dark backdrop-blur-sm py-2 px-2">
+              <p class="text-senado-primary text-xs md:text-sm font-medium line-clamp-2 text-center">
+                {{ img.description }}
+              </p>
+            </div>
+
+            <div class="absolute inset-0 border-2 border-white rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <div class="absolute inset-[3px] border border-black/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="flex justify-center items-center gap-2 mt-10 flex-wrap">
+        <button 
+          @click="goToPage(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          ← Anterior
+        </button>
+        
+        <div class="flex gap-1 mx-2">
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            @click="goToPage(page)"
+            class="w-8 h-8 md:w-10 md:h-10 rounded-full transition-all duration-300 text-sm font-medium"
+            :class="currentPage === page 
+              ? 'bg-senado-primary-light text-white scale-105 shadow-md' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          @click="goToPage(currentPage + 1)"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          Siguiente →
+        </button>
+      </div>
+
+      <p class="text-center text-gray-500 text-sm mt-4">
+        Página {{ currentPage }} de {{ totalPages }}
+      </p>
+    </div>
+
+    <!-- Modal de imagen ampliada -->
+    <Teleport to="body">
+      <div v-if="showImageModal" class="fixed inset-0 z-[100] backdrop-blur-lg flex items-center justify-center" @click.self="closeImageViewer">
+        <div class="relative w-full h-full flex flex-col items-center justify-center p-4">
+          <button 
+            @click="closeImageViewer"
+            class="absolute top-4 right-4 hover:text-[#E03636] transition-colors text-3xl z-10"
+          >
+            ✕
+          </button>
+
+          <button 
+            @click="prevImage"
+            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+          >
+            ‹
+          </button>
+
+          <div class="relative max-w-[90vw] max-h-[70vh] flex items-center justify-center">
+            <img 
+              :src="`/G-Institucional/${currentImage?.id}.webp`"
+              :alt="currentImage?.description"
+              class="max-w-full max-h-[70vh] object-contain rounded-lg"
+            />
+          </div>
+
+          <div class="mt-6 text-center max-w-2xl px-4">
+            <p class="text-senado-primary text-base md:text-xl font-[600] bg-senado-gold-dark">{{ currentImage?.description }}</p>
+          </div>
+
+          <button 
+            @click="nextImage"
+            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+          >
+            ›
+          </button>
+
+          <p class="text-white/50 text-sm mt-4">
+            {{ currentImageIndex + 1 }} / {{ totalImages }}
+          </p>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useGaleria } from '~/composables/useGaleria'
+
+
+const router = useRouter()
+const route = useRoute()
+const { images: allImages, loading, fetchImages, USE_API } = useGaleria()
+
+// Referencia a la sección superior
+const topSection = ref(null)
+
+// ============================================
+// 🔥 FUNCIÓN PARA FORZAR SCROLL AL INICIO
+// ============================================
+const forceScrollToTop = () => {
+  if (process.client) {
+    // Múltiples métodos para asegurar
+    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    document.body.scrollIntoView({ block: 'start', behavior: 'instant' })
+    
+    // Si existe la referencia, hacer scroll a ella
+    if (topSection.value) {
+      topSection.value.scrollIntoView({ block: 'start', behavior: 'instant' })
+    }
+  }
+}
+
+// ============================================
+// ESTADO
+// ============================================
+const totalImages = computed(() => allImages.value.length)
+const useApi = computed(() => USE_API)
+
+const itemsPerPage = 20
+const currentPage = ref(1)
+const totalPages = computed(() => Math.ceil(totalImages.value / itemsPerPage))
+
+const paginatedImages = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allImages.value.slice(start, end)
+})
+
+const visiblePages = computed(() => {
+  const maxVisible = 7
+  let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
+  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1)
+  }
+  
+  const pages = []
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+  forceScrollToTop()
+}
+
+// Manejo de error de carga
+const handleImageError = (event) => {
+  const img = event.target
+  img.src = '/images/placeholder.jpg'
+}
+
+// ============================================
+// MODAL
+// ============================================
+const showImageModal = ref(false)
+const currentImage = ref(null)
+const currentImageIndex = ref(0)
+
+const openImageModal = (image) => {
+  currentImage.value = image
+  currentImageIndex.value = image.id - 1
+  showImageModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeImageViewer = () => {
+  showImageModal.value = false
+  currentImage.value = null
+  document.body.style.overflow = ''
+}
+
+const nextImage = () => {
+  if (currentImageIndex.value < totalImages.value - 1) {
+    currentImageIndex.value++
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const prevImage = () => {
+  if (currentImageIndex.value > 0) {
+    currentImageIndex.value--
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const handleKeydown = (e) => {
+  if (!showImageModal.value) return
+  switch(e.key) {
+    case 'ArrowLeft': prevImage(); break
+    case 'ArrowRight': nextImage(); break
+    case 'Escape': closeImageViewer(); break
+  }
+}
+
+// ============================================
+// CICLO DE VIDA - FORZAR SCROLL AL INICIO
+// ============================================
+onMounted(async () => {
+  window.addEventListener('keydown', handleKeydown)
+  
+  // 🔥 FORZAR SCROLL INMEDIATAMENTE
+  forceScrollToTop()
+  
+  // Cargar datos
+  await fetchImages()
+  console.log(`📸 Galería cargada: ${totalImages.value} imágenes | Usando API: ${USE_API}`)
+  
+  // 🔥 FORZAR SCROLL NUEVAMENTE DESPUÉS DE CARGAR
+  nextTick(() => {
+    forceScrollToTop()
+  })
+  
+  // 🔥 FORZAR SCROLL CON DELAY (por si hay renderizado asíncrono)
+  setTimeout(() => {
+    forceScrollToTop()
+  }, 50)
+  
+  setTimeout(() => {
+    forceScrollToTop()
+  }, 200)
+})
+
+// 🔥 Escuchar cambios de ruta para forzar scroll
+if (process.client) {
+  // Cada vez que se complete la navegación
+  router.afterEach((to) => {
+    if (to.path === '/museo/galeria') {
+      forceScrollToTop()
+    }
+  })
+}
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
+})
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fixed {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gallery-item {
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-3px);
+}
+
+/* ============================================ */
+/* ANIMACIONES DE BORDES ESTILO SENADO */
+/* ============================================ */
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right {
+  animation: slide-right 4s ease-in-out infinite;
+}
+
+.animate-slide-left {
+  animation: slide-left 4s ease-in-out infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down 4s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 4s ease-in-out infinite;
+}
+</style> 
+================================= 
 pages\index.vue 
 ================================= 
  
 <template>
   <div class="overflow-visible">
-    <!-- ========================================== -->
-    <!-- BANNER DE BIENVENIDA (ancho completo)      -->
-    <!-- ========================================== -->
+    <!-- BANNER DE BIENVENIDA -->
     <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
-
-      <!-- Contenedor del 70% centrado -->
       <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
-        
-        <!-- IMAGEN IZQUIERDA (Logo Blanco) -->
         <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
           <div 
             class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
           ></div>
         </div>
-
-        <!-- CÚPULA DERECHA -->
-        <div 
-          class="absolute right-0 z-[60] w-[22vw]"
-          style="bottom: 0; pointer-events: none;"
-        >
+        <div class="absolute right-0 z-[60] w-[22vw]" style="bottom: 0; pointer-events: none;">
           <img 
             src="/images/Cupula.png" 
             alt="Senado derecha" 
             style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
           />
         </div>
-
-        <!-- TEXTO CENTRADO -->
         <div class="flex-1 text-center z-20">
           <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
             Bienvenido al sitio web oficial <br> del
@@ -1542,29 +2239,41 @@ pages\index.vue
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- BARRA DE SESIÓN                            -->
-    <!-- ========================================== -->
+    <!-- BARRA DE SESIÓN -->
     <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
       <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
-        <span class="text-senado-primary font-medium">Sesión -</span>
-        <span class="text-gray-700 font-normal">Lunes, 07 de Julio de 2026</span>
+        <span class="text-senado-primary font-medium">
+          {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} -
+        </span>
+        <span class="text-gray-700 font-normal">
+          {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }}
+        </span>
         <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline">
+        <a 
+          v-if="sessionData?.path"
+          :href="sessionData.path" 
+          target="_blank"
+          class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline"
+        >
           Mira en directo
         </a>
-        <span class="text-senado-gold-dark">|</span>
-        <a href="#" class="text-black hover:underline font-thin underline">
+        <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
+        <button 
+          @click="openModal"
+          :disabled="!hasValidData"
+          class="text-black hover:underline font-thin underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           ORDEN DEL DÍA
-        </a>
+        </button>
+        <!-- Mostrar mensaje de error si no hay datos -->
+        <span v-if="errorMessage && !isLoading" class="text-red-500 text-xs ml-2">
+          {{ errorMessage }}
+        </span>
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 🔥 VIDEO DE FONDO CON 4 ESTADÍSTICAS      -->
-    <!-- ========================================== -->
+    <!-- VIDEO CON ESTADÍSTICAS -->
     <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
-      <!-- Video de fondo -->
       <video
         ref="videoRef"
         class="absolute top-0 left-0 w-full h-full object-cover"
@@ -1575,80 +2284,50 @@ pages\index.vue
         preload="auto"
       >
         <source src="/videos/fondo-senado.mp4" type="video/mp4" />
-        <div class="absolute inset-0 bg-senado-primary-dark"></div>
       </video>
-
-      <!-- Overlay oscuro -->
       <div class="absolute inset-0 bg-black/50"></div>
 
-      <!-- ========================================== -->
-      <!-- CUADRADO CON 4 ESTADÍSTICAS               -->
-      <!-- ========================================== -->
-      <div 
-        class="absolute bottom-0 left-1/2 -translate-x-1/2"
-        style="width: 90%; height: 30%;"
-      >
-        <div 
-          class="w-full h-full bg-black/10 backdrop-blur-sm"
-          style="border: 2px solid #e3d194; border-bottom: none; border-radius: 16px 16px 0 0;"
-        >
-          <!-- Grid de 4 columnas -->
-          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4">
-            
-            <!-- 1. PROYECTOS EN TRATAMIENTO -->
-            <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />en Tratamiento
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.enTratamiento }}
-              </div>
-            </div>
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
+        <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
+            <defs>
+              <linearGradient id="comet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
+                <stop offset="20%" stop-color="#e3d194" stop-opacity="0.4" />
+                <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-1" />
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-2" />
+          </svg>
 
-            <!-- 2. PROYECTOS APROBADOS -->
+          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />Aprobados
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.aprobados }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.enTratamiento }}</div>
             </div>
-
-            <!-- 3. LEYES SANCIONADAS -->
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Proyectos de Ley<br />Sancionadas
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.sancionadas }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.aprobados }}</div>
             </div>
-
-            <!-- 4. PETICIONES DE INFORME -->
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">
-                Peticiones de<br />Informe
-              </div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">
-                {{ estadisticas.peticionesInforme }}
-              </div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.sancionadas }}</div>
             </div>
-
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Peticiones de<br />Informe</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.peticionesInforme }}</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- CONTENIDO PRINCIPAL                       -->
-    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="mx-auto w-[75%] py-[2vw]">
-      <!-- ACTIVIDAD LEGISLATIVA -->
       <div>
         <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- LEGISLACION -->
           <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
@@ -1681,7 +2360,6 @@ pages\index.vue
             </div>
           </div>
 
-          <!-- FISCALIZACIÓN -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
             <div class="p-4">
@@ -1698,7 +2376,6 @@ pages\index.vue
             </div>
           </div>
 
-          <!-- GESTION -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
             <div class="p-4">
@@ -1718,11 +2395,9 @@ pages\index.vue
               </ul>
             </div>
           </div>
-        
         </div>
       </div>
       
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
@@ -1732,74 +2407,172 @@ pages\index.vue
       </div>
       
       <NoticiasDinamicas />
-
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
-
       <DescubraSenado />
-
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
-      
       <MandatoFuncionesAntecedentes />
+    </div>
+
+    <!-- MODAL DE ORDEN DEL DÍA - Solo se muestra si hay datos válidos -->
+    <div 
+      v-if="showModal && hasValidData && modalData" 
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      @click.self="closeModal"
+    >
+      <div class="relative bg-white rounded-2xl shadow-2xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-8 md:p-10" style="width: 520px;">
+        <button @click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors text-3xl font-light z-10">×</button>
+        
+        <div class="text-center">
+          <!-- BANDA TRICOLOR -->
+          <div class="w-full h-[6px] flex rounded-full overflow-hidden mb-4">
+            <div class="flex-1 bg-[#D52B1E]"></div>
+            <div class="flex-1 bg-[#F9E300]"></div>
+            <div class="flex-1 bg-[#007A36]"></div>
+          </div>
+          
+          <!-- ESCUDO -->
+          <img 
+            src="/logo/log2_colores.png" 
+            alt="Senado de Bolivia" 
+            class="w-[90px] h-auto mx-auto mb-3"
+          />
+          
+          <!-- TÍTULO -->
+          <h2 class="text-2xl font-bold text-[#1a2b4c] mb-2 tracking-wide">
+            {{ modalData?.title || 'SESIÓN ORDINARIA' }}
+          </h2>
+          
+          <!-- LÍNEA DORADA -->
+          <div class="w-[60px] h-[3px] bg-[#c9a84c] mx-auto mb-4 rounded-full"></div>
+          
+          <!-- ORDEN DEL DÍA -->
+          <h3 class="text-sm font-semibold text-[#1a2b4c] mb-4 tracking-wider">
+            - ORDEN DEL DÍA -
+          </h3>
+          
+          <!-- ÍTEMS -->
+          <div class="text-left max-w-[380px] mx-auto text-sm text-gray-700">
+            <div 
+              v-for="(item, index) in modalData?.agendaItems || []" 
+              :key="index" 
+              class="flex items-start gap-3 py-1.5 border-b border-gray-100 last:border-0"
+            >
+              <span class="font-bold text-[#c9a84c] min-w-[22px]">{{ index + 1 }}.</span>
+              <span class="leading-relaxed">{{ item }}</span>
+            </div>
+          </div>
+
+          <!-- NOTA -->
+          <p class="text-sm text-gray-600 italic mt-4">
+            {{ modalData?.note || 'Nota: La sesión se desarrollará bajo la modalidad presencial.' }}
+          </p>
+
+          <!-- FECHA Y HORA -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <p class="text-sm font-bold text-[#1a2b4c] tracking-wide">
+              {{ modalData?.dateFormattedShort || 'FECHA NO DISPONIBLE' }}
+            </p>
+            <p class="text-sm text-gray-600 font-semibold">
+              HORA: {{ modalData?.time || '--:--' }}
+            </p>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="mt-4 pt-3 border-t border-gray-200">
+            <p class="text-[10px] text-gray-400 font-light tracking-wider">
+              Dirección de Comunicación y Prensa
+            </p>
+          </div>
+
+          <!-- BOTÓN DESCARGAR PDF -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <button 
+              @click="downloadPDF"
+              class="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a2b4c] hover:bg-[#2a3b5c] text-white text-sm font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useSessionData } from '~/composables/useSessionData'
 import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 
+const {
+  sessionData,
+  formattedDate,
+  isLoading,
+  errorMessage,
+  showModal,
+  modalData,
+  estadisticas,
+  hasValidData,
+  fetchSessionData,
+  openModal,
+  closeModal,
+  handleKeydown,
+  downloadPDF
+} = useSessionData()
+
 const videoRef = ref(null)
 
-// ========================================== //
-// 🔥 ESTADÍSTICAS SIMULADAS (HARDCODEADAS)  //
-// ========================================== //
-const estadisticas = reactive({
-  enTratamiento: 15,
-  aprobados: 42,
-  sancionadas: 28,
-  promulgadas: 18,
-  modificaciones: 7,
-  rechazados: 5,
-  peticionesEscrito: 12,
-  peticionesOral: 8,
-  peticionesInforme: 20,
-  resoluciones: 45,
-  declaraciones: 23,
-  minutas: 67
-})
-
-// ========================================== //
-// 🔥 INICIALIZACIÓN                         //
-// ========================================== //
 onMounted(() => {
-  // Restaurar scroll
+  fetchSessionData()
+  
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
       setTimeout(() => {
-        window.scrollTo({
-          top: parseInt(scrollPos),
-          behavior: 'smooth'
-        })
+        window.scrollTo({ top: parseInt(scrollPos), behavior: 'smooth' })
         sessionStorage.removeItem('scrollPosicion')
       }, 400)
     }
   }
   
-  // Reproducir video
   if (videoRef.value) {
-    videoRef.value.play().catch(error => {
-      console.log('Autoplay bloqueado:', error)
-    })
+    videoRef.value.play().catch(() => {})
   }
+  
+  document.addEventListener('keydown', handleKeydown)
 })
-</script> 
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = 'auto'
+})
+</script>
+
+<style scoped>
+.comet-animation-1 {
+  animation: cometLoop1 10s linear infinite;
+}
+.comet-animation-2 {
+  animation: cometLoop2 10s linear infinite;
+}
+@keyframes cometLoop1 {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+@keyframes cometLoop2 {
+  from { stroke-dashoffset: -50; }
+  to { stroke-dashoffset: -150; }
+}
+</style> 
 ================================= 
 pages\mandato-constitucional.vue 
 ================================= 
@@ -1881,1027 +2654,4 @@ pages\mandato-constitucional.vue
 
 <style scoped>
 /* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\mision.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[85%]">
-      <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          📜 Institucional
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          Misión
-        </h1>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
-      </div>
-
-      <!-- Contenido -->
-      <div class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
-          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
-            <p class="text-xl font-semibold text-senado-primary">
-              “El horizonte estratégico del Estado Plurinacional es el Vivir Bien como modelo civilizatorio alternativo al capitalismo y al colonialismo; la legislación y fiscalización democrática y participativa nos permitirá consolidar la arquitectura de nuestro nuevo Estado al conmemorar los 200 años de fundación de la Patria.”
-            </p>
-            <p>
-              La democracia deliberativa y comunitaria es la esencia de nuestro Estado Plurinacional y de nuestros pueblos, la <strong>Cámara de Senadores</strong>, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera.
-            </p>
-          </div>
-        </div>
-
-        <!-- Cita destacada -->
-        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
-          <p class="text-gray-600 text-sm italic">
-            "La Cámara de Senadores, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera."
-          </p>
-        </div>
-
-        <!-- Botón volver -->
-        <div class="mt-12 text-center">
-          <NuxtLink 
-            to="/" 
-            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-          >
-            <ClientOnly>
-              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
-              <template #fallback>
-                <span class="text-[1.5vw]">←</span>
-              </template>
-            </ClientOnly>
-            Volver al inicio
-          </NuxtLink>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-// No necesita lógica adicional
-</script>
-<!-- 77235736 -->
-<style scoped>
-/* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\quien-me-representa.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[85%]">
-      <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          👥 Tus Senadores
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          ¿Quién me representa?
-        </h1>
-        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
-          Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.
-        </p>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
-      </div>
-
-      <!-- Selector de Departamento -->
-      <div class="max-w-2xl mx-auto mb-12">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          Selecciona tu departamento
-        </label>
-        <select
-          v-model="departamentoSeleccionado"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-transparent text-gray-700 bg-white shadow-sm text-lg"
-          @change="onDepartamentoChange"
-        >
-          <option value="">— Selecciona un departamento —</option>
-          <option
-            v-for="dept in departamentosOrdenados"
-            :key="dept"
-            :value="dept"
-          >
-            {{ dept }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Contenido -->
-      <div v-if="departamentoSeleccionado" class="max-w-5xl mx-auto">
-        <!-- Encabezado del departamento -->
-        <div class="bg-senado-gold-lightest rounded-2xl p-6 mb-8 border border-senado-gold-light">
-          <div class="flex items-center gap-4">
-            <img
-              :src="getMapaDepartamento(departamentoSeleccionado)"
-              :alt="'Mapa de ' + departamentoSeleccionado"
-              class="h-16 w-16 object-contain"
-              @error="(e) => e.target.src = ''"
-            />
-            <div>
-              <h2 class="text-2xl font-bold text-senado-primary">
-                {{ departamentoSeleccionado }}
-              </h2>
-              <p class="text-gray-600">
-                {{ senadoresPorDepartamento.length }} senadores representan a este departamento
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grid de Senadores -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            v-for="senador in senadoresPorDepartamento"
-            :key="senador.id"
-            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            <!-- Cabecera del senador -->
-            <div class="flex items-center gap-4 p-4 border-b border-gray-100">
-              <img
-                :src="senador.foto || defaultAvatar"
-                :alt="senador.name"
-                class="w-16 h-16 rounded-full object-cover border-2"
-                :style="{ borderColor: senador.partyColor || '#ccc' }"
-                @error="(e) => e.target.src = defaultAvatar"
-              />
-              <div class="flex-1 min-w-0">
-                <h3 class="text-lg font-bold text-senado-primary truncate">
-                  {{ senador.name }}
-                </h3>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span
-                    class="text-xs font-medium px-2 py-0.5 rounded"
-                    :style="{
-                      backgroundColor: senador.partyColor + '20',
-                      color: senador.partyColor || '#666'
-                    }"
-                  >
-                    {{ senador.partyShort || senador.party || 'Sin partido' }}
-                  </span>
-                  <span class="text-xs text-gray-500">
-                    Asiento {{ senador.seatNumber }}
-                  </span>
-                </div>
-              </div>
-              <NuxtLink
-                :to="`/senador/${senador.slug}`"
-                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
-              >
-                Ver perfil →
-              </NuxtLink>
-            </div>
-
-            <!-- Detalles -->
-            <div class="p-4 space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-gray-500">Departamento:</span>
-                <span class="font-medium">{{ senador.department }}</span>
-              </div>
-              <div v-if="senador.cargo" class="flex justify-between">
-                <span class="text-gray-500">Cargo:</span>
-                <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
-              </div>
-              <div v-if="senador.comite || senador.comision" class="flex justify-between">
-                <span class="text-gray-500">Comité/Comisión:</span>
-                <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">Estado:</span>
-                <span class="font-medium text-green-600">● Titular</span>
-              </div>
-
-              <!-- Suplente -->
-              <div
-                v-if="senador.suplente && senador.suplente !== 'null'"
-                class="mt-3 pt-3 border-t border-gray-100"
-              >
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="text-gray-500">🔄 Suplente:</span>
-                  <NuxtLink
-                    :to="`/senador/suplente/${senador.slugSuplente}`"
-                    class="font-medium text-senado-primary hover:underline"
-                  >
-                    {{ senador.suplente }}
-                  </NuxtLink>
-                </div>
-              </div>
-              <div v-else class="mt-3 pt-3 border-t border-gray-100">
-                <span class="text-sm text-gray-400">Sin suplente asignado</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sin senadores -->
-        <div v-if="senadoresPorDepartamento.length === 0" class="text-center py-12">
-          <div class="text-4xl mb-4">🔍</div>
-          <p class="text-gray-600 text-lg">No se encontraron senadores para este departamento</p>
-        </div>
-      </div>
-
-      <!-- Estado inicial -->
-      <div v-else class="text-center py-16">
-        <div class="text-6xl mb-6">🗳️</div>
-        <h3 class="text-2xl font-bold text-gray-700 mb-2">Selecciona un departamento</h3>
-        <p class="text-gray-500">Elige tu departamento para conocer a tus representantes en el Senado</p>
-      </div>
-
-      <!-- Botón volver -->
-      <div class="mt-12 text-center">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-        >
-          <ClientOnly>
-            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
-            <template #fallback>
-              <span class="text-[1.5vw]">←</span>
-            </template>
-          </ClientOnly>
-          Volver al inicio
-        </NuxtLink>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { senadores } from '~/data/senadores'
-
-// ========================================== //
-// ESTADO
-// ========================================== //
-const departamentoSeleccionado = ref('')
-const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
-
-// ========================================== //
-// DEPARTAMENTOS
-// ========================================== //
-const departamentos = [
-  'Beni',
-  'Chuquisaca',
-  'Cochabamba',
-  'La Paz',
-  'Oruro',
-  'Pando',
-  'Potosí',
-  'Santa Cruz',
-  'Tarija'
-]
-
-const departamentosOrdenados = computed(() => {
-  return [...departamentos].sort()
-})
-
-// ========================================== //
-// MAPAS POR DEPARTAMENTO
-// ========================================== //
-const getMapaDepartamento = (departamento) => {
-  const mapas = {
-    'Beni': '/mapas/Beni.svg',
-    'Cochabamba': '/mapas/Cochabamba.svg',
-    'La Paz': '/mapas/LaPaz.svg',
-    'Oruro': '/mapas/Oruro.svg',
-    'Pando': '/mapas/Pando.svg',
-    'Potosí': '/mapas/Potosi.svg',
-    'Santa Cruz': '/mapas/SantaCruz.svg',
-    'Chuquisaca': '/mapas/Sucre.svg',
-    'Tarija': '/mapas/TarijaMapa.svg'
-  }
-  return mapas[departamento] || ''
-}
-
-// ========================================== //
-// FILTRAR SENADORES POR DEPARTAMENTO
-// ========================================== //
-const senadoresPorDepartamento = computed(() => {
-  if (!departamentoSeleccionado.value) return []
-
-  return senadores
-    .filter(s => s.department === departamentoSeleccionado.value)
-    .sort((a, b) => a.seatNumber - b.seatNumber)
-})
-
-// ========================================== //
-// MÉTODOS
-// ========================================== //
-const onDepartamentoChange = () => {
-  // Guardar selección en localStorage si quieres persistencia
-  if (process.client) {
-    localStorage.setItem('departamentoSeleccionado', departamentoSeleccionado.value)
-  }
-}
-
-// ========================================== //
-// RESTAURAR SELECCIÓN GUARDADA
-// ========================================== //
-onMounted(() => {
-  if (process.client) {
-    const guardado = localStorage.getItem('departamentoSeleccionado')
-    if (guardado && departamentos.includes(guardado)) {
-      departamentoSeleccionado.value = guardado
-    }
-  }
-})
-</script>
-
-<style scoped>
-/* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\vision.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[85%]">
-      <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          📜 Institucional
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          Visión
-        </h1>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
-      </div>
-
-      <!-- Contenido -->
-      <div class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
-          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
-            <p>
-              Al <strong>2025</strong>, conmemorando los <strong>200 años de fundación de la Patria</strong>, <strong>21 años del Estado Plurinacional</strong>, la Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo <strong>Estado Unitario, Social de Derecho Plurinacional, Comunitario, libre, independiente, soberano, democrático, intercultural, descentralizado con autonomías</strong>, como expresión de la pluralidad democrática, representativa, participativa y comunitaria.
-            </p>
-            <p>
-              Ejerciendo el principio deliberativo en la discusión, análisis de los proyectos de ley para su aprobación, modificación y/o rechazo; fiscalizando al Órgano Ejecutivo propositivamente; acompañando y canalizando constantemente al pueblo en sus demandas.
-            </p>
-          </div>
-        </div>
-
-        <!-- Cita destacada -->
-        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
-          <p class="text-gray-600 text-sm italic">
-            "La Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo Estado Plurinacional, ejerciendo el principio deliberativo en la discusión y análisis de los proyectos de ley."
-          </p>
-        </div>
-
-        <!-- Botón volver -->
-        <div class="mt-12 text-center">
-          <NuxtLink 
-            to="/" 
-            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-          >
-            <ClientOnly>
-              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
-              <template #fallback>
-                <span class="text-[1.5vw]">←</span>
-              </template>
-            </ClientOnly>
-            Volver al inicio
-          </NuxtLink>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-// No necesita lógica adicional
-</script>
-
-<style scoped>
-/* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\noticias\index.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen" style="background: transparent !important;">
-    <!-- Fondo fijo -->
-    <div class="global-fixed-background"></div>
-    
-    <div class="container-vw">
-
-      <!-- Título -->
-      <div class="text-center pb-[6vw] pt-[4vw]">
-        <h1 class="text-[5vw] font-bold text-white drop-shadow-lg tracking-wide">
-          Todas las <span class="text-[#8f1522]">Noticias</span>
-        </h1>
-        <div class="w-[6vw] h-[0.2vw] bg-[#611717] mx-auto mt-[1vw]"></div>
-        <p class="text-white/80 drop-shadow-md mt-[1.5vw] text-[1.4vw] font-light tracking-wide">
-          Explora todas las noticias del Senado de Bolivia
-        </p>
-      </div>
-
-      <!-- Estado de carga -->
-      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
-        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
-        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
-      </div>
-
-      <!-- Estado de error -->
-      <div v-else-if="error" class="text-center py-[10vw]">
-        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
-        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
-          Reintentar
-        </button>
-      </div>
-
-      <!-- Grid de noticias -->
-      <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
-        <div class="grid grid-cols-4 gap-[1.5vw]">
-          <div 
-            v-for="noticia in noticiasPaginadas" 
-            :key="noticia._id || noticia.id"
-            class="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] relative"
-            @click="verNoticia(noticia)"
-          >
-            <div class="relative aspect-[4/5] w-full">
-              <img 
-                :src="noticia.featuredImage?.url || noticia.imagen || '/images/default-news.jpg'" 
-                :alt="limpiarAsteriscos(noticia.titulo || noticia.title)"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              
-              <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/60 to-transparent"></div>
-              
-              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
-                <p class="text-white/90 text-[0.7em] mb-[0.3em] font-light">
-                  {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
-                </p>
-                
-                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
-                  {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
-                </h3>
-                
-                <div class="mt-[0.8em] flex justify-end">
-                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
-                    Leer más
-                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sin resultados -->
-      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
-        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
-        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
-          Reintentar
-        </button>
-      </div>
-
-      <!-- Paginación -->
-      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
-        <button 
-          @click="cambiarPagina(paginaActual - 1)" 
-          :disabled="paginaActual === 1" 
-          class="text-[1vw] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
-          :class="paginaActual === 1 ? 'text-white/30' : 'text-white hover:text-[#8f1522]'"
-        >
-          Anterior
-        </button>
-        
-        <button 
-          v-for="p in paginasMostradas" 
-          :key="p" 
-          @click="cambiarPagina(p)" 
-          :class="[
-            'w-[2.8vw] h-[2.8vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold',
-            paginaActual === p 
-              ? 'bg-[#611717] text-white' 
-              : 'text-white/60 hover:text-white hover:bg-white/10'
-          ]"
-        >
-          {{ p }}
-        </button>
-        
-        <button 
-          @click="cambiarPagina(paginaActual + 1)" 
-          :disabled="paginaActual === totalPaginas" 
-          class="text-[1vw] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
-          :class="paginaActual === totalPaginas ? 'text-white/30' : 'text-white hover:text-[#8f1522]'"
-        >
-          Siguiente
-        </button>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-
-// 🔥 USA EL LAYOUT DEFAULT (CON HEADER Y FOOTER)
-definePageMeta({ layout: 'default' })
-
-const router = useRouter()
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
-
-const todasLasNoticias = ref([])
-const loading = ref(false)
-const error = ref(null)
-const paginaActual = ref(1)
-const itemsPorPagina = ref(12)
-
-const limpiarAsteriscos = (texto) => {
-  if (!texto) return ''
-  return texto.replace(/\*/g, '')
-}
-
-const formatearFecha = (fecha) => {
-  if (!fecha) return ''
-  return new Date(fecha).toLocaleDateString('es-ES', { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric' 
-  })
-}
-
-const noticiasPaginadas = computed(() => {
-  const start = (paginaActual.value - 1) * itemsPorPagina.value
-  const end = start + itemsPorPagina.value
-  return todasLasNoticias.value.slice(start, end)
-})
-
-const totalPaginas = computed(() => {
-  return Math.ceil(todasLasNoticias.value.length / itemsPorPagina.value)
-})
-
-const paginasMostradas = computed(() => {
-  const total = totalPaginas.value
-  const actual = paginaActual.value
-  const rango = 5
-  
-  let start = Math.max(1, actual - Math.floor(rango / 2))
-  let end = Math.min(total, start + rango - 1)
-  
-  if (end - start + 1 < rango) {
-    start = Math.max(1, end - rango + 1)
-  }
-  
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
-})
-
-const cambiarPagina = (pagina) => {
-  if (pagina >= 1 && pagina <= totalPaginas.value) {
-    paginaActual.value = pagina
-    setTimeout(forceScrollToTop, 100)
-  }
-}
-
-const forceScrollToTop = () => {
-  if (process.client) {
-    window.scrollTo(0, 0)
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-  }
-}
-
-const verNoticia = (noticia) => {
-  const slug = noticia.slug || noticia._id
-  if (slug) {
-    router.push(`/noticias/${slug}`)
-  }
-}
-
-const fetchTodasLasNoticias = async () => {
-  loading.value = true
-  error.value = null
-  
-  try {
-    const response = await fetch(`${API_BASE_URL}/content?limit=100`)
-    
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`)
-    }
-    
-    const result = await response.json()
-    
-    if (result.success && result.data?.contents) {
-      todasLasNoticias.value = result.data.contents.sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.createdAt)
-        const dateB = new Date(b.publishedAt || b.createdAt)
-        return dateB - dateA
-      })
-    } else {
-      todasLasNoticias.value = []
-    }
-  } catch (err) {
-    console.error('Error fetching noticias:', err)
-    error.value = err.message || 'Error al cargar las noticias'
-    todasLasNoticias.value = []
-  } finally {
-    loading.value = false
-  }
-}
-
-const recargar = async () => {
-  await fetchTodasLasNoticias()
-  forceScrollToTop()
-}
-
-useHead({
-  title: 'Todas las Noticias - Senado Bolivia',
-  meta: [
-    { name: 'description', content: 'Explora todas las noticias del Senado de Bolivia.' },
-    { property: 'og:title', content: 'Todas las Noticias - Senado Bolivia' },
-    { property: 'og:description', content: 'Explora todas las noticias del Senado de Bolivia.' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:site_name', content: 'Senado de Bolivia' },
-    { name: 'twitter:card', content: 'summary_large_image' }
-  ]
-})
-
-onMounted(async () => {
-  await fetchTodasLasNoticias()
-  await nextTick()
-  forceScrollToTop()
-})
-</script>
-
-<style scoped>
-.container-vw {
-  width: 90vw;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2vw;
-  position: relative;
-  z-index: 10;
-}
-
-.global-fixed-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/background/fondo departamentos.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.global-fixed-background::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.4) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.min-h-screen {
-  background: transparent !important;
-  min-height: 100vh;
-}
-
-.grid-cols-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5vw;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.aspect-\[4\/5\] {
-  aspect-ratio: 4 / 5;
-}
-</style>
-
-<style>
-html, body {
-  background: transparent !important;
-  margin: 0;
-  padding: 0;
-}
-
-#__nuxt,
-#__layout,
-#__layout > div,
-#__nuxt > div {
-  background: transparent !important;
-}
-
-.global-fixed-background {
-  z-index: 0 !important;
-}
-</style> 
-================================= 
-pages\senador\[slug].vue 
-================================= 
- 
-<template>
-  <div class="py-[2vw]">
-    <div v-if="senator" class="w-[80%] mx-auto">
-      <!-- Botón volver -->
-      <button 
-        @click="volver"
-        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] cursor-pointer text-[1.1vw]"
-      >
-        ← Volver atras
-      </button>
-
-      <!-- Tarjeta del senador -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- PRIMERA FILA: 3 columnas -->
-        <div class="bg-[#EDEEED]">
-          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
-            <!-- Columna 1: Foto -->
-            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
-              <img 
-                v-if="senator.foto"
-                :src="senator.foto" 
-                :alt="senator.name"
-                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
-                :style="{ borderColor: senator.partyColor }"
-                @error="(e) => e.target.src = '/images/default-avatar.png'"
-              />
-              <div 
-                v-else
-                class="w-[12vw] h-[12vw] rounded-full flex items-center justify-center text-white text-[4vw] font-bold shadow-lg"
-                :style="{ backgroundColor: senator.partyColor }"
-              >
-                {{ getInitials(senator.name) }}
-              </div>
-            </div>
-
-            <!-- Columna 2: Nombre y cargo -->
-            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
-              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ senator.name }}</h1>
-              <p class="text-[1.1vw] text-black">Senador por {{ senator.department }}</p>
-              <p v-if="senator.cargo" class="font-semibold text-[1.0vw] leading-tight">
-                {{ senator.cargo }}
-              </p>
-            </div>
-
-            <!-- Columna 3: Partido -->
-            <div class="md:col-span-3 flex flex-col items-center justify-center">
-              <div class="relative inline-block group">
-                <img 
-                  :src="getLogoPartido(senator.partyShort)" 
-                  :alt="senator.partyShort"
-                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
-                  :class="{'group-hover:opacity-0': getLogoPartidoHover(senator.partyShort)}"
-                  @error="(e) => e.target.src = ''"
-                />
-                <img 
-                  :src="getLogoPartidoHover(senator.partyShort)" 
-                  :alt="senator.partyShort + ' hover'"
-                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  @error="(e) => e.target.style.display = 'none'"
-                />
-              </div>
-              <span 
-                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
-              >
-                {{ senator.party?.toUpperCase() }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEGUNDA FILA: 3 columnas iguales -->
-        <div class="grid grid-cols-1 md:grid-cols-3">
-          <!-- Columna 1: Datos personales -->
-          <div class="p-[1.2vw] border-r border-gray-200">
-            <div class="space-y-[1.4vw] text-[0.9vw]">
-              <!-- Fila 1: Fecha de Nacimiento -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
-                <span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 2: Nacido en -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Nacido en:</span>
-                <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
-              </div>
-              <!-- Fila 3: Ocupación -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Ocupación:</span>
-                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 4: Comité -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Comité:</span>
-                <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 5: Contacto -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Contacto:</span>
-                <div class="flex gap-[.2vw] flex-wrap">
-                  <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  </a>
-                  <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  </a>
-                  <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                  </a>
-                  <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                  </a>
-                  <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
-                  </a>
-                </div>
-              </div>
-              <!-- Fila 6: Senador Suplente -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Senador Suplente:</span>
-                <NuxtLink 
-                  v-if="senator.slugSuplente" 
-                  :to="`/senador/suplente/${senator.slugSuplente}`" 
-                  class="text-senado-primary hover:underline font-medium"
-                >
-                  {{ senator.suplente }}
-                </NuxtLink>
-                <span v-else class="text-gray-800">No disponible</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Columna 2: Mapa -->
-          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
-            <img 
-              :src="getMapaDepartamento(senator.department)" 
-              :alt="'Mapa de ' + senator.department"
-              class="h-[12vw] w-auto object-contain"
-              @error="(e) => e.target.src = '/images/mapa-default.svg'"
-            />
-          </div>
-
-          <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-[1.2vw] flex flex-col justify-center">
-            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
-            <div class="flex flex-col items-center">
-              <img 
-                :src="getAsientoHemiciclo(senator.seatNumber)" 
-                :alt="'Asiento ' + senator.seatNumber"
-                class="h-[15vw] w-[15vw] object-contain"
-                @error="(e) => e.target.src = ''"
-              />
-              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ senator.seatNumber }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-[2vw]">
-        <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0 mx-[1vw]">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
-        </div>
-        <div class="flex-1 h-px bg-[#000]"></div>
-      </div>
-      
-      <MandatoFuncionesAntecedentes />
-    </div>
-
-    <div v-else class="text-center py-[5vw]">
-      <h2 class="text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
-        Volver al inicio
-      </NuxtLink>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { computed } from 'vue'
-import { useSenadores } from '~/composables/useSenadores'
-import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
-
-const route = useRoute()
-const { getSenadorBySlug } = useSenadores()
-
-const slug = computed(() => route.params.slug)
-
-const senator = computed(() => {
-  return getSenadorBySlug(slug.value)
-})
-
-const volver = () => {
-  if (window.history.length > 1) {
-    window.history.back()
-  } else {
-    navigateTo('/')
-  }
-}
-
-const getInitials = (name) => {
-  if (!name) return '?'
-  const parts = name.split(' ')
-  if (parts.length >= 2) {
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
-  }
-  return name.substring(0, 2).toUpperCase()
-}
-
-const getMapaDepartamento = (departamento) => {
-  const mapas = {
-    'Beni': '/mapas/Beni.svg',
-    'Cochabamba': '/mapas/Cochabamba.svg',
-    'La Paz': '/mapas/LaPaz.svg',
-    'Oruro': '/mapas/Oruro.svg',
-    'Pando': '/mapas/Pando.svg',
-    'Potosí': '/mapas/Potosi.svg',
-    'Santa Cruz': '/mapas/SantaCruz.svg',
-    'Chuquisaca': '/mapas/Sucre.svg',
-    'Tarija': '/mapas/TarijaMapa.svg'
-  }
-  return mapas[departamento] || '/mapas/default.svg'
-}
-
-const getLogoPartido = (partyShort) => {
-  const logos = {
-    'PDC': '/logos FuerzasPoliticas/PDC.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
-    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
-    'APB': '/logos FuerzasPoliticas/Sumate.svg'
-  }
-  return logos[partyShort] || ''
-}
-
-const getLogoPartidoHover = (partyShort) => {
-  const logosHover = {
-    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
-    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
-    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
-  }
-  return logosHover[partyShort] || ''
-}
-
-const getAsientoHemiciclo = (seatNumber) => {
-  const asientos = {
-    1: '/hemiciclo/1WilderVeliz.svg',
-    2: '/hemiciclo/2JudithGarci╠üa.svg',
-    3: '/hemiciclo/3ClaudiaMallon.svg',
-    4: '/hemiciclo/4WandaMedrano.svg',
-    5: '/hemiciclo/5JoseOrmachea.svg',
-    6: '/hemiciclo/6SoledadChapeton.svg',
-    7: '/hemiciclo/7NicanorCochisvg.svg',
-    8: '/hemiciclo/8TomasaYarhui.svg',
-    9: '/hemiciclo/9AbdonPorcel.svg',
-    10: '/hemiciclo/10BerthaCartagena.svg',
-    11: '/hemiciclo/11BrankoMarinkovic.svg',
-    12: '/hemiciclo/12KhatiaQuiroga.svg',
-    13: '/hemiciclo/13TatianaAnez.svg',
-    14: '/hemiciclo/14PaolaLopez.svg',
-    15: '/hemiciclo/15BettyCanaviri.svg',
-    16: '/hemiciclo/16TeresaAlarcon.svg',
-    17: '/hemiciclo/17MarcelinoFlores.svg',
-    18: '/hemiciclo/18BerthaNurmy.svg',
-    19: '/hemiciclo/19ErickSoruco.svg',
-    20: '/hemiciclo/20JoseRoca.svg',
-    21: '/hemiciclo/21KarinaVelasco.svg',
-    22: '/hemiciclo/22ErnestoSuarez.svg',
-    23: '/hemiciclo/23AnaCrispin.svg',
-    24: '/hemiciclo/24DiegoRomana.svg',
-    25: '/hemiciclo/25CarolCarlo.svg',
-    26: '/hemiciclo/26MonicaPuerta.svg',
-    27: '/hemiciclo/27ElianaAcosta.svg',
-    28: '/hemiciclo/28DanielOrtiz.svg',
-    29: '/hemiciclo/29IsabelMoreno.svg',
-    30: '/hemiciclo/30CesarMentasti.svg',
-    31: '/hemiciclo/31RosalvaRomero.svg',
-    32: '/hemiciclo/32DiegoAvila.svg',
-    33: '/hemiciclo/33YasminEstivariz.svg',
-    34: '/hemiciclo/34FreddyCastillo.svg',
-    35: '/hemiciclo/35MariaAlcon.svg',
-    36: '/hemiciclo/36JoseSanchez.svg'
-  }
-  return asientos[seatNumber] || ''
-}
-</script>
-
-<style scoped>
 </style>

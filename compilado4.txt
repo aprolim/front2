@@ -2,209 +2,1167 @@ COMPILADO DE ARCHIVOS - Parte 4
  
  
 ================================= 
-pages\senador\suplente\[slug].vue 
+pages\marco-normativo.vue 
 ================================= 
  
 <template>
-  <div class="py-[2vw]">
-    <div v-if="suplente" class="w-[80%] mx-auto">
-      <!-- Botón volver -->
-      <button 
-        @click="volver"
-        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] text-[1.1vw] cursor-pointer"
-      >
-        ← Volver atras
-      </button>
-
-      <!-- Tarjeta del suplente -->
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- PRIMERA FILA: 3 columnas -->
-        <div class="bg-[#EDEEED]">
-          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
-            <!-- Columna 1: Foto del suplente -->
-            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
-              <img 
-                :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
-                :alt="suplente.suplente"
-                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
-                :style="{ borderColor: suplente.partyColor }"
-                @error="(e) => e.target.src = '/images/default-avatar.png'"
-              />
-            </div>
-
-            <!-- Columna 2: Nombre y cargo -->
-            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
-              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.suplente }}</h1>
-              <p class="text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
-              <p class="text-[0.9vw] text-gray-500">
-                Senador Titular: 
-                <NuxtLink 
-                  :to="`/senador/${suplente.slugTitular}`" 
-                  class="text-senado-primary hover:underline font-medium"
-                >
-                  {{ suplente.name }}
-                </NuxtLink>
-              </p>
-              <p v-if="suplente.cargoSuplente && suplente.cargoSuplente !== 'No disponible'" class="font-semibold text-[1.0vw] leading-tight">
-                {{ suplente.cargoSuplente }}
-              </p>
-            </div>
-
-            <!-- Columna 3: Partido -->
-            <div class="md:col-span-3 flex flex-col items-center justify-center">
-              <div class="relative inline-block group">
-                <img 
-                  :src="getLogoPartido(suplente.partyShort)" 
-                  :alt="suplente.partyShort"
-                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
-                  :class="{'group-hover:opacity-0': getLogoPartidoHover(suplente.partyShort)}"
-                  @error="(e) => e.target.src = ''"
-                />
-                <img 
-                  :src="getLogoPartidoHover(suplente.partyShort)" 
-                  :alt="suplente.partyShort + ' hover'"
-                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  @error="(e) => e.target.style.display = 'none'"
-                />
-              </div>
-              <span 
-                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
-              >
-                {{ suplente.party?.toUpperCase() }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SEGUNDA FILA: 3 columnas iguales -->
-        <div class="grid grid-cols-1 md:grid-cols-3">
-          <!-- Columna 1: Datos personales del suplente -->
-          <div class="p-[1.2vw] border-r border-gray-200">
-            <div class="space-y-[1.4vw] text-[0.9vw]">
-              <!-- Fila 1: Fecha de Nacimiento -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
-                <span class="text-gray-800">{{ suplente.fechaNacimientoSuplente || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 2: Nacido en -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Nacido en:</span>
-                <span class="text-gray-800">{{ suplente.nacidoEnSuplente || suplente.department }}</span>
-              </div>
-              <!-- Fila 3: Ocupación -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Ocupación:</span>
-                <span class="text-gray-800">{{ suplente.ocupacionSuplente || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 4: Comité -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Comité:</span>
-                <span class="text-gray-800">{{ suplente.comiteSuplente || 'No disponible' }}</span>
-              </div>
-              <!-- Fila 5: Contacto -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Contacto:</span>
-                <div class="flex gap-[.2vw] flex-wrap">
-                  <a v-if="suplente.facebookSuplente" :href="suplente.facebookSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  </a>
-                  <a v-if="suplente.twitterSuplente" :href="suplente.twitterSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  </a>
-                  <a v-if="suplente.instagramSuplente" :href="suplente.instagramSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                  </a>
-                  <a v-if="suplente.youtubeSuplente" :href="suplente.youtubeSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                  </a>
-                  <a v-if="suplente.tiktokSuplente" :href="suplente.tiktokSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
-                  </a>
-                </div>
-              </div>
-              <!-- Fila 6: Senador Titular -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Senador Titular:</span>
-                <NuxtLink 
-                  :to="`/senador/${suplente.slugTitular}`" 
-                  class="text-senado-primary hover:underline font-medium"
-                >
-                  {{ suplente.name }}
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-
-          <!-- Columna 2: Mapa -->
-          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
-            <img 
-              :src="getMapaDepartamento(suplente.department)" 
-              :alt="'Mapa de ' + suplente.department"
-              class="h-[12vw] w-auto object-contain"
-              @error="(e) => e.target.src = '/images/mapa-default.svg'"
-            />
-          </div>
-
-          <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-[1.2vw] flex flex-col justify-center">
-            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
-            <div class="flex flex-col items-center">
-              <img 
-                :src="getAsientoHemiciclo(suplente.seatNumber)" 
-                :alt="'Asiento ' + suplente.seatNumber"
-                class="h-[15vw] w-[15vw] object-contain"
-                @error="(e) => e.target.src = ''"
-              />
-              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ suplente.seatNumber }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-[2vw]">
-        <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0 mx-[1vw]">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
-        </div>
-        <div class="flex-1 h-px bg-[#000]"></div>
-      </div>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[90%] max-w-7xl">
       
-      <MandatoFuncionesAntecedentes />
-    </div>
+      <!-- Título -->
+      <div class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-senado-primary text-center">
+          Marco <span class="text-[#8f1522]">Normativo</span>
+        </h1>
+        <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
+        <p class="text-center text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
+          Consulta la normativa vigente del Senado de Bolivia
+        </p>
+      </div>
 
-    <div v-else class="text-center py-[5vw]">
-      <h2 class="text-[2vw] font-bold text-gray-600">Suplente no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
-        Volver al inicio
-      </NuxtLink>
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-3 text-gray-500">Cargando documentos...</p>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="error" class="text-center py-12">
+        <p class="text-red-600 mb-4">{{ error }}</p>
+        <button @click="cargarDocumentos" class="bg-[#611717] text-white px-4 py-2 rounded-lg hover:bg-[#3a060d] transition">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Mostrar documentos -->
+      <template v-else>
+        <!-- Constitución Política del Estado (Sección especial) -->
+        <div v-if="constitucion" class="mb-12">
+          <h2 class="text-2xl font-bold text-senado-primary mb-6 border-l-4 border-[#611717] pl-4">
+            Constitución Política Del Estado
+          </h2>
+          <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+            <table class="w-full">
+              <thead class="bg-[#611717] text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Descripción</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Gestión</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Estado</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">ARCHIVO PDF</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    {{ constitucion.nombre }}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ constitucion.gestion }}</td>
+                  <td class="px-6 py-4 text-sm">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ constitucion.estado }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-sm">
+                    <a 
+                      :href="constitucion.url" 
+                      target="_blank"
+                      class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Descargar
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Normas Generales por categoría -->
+        <div v-for="categoria in categoriasNormativas" :key="categoria.nombre" class="mb-12">
+          <h2 class="text-2xl font-bold text-senado-primary mb-6 border-l-4 border-[#611717] pl-4">
+            {{ categoria.nombre }}
+          </h2>
+          
+          <div v-if="categoria.documentos.length === 0" class="text-center py-8 bg-gray-50 rounded-xl">
+            <p class="text-gray-500">No hay documentos en esta categoría</p>
+          </div>
+          
+          <div v-else class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+            <table class="w-full">
+              <thead class="bg-[#611717] text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Descripción</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Gestión</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">Estado</th>
+                  <th class="px-6 py-4 text-left text-sm font-semibold">ARCHIVO PDF</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr v-for="doc in categoria.documentos" :key="doc.id" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    {{ doc.nombre }}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ doc.gestion }}</td>
+                  <td class="px-6 py-4 text-sm">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ doc.estado }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-sm">
+                    <a 
+                      :href="doc.url" 
+                      target="_blank"
+                      class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Descargar
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </template>
+
+      <!-- Botón volver -->
+      <div class="text-center mt-12">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useSenadores } from '~/composables/useSenadores'
-import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+import { ref, computed, onMounted } from 'vue'
 
-const route = useRoute()
-const { getSuplenteBySlug } = useSenadores()
+// ============================================
+// DATOS DE LOS DOCUMENTOS
+// ============================================
+const documentosData = [
+  // Constitución Política del Estado
+  {
+    id: 1,
+    categoria: 'Constitución Política del Estado',
+    nombre: 'Constitución Política Del Estado Plurinacional de Bolivia',
+    gestion: '2009',
+    estado: 'Vigente',
+    url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf'
+  },
+  // Norma General de Área Legislativa
+  {
+    id: 2,
+    categoria: 'Norma General de Área Legislativa',
+    nombre: 'Reglamento de Ética',
+    gestion: '2014',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Ética.pdf'
+  },
+  {
+    id: 3,
+    categoria: 'Norma General de Área Legislativa',
+    nombre: 'Reglamento de Condecoraciones',
+    gestion: '2022',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Condecoraciones.pdf'
+  },
+  {
+    id: 4,
+    categoria: 'Norma General de Área Legislativa',
+    nombre: 'Reglamento de Participación Ciudadana y Deliberación Pública',
+    gestion: '2012',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Participación Ciudadana y Deliberación Pública.pdf'
+  },
+  {
+    id: 5,
+    categoria: 'Norma General de Área Legislativa',
+    nombre: 'Reglamento General de la Cámara de Senadores',
+    gestion: '2024',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf'
+  },
+  {
+    id: 6,
+    categoria: 'Norma General de Área Legislativa',
+    nombre: 'Reglamento Específico de Homenajes Camarales',
+    gestion: '2024',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf'
+  },
+  // Norma General de Área Administrativa
+  {
+    id: 7,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Manual de Administración de Activos Fijos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf'
+  },
+  {
+    id: 8,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Manual de Organización y Funciones',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf'
+  },
+  {
+    id: 9,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema Contabilidad Integrada',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf'
+  },
+  {
+    id: 10,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf'
+  },
+  {
+    id: 11,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema de Administración de Personal',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf'
+  },
+  {
+    id: 12,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema de Organización Administrativa',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf'
+  },
+  {
+    id: 13,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema de Presupuestos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf'
+  },
+  {
+    id: 14,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico del Sistema de Programación de Operaciones',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf'
+  },
+  {
+    id: 15,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Específico Sistema de Tesorería',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf'
+  },
+  {
+    id: 16,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento Interno de Personal',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf'
+  },
+  {
+    id: 17,
+    categoria: 'Norma General de Área Administrativa',
+    nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf'
+  },
+  // Normativa Interna
+  {
+    id: 18,
+    categoria: 'Normativa Interna',
+    nombre: 'Código de Ética',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Código de Ética.pdf'
+  },
+  {
+    id: 19,
+    categoria: 'Normativa Interna',
+    nombre: 'Manual de Administración de Almacenes',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf'
+  },
+  {
+    id: 20,
+    categoria: 'Normativa Interna',
+    nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf'
+  },
+  {
+    id: 21,
+    categoria: 'Normativa Interna',
+    nombre: 'Manual del Proceso de Planificación y Seguimiento de Corto Plazo',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Manual del Proceso de Planificación y Seguimiento de Corto Plazo.pdf'
+  },
+  {
+    id: 22,
+    categoria: 'Normativa Interna',
+    nombre: 'Procedimiento de Audiencias Públicas, Foros Ciudadanos y Encuentros Territoriales',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Procedimiento de Audiencias Públicas, Foros Ciudadanos y Encuentros Territoriales.pdf'
+  },
+  {
+    id: 23,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento de Cámara de Diputados',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento de Cámara de Diputados.pdf'
+  },
+  {
+    id: 24,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento de Gastos Institucionales en Actos Protocolares',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento de Gastos Institucionales en Actos Protocolares de la Cámara de Senadores.pdf'
+  },
+  {
+    id: 25,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento de Pasajes y Viáticos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento de Pasajes y Viáticos.pdf'
+  },
+  {
+    id: 26,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento de Pasantías',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento de Pasantías.pdf'
+  },
+  {
+    id: 27,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento del Fondo Social',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento del Fondo Social.pdf'
+  },
+  {
+    id: 28,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento General de Fiscalización de Servicios',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento General de Fiscalización de Servicios.pdf'
+  },
+  {
+    id: 29,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Interno de Administración y Uso de Vehículos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Interno de Administración y Uso de Vehículos.pdf'
+  },
+  {
+    id: 30,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Interno de Implementación del Teletrabajo',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Interno de Implementación del Teletrabajo.pdf'
+  },
+  {
+    id: 31,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Interno del Fondo Rotativo',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Interno del Fondo Rotativo.pdf'
+  },
+  {
+    id: 32,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Interno para el Trato Preferente',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Interno para el Trato Preferente.pdf'
+  },
+  {
+    id: 33,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento para la Administración de Fondos en Avance',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento para la Administración de Fondos en Avance.pdf'
+  },
+  {
+    id: 34,
+    categoria: 'Normativa Interna',
+    nombre: 'Procedimiento de Contratación, Resolución y Contrato Modificatorio de Personal Eventual',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Procedimiento de Contratación, Resolución y Contrato Modificatorio de Personal Eventual.pdf'
+  },
+  {
+    id: 35,
+    categoria: 'Normativa Interna',
+    nombre: 'Procedimiento Específico para Altas y Bajas del Personal Permanente y Eventual Ante la CNS',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Procedimiento Específico para Altas y Bajas del Personal Permanente y Eventual de la Cámára de Senadores Ante la Caja Nacional de Salud.pdf'
+  },
+  {
+    id: 36,
+    categoria: 'Normativa Interna',
+    nombre: 'Procedimiento Específico para la Reposición de Activos Fijos',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Procedimiento Específico para la Reposición de Activos Fijos de la Cámara de Senadores.pdf'
+  },
+  {
+    id: 37,
+    categoria: 'Normativa Interna',
+    nombre: 'Procedimiento para Foros de Interés Ciudadano',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Procedimiento para Foros de Interés Ciudadano.pdf'
+  },
+  {
+    id: 38,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Especifico para la Administración de Recursos de Fondo Fijo de Caja Chica para las Brigadas Departamentales',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Especifico para la Administración de Recursos de Fondo Fijo de Caja Chica para las Brigadas Departamentales de la Cámara de Senadores.pdf'
+  },
+  {
+    id: 39,
+    categoria: 'Normativa Interna',
+    nombre: 'Reglamento Específico Fondo Fijo Caja Chica',
+    gestion: '2020',
+    estado: 'Vigente',
+    url: '/pdfs/Normativa Interna/Reglamento Específico Fondo Fijo Caja Chica.pdf'
+  }
+]
 
-const slug = computed(() => route.params.slug)
+// ============================================
+// ESTADO
+// ============================================
+const loading = ref(false)
+const error = ref(null)
+const documentos = ref([])
 
-const suplente = computed(() => {
-  return getSuplenteBySlug(slug.value)
+// ============================================
+// COMPUTED
+// ============================================
+const constitucion = computed(() => {
+  return documentos.value.find(d => d.categoria === 'Constitución Política del Estado')
 })
 
-const volver = () => {
-  if (window.history.length > 1) {
-    window.history.back()
-  } else {
-    navigateTo('/')
+const categoriasNormativas = computed(() => {
+  const categorias = ['Norma General de Área Legislativa', 'Norma General de Área Administrativa', 'Normativa Interna']
+  
+  return categorias.map(nombre => ({
+    nombre,
+    documentos: documentos.value.filter(d => d.categoria === nombre)
+  }))
+})
+
+// ============================================
+// CARGAR DOCUMENTOS
+// ============================================
+const cargarDocumentos = () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    // Simular carga desde la carpeta public/pdfs
+    documentos.value = documentosData
+  } catch (err) {
+    error.value = 'Error al cargar los documentos'
+    console.error(err)
+  } finally {
+    loading.value = false
   }
 }
 
+// ============================================
+// LIFECYCLE
+// ============================================
+onMounted(() => {
+  cargarDocumentos()
+})
+</script>
+
+<style scoped>
+/* ========================================== */
+/* TABLA RESPONSIVE                          */
+/* ========================================== */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.8rem;
+  }
+  
+  thead {
+    display: none;
+  }
+  
+  tbody tr {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+  }
+  
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+  
+  tbody td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4b5563;
+  }
+}
+</style> 
+================================= 
+pages\memoria-institucional.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[90%] max-w-7xl">
+
+      <!-- Título -->
+      <div class="mb-12 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-senado-primary">
+          Memoria <span class="text-[#8f1522]">Institucional</span>
+        </h1>
+        <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
+        <p class="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
+          Redactor Legislativo - Seleccione un tomo para visualizar
+        </p>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- PERIODO 2025-2026 (2 tomos)                -->
+      <!-- ========================================== -->
+      <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <h2 class="text-xl sm:text-2xl font-bold text-white bg-senado-primary-light w-full text-center py-3 rounded-lg shadow-md">
+            REDACTOR LEGISLATURA 2025-2026
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div 
+            v-for="tomo in tomos2025" 
+            :key="tomo.id"
+            @click="abrirPDF(tomo.pdfUrl)"
+            class="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 border-gray-200 hover:border-[#E03636] group"
+          >
+            <div class="flex flex-col items-center text-center">
+              <h5 class="text-sm sm:text-base font-bold text-[#A54A4A] mt-1">
+                {{ tomo.numero }}
+              </h5>
+              <div class="w-full aspect-square mb-2 overflow-hidden rounded-lg shadow-md bg-gray-100">
+                <img 
+                  :src="tomo.portada" 
+                  :alt="tomo.titulo"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                  @error="(e) => e.target.src = '/images/portadas/default.jpg'"
+                />
+              </div>
+              <div class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-[#E03636]/10 rounded-full text-[#E03636] text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>PDF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- PERIODO 2023-2024 (12 tomos)               -->
+      <!-- ========================================== -->
+      <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <h2 class="text-xl sm:text-2xl font-bold text-white bg-senado-primary-light w-full text-center py-3 rounded-lg shadow-md">
+            REDACTOR LEGISLATURA 2023-2024
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div 
+            v-for="tomo in tomosPaginados" 
+            :key="tomo.id"
+            @click="abrirPDF(tomo.pdfUrl)"
+            class="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 border-gray-200 hover:border-[#E03636] group"
+          >
+            <div class="flex flex-col items-center text-center">
+              <h5 class="text-sm sm:text-base font-bold text-[#A54A4A] mt-1">
+                {{ tomo.numero }}
+              </h5>
+              <div class="w-full aspect-square mb-2 overflow-hidden rounded-lg shadow-md bg-gray-100">
+                <img 
+                  :src="tomo.portada" 
+                  :alt="tomo.titulo"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                  @error="(e) => e.target.src = '/images/portadas/default.jpg'"
+                />
+              </div>
+              <div class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-[#E03636]/10 rounded-full text-[#E03636] text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>PDF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paginación -->
+        <div v-if="totalPaginas > 1" class="flex flex-wrap justify-center items-center gap-2 mt-6">
+          <button 
+            @click="paginaAnterior"
+            :disabled="paginaActual === 1"
+            class="px-3 py-1 rounded-lg transition-all duration-300 text-sm font-medium"
+            :class="paginaActual === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-[#E03636] hover:text-white'"
+          >
+            ← Anterior
+          </button>
+
+          <div class="flex gap-1 flex-wrap justify-center">
+            <button 
+              v-for="p in totalPaginas" 
+              :key="p"
+              @click="paginaActual = p"
+              class="w-8 h-8 rounded-lg transition-all duration-300 text-sm font-medium"
+              :class="paginaActual === p ? 'bg-[#E03636] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+            >
+              {{ p }}
+            </button>
+          </div>
+
+          <button 
+            @click="paginaSiguiente"
+            :disabled="paginaActual === totalPaginas"
+            class="px-3 py-1 rounded-lg transition-all duration-300 text-sm font-medium"
+            :class="paginaActual === totalPaginas ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-[#E03636] hover:text-white'"
+          >
+            Siguiente →
+          </button>
+        </div>
+
+        <div class="text-center text-xs text-gray-400 mt-2">
+          Mostrando {{ inicioMostrar }} - {{ finMostrar }} de {{ totalTomos }} tomos
+        </div>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="text-center mt-12">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+
+// ============================================
+// DATOS DE TOMOS - CON RUTAS CORRECTAS
+// ============================================
+
+// Periodo 2025-2026: 2 tomos
+const tomos2025 = [
+  { 
+    id: 1, 
+    numero: 'TOMO I', 
+    titulo: 'Tomo I - Gestión 2025-2026', 
+    pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_I_2025-2026.pdf',
+    portada: '/images/portadas/2025-2026/default.jpg'
+  },
+  { 
+    id: 2, 
+    numero: 'TOMO II', 
+    titulo: 'Tomo II - Gestión 2025-2026', 
+    pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2025-2026.pdf',
+    portada: '/images/portadas/2025-2026/default.jpg'
+  }
+]
+
+// Periodo 2023-2024: 12 tomos
+const tomos2023 = [
+  { id: 3, numero: 'TOMO I', titulo: 'Tomo I - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_I_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 4, numero: 'TOMO II', titulo: 'Tomo II - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 5, numero: 'TOMO III', titulo: 'Tomo III - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 6, numero: 'TOMO IV', titulo: 'Tomo IV - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IV_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 7, numero: 'TOMO V', titulo: 'Tomo V - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_V_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 8, numero: 'TOMO VI', titulo: 'Tomo VI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 9, numero: 'TOMO VII', titulo: 'Tomo VII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 10, numero: 'TOMO VIII', titulo: 'Tomo VIII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VIII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 11, numero: 'TOMO IX', titulo: 'Tomo IX - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IX_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 12, numero: 'TOMO X', titulo: 'Tomo X - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_X_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 13, numero: 'TOMO XI', titulo: 'Tomo XI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' },
+  { id: 14, numero: 'TOMO XII', titulo: 'Tomo XII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg' }
+]
+
+// ============================================
+// ESTADO
+// ============================================
+const paginaActual = ref(1)
+const itemsPorPagina = 6
+
+// ============================================
+// COMPUTED
+// ============================================
+const totalTomos = computed(() => tomos2023.length)
+const totalPaginas = computed(() => Math.ceil(totalTomos.value / itemsPorPagina))
+
+const tomosPaginados = computed(() => {
+  const start = (paginaActual.value - 1) * itemsPorPagina
+  const end = start + itemsPorPagina
+  return tomos2023.slice(start, end)
+})
+
+const inicioMostrar = computed(() => (paginaActual.value - 1) * itemsPorPagina + 1)
+const finMostrar = computed(() => Math.min(paginaActual.value * itemsPorPagina, totalTomos.value))
+
+// ============================================
+// MÉTODOS
+// ============================================
+const abrirPDF = (url) => {
+  if (url) {
+    window.open(url, '_blank')
+  } else {
+    alert('PDF no disponible')
+  }
+}
+
+const paginaAnterior = () => {
+  if (paginaActual.value > 1) paginaActual.value--
+}
+
+const paginaSiguiente = () => {
+  if (paginaActual.value < totalPaginas.value) paginaActual.value++
+}
+</script>
+
+<style scoped>
+/* ========================================== */
+/* 🔥 GRID DE 6 COLUMNAS                     */
+/* ========================================== */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========================================== */
+/* 🔥 ESTILOS DE TARJETAS                    */
+/* ========================================== */
+.aspect-square {
+  aspect-ratio: 1/1;
+}
+
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, #ffffff, #f9fafb);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+/* ========================================== */
+/* 🔥 BADGE PDF                              */
+/* ========================================== */
+.bg-\[\#E03636\]\/10 {
+  background-color: rgba(224, 54, 54, 0.1);
+}
+
+.text-\[\#E03636\] {
+  color: #E03636;
+}
+
+/* ========================================== */
+/* 🔥 TÍTULO DE PERIODO                      */
+/* ========================================== */
+.bg-\[\#A54A4A\] {
+  background-color: #A54A4A;
+}
+
+.text-\[\#A54A4A\] {
+  color: #A54A4A;
+}
+
+/* ========================================== */
+/* 🔥 TRANSICIONES                           */
+/* ========================================== */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hover\:border-\[\#E03636\]:hover {
+  border-color: #E03636;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.group:hover .opacity-0 {
+  opacity: 1;
+}
+</style>
+ 
+================================= 
+pages\mision.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          📜 Institucional
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Misión
+        </h1>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
+            <p class="text-xl font-semibold text-senado-primary">
+              “El horizonte estratégico del Estado Plurinacional es el Vivir Bien como modelo civilizatorio alternativo al capitalismo y al colonialismo; la legislación y fiscalización democrática y participativa nos permitirá consolidar la arquitectura de nuestro nuevo Estado al conmemorar los 200 años de fundación de la Patria.”
+            </p>
+            <p>
+              La democracia deliberativa y comunitaria es la esencia de nuestro Estado Plurinacional y de nuestros pueblos, la <strong>Cámara de Senadores</strong>, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera.
+            </p>
+          </div>
+        </div>
+
+        <!-- Cita destacada -->
+        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
+          <p class="text-gray-600 text-sm italic">
+            "La Cámara de Senadores, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera."
+          </p>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-12 text-center">
+          <NuxtLink 
+            to="/" 
+            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          >
+            <ClientOnly>
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <template #fallback>
+                <span class="text-[1.5vw]">←</span>
+              </template>
+            </ClientOnly>
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\quien-me-representa.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          👥 Tus Senadores
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          ¿Quién me representa?
+        </h1>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
+          Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Selector de Departamento -->
+      <div class="max-w-2xl mx-auto mb-12">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Selecciona tu departamento
+        </label>
+        <select
+          v-model="departamentoSeleccionado"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-transparent text-gray-700 bg-white shadow-sm text-lg"
+          @change="onDepartamentoChange"
+        >
+          <option value="">— Selecciona un departamento —</option>
+          <option
+            v-for="dept in departamentosOrdenados"
+            :key="dept"
+            :value="dept"
+          >
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Contenido -->
+      <div v-if="departamentoSeleccionado" class="max-w-5xl mx-auto">
+        <!-- Encabezado del departamento -->
+        <div class="bg-senado-gold-lightest rounded-2xl p-6 mb-8 border border-senado-gold-light">
+          <div class="flex items-center gap-4">
+            <img
+              :src="getMapaDepartamento(departamentoSeleccionado)"
+              :alt="'Mapa de ' + departamentoSeleccionado"
+              class="h-16 w-16 object-contain"
+              @error="(e) => e.target.src = ''"
+            />
+            <div>
+              <h2 class="text-2xl font-bold text-senado-primary">
+                {{ departamentoSeleccionado }}
+              </h2>
+              <p class="text-gray-600">
+                {{ senadoresPorDepartamento.length }} senadores representan a este departamento
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de Senadores -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            v-for="senador in senadoresPorDepartamento"
+            :key="senador.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <!-- Cabecera del senador -->
+            <div class="flex items-center gap-4 p-4 border-b border-gray-100">
+              <img
+                :src="senador.foto || defaultAvatar"
+                :alt="senador.name"
+                class="w-16 h-16 rounded-full object-cover border-2"
+                :style="{ borderColor: senador.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-bold text-senado-primary truncate">
+                  {{ senador.name }}
+                </h3>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span
+                    class="text-xs font-medium px-2 py-0.5 rounded"
+                    :style="{
+                      backgroundColor: senador.partyColor + '20',
+                      color: senador.partyColor || '#666'
+                    }"
+                  >
+                    {{ senador.partyShort || senador.party || 'Sin partido' }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    Asiento {{ senador.seatNumber }}
+                  </span>
+                </div>
+              </div>
+              <NuxtLink
+                :to="`/senador/${senador.slug}`"
+                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
+              >
+                Ver perfil →
+              </NuxtLink>
+            </div>
+
+            <!-- Detalles -->
+            <div class="p-4 space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-500">Departamento:</span>
+                <span class="font-medium">{{ senador.department }}</span>
+              </div>
+              <div v-if="senador.cargo" class="flex justify-between">
+                <span class="text-gray-500">Cargo:</span>
+                <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
+              </div>
+              <div v-if="senador.comite || senador.comision" class="flex justify-between">
+                <span class="text-gray-500">Comité/Comisión:</span>
+                <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-500">Estado:</span>
+                <span class="font-medium text-green-600">● Titular</span>
+              </div>
+
+              <!-- Suplente -->
+              <div
+                v-if="senador.suplente && senador.suplente !== 'null'"
+                class="mt-3 pt-3 border-t border-gray-100"
+              >
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="text-gray-500">🔄 Suplente:</span>
+                  <NuxtLink
+                    :to="`/senador/suplente/${senador.slugSuplente}`"
+                    class="font-medium text-senado-primary hover:underline"
+                  >
+                    {{ senador.suplente }}
+                  </NuxtLink>
+                </div>
+              </div>
+              <div v-else class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-sm text-gray-400">Sin suplente asignado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sin senadores -->
+        <div v-if="senadoresPorDepartamento.length === 0" class="text-center py-12">
+          <div class="text-4xl mb-4">🔍</div>
+          <p class="text-gray-600 text-lg">No se encontraron senadores para este departamento</p>
+        </div>
+      </div>
+
+      <!-- Estado inicial -->
+      <div v-else class="text-center py-16">
+        <div class="text-6xl mb-6">🗳️</div>
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">Selecciona un departamento</h3>
+        <p class="text-gray-500">Elige tu departamento para conocer a tus representantes en el Senado</p>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { senadores } from '~/data/senadores'
+
+// ========================================== //
+// ESTADO
+// ========================================== //
+const departamentoSeleccionado = ref('')
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// DEPARTAMENTOS
+// ========================================== //
+const departamentos = [
+  'Beni',
+  'Chuquisaca',
+  'Cochabamba',
+  'La Paz',
+  'Oruro',
+  'Pando',
+  'Potosí',
+  'Santa Cruz',
+  'Tarija'
+]
+
+const departamentosOrdenados = computed(() => {
+  return [...departamentos].sort()
+})
+
+// ========================================== //
+// MAPAS POR DEPARTAMENTO
+// ========================================== //
 const getMapaDepartamento = (departamento) => {
   const mapas = {
     'Beni': '/mapas/Beni.svg',
@@ -217,219 +1175,805 @@ const getMapaDepartamento = (departamento) => {
     'Chuquisaca': '/mapas/Sucre.svg',
     'Tarija': '/mapas/TarijaMapa.svg'
   }
-  return mapas[departamento] || '/mapas/default.svg'
+  return mapas[departamento] || ''
 }
 
-const getLogoPartido = (partyShort) => {
-  const logos = {
-    'PDC': '/logos FuerzasPoliticas/PDC.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
-    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
-    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+// ========================================== //
+// FILTRAR SENADORES POR DEPARTAMENTO
+// ========================================== //
+const senadoresPorDepartamento = computed(() => {
+  if (!departamentoSeleccionado.value) return []
+
+  return senadores
+    .filter(s => s.department === departamentoSeleccionado.value)
+    .sort((a, b) => a.seatNumber - b.seatNumber)
+})
+
+// ========================================== //
+// MÉTODOS
+// ========================================== //
+const onDepartamentoChange = () => {
+  // Guardar selección en localStorage si quieres persistencia
+  if (process.client) {
+    localStorage.setItem('departamentoSeleccionado', departamentoSeleccionado.value)
   }
-  return logos[partyShort] || ''
 }
 
-const getLogoPartidoHover = (partyShort) => {
-  const logosHover = {
-    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
-    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
-    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+// ========================================== //
+// RESTAURAR SELECCIÓN GUARDADA
+// ========================================== //
+onMounted(() => {
+  if (process.client) {
+    const guardado = localStorage.getItem('departamentoSeleccionado')
+    if (guardado && departamentos.includes(guardado)) {
+      departamentoSeleccionado.value = guardado
+    }
   }
-  return logosHover[partyShort] || ''
-}
-
-const getAsientoHemiciclo = (seatNumber) => {
-  const asientos = {
-    1: '/hemiciclo/1WilderVeliz.svg',
-    2: '/hemiciclo/2JudithGarci╠üa.svg',
-    3: '/hemiciclo/3ClaudiaMallon.svg',
-    4: '/hemiciclo/4WandaMedrano.svg',
-    5: '/hemiciclo/5JoseOrmachea.svg',
-    6: '/hemiciclo/6SoledadChapeton.svg',
-    7: '/hemiciclo/7NicanorCochisvg.svg',
-    8: '/hemiciclo/8TomasaYarhui.svg',
-    9: '/hemiciclo/9AbdonPorcel.svg',
-    10: '/hemiciclo/10BerthaCartagena.svg',
-    11: '/hemiciclo/11BrankoMarinkovic.svg',
-    12: '/hemiciclo/12KhatiaQuiroga.svg',
-    13: '/hemiciclo/13TatianaAnez.svg',
-    14: '/hemiciclo/14PaolaLopez.svg',
-    15: '/hemiciclo/15BettyCanaviri.svg',
-    16: '/hemiciclo/16TeresaAlarcon.svg',
-    17: '/hemiciclo/17MarcelinoFlores.svg',
-    18: '/hemiciclo/18BerthaNurmy.svg',
-    19: '/hemiciclo/19ErickSoruco.svg',
-    20: '/hemiciclo/20JoseRoca.svg',
-    21: '/hemiciclo/21KarinaVelasco.svg',
-    22: '/hemiciclo/22ErnestoSuarez.svg',
-    23: '/hemiciclo/23AnaCrispin.svg',
-    24: '/hemiciclo/24DiegoRomana.svg',
-    25: '/hemiciclo/25CarolCarlo.svg',
-    26: '/hemiciclo/26MonicaPuerta.svg',
-    27: '/hemiciclo/27ElianaAcosta.svg',
-    28: '/hemiciclo/28DanielOrtiz.svg',
-    29: '/hemiciclo/29IsabelMoreno.svg',
-    30: '/hemiciclo/30CesarMentasti.svg',
-    31: '/hemiciclo/31RosalvaRomero.svg',
-    32: '/hemiciclo/32DiegoAvila.svg',
-    33: '/hemiciclo/33YasminEstivariz.svg',
-    34: '/hemiciclo/34FreddyCastillo.svg',
-    35: '/hemiciclo/35MariaAlcon.svg',
-    36: '/hemiciclo/36JoseSanchez.svg'
-  }
-  return asientos[seatNumber] || ''
-}
+})
 </script>
 
 <style scoped>
+/* Estilos específicos si son necesarios */
 </style> 
 ================================= 
-public\robots.txt 
+pages\vision.vue 
 ================================= 
  
-User-Agent: *
-Disallow: 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          📜 Institucional
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Visión
+        </h1>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
+            <p>
+              Al <strong>2025</strong>, conmemorando los <strong>200 años de fundación de la Patria</strong>, <strong>21 años del Estado Plurinacional</strong>, la Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo <strong>Estado Unitario, Social de Derecho Plurinacional, Comunitario, libre, independiente, soberano, democrático, intercultural, descentralizado con autonomías</strong>, como expresión de la pluralidad democrática, representativa, participativa y comunitaria.
+            </p>
+            <p>
+              Ejerciendo el principio deliberativo en la discusión, análisis de los proyectos de ley para su aprobación, modificación y/o rechazo; fiscalizando al Órgano Ejecutivo propositivamente; acompañando y canalizando constantemente al pueblo en sus demandas.
+            </p>
+          </div>
+        </div>
+
+        <!-- Cita destacada -->
+        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
+          <p class="text-gray-600 text-sm italic">
+            "La Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo Estado Plurinacional, ejerciendo el principio deliberativo en la discusión y análisis de los proyectos de ley."
+          </p>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-12 text-center">
+          <NuxtLink 
+            to="/" 
+            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          >
+            <ClientOnly>
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <template #fallback>
+                <span class="text-[1.5vw]">←</span>
+              </template>
+            </ClientOnly>
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
 ================================= 
-public\fonts\fonts.css 
-================================= 
- 
-/* MONTSERRAT REGULAR (para Montserrat Alternates usa 'Montserrat Alternates' como font-family) */
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-ExtraBold.otf') format('opentype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-Italic.otf') format('opentype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('/Montserrat-BoldItalic.otf') format('opentype');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* MONTSERRAT ALTERNATES (si prefieres esta variante) */
-@font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/MontserratAlternates-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/MontserratAlternates-SemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/MontserratAlternates-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-} 
-================================= 
-stores\senadoStore.js 
+pages\visita-senado.vue 
 ================================= 
  
-// stores/senadoStore.js
-import { defineStore } from 'pinia'
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[90%] max-w-7xl">
+      
+      <!-- Título -->
+      <div class="mb-12 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-senado-primary">
+          Visitas <span class="text-[#8f1522]">Guiadas</span>
+        </h1>
+        <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
+          Conoce el Palacio Legislativo y la historia del Senado de Bolivia.
+          Reserva tu visita guiada gratuita.
+        </p>
+      </div>
 
-export const useSenadoStore = defineStore('senado', {
-  state: () => ({
-    tipoVisualizacion: 'titulares', // 'titulares' | 'suplentes'
-    filtroPartido: null,
-    scrollPosicion: 0
-  }),
+      <!-- ========================================== -->
+      <!-- DESCRIPCIÓN DE LA VISITA                   -->
+      <!-- ========================================== -->
+      <div class="bg-[#f8f6f0] rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
+        <p class="text-gray-700 text-center leading-relaxed">
+          Las visitas guiadas al edificio legislativo tienen por objetivo generar un espacio de acercamiento al 
+          <strong>Poder Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
+          representantes del pueblo en la confección de las leyes que nos permiten ampliar nuestros derechos 
+          y fortalecer la democracia.
+        </p>
+        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p class="text-sm text-yellow-800 flex items-center gap-2">
+            <span class="text-lg">⚠️</span>
+            Para la asistencia se deberá cumplir con todas las medidas de prevención del Covid-19: 
+            uso correcto del tapabocas, mantener la distancia, uso de alcohol en gel, respeto de las indicaciones.
+          </p>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- GRID: INFORMACIÓN + FORMULARIO             -->
+      <!-- ========================================== -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        <!-- ========================================== -->
+        <!-- COLUMNA IZQUIERDA: INFORMACIÓN            -->
+        <!-- ========================================== -->
+        <div>
+          <!-- Visitas Guiadas -->
+          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Visitas Guiadas
+            </h3>
+            <div class="space-y-4 text-gray-700">
+              <div class="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 class="font-semibold text-senado-primary mb-2">SISTEMA DE SOLICITUD</h4>
+                <p class="text-sm">
+                  Para brindarles un mejor servicio, les pedimos que envíen su solicitud con 
+                  <strong>15 días de anticipación</strong>, que sean puntuales en su cita y que 
+                  atiendan las normas de conducta previstas en el Reglamento del Senado.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Requisitos -->
+          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              REQUISITOS PARA EL INGRESO
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              Las personas que ingresen al Congreso Nacional en su calidad de visitantes deben cumplir 
+              con las siguientes normas:
+            </p>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-3">
+                <span class="text-senado-primary font-bold">•</span>
+                <span>Completar el <strong>Formulario de Registro</strong></span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-senado-primary font-bold">•</span>
+                <span>Presentar <strong>cédula de identidad</strong> el día de la visita</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-senado-primary font-bold">•</span>
+                <span>Respetar las <strong>normas de conducta</strong> del Reglamento del Senado</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-senado-primary font-bold">•</span>
+                <span>Uso obligatorio de <strong>tapabocas</strong> y medidas de bioseguridad</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Horarios -->
+          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Horarios de Visita
+            </h3>
+            <div class="space-y-2 text-gray-700">
+              <div class="flex justify-between py-2 border-b border-gray-200">
+                <span class="font-medium">Lunes a Viernes</span>
+                <span>09:00 - 12:00 / 14:00 - 17:00</span>
+              </div>
+              <div class="flex justify-between py-2">
+                <span class="font-medium">Sábados y Domingos</span>
+                <span class="text-gray-400">Cerrado</span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- COLUMNA DERECHA: FORMULARIO DE RESERVA    -->
+        <!-- ========================================== -->
+        <div>
+          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 sticky top-8">
+            <h2 class="text-2xl font-bold text-senado-primary mb-2">
+              Formulario de Registro
+            </h2>
+            <p class="text-gray-500 text-sm mb-6">
+              Completa el formulario y te confirmaremos tu visita guiada.
+            </p>
+
+            <form @submit.prevent="enviarReserva" class="space-y-5">
+              <!-- Institución o Entidad -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Institución o Entidad <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.institucion"
+                  type="text"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="Ej: Colegio Nacional de Bolivia"
+                />
+              </div>
+
+              <!-- Fecha de visita -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Fecha de visita <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.fecha"
+                  type="date"
+                  required
+                  :min="fechaMinima"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                />
+                <p class="text-xs text-gray-400 mt-1">Se requiere solicitud con 15 días de anticipación</p>
+              </div>
+
+              <!-- Lugar de Procedencia -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Lugar de Procedencia <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.procedencia"
+                  type="text"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="Ej: La Paz, Bolivia"
+                />
+              </div>
+
+              <!-- Cantidad de visitantes -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Cantidad de visitantes <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model.number="form.personas"
+                  type="number"
+                  required
+                  min="1"
+                  max="25"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="Ej: 10"
+                />
+                <p class="text-xs text-gray-400 mt-1">Máximo 25 personas por grupo</p>
+              </div>
+
+              <!-- Nombre del coordinador -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre del coordinador <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.coordinador"
+                  type="text"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="Nombre completo del responsable"
+                />
+              </div>
+
+              <!-- Correo electrónico -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Correo electrónico <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.email"
+                  type="email"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="correo@ejemplo.com"
+                />
+              </div>
+
+              <!-- Teléfono -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Teléfono / Celular <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model="form.telefono"
+                  type="tel"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
+                  placeholder="Ej: 78945612"
+                />
+              </div>
+
+              <!-- Mensaje adicional -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Mensaje adicional <span class="text-gray-400 text-xs">(opcional)</span>
+                </label>
+                <textarea
+                  v-model="form.mensaje"
+                  rows="3"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition resize-none"
+                  placeholder="Ej: Somos un grupo de estudiantes de la UMSA, nos gustaría conocer el hemiciclo..."
+                ></textarea>
+              </div>
+
+              <!-- Aceptar términos -->
+              <div class="flex items-start gap-3">
+                <input
+                  v-model="form.aceptaTerminos"
+                  type="checkbox"
+                  required
+                  class="mt-1 w-4 h-4 text-senado-primary border-gray-300 rounded focus:ring-senado-primary"
+                />
+                <label class="text-sm text-gray-600">
+                  Acepto las <a href="#" class="text-senado-primary hover:underline">normas de conducta</a> y 
+                  <a href="#" class="text-senado-primary hover:underline">medidas de bioseguridad</a>
+                  <span class="text-red-500">*</span>
+                </label>
+              </div>
+
+              <!-- Botón enviar -->
+              <button
+                type="submit"
+                :disabled="enviando"
+                class="w-full py-3 bg-[#611717] text-white rounded-lg font-semibold hover:bg-[#3a060d] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <span v-if="enviando" class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                {{ enviando ? 'Enviando...' : 'Solicitar Visita' }}
+              </button>
+            </form>
+
+            <!-- Mensaje de éxito -->
+            <div v-if="exito" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div class="flex items-center gap-3">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p class="font-medium text-green-800">¡Solicitud enviada con éxito!</p>
+                  <p class="text-sm text-green-700">Te contactaremos para confirmar tu visita.</p>
+                </div>
+              </div>
+              <button 
+                @click="resetearFormulario"
+                class="mt-3 text-sm text-green-700 hover:text-green-900 font-medium"
+              >
+                → Hacer otra solicitud
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="text-center mt-12">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+
+// ============================================
+// ESTADO DEL FORMULARIO
+// ============================================
+const form = ref({
+  institucion: '',
+  fecha: '',
+  procedencia: '',
+  personas: 1,
+  coordinador: '',
+  email: '',
+  telefono: '',
+  mensaje: '',
+  aceptaTerminos: false
+})
+
+const enviando = ref(false)
+const exito = ref(false)
+
+// Fecha mínima (15 días después)
+const fechaMinima = computed(() => {
+  const fecha = new Date()
+  fecha.setDate(fecha.getDate() + 15)
+  return fecha.toISOString().split('T')[0]
+})
+
+// ============================================
+// ENVIAR RESERVA
+// ============================================
+const enviarReserva = () => {
+  // Validar que todos los campos requeridos estén llenos
+  if (!form.value.aceptaTerminos) {
+    alert('Debes aceptar las normas de conducta y medidas de bioseguridad.')
+    return
+  }
+
+  enviando.value = true
   
-  actions: {
-    setTipoVisualizacion(tipo) {
-      this.tipoVisualizacion = tipo
-    },
+  // Simular envío al backend
+  setTimeout(() => {
+    enviando.value = false
+    exito.value = true
     
-    setFiltroPartido(filtro) {
-      this.filtroPartido = filtro
-    },
+    // Aquí iría la llamada a la API real:
+    // const response = await fetch('/api/visitas', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(form.value)
+    // })
     
-    toggleFiltroPartido(nombrePartido) {
-      if (this.filtroPartido === nombrePartido) {
-        this.filtroPartido = null
-      } else {
-        this.filtroPartido = nombrePartido
-      }
-    },
+    console.log('📋 Solicitud de visita enviada:', form.value)
+  }, 1500)
+}
+
+const resetearFormulario = () => {
+  form.value = {
+    institucion: '',
+    fecha: '',
+    procedencia: '',
+    personas: 1,
+    coordinador: '',
+    email: '',
+    telefono: '',
+    mensaje: '',
+    aceptaTerminos: false
+  }
+  exito.value = false
+}
+</script> 
+================================= 
+pages\noticias\index.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen">
+    <!-- Fondo fijo -->
     
-    guardarScrollPosicion() {
-      if (process.client) {
-        this.scrollPosicion = window.scrollY
-      }
-    },
+    <div class="container-vw">
+
+      <!-- Título -->
+      <div class="text-center pb-[3vw] pt-[3vw]">
+        <h1 class="text-[5vw] font-bolddrop-shadow-lg tracking-wide">
+          Todas las <span class="text-senado-primary-light">Noticias</span>
+        </h1>
+        <div class="w-[6vw] h-[0.2vw] bg-senado-primary-light mx-auto mt-[1vw]"></div>
+        <p class="text-senado-primary drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
+          Explora todas las noticias del Senado de Bolivia
+        </p>
+      </div>
+
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
+        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
+      </div>
+
+      <!-- Estado de error -->
+      <div v-else-if="error" class="text-center py-[10vw]">
+        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
+        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Grid de noticias -->
+      <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
+        <div class="grid grid-cols-4 gap-[1.5vw]">
+          <div 
+            v-for="noticia in noticiasPaginadas" 
+            :key="noticia._id || noticia.id"
+            class="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] relative"
+            @click="verNoticia(noticia)"
+          >
+            <div class="relative aspect-[4/5] w-full">
+              <img 
+                :src="noticia.featuredImage?.url || noticia.imagen || '/images/default-news.jpg'" 
+                :alt="limpiarAsteriscos(noticia.titulo || noticia.title)"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              
+              <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/70 to-transparent"></div>
+              
+              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
+                <p class="text-white/90 text-[0.7em] mb-[0.3em] text-shadow-sm font-[600]">
+                  {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
+                </p>
+                
+                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
+                  {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
+                </h3>
+                
+                <div class="mt-[0.8em] flex justify-end">
+                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
+                    Leer más
+                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
+        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
+        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- 🔥 PAGINACIÓN CON COLORES SÓLIDOS -->
+      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
+        <button 
+          @click="cambiarPagina(paginaActual - 1)" 
+          :disabled="paginaActual === 1" 
+          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+        >
+          Anterior
+        </button>
+        
+        <button 
+          v-for="p in paginasMostradas" 
+          :key="p" 
+          @click="cambiarPagina(p)" 
+          :class="[
+            'w-[3vw] h-[3vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold shadow-md',
+            paginaActual === p 
+              ? 'bg-[#8f1522] text-white hover:bg-[#6b111b] border-2 border-[#611717]' 
+              : 'bg-white text-[#611717] hover:bg-[#611717] hover:text-white'
+          ]"
+        >
+          {{ p }}
+        </button>
+        
+        <button 
+          @click="cambiarPagina(paginaActual + 1)" 
+          :disabled="paginaActual === totalPaginas" 
+          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+
+definePageMeta({ layout: 'default' })
+
+const router = useRouter()
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const todasLasNoticias = ref([])
+const loading = ref(false)
+const error = ref(null)
+const paginaActual = ref(1)
+const itemsPorPagina = ref(12)
+
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-ES', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  })
+}
+
+const noticiasPaginadas = computed(() => {
+  const start = (paginaActual.value - 1) * itemsPorPagina.value
+  const end = start + itemsPorPagina.value
+  return todasLasNoticias.value.slice(start, end)
+})
+
+const totalPaginas = computed(() => {
+  return Math.ceil(todasLasNoticias.value.length / itemsPorPagina.value)
+})
+
+const paginasMostradas = computed(() => {
+  const total = totalPaginas.value
+  const actual = paginaActual.value
+  const rango = 5
+  
+  let start = Math.max(1, actual - Math.floor(rango / 2))
+  let end = Math.min(total, start + rango - 1)
+  
+  if (end - start + 1 < rango) {
+    start = Math.max(1, end - rango + 1)
+  }
+  
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
+
+const cambiarPagina = (pagina) => {
+  if (pagina >= 1 && pagina <= totalPaginas.value) {
+    paginaActual.value = pagina
+    setTimeout(forceScrollToTop, 100)
+  }
+}
+
+const forceScrollToTop = () => {
+  if (process.client) {
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  }
+}
+
+const verNoticia = (noticia) => {
+  const slug = noticia.slug || noticia._id
+  if (slug) {
+    router.push(`/noticias/${slug}`)
+  }
+}
+
+const fetchTodasLasNoticias = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?limit=100`)
     
-    restaurarScrollPosicion() {
-      if (process.client && this.scrollPosicion > 0) {
-        setTimeout(() => {
-          window.scrollTo({
-            top: this.scrollPosicion,
-            behavior: 'smooth'
-          })
-        }, 300)
-      }
-    },
-    
-    reset() {
-      this.tipoVisualizacion = 'titulares'
-      this.filtroPartido = null
-      this.scrollPosicion = 0
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`)
     }
-  },
-  
-  persist: true // Si usas persistencia
-}) 
+    
+    const result = await response.json()
+    
+    if (result.success && result.data?.contents) {
+      todasLasNoticias.value = result.data.contents.sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.createdAt)
+        const dateB = new Date(b.publishedAt || b.createdAt)
+        return dateB - dateA
+      })
+    } else {
+      todasLasNoticias.value = []
+    }
+  } catch (err) {
+    console.error('Error fetching noticias:', err)
+    error.value = err.message || 'Error al cargar las noticias'
+    todasLasNoticias.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+const recargar = async () => {
+  await fetchTodasLasNoticias()
+  forceScrollToTop()
+}
+
+useHead({
+  title: 'Todas las Noticias - Senado Bolivia',
+  meta: [
+    { name: 'description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:title', content: 'Todas las Noticias - Senado Bolivia' },
+    { property: 'og:description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Senado de Bolivia' },
+    { name: 'twitter:card', content: 'summary_large_image' }
+  ]
+})
+
+onMounted(async () => {
+  await fetchTodasLasNoticias()
+  await nextTick()
+  forceScrollToTop()
+})
+</script>
+
+<style scoped>
+.container-vw {
+  width: 90vw;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2vw;
+  position: relative;
+  z-index: 10;
+}
+
+
+
+
+.min-h-screen {
+  background: rgba(250, 250, 250, 1);
+  min-height: 100vh;
+}
+
+.grid-cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5vw;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.aspect-\[4\/5\] {
+  aspect-ratio: 4 / 5;
+}
+</style>
+
+<style>
+html, body {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+}
+
+#__nuxt,
+#__layout,
+#__layout > div,
+#__nuxt > div {
+  background: transparent !important;
+}
+
+
+
+footer {
+  position: relative;
+  z-index: 20 !important;
+  background: #ffffff !important;
+}
+</style>

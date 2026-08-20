@@ -30,7 +30,7 @@
               <img
                 :src="presidente.foto || defaultAvatar"
                 :alt="presidente.name"
-                class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 shadow-lg"
+                class="w-[14vw] h-[14vw] rounded-full object-cover border-4 shadow-lg"
                 :style="{ borderColor: presidente.partyColor || '#e3d194' }"
                 @error="(e) => e.target.src = defaultAvatar"
               />
@@ -83,7 +83,7 @@
               <img
                 :src="cargo.foto || defaultAvatar"
                 :alt="cargo.name"
-                class="w-20 h-20 rounded-full object-cover border-2 flex-shrink-0"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
                 :style="{ borderColor: cargo.partyColor || '#ccc' }"
                 @error="(e) => e.target.src = defaultAvatar"
               />
@@ -136,7 +136,7 @@
               <img
                 :src="cargo.foto || defaultAvatar"
                 :alt="cargo.name"
-                class="w-20 h-20 rounded-full object-cover border-2 flex-shrink-0"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
                 :style="{ borderColor: cargo.partyColor || '#ccc' }"
                 @error="(e) => e.target.src = defaultAvatar"
               />

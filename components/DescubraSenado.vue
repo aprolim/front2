@@ -157,7 +157,8 @@
               </g>
 
               <!-- ========================================== -->
-              <!-- ARCO (36 SENADORES - TODOS)                -->
+              <!-- ARCO - TODOS LOS 36 SENADORES              -->
+              <!-- 🔥 SIEMPRE SE RENDERIZAN LOS 36           -->
               <!-- ========================================== -->
               <g v-for="seat in filteredSeats" :key="seat.id">
                 <circle
@@ -214,7 +215,7 @@
                 <div class="party-badge" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
                   {{ hoveredSeat.partyShort || 'Sin partido' }}
                 </div>
-                <div v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente" class="suplente-de">
+                <div v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplente && !hoveredSeat.esDirectiva" class="suplente-de">
                   Suplente de: {{ hoveredSeat.name }}
                 </div>
                 <div v-if="hoveredSeat.isEmpty" class="sin-suplente">
@@ -254,8 +255,8 @@
                 </NuxtLink>
               </div>
               
-              <!-- 🔥 ENLACE AL TITULAR (si es modo suplentes y NO es directiva) -->
-              <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente && hoveredSeat.suplente !== null && hoveredSeat.suplente !== 'null'">
+              <!-- 🔥 ENLACE AL TITULAR (si es modo suplentes Y tiene suplente) -->
+              <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplente && hoveredSeat.suplente !== null && hoveredSeat.suplente !== 'null'">
                 <span class="label">Titular:</span>
                 <NuxtLink 
                   :to="`/senador/${hoveredSeat.slug}`" 
@@ -305,9 +306,9 @@ const router = useRouter()
 // ============================================
 // CONSTANTES
 // ============================================
-const DEFAULT_AVATAR = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
 
-// IDs de la directiva (SIEMPRE TITULARES)
+// IDs de la directiva (SIEMPRE muestran al TITULAR)
 const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
 
 // ============================================
@@ -430,7 +431,7 @@ const getSeatFilteredOut = (id) => {
 }
 
 // ============================================
-// COMPUTED - ARCO (36 SENADORES CON FILTRO)
+// COMPUTED - TODOS LOS ASIENTOS (36)
 // ============================================
 const allSeats = computed(() => {
   const senadoresOrdenados = [...senadores].sort((a, b) => a.seatNumber - b.seatNumber)
@@ -441,32 +442,13 @@ const allSeats = computed(() => {
     
     // ===== MODO SUPLENTES =====
     if (tipoVisualizacion.value === 'suplentes') {
-      // 🔥 DIRECTIVA: SIEMPRE muestra al TITULAR
-      if (isDirectiva) {
-        return {
-          ...senator,
-          nombreActual: senator.name,
-          fotoActual: senator.foto,
-          x: pos.x,
-          y: pos.y,
-          isEmpty: false,
-          partyColor: senator.partyColor,
-          esSuplente: false,
-          comite: senator.comite || null,
-          comision: senator.comision || null,
-          cargo: senator.cargo || null,
-          suplente: senator.suplente || null,
-          esDirectiva: true,
-          filteredOut: false
-        }
-      }
-      
-      // 🔥 NO DIRECTIVA: muestra el SUPLENTE si existe
+      // 🔥 SIEMPRE muestra el SUPLENTE si existe, incluso para la directiva
+      // PERO la directiva tiene su propia representación aparte
       if (senator.suplente && senator.suplente !== null && senator.suplente !== 'null') {
         return {
           ...senator,
           nombreActual: senator.suplente,
-          fotoActual: senator.fotoSuplente || DEFAULT_AVATAR,
+          fotoActual: senator.fotoSuplente || defaultAvatar,
           slugSuplente: generarSlug(senator.suplente),
           x: pos.x,
           y: pos.y,
@@ -476,14 +458,15 @@ const allSeats = computed(() => {
           comite: senator.comite || null,
           comision: senator.comision || null,
           cargo: senator.cargo || null,
-          esDirectiva: false,
+          esDirectiva: isDirectiva,
           filteredOut: false
         }
       } else {
+        // 🔥 Sin suplente: muestra "Sin suplente" (asiento 16)
         return {
           ...senator,
           nombreActual: 'Sin suplente',
-          fotoActual: DEFAULT_AVATAR,
+          fotoActual: defaultAvatar,
           x: pos.x,
           y: pos.y,
           isEmpty: true,
@@ -494,7 +477,7 @@ const allSeats = computed(() => {
           comite: null,
           comision: null,
           cargo: null,
-          esDirectiva: false,
+          esDirectiva: isDirectiva,
           filteredOut: false
         }
       }
@@ -558,6 +541,7 @@ const getSeatDirectiva = (id) => {
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
   
+  // 🔥 DIRECTIVA SIEMPRE muestra al TITULAR
   return {
     ...senador,
     nombreActual: senador.name,
@@ -581,8 +565,10 @@ const partidosOrdenados = computed(() => {
   let baseSenadores
   
   if (tipoVisualizacion.value === 'suplentes') {
+    // 🔥 Excluir a los de la directiva del conteo en modo suplentes
+    // porque ellos siempre muestran al titular
     baseSenadores = senadores.filter(s => {
-      if (esDirectiva(s.id)) return true
+      if (esDirectiva(s.id)) return false
       return s.suplente && s.suplente !== null && s.suplente !== 'null'
     })
   } else {
@@ -607,7 +593,6 @@ const partidosOrdenados = computed(() => {
     'Autonomía para Bolivia Súmate': 'Autonomía Para Bolivia Súmate'
   }
   
-  // 🔥 ORDEN PERSONALIZADO - Cambia este array según el orden que quieras
   const orden = [
     'Partido Demócrata Cristiano',
     'Libre',
@@ -623,7 +608,6 @@ const partidosOrdenados = computed(() => {
     ordenIndex: orden.indexOf(nombre) === -1 ? 999 : orden.indexOf(nombre)
   }))
   
-  // Ordenar por el índice definido
   partidosArray.sort((a, b) => a.ordenIndex - b.ordenIndex)
   
   return partidosArray
@@ -705,7 +689,8 @@ const goToSenator = (id) => {
   isNavigating.value = true
   hoveredSeat.value = null
   
-  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && seat.suplente && !seat.esDirectiva) {
+  // 🔥 Si es modo suplentes Y es suplente Y NO es directiva, vamos al suplente
+  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && !seat.esDirectiva) {
     router.push(`/senador/suplente/${seat.slugSuplente}`)
     return
   }
