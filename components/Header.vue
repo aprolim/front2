@@ -194,7 +194,7 @@
           </div>
 
           <!-- ========================================== -->
-          <!-- TRÁMITES Y SERVICIOS (NUEVO)              -->
+          <!-- TRÁMITES Y SERVICIOS                      -->
           <!-- ========================================== -->
           <div>
             <div 
@@ -215,6 +215,30 @@
               <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Visita el Senado</NuxtLink>
               <a href="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Productos Digitales</a>
               <NuxtLink to="/cursos-capacitacion" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Cursos y Capacitación</NuxtLink>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- COMUNICACIÓN (NUEVO)                      -->
+          <!-- ========================================== -->
+          <div>
+            <div 
+              @click="toggleSubmenu('comunicacion')"
+              class="cursor-pointer"
+            >
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+                <span>▸ Comunicación</span>
+                <span class="transition-transform duration-300" :class="submenus.comunicacion ? 'rotate-180' : ''">▼</span>
+              </div>
+            </div>
+            <div 
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
+            >
+              <NuxtLink to="/comunicados" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Comunicados</NuxtLink>
+              <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Notas de Prensa</NuxtLink>
+              <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Publicaciones</NuxtLink>
+              <NuxtLink to="/campañas-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Campañas y Actividades</NuxtLink>
             </div>
           </div>
 
@@ -616,7 +640,6 @@
 </template>
 
 <script>
-// Importar los senadores
 import { senadores } from '~/data/senadores'
 
 export default {
@@ -630,7 +653,8 @@ export default {
       defaultAvatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E',
       submenus: {
         institucional: false,
-        tramites: false, // NUEVO
+        tramites: false,
+        comunicacion: false,
         legislativa: false,
         legislacion: false,
         fiscalizacion: false,
@@ -640,10 +664,8 @@ export default {
         funciones: false,
         abierto: false,
         administrativa: false,
-        // Claves únicas para los submenús dentro de Institucional
         auditoriaInstitucional: false,
         transparenciaInstitucional: false,
-        // Claves únicas para los submenús dentro de Área Administrativa
         auditoriaAdministrativa: false,
         transparenciaAdministrativa: false
       }
@@ -972,16 +994,17 @@ export default {
   transform: rotate(180deg);
 }
 
-.max-h-\[50vh\]::-webkit-scrollbar {
+.max-h-50vh {
+  max-height: 50vh;
+}
+.max-h-50vh::-webkit-scrollbar {
   width: 6px;
 }
-
-.max-h-\[50vh\]::-webkit-scrollbar-thumb {
+.max-h-50vh::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 4px;
 }
-
-.max-h-\[50vh\]::-webkit-scrollbar-track {
+.max-h-50vh::-webkit-scrollbar-track {
   background-color: transparent;
 }
 </style>
