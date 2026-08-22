@@ -5,7 +5,10 @@
         <!-- Botón sandwich -->
         <button 
           @click="toggleMenu"
+          @mouseenter="handleMenuHoverEnter"
+          @mouseleave="handleMenuHoverLeave"
           class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
+          ref="menuButton"
         >
           <ClientOnly>
             <Icon 
@@ -111,10 +114,14 @@
       v-if="menuAbierto"
       class="fixed inset-0 z-[99999999] transition-opacity duration-300 bg-black bg-opacity-50"
       @click.self="toggleMenu"
+      @mouseenter="handleOverlayHoverEnter"
+      @mouseleave="handleOverlayHoverLeave"
     >
       <div 
         class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl transition-transform duration-300 ease-out"
         :class="menuAbierto ? 'translate-x-0' : '-translate-x-full'"
+        @mouseenter="handleMenuPanelHoverEnter"
+        @mouseleave="handleMenuPanelHoverLeave"
       >
         <div class="bg-senado-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
           <span class="font-bold text-lg">Menú</span>
@@ -126,10 +133,14 @@
           <!-- ========================================== -->
           <!-- INSTITUCIONAL                              -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('institucional')"
+            @mouseleave="handleSubmenuHoverLeave('institucional')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('institucional')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Institucional</span>
@@ -138,17 +149,45 @@
             </div>
             <div 
               class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-              :class="submenus.institucional ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
+              :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Misión, Vision, Valores y Principios</NuxtLink>
               <NuxtLink to="/antecedentes-historicos" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-[600]" @click="closeMenu">Reseña histórica</NuxtLink>
               <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Memoria Institucional - Redactor</NuxtLink>
               
+              <!-- Funciones del Senado -->
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('funciones')"
+                @mouseleave="handleSubmenuHoverLeave('funciones')"
+                class="menu-item-wrapper"
+              >
+                <div 
+                  @click="toggleSubmenu('funciones')"
+                  class="cursor-pointer menu-item"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Funciones del Senado</span>
+                    <span class="transition-transform duration-300" :class="submenus.funciones ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1.0vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                  :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Atribuciones del Senado</NuxtLink>
+                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Mandato Constitucional</NuxtLink>
+                </div>
+              </div>
+
               <!-- Auditoría -->
-              <div>
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('auditoriaInstitucional')"
+                @mouseleave="handleSubmenuHoverLeave('auditoriaInstitucional')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('auditoriaInstitucional')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Auditoría</span>
@@ -166,11 +205,15 @@
                 </div>
               </div>
 
-              <!-- Transparencia y Lucha contra la Corrupción -->
-              <div>
+              <!-- Transparencia -->
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('transparenciaInstitucional')"
+                @mouseleave="handleSubmenuHoverLeave('transparenciaInstitucional')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('transparenciaInstitucional')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Transparencia y Lucha contra la Corrupción</span>
@@ -196,10 +239,14 @@
           <!-- ========================================== -->
           <!-- TRÁMITES Y SERVICIOS                      -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('tramites')"
+            @mouseleave="handleSubmenuHoverLeave('tramites')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('tramites')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Trámites y Servicios</span>
@@ -219,12 +266,16 @@
           </div>
 
           <!-- ========================================== -->
-          <!-- COMUNICACIÓN (NUEVO)                      -->
+          <!-- COMUNICACIÓN                              -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('comunicacion')"
+            @mouseleave="handleSubmenuHoverLeave('comunicacion')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('comunicacion')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Comunicación</span>
@@ -238,17 +289,21 @@
               <NuxtLink to="/comunicados" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Comunicados</NuxtLink>
               <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Notas de Prensa</NuxtLink>
               <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Publicaciones</NuxtLink>
-              <NuxtLink to="/campañas-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Campañas y Actividades</NuxtLink>
+              <NuxtLink to="/campanas-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Campañas y Actividades</NuxtLink>
             </div>
           </div>
 
           <!-- ========================================== -->
           <!-- FACULTADES LEGISLATIVAS                    -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('legislativa')"
+            @mouseleave="handleSubmenuHoverLeave('legislativa')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('legislativa')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Facultades Legislativas</span>
@@ -261,10 +316,14 @@
               :class="submenus.legislativa ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <!-- Legislación -->
-              <div>
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('legislacion')"
+                @mouseleave="handleSubmenuHoverLeave('legislacion')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('legislacion')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Legislación</span>
@@ -285,10 +344,14 @@
               </div>
 
               <!-- Fiscalización -->
-              <div>
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('fiscalizacion')"
+                @mouseleave="handleSubmenuHoverLeave('fiscalizacion')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('fiscalizacion')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Fiscalización</span>
@@ -305,10 +368,14 @@
               </div>
 
               <!-- Gestión -->
-              <div>
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('gestion')"
+                @mouseleave="handleSubmenuHoverLeave('gestion')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('gestion')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Gestión</span>
@@ -330,10 +397,14 @@
           <!-- ========================================== -->
           <!-- TUS SENADORES                              -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('senadores')"
+            @mouseleave="handleSubmenuHoverLeave('senadores')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('senadores')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Tus senadores</span>
@@ -351,50 +422,16 @@
           </div>
 
           <!-- ========================================== -->
-          <!-- ACERCA DEL SENADO                          -->
-          <!-- ========================================== -->
-          <div>
-            <div 
-              @click="toggleSubmenu('acerca')"
-              class="cursor-pointer"
-            >
-              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
-                <span>▸ Acerca del Senado</span>
-                <span class="transition-transform duration-300" :class="submenus.acerca ? 'rotate-180' : ''">▼</span>
-              </div>
-            </div>
-            <div 
-              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out text-[1.1vw]"
-              :class="submenus.acerca ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
-            >
-              <div>
-                <div 
-                  @click="toggleSubmenu('funciones')"
-                  class="cursor-pointer"
-                >
-                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors">
-                    <span>Funciones del Senado</span>
-                    <span class="transition-transform duration-300" :class="submenus.funciones ? 'rotate-180' : ''">▼</span>
-                  </div>
-                </div>
-                <div 
-                  class="ml-4 space-y-1 text-[1.0vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-                  :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
-                >
-                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Atribuciones del Senado</NuxtLink>
-                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Mandato Constitucional</NuxtLink>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ========================================== -->
           <!-- SENADO ABIERTO                             -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('abierto')"
+            @mouseleave="handleSubmenuHoverLeave('abierto')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('abierto')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Senado abierto</span>
@@ -415,10 +452,14 @@
           <!-- ========================================== -->
           <!-- ÁREA ADMINISTRATIVA                        -->
           <!-- ========================================== -->
-          <div>
+          <div 
+            @mouseenter="handleSubmenuHoverEnter('administrativa')"
+            @mouseleave="handleSubmenuHoverLeave('administrativa')"
+            class="menu-item-wrapper"
+          >
             <div 
               @click="toggleSubmenu('administrativa')"
-              class="cursor-pointer"
+              class="cursor-pointer menu-item"
             >
               <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
                 <span>▸ Área Administrativa</span>
@@ -430,10 +471,14 @@
               :class="submenus.administrativa ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
             >
               <!-- Auditoría -->
-              <div>
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('auditoriaAdministrativa')"
+                @mouseleave="handleSubmenuHoverLeave('auditoriaAdministrativa')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('auditoriaAdministrativa')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Auditoría</span>
@@ -451,11 +496,15 @@
                 </div>
               </div>
 
-              <!-- Transparencia y Lucha contra la Corrupción -->
-              <div>
+              <!-- Transparencia -->
+              <div 
+                @mouseenter="handleSubmenuHoverEnter('transparenciaAdministrativa')"
+                @mouseleave="handleSubmenuHoverLeave('transparenciaAdministrativa')"
+                class="menu-item-wrapper"
+              >
                 <div 
                   @click="toggleSubmenu('transparenciaAdministrativa')"
-                  class="cursor-pointer"
+                  class="cursor-pointer menu-item"
                 >
                   <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
                     <span>Transparencia y Lucha contra la Corrupción</span>
@@ -502,7 +551,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ REDES SOCIALES                        -->
+    <!-- MENÚ REDES SOCIALES - HEADER              -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -519,7 +568,7 @@
           class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-3 min-w-[180px] flex flex-col gap-2"
           :style="menuStyle"
         >
-          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <a href="https://www.facebook.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
             <ClientOnly>
               <Icon name="mdi:facebook" class="text-2xl text-blue-600" />
               <template #fallback>
@@ -528,16 +577,16 @@
             </ClientOnly>
             <span class="text-sm font-medium">Facebook</span>
           </a>
-          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <a href="https://x.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
             <ClientOnly>
-              <Icon name="mdi:twitter" class="text-2xl text-sky-500" />
+              <Icon name="ri:twitter-x-line" class="text-2xl text-sky-500" />
               <template #fallback>
                 <span class="text-2xl">𝕏</span>
               </template>
             </ClientOnly>
             <span class="text-sm font-medium">Twitter / X</span>
           </a>
-          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <a href="https://www.youtube.com/@senadobolivia2026" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
             <ClientOnly>
               <Icon name="mdi:youtube" class="text-2xl text-red-600" />
               <template #fallback>
@@ -546,7 +595,7 @@
             </ClientOnly>
             <span class="text-sm font-medium">YouTube</span>
           </a>
-          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+          <a href="https://www.instagram.com/camarasenadores" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
             <ClientOnly>
               <Icon name="mdi:instagram" class="text-2xl text-pink-600" />
               <template #fallback>
@@ -554,6 +603,15 @@
               </template>
             </ClientOnly>
             <span class="text-sm font-medium">Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@senadobolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+            <ClientOnly>
+              <Icon name="ri:tiktok-line" class="text-2xl text-black" />
+              <template #fallback>
+                <span class="text-2xl">♪</span>
+              </template>
+            </ClientOnly>
+            <span class="text-sm font-medium">TikTok</span>
           </a>
         </div>
       </transition>
@@ -660,7 +718,6 @@ export default {
         fiscalizacion: false,
         gestion: false,
         senadores: false,
-        acerca: false,
         funciones: false,
         abierto: false,
         administrativa: false,
@@ -668,7 +725,12 @@ export default {
         transparenciaInstitucional: false,
         auditoriaAdministrativa: false,
         transparenciaAdministrativa: false
-      }
+      },
+      hoverOpenTimer: null,
+      hoverCloseTimer: null,
+      submenuHoverTimers: {},
+      isDesktop: false,
+      isMenuHoverOpen: false
     }
   },
   computed: {
@@ -725,24 +787,155 @@ export default {
   },
   methods: {
     toggleMenu() {
+      this.clearAllTimers()
       this.menuAbierto = !this.menuAbierto
       if (!this.menuAbierto) {
         Object.keys(this.submenus).forEach(key => {
           this.submenus[key] = false
         })
+        this.isMenuHoverOpen = false
       }
     },
     closeMenu() {
+      this.clearAllTimers()
       this.menuAbierto = false
       Object.keys(this.submenus).forEach(key => {
         this.submenus[key] = false
       })
+      this.isMenuHoverOpen = false
     },
     toggleSubmenu(key) {
+      this.clearSubmenuTimer(key)
       this.submenus[key] = !this.submenus[key]
+    },
+    clearAllTimers() {
+      if (this.hoverOpenTimer) {
+        clearTimeout(this.hoverOpenTimer)
+        this.hoverOpenTimer = null
+      }
+      if (this.hoverCloseTimer) {
+        clearTimeout(this.hoverCloseTimer)
+        this.hoverCloseTimer = null
+      }
+      Object.keys(this.submenuHoverTimers).forEach(key => {
+        if (this.submenuHoverTimers[key]) {
+          clearTimeout(this.submenuHoverTimers[key])
+          delete this.submenuHoverTimers[key]
+        }
+      })
+    },
+    clearSubmenuTimer(key) {
+      if (this.submenuHoverTimers[key]) {
+        clearTimeout(this.submenuHoverTimers[key])
+        delete this.submenuHoverTimers[key]
+      }
+    },
+    handleMenuHoverEnter() {
+      if (!this.isDesktop) return
+      this.clearAllTimers()
+      if (this.menuAbierto && !this.isMenuHoverOpen) return
+      this.hoverOpenTimer = setTimeout(() => {
+        this.menuAbierto = true
+        this.isMenuHoverOpen = true
+        this.hoverOpenTimer = null
+      }, 700)
+    },
+    handleMenuHoverLeave() {
+      if (!this.isDesktop) return
+      if (this.hoverOpenTimer) {
+        clearTimeout(this.hoverOpenTimer)
+        this.hoverOpenTimer = null
+        return
+      }
+      if (this.isMenuHoverOpen && this.menuAbierto) {
+        this.hoverCloseTimer = setTimeout(() => {
+          if (this.isMenuHoverOpen && this.menuAbierto) {
+            this.menuAbierto = false
+            this.isMenuHoverOpen = false
+            Object.keys(this.submenus).forEach(key => {
+              this.submenus[key] = false
+            })
+          }
+          this.hoverCloseTimer = null
+        }, 2000)
+      }
+    },
+    handleOverlayHoverEnter() {
+      if (!this.isDesktop) return
+      if (this.hoverCloseTimer) {
+        clearTimeout(this.hoverCloseTimer)
+        this.hoverCloseTimer = null
+      }
+    },
+    handleOverlayHoverLeave() {},
+    handleMenuPanelHoverEnter() {
+      if (!this.isDesktop) return
+      if (this.hoverCloseTimer) {
+        clearTimeout(this.hoverCloseTimer)
+        this.hoverCloseTimer = null
+      }
+    },
+    handleMenuPanelHoverLeave(e) {
+      if (!this.isDesktop) return
+      if (this.isMenuHoverOpen && this.menuAbierto) {
+        const relatedTarget = e.relatedTarget
+        const isOverlay = relatedTarget && relatedTarget.classList && 
+                          relatedTarget.classList.contains('fixed')
+        if (!isOverlay) {
+          this.hoverCloseTimer = setTimeout(() => {
+            if (this.isMenuHoverOpen && this.menuAbierto) {
+              this.menuAbierto = false
+              this.isMenuHoverOpen = false
+              Object.keys(this.submenus).forEach(key => {
+                this.submenus[key] = false
+              })
+            }
+            this.hoverCloseTimer = null
+          }, 2000)
+        }
+      }
+    },
+    handleSubmenuHoverEnter(key) {
+      if (!this.isDesktop) return
+      this.clearSubmenuTimer(key)
+      if (this.submenus[key]) return
+      this.submenuHoverTimers[key] = setTimeout(() => {
+        this.submenus[key] = true
+        delete this.submenuHoverTimers[key]
+      }, 700)
+    },
+    handleSubmenuHoverLeave(key) {
+      if (!this.isDesktop) return
+      if (this.submenuHoverTimers[key]) {
+        clearTimeout(this.submenuHoverTimers[key])
+        delete this.submenuHoverTimers[key]
+        return
+      }
+      if (this.submenus[key]) {
+        this.submenuHoverTimers[key] = setTimeout(() => {
+          this.submenus[key] = false
+          delete this.submenuHoverTimers[key]
+        }, 2000)
+      }
     },
     toggleRedes() {
       this.redesAbiertas = !this.redesAbiertas
+    },
+    checkDesktop() {
+      if (process.client) {
+        const wasDesktop = this.isDesktop
+        this.isDesktop = window.innerWidth > 1024
+        if (!this.isDesktop && wasDesktop) {
+          this.clearAllTimers()
+          if (this.isMenuHoverOpen) {
+            this.menuAbierto = false
+            this.isMenuHoverOpen = false
+            Object.keys(this.submenus).forEach(key => {
+              this.submenus[key] = false
+            })
+          }
+        }
+      }
     },
     generarSlug(nombre) {
       if (!nombre) return ''
@@ -766,7 +959,6 @@ export default {
     levenshteinDistance(a, b) {
       if (a.length === 0) return b.length
       if (b.length === 0) return a.length
-
       const matrix = []
       for (let i = 0; i <= b.length; i++) {
         matrix[i] = [i]
@@ -774,7 +966,6 @@ export default {
       for (let j = 0; j <= a.length; j++) {
         matrix[0][j] = j
       }
-
       for (let i = 1; i <= b.length; i++) {
         for (let j = 1; j <= a.length; j++) {
           if (b[i - 1] === a[j - 1]) {
@@ -788,7 +979,6 @@ export default {
           }
         }
       }
-
       return matrix[b.length][a.length]
     },
     getSimilarity(text1, text2) {
@@ -800,24 +990,19 @@ export default {
     },
     handleSearch() {
       const query = this.searchQuery.trim()
-      
       if (!query) {
         this.searchResults = []
         this.showResults = false
         return
       }
-
       const queryNormalized = this.normalizeText(query)
       const searchTerms = queryNormalized.split(/\s+/).filter(term => term.length > 0)
-
       const allCandidates = []
-      
       if (!senadores || senadores.length === 0) {
         this.searchResults = []
         this.showResults = true
         return
       }
-      
       senadores.forEach(s => {
         allCandidates.push({
           ...s,
@@ -829,7 +1014,6 @@ export default {
           partyNormalized: this.normalizeText(s.party),
           partyShortNormalized: this.normalizeText(s.partyShort)
         })
-        
         if (s.suplente && s.suplente !== 'null' && s.suplente !== null && s.suplente.trim() !== '') {
           const suplenteNormalized = this.normalizeText(s.suplente)
           allCandidates.push({
@@ -854,7 +1038,6 @@ export default {
           })
         }
       })
-
       const results = allCandidates.filter(candidate => {
         const textsToCheck = [
           { text: candidate.nameNormalized, weight: 1.0 },
@@ -863,16 +1046,13 @@ export default {
           { text: candidate.partyShortNormalized, weight: 0.5 },
           { text: candidate.titularNormalized, weight: 0.8 }
         ].filter(item => item.text && item.text.length > 0)
-
         let bestMatch = false
-
         for (const term of searchTerms) {
           for (const item of textsToCheck) {
             if (item.text.includes(term)) {
               bestMatch = true
               break
             }
-            
             const similarity = this.getSimilarity(term, item.text)
             if (similarity > 0.65) {
               bestMatch = true
@@ -881,46 +1061,35 @@ export default {
           }
           if (bestMatch) break
         }
-
         return bestMatch
       })
-
       const getRelevance = (candidate) => {
         let score = 0
         const name = candidate.nameNormalized || ''
         const queryLower = queryNormalized
-        
         if (name === queryLower) score += 100
-        
         const nameParts = name.split(' ')
         const lastName = nameParts[nameParts.length - 1] || ''
         if (lastName === queryLower) score += 80
-        
         const firstName = nameParts[0] || ''
         if (firstName === queryLower) score += 70
-        
         if (name.startsWith(queryLower)) score += 50
         if (name.includes(queryLower)) score += 30
-        
         const similarity = this.getSimilarity(queryLower, name)
         if (similarity > 0.7) {
           score += Math.round(similarity * 40)
         }
-        
         if ((candidate.departmentNormalized || '').includes(queryLower)) score += 20
         if ((candidate.partyNormalized || '').includes(queryLower)) score += 15
         if (candidate.tipo === 'titular') score += 10
-        
         return score
       }
-
       results.sort((a, b) => {
         const scoreA = getRelevance(a)
         const scoreB = getRelevance(b)
         if (scoreA !== scoreB) return scoreB - scoreA
         return (a.nameNormalized || '').localeCompare(b.nameNormalized || '')
       })
-
       this.searchResults = results.slice(0, 10)
       this.lastSearchQuery = query
       this.showResults = true
@@ -930,7 +1099,6 @@ export default {
         this.showResults = true
         return
       }
-      
       if (this.searchQuery.trim()) {
         this.handleSearch()
       }
@@ -944,7 +1112,6 @@ export default {
       this.searchQuery = ''
       this.searchResults = []
       this.showResults = false
-      
       if (result.esSuplente) {
         this.$router.push(`/senador/suplente/${result.slugSuplente}`)
       } else {
@@ -955,14 +1122,21 @@ export default {
       if (event.key === 'Escape') {
         this.showResults = false
       }
+    },
+    handleResize() {
+      this.checkDesktop()
     }
   },
   mounted() {
     console.log('✅ Header montado, senadores disponibles:', senadores ? senadores.length : 0)
     document.addEventListener('keydown', this.handleKeydown)
+    this.checkDesktop()
+    window.addEventListener('resize', this.handleResize)
   },
   beforeDestroy() {
     document.removeEventListener('keydown', this.handleKeydown)
+    window.removeEventListener('resize', this.handleResize)
+    this.clearAllTimers()
   }
 }
 </script>
@@ -979,7 +1153,6 @@ export default {
   background-color: #cbd5e1;
   border-radius: 4px;
 }
-
 @keyframes spin-coin {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
@@ -989,11 +1162,9 @@ export default {
   transform-style: preserve-3d;
   perspective: 1000px;
 }
-
 .rotate-180 {
   transform: rotate(180deg);
 }
-
 .max-h-50vh {
   max-height: 50vh;
 }

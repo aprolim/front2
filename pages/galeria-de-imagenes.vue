@@ -102,44 +102,95 @@
       </p>
     </div>
 
-    <!-- Modal de imagen ampliada -->
+    <!-- ============================================ -->
+    <!-- MODAL DE IMAGEN AMPLIADA                     -->
+    <!-- ============================================ -->
     <Teleport to="body">
-      <div v-if="showImageModal" class="fixed inset-0 z-[100] backdrop-blur-lg flex items-center justify-center" @click.self="closeImageViewer">
-        <div class="relative w-full h-full flex flex-col items-center justify-center p-4">
+      <!-- Fondo del modal -->
+      <div 
+        v-if="showImageModal" 
+        class="fixed inset-0 z-[100] backdrop-blur-lg flex items-center justify-center"
+        @click="closeImageViewer"
+      >
+        <!-- Contenedor del contenido - click aquí CIERRA -->
+        <div 
+          class="relative w-full h-full flex flex-col items-center justify-center p-4" 
+          @click="closeImageViewer"
+        >
           <button 
-            @click="closeImageViewer"
-            class="absolute top-4 right-4 hover:text-[#E03636] transition-colors text-3xl z-10"
+            @click.stop="closeImageViewer"
+            class="absolute top-4 right-4 text-white hover:text-[#E03636] transition-colors text-3xl z-10"
           >
             ✕
           </button>
 
           <button 
-            @click="prevImage"
-            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+            @click.stop="prevImage"
+            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors text-3xl md:text-5xl z-10"
           >
             ‹
           </button>
 
-          <div class="relative max-w-[90vw] max-h-[70vh] flex items-center justify-center">
+          <!-- Imagen - click aquí NO cierra -->
+          <div class="relative max-w-[90vw] max-h-[70vh] flex items-center justify-center" @click.stop>
             <img 
               :src="`/G-Institucional/${currentImage?.id}.webp`"
               :alt="currentImage?.description"
-              class="max-w-full max-h-[70vh] object-contain rounded-lg"
+              class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
             />
           </div>
 
-          <div class="mt-6 text-center max-w-2xl px-4">
-            <p class="text-senado-primary text-base md:text-xl font-[600] bg-senado-gold-dark">{{ currentImage?.description }}</p>
+          <!-- Texto con efecto cometa - click aquí NO cierra -->
+          <div class="relative w-full max-w-2xl px-4 mt-6" @click.stop>
+            <div class="relative rounded-2xl p-[4px] bg-transparent">
+              <svg class="absolute inset-0 w-full h-full pointer-events-none z-20" style="overflow: visible;">
+                <defs>
+                  <linearGradient id="comet-grad-modal" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
+                    <stop offset="30%" stop-color="#e3d194" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <rect 
+                  x="4" y="4" 
+                  width="calc(100% - 8px)" 
+                  height="calc(100% - 8px)" 
+                  rx="16" ry="16" 
+                  fill="none" 
+                  stroke="url(#comet-grad-modal)" 
+                  stroke-width="4" 
+                  stroke-dasharray="25 75"
+                  class="comet-line-1"
+                />
+                <rect 
+                  x="4" y="4" 
+                  width="calc(100% - 8px)" 
+                  height="calc(100% - 8px)" 
+                  rx="16" ry="16" 
+                  fill="none" 
+                  stroke="url(#comet-grad-modal)" 
+                  stroke-width="4" 
+                  stroke-dasharray="25 75"
+                  class="comet-line-2"
+                />
+              </svg>
+              
+              <div class="relative z-10 bg-senado-gold-dark rounded-2xl p-4 md:p-6 text-center">
+                <p class="text-senado-primary text-base md:text-xl font-[600]">
+                  {{ currentImage?.description }}
+                </p>
+              </div>
+            </div>
           </div>
 
           <button 
-            @click="nextImage"
-            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+            @click.stop="nextImage"
+            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors text-3xl md:text-5xl z-10"
           >
             ›
           </button>
 
-          <p class="text-white/50 text-sm mt-4">
+          <p class="text-white/50 text-sm mt-4" @click.stop>
             {{ currentImageIndex + 1 }} / {{ totalImages }}
           </p>
         </div>
@@ -153,36 +204,26 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGaleria } from '~/composables/useGaleria'
 
-
 const router = useRouter()
 const route = useRoute()
 const { images: allImages, loading, fetchImages, USE_API } = useGaleria()
 
-// Referencia a la sección superior
 const topSection = ref(null)
 
-// ============================================
-// 🔥 FUNCIÓN PARA FORZAR SCROLL AL INICIO
-// ============================================
 const forceScrollToTop = () => {
   if (process.client) {
-    // Múltiples métodos para asegurar
     window.scrollTo(0, 0)
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
     document.body.scrollIntoView({ block: 'start', behavior: 'instant' })
     
-    // Si existe la referencia, hacer scroll a ella
     if (topSection.value) {
       topSection.value.scrollIntoView({ block: 'start', behavior: 'instant' })
     }
   }
 }
 
-// ============================================
-// ESTADO
-// ============================================
 const totalImages = computed(() => allImages.value.length)
 const useApi = computed(() => USE_API)
 
@@ -218,15 +259,11 @@ const goToPage = (page) => {
   forceScrollToTop()
 }
 
-// Manejo de error de carga
 const handleImageError = (event) => {
   const img = event.target
   img.src = '/images/placeholder.jpg'
 }
 
-// ============================================
-// MODAL
-// ============================================
 const showImageModal = ref(false)
 const currentImage = ref(null)
 const currentImageIndex = ref(0)
@@ -267,37 +304,17 @@ const handleKeydown = (e) => {
   }
 }
 
-// ============================================
-// CICLO DE VIDA - FORZAR SCROLL AL INICIO
-// ============================================
 onMounted(async () => {
   window.addEventListener('keydown', handleKeydown)
-  
-  // 🔥 FORZAR SCROLL INMEDIATAMENTE
   forceScrollToTop()
-  
-  // Cargar datos
   await fetchImages()
   console.log(`📸 Galería cargada: ${totalImages.value} imágenes | Usando API: ${USE_API}`)
-  
-  // 🔥 FORZAR SCROLL NUEVAMENTE DESPUÉS DE CARGAR
-  nextTick(() => {
-    forceScrollToTop()
-  })
-  
-  // 🔥 FORZAR SCROLL CON DELAY (por si hay renderizado asíncrono)
-  setTimeout(() => {
-    forceScrollToTop()
-  }, 50)
-  
-  setTimeout(() => {
-    forceScrollToTop()
-  }, 200)
+  nextTick(() => { forceScrollToTop() })
+  setTimeout(() => { forceScrollToTop() }, 50)
+  setTimeout(() => { forceScrollToTop() }, 200)
 })
 
-// 🔥 Escuchar cambios de ruta para forzar scroll
 if (process.client) {
-  // Cada vez que se complete la navegación
   router.afterEach((to) => {
     if (to.path === '/museo/galeria') {
       forceScrollToTop()
@@ -337,9 +354,6 @@ onUnmounted(() => {
   transform: translateY(-3px);
 }
 
-/* ============================================ */
-/* ANIMACIONES DE BORDES ESTILO SENADO */
-/* ============================================ */
 @keyframes slide-right {
   0% { width: 0%; left: 0; }
   50% { width: 100%; left: 0; }
@@ -364,19 +378,29 @@ onUnmounted(() => {
   100% { height: 0%; bottom: 100%; }
 }
 
-.animate-slide-right {
-  animation: slide-right 4s ease-in-out infinite;
+.animate-slide-right { animation: slide-right 4s ease-in-out infinite; }
+.animate-slide-left { animation: slide-left 4s ease-in-out infinite; }
+.animate-slide-down { animation: slide-down 4s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 4s ease-in-out infinite; }
+
+/* ============================================ */
+/* EFECTO COMETA                                */
+/* ============================================ */
+.comet-line-1 {
+  animation: comet1 8s linear infinite;
 }
 
-.animate-slide-left {
-  animation: slide-left 4s ease-in-out infinite;
+.comet-line-2 {
+  animation: comet2 8s linear infinite;
 }
 
-.animate-slide-down {
-  animation: slide-down 4s ease-in-out infinite;
+@keyframes comet1 {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100; }
 }
 
-.animate-slide-up {
-  animation: slide-up 4s ease-in-out infinite;
+@keyframes comet2 {
+  0% { stroke-dashoffset: -50; }
+  100% { stroke-dashoffset: -150; }
 }
 </style>
