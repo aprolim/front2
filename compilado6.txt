@@ -1,0 +1,2434 @@
+COMPILADO DE ARCHIVOS - Parte 6 
+ 
+ 
+================================= 
+pages\auditoria\poa-uai.vue 
+================================= 
+ 
+<!-- pages/poa-uai.vue -->
+<template>
+  <div class="min-h-screen bg-gray-50" style="font-size: 1vw;">
+    <!-- Hero / Banner - Versión Compacta -->
+    <section class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white">
+      <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2.5vw 0;">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between" style="gap: 1.5vw;">
+          <div>
+            <!-- Badge pequeño -->
+            <div class="inline-flex items-center bg-white/10 rounded-full" style="gap: 0.4vw; padding: 0.2vw 0.8vw; margin-bottom: 0.5vw;">
+              <Icon name="mdi:file-pdf-box" class="text-senado-gold" style="font-size: 1.2vw;" />
+              <span class="text-white/80 tracking-wider font-medium" style="font-size: 0.7vw;">PLAN OPERATIVO ANUAL</span>
+            </div>
+            
+            <!-- Título en línea -->
+            <h1 class="font-bold leading-tight" style="font-size: 3.5vw;">
+              POA - <span class="text-senado-gold">UAI</span>
+            </h1>
+            
+            <!-- Subtítulo -->
+            <p class="text-white/60 tracking-widest font-light" style="font-size: 0.9vw;">
+              UNIDAD DE AUDITORÍA INTERNA
+            </p>
+          </div>
+          
+          <!-- Año actual destacado -->
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 text-center" style="padding: 0.6vw 2vw;">
+            <span class="font-bold text-senado-gold" style="font-size: 2.5vw;">2026</span>
+            <p class="text-white/60 tracking-wider" style="font-size: 0.6vw;">VIGENTE</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Onda inferior -->
+      <div class="absolute bottom-0 left-0 right-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full">
+          <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2vw 0;">
+      <!-- Tarjeta del Año Actual -->
+      <div class="bg-white rounded-xl shadow-md border border-gray-100 relative z-10" style="padding: 1.2vw; margin-top: -0.8vw; margin-bottom: 1.5vw;">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between" style="gap: 1vw;">
+          <div class="flex items-center" style="gap: 0.8vw;">
+            <div class="bg-senado-primary text-white rounded-lg" style="padding: 0.5vw 1.2vw;">
+              <span class="font-bold" style="font-size: 1.8vw;">2026</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-senado-primary" style="font-size: 1.1vw;">POA - UAI 2026</h3>
+              <p class="text-gray-500" style="font-size: 0.7vw;">Plan Operativo Anual vigente</p>
+            </div>
+          </div>
+          <a 
+            href="#" 
+            class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium whitespace-nowrap" 
+            style="padding: 0.5vw 1.5vw; font-size: 0.8vw; gap: 0.4vw;"
+          >
+            <Icon name="mdi:download" style="font-size: 1.1vw;" />
+            Descargar PDF
+          </a>
+        </div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 0.8vw; margin-bottom: 1.5vw;">
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
+          <div class="font-bold text-senado-primary" style="font-size: 2vw;">5</div>
+          <p class="text-gray-500" style="font-size: 0.7vw;">Total POAs</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
+          <div class="font-bold text-green-600" style="font-size: 2vw;">1</div>
+          <p class="text-gray-500" style="font-size: 0.7vw;">Vigentes</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
+          <div class="font-bold text-blue-600" style="font-size: 2vw;">5</div>
+          <p class="text-gray-500" style="font-size: 0.7vw;">Publicados</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
+          <div class="font-bold text-yellow-600" style="font-size: 2vw;">0</div>
+          <p class="text-gray-500" style="font-size: 0.7vw;">En Revisión</p>
+        </div>
+      </div>
+
+      <!-- Tabla de Documentos -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+        <div class="border-b border-gray-100" style="padding: 0.6vw 1.2vw;">
+          <h2 class="font-bold text-senado-primary flex items-center" style="font-size: 1.1vw; gap: 0.5vw;">
+            <Icon name="mdi:file-document" style="font-size: 1.4vw;" />
+            Documentos POA - UAI
+          </h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Año</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Documento</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Fecha</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Estado</th>
+                <th class="text-center text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="(poa, index) in poas" 
+                :key="index" 
+                class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
+                :class="poa.activo ? 'bg-yellow-50/50' : ''"
+              >
+                <td style="padding: 0.5vw 0.8vw;">
+                  <span class="font-bold" style="font-size: 0.85vw;">{{ poa.anio }}</span>
+                  <span v-if="poa.activo" class="ml-1 font-bold text-yellow-600 bg-yellow-100 rounded-full" style="padding: 0.05vw 0.5vw; font-size: 0.5vw;">VIGENTE</span>
+                </td>
+                <td style="padding: 0.5vw 0.8vw;">
+                  <div class="flex items-center" style="gap: 0.4vw;">
+                    <Icon name="mdi:file-pdf-box" class="text-red-500" style="font-size: 1.4vw;" />
+                    <span style="font-size: 0.7vw;">{{ poa.titulo }}</span>
+                  </div>
+                </td>
+                <td style="padding: 0.5vw 0.8vw; font-size: 0.7vw; color: #6b7280;">{{ poa.fecha }}</td>
+                <td style="padding: 0.5vw 0.8vw;">
+                  <span 
+                    class="rounded-full font-medium"
+                    :class="poa.estado === 'Publicado' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'"
+                    style="padding: 0.1vw 0.6vw; font-size: 0.6vw;"
+                  >
+                    {{ poa.estado }}
+                  </span>
+                </td>
+                <td style="padding: 0.5vw 0.8vw;">
+                  <div class="flex items-center justify-center" style="gap: 0.6vw;">
+                    <button class="text-senado-primary hover:text-senado-primary-dark transition-colors" title="Ver">
+                      <Icon name="mdi:eye" style="font-size: 1.3vw;" />
+                    </button>
+                    <button class="text-gray-400 hover:text-gray-600 transition-colors" title="Descargar">
+                      <Icon name="mdi:download" style="font-size: 1.3vw;" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Información Adicional -->
+      <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 1vw; margin-top: 1.5vw;">
+        <!-- Proceso -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100" style="padding: 1vw;">
+          <h3 class="font-bold text-senado-primary flex items-center" style="font-size: 0.9vw; gap: 0.4vw; margin-bottom: 0.6vw;">
+            <Icon name="mdi:timeline" style="font-size: 1.2vw;" />
+            Proceso de Elaboración
+          </h3>
+          <div style="gap: 0.4vw; display: flex; flex-direction: column;">
+            <div class="flex items-start" style="gap: 0.6vw;">
+              <div class="bg-blue-100 text-blue-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">1</div>
+              <div>
+                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Planificación</h4>
+                <p class="text-gray-500" style="font-size: 0.6vw;">Definición de objetivos, actividades y metas</p>
+              </div>
+            </div>
+            <div class="flex items-start" style="gap: 0.6vw;">
+              <div class="bg-yellow-100 text-yellow-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">2</div>
+              <div>
+                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Revisión y Validación</h4>
+                <p class="text-gray-500" style="font-size: 0.6vw;">Revisión por la UAI y validación institucional</p>
+              </div>
+            </div>
+            <div class="flex items-start" style="gap: 0.6vw;">
+              <div class="bg-green-100 text-green-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">3</div>
+              <div>
+                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Publicación</h4>
+                <p class="text-gray-500" style="font-size: 0.6vw;">Publicación del POA aprobado</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Marco Legal -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100" style="padding: 1vw;">
+          <h3 class="font-bold text-senado-primary flex items-center" style="font-size: 0.9vw; gap: 0.4vw; margin-bottom: 0.6vw;">
+            <Icon name="mdi:scale-balance" style="font-size: 1.2vw;" />
+            Marco Legal
+          </h3>
+          <div style="gap: 0.6vw; display: flex; flex-direction: column;">
+            <div class="border-l-2 border-senado-gold" style="padding-left: 0.6vw;">
+              <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Ley N° 1178</h4>
+              <p class="text-gray-500" style="font-size: 0.6vw;">Ley SAFCO - Administración y Control Gubernamentales</p>
+            </div>
+            <div class="border-l-2 border-senado-gold" style="padding-left: 0.6vw;">
+              <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">DS N° 23318-A</h4>
+              <p class="text-gray-500" style="font-size: 0.6vw;">Reglamento - Normas Básicas de Auditoría</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacto -->
+      <div class="bg-gray-50 rounded-xl border border-gray-200" style="padding: 1vw; margin-top: 1.5vw;">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between" style="gap: 0.8vw;">
+          <div class="flex items-center" style="gap: 0.8vw;">
+            <div class="bg-senado-primary rounded-full flex items-center justify-center flex-shrink-0" style="width: 2.2vw; height: 2.2vw;">
+              <Icon name="mdi:email" class="text-white" style="font-size: 1.2vw;" />
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800" style="font-size: 0.85vw;">¿Necesitas más información?</h4>
+              <p class="text-gray-500" style="font-size: 0.65vw;">Contacta a la Unidad de Auditoría Interna</p>
+            </div>
+          </div>
+          <a 
+            href="mailto:auditoria@senado.gob.bo" 
+            class="text-senado-primary hover:text-senado-primary-dark font-medium inline-flex items-center" 
+            style="font-size: 0.8vw; gap: 0.3vw;"
+          >
+            <Icon name="mdi:email" style="font-size: 1vw;" />
+            auditoria@senado.gob.bo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PoaUai',
+  data() {
+    return {
+      poas: [
+        {
+          anio: 2026,
+          titulo: 'Plan Operativo Anual - UAI 2026',
+          fecha: '15/01/2026',
+          estado: 'Publicado',
+          activo: true
+        },
+        {
+          anio: 2025,
+          titulo: 'Plan Operativo Anual - UAI 2025',
+          fecha: '10/01/2025',
+          estado: 'Publicado',
+          activo: false
+        },
+        {
+          anio: 2024,
+          titulo: 'Plan Operativo Anual - UAI 2024',
+          fecha: '12/01/2024',
+          estado: 'Publicado',
+          activo: false
+        },
+        {
+          anio: 2023,
+          titulo: 'Plan Operativo Anual - UAI 2023',
+          fecha: '08/01/2023',
+          estado: 'Publicado',
+          activo: false
+        },
+        {
+          anio: 2022,
+          titulo: 'Plan Operativo Anual - UAI 2022',
+          fecha: '11/01/2022',
+          estado: 'Publicado',
+          activo: false
+        }
+      ]
+    }
+  }
+}
+</script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+
+/* Transiciones suaves */
+.hover\:bg-gray-50\/50:hover {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style> 
+================================= 
+pages\noticias\index.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen">
+    <!-- Fondo fijo -->
+    
+    <div class="container-vw">
+
+      <!-- Título -->
+      <div class="text-center pb-[3vw] pt-[3vw]">
+        <h1 class="text-[5vw] font-bolddrop-shadow-lg tracking-wide">
+          Todas las <span class="text-senado-primary-light">Noticias</span>
+        </h1>
+        <div class="w-[6vw] h-[0.2vw] bg-senado-primary-light mx-auto mt-[1vw]"></div>
+        <p class="text-senado-primary drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
+          Explora todas las noticias del Senado de Bolivia
+        </p>
+      </div>
+
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
+        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
+      </div>
+
+      <!-- Estado de error -->
+      <div v-else-if="error" class="text-center py-[10vw]">
+        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
+        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Grid de noticias -->
+      <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
+        <div class="grid grid-cols-4 gap-[1.5vw]">
+          <div 
+            v-for="noticia in noticiasPaginadas" 
+            :key="noticia._id || noticia.id"
+            class="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] relative"
+            @click="verNoticia(noticia)"
+          >
+            <div class="relative aspect-[4/5] w-full">
+              <img 
+                :src="noticia.featuredImage?.url || noticia.imagen || '/images/default-news.jpg'" 
+                :alt="limpiarAsteriscos(noticia.titulo || noticia.title)"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              
+              <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/70 to-transparent"></div>
+              
+              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
+                <p class="text-white/90 text-[0.7em] mb-[0.3em] text-shadow-sm font-[600]">
+                  {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
+                </p>
+                
+                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
+                  {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
+                </h3>
+                
+                <div class="mt-[0.8em] flex justify-end">
+                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
+                    Leer más
+                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
+        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
+        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- 🔥 PAGINACIÓN CON COLORES SÓLIDOS -->
+      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
+        <button 
+          @click="cambiarPagina(paginaActual - 1)" 
+          :disabled="paginaActual === 1" 
+          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+        >
+          Anterior
+        </button>
+        
+        <button 
+          v-for="p in paginasMostradas" 
+          :key="p" 
+          @click="cambiarPagina(p)" 
+          :class="[
+            'w-[3vw] h-[3vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold shadow-md',
+            paginaActual === p 
+              ? 'bg-[#8f1522] text-white hover:bg-[#6b111b] border-2 border-[#611717]' 
+              : 'bg-white text-[#611717] hover:bg-[#611717] hover:text-white'
+          ]"
+        >
+          {{ p }}
+        </button>
+        
+        <button 
+          @click="cambiarPagina(paginaActual + 1)" 
+          :disabled="paginaActual === totalPaginas" 
+          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+
+definePageMeta({ layout: 'default' })
+
+const router = useRouter()
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const todasLasNoticias = ref([])
+const loading = ref(false)
+const error = ref(null)
+const paginaActual = ref(1)
+const itemsPorPagina = ref(12)
+
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-ES', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  })
+}
+
+const noticiasPaginadas = computed(() => {
+  const start = (paginaActual.value - 1) * itemsPorPagina.value
+  const end = start + itemsPorPagina.value
+  return todasLasNoticias.value.slice(start, end)
+})
+
+const totalPaginas = computed(() => {
+  return Math.ceil(todasLasNoticias.value.length / itemsPorPagina.value)
+})
+
+const paginasMostradas = computed(() => {
+  const total = totalPaginas.value
+  const actual = paginaActual.value
+  const rango = 5
+  
+  let start = Math.max(1, actual - Math.floor(rango / 2))
+  let end = Math.min(total, start + rango - 1)
+  
+  if (end - start + 1 < rango) {
+    start = Math.max(1, end - rango + 1)
+  }
+  
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
+
+const cambiarPagina = (pagina) => {
+  if (pagina >= 1 && pagina <= totalPaginas.value) {
+    paginaActual.value = pagina
+    setTimeout(forceScrollToTop, 100)
+  }
+}
+
+const forceScrollToTop = () => {
+  if (process.client) {
+    window.scrollTo(0, 0)
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  }
+}
+
+const verNoticia = (noticia) => {
+  const slug = noticia.slug || noticia._id
+  if (slug) {
+    router.push(`/noticias/${slug}`)
+  }
+}
+
+const fetchTodasLasNoticias = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?limit=100`)
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`)
+    }
+    
+    const result = await response.json()
+    
+    if (result.success && result.data?.contents) {
+      todasLasNoticias.value = result.data.contents.sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.createdAt)
+        const dateB = new Date(b.publishedAt || b.createdAt)
+        return dateB - dateA
+      })
+    } else {
+      todasLasNoticias.value = []
+    }
+  } catch (err) {
+    console.error('Error fetching noticias:', err)
+    error.value = err.message || 'Error al cargar las noticias'
+    todasLasNoticias.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+const recargar = async () => {
+  await fetchTodasLasNoticias()
+  forceScrollToTop()
+}
+
+useHead({
+  title: 'Todas las Noticias - Senado Bolivia',
+  meta: [
+    { name: 'description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:title', content: 'Todas las Noticias - Senado Bolivia' },
+    { property: 'og:description', content: 'Explora todas las noticias del Senado de Bolivia.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Senado de Bolivia' },
+    { name: 'twitter:card', content: 'summary_large_image' }
+  ]
+})
+
+onMounted(async () => {
+  await fetchTodasLasNoticias()
+  await nextTick()
+  forceScrollToTop()
+})
+</script>
+
+<style scoped>
+.container-vw {
+  width: 90vw;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2vw;
+  position: relative;
+  z-index: 10;
+}
+
+
+
+
+.min-h-screen {
+  background: rgba(250, 250, 250, 1);
+  min-height: 100vh;
+}
+
+.grid-cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5vw;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.aspect-\[4\/5\] {
+  aspect-ratio: 4 / 5;
+}
+</style>
+
+<style>
+html, body {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+}
+
+#__nuxt,
+#__layout,
+#__layout > div,
+#__nuxt > div {
+  background: transparent !important;
+}
+
+
+
+footer {
+  position: relative;
+  z-index: 20 !important;
+  background: #ffffff !important;
+}
+</style> 
+================================= 
+pages\noticias\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50 py-12">
+    <div class="container mx-auto px-4 max-w-6xl">
+
+      <!-- Estado de carga -->
+      <div v-if="pending && !noticiaData?.noticia" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-3 text-gray-500">Cargando noticia...</p>
+      </div>
+
+      <!-- Estado de error -->
+      <div v-else-if="errorMsg || error" class="text-center py-12 bg-white rounded-xl">
+        <p class="text-red-600 mb-4">{{ errorMsg || error?.message || 'Error al cargar la noticia' }}</p>
+        <button @click="recargar" class="bg-[#611717] text-white px-4 py-2 rounded-lg hover:bg-[#3a060d] transition">Reintentar</button>
+      </div>
+
+      <!-- Estado de contenido vacío -->
+      <div v-else-if="noticiaData?.noticia && !noticiaValida" class="text-center py-12 bg-white rounded-xl">
+        <p class="text-red-600 mb-4">⚠️ El contenido de esta noticia no está disponible</p>
+        <p class="text-gray-500 mb-6">Puede que la noticia haya sido eliminada o esté incompleta.</p>
+        <button @click="volverAtras" class="bg-[#611717] text-white px-6 py-2 rounded-lg hover:bg-[#3a060d] transition">Volver</button>
+      </div>
+
+      <!-- Noticia encontrada y su contenido -->
+      <template v-else-if="noticiaData?.noticia && noticiaValida">
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <!-- TITULO -->
+          <div class="p-6 md:p-8 pb-0">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag-noticia">{{ noticiaData.noticia.category || noticiaData.noticia.categoria || 'Noticia' }}</span>
+              <span v-if="noticiaData.noticia.category === 'legislacion'" class="tag-importante">★ Importante</span>
+            </div>
+            <h1 class="text-[3vw] font-bold text-gray-900 leading-tight title-main">
+              <span v-html="formatTitleWithColors(noticiaData.noticia.title)"></span>
+            </h1>
+            <p class="text-gray-600 text-[1.2vw] mt-4 leading-relaxed excerpt-text">
+              {{ noticiaData.noticia.excerpt }}
+            </p>
+          </div>
+
+          <!-- CARRUSEL -->
+          <div class="px-6 md:px-8 mt-6 mb-4">
+            <div class="relative">
+              <div class="relative overflow-hidden rounded-2xl bg-gray-900 shadow-2xl" style="height: 500px;">
+                <div class="flex h-full">
+                  <!-- Imagen izquierda (peek) -->
+                  <div class="flex-shrink-0 transition-all duration-500 ease-out overflow-hidden h-full cursor-pointer"
+                       :style="{ width: `${peekLeftWidth}%` }"
+                       @click="anteriorImagen">
+                    <div class="relative w-full h-full">
+                      <SafeImage 
+                        :src="imagenAnterior?.url || imagenActual?.url"
+                        :alt="imagenAnterior?.alt || 'Imagen anterior'"
+                        image-class="w-full h-full object-cover"
+                        :max-retries="5"
+                        :persistent="true"
+                      />
+                      <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                  </div>
+
+                  <!-- Imagen central -->
+                  <div class="flex-shrink-0 transition-all duration-500 h-full"
+                       :style="{ width: `${imagenActualWidth}%` }">
+                    <div class="relative w-full h-full overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900">
+                      <SafeImage 
+                        :src="imagenActual?.url"
+                        :alt="imagenActual?.alt"
+                        image-class="w-full h-full object-contain"
+                        :max-retries="5"
+                        :persistent="true"
+                        priority="high"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Imagen derecha (peek) -->
+                  <div class="flex-shrink-0 transition-all duration-500 overflow-hidden h-full cursor-pointer"
+                       :style="{ width: `${peekRightWidth}%` }"
+                       @click="siguienteImagen">
+                    <div class="relative w-full h-full">
+                      <SafeImage 
+                        :src="imagenSiguiente?.url || imagenActual?.url"
+                        :alt="imagenSiguiente?.alt || 'Imagen siguiente'"
+                        image-class="w-full h-full object-cover"
+                        :max-retries="5"
+                        :persistent="true"
+                      />
+                      <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botones de navegación -->
+                <button 
+                  v-if="imagenesCarrusel.length > 1"
+                  @click="anteriorImagen"
+                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-[#611717] text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm z-10 group"
+                >
+                  <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+
+                <button 
+                  v-if="imagenesCarrusel.length > 1"
+                  @click="siguienteImagen"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-[#611717] text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm z-10 group"
+                >
+                  <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+
+                <!-- Contador de imágenes -->
+                <div v-if="imagenesCarrusel.length > 1" class="absolute top-4 right-4 bg-black/70 text-white text-sm px-3 py-1.5 rounded-full backdrop-blur-sm font-medium z-10">
+                  {{ String(currentIndex + 1).padStart(2, '0') }} / {{ String(imagenesCarrusel.length).padStart(2, '0') }}
+                </div>
+              </div>
+
+              <!-- TEXTO DEBAJO DE LA IMAGEN -->
+              <div class="text-center mt-3">
+                <p class="carousel-caption">
+                  {{ imagenActual?.caption || imagenActual?.alt || 'Sin descripción' }}
+                </p>
+              </div>
+
+              <!-- Miniaturas -->
+              <div v-if="imagenesCarrusel.length > 1" class="flex justify-center gap-2 mt-4 overflow-x-auto pb-2">
+                <button
+                  v-for="(img, idx) in imagenesCarrusel"
+                  :key="idx"
+                  @click="currentIndex = idx"
+                  class="relative flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden"
+                  :class="currentIndex === idx ? 'ring-2 ring-[#611717] scale-105' : 'opacity-60 hover:opacity-100'"
+                  style="width: 80px; height: 60px;"
+                >
+                  <img 
+                    :src="img.url" 
+                    :alt="`Miniatura ${idx + 1}`"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- REDES SOCIALES -->
+          <div class="px-6 md:px-8 mb-6">
+            <div class="flex justify-end items-center gap-3 py-2 border-b border-gray-200">
+              <span class="compartir-texto">Compartir:</span>
+              
+              <a 
+                :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(windowLocation)}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon"
+                aria-label="Compartir en Facebook"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+
+              <a 
+                :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(noticiaData.noticia.title)}&url=${encodeURIComponent(windowLocation)}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon"
+                aria-label="Compartir en X"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+
+              <a 
+                :href="`https://www.instagram.com/`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon"
+                aria-label="Instagram"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 7c-2.761 0-5 2.239-5 5s2.239 5 5 5 5-2.239 5-5-2.239-5-5-5z"/>
+                  <circle cx="17.5" cy="6.5" r="1.5"/>
+                </svg>
+              </a>
+
+              <a 
+                :href="`https://www.youtube.com/results?search_query=${encodeURIComponent(noticiaData.noticia.title)}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon"
+                aria-label="Buscar en YouTube"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+
+              <a 
+                :href="`https://api.whatsapp.com/send?text=${encodeURIComponent(noticiaData.noticia.title)}%0A%0A${encodeURIComponent(windowLocation)}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-icon"
+                aria-label="Compartir en WhatsApp"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#000000">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- CONTENIDO VARIABLE DE LA NOTICIA -->
+          <div class="p-6 md:p-8 pt-0">
+            <div 
+              v-for="(block, index) in noticiaData.noticia.blocks" 
+              :key="index"
+              class="block-item"
+            >
+              <div v-if="block.type === 'paragraph'" class="prose prose-lg max-w-none text-gray-700 mb-6 text-justify">
+                <p v-html="block.content"></p>
+              </div>
+
+              <div v-else-if="block.type === 'quote'" class="quote-block mt-[3vw] mb-[5vw]">
+                <div class="quote-badge">
+                  <div class="badge-name">{{ block.author || 'Senado de Bolivia' }}</div>
+                  <div class="badge-role">{{ block.role || 'Cámara de Senadores' }}</div>
+                </div>
+                <div class="quote-container">
+                  <div class="quote-content-wrapper">
+                    <span class="quote-mark quote-open">“</span>
+                    <p class="quote-text">{{ block.content }}</p>
+                    <span class="quote-mark quote-close">”</span>
+                  </div>
+                </div>
+              </div>
+
+              <div v-else-if="block.type === 'video'" class="video-block my-8">
+                <div class="relative aspect-video rounded-xl overflow-hidden shadow-lg">
+                  <iframe 
+                    :src="block.url" 
+                    :title="block.title || 'Video'"
+                    class="absolute inset-0 w-full h-full"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+                <p v-if="block.caption" class="video-caption">{{ block.caption }}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 🔥 SECCIÓN NOTICIAS RELACIONADAS - MEJORADA -->
+        <div class="mt-16">
+          <div class="text-center mb-8">
+            <h2 class="text-[2.5vw] font-bold text-[#611717]">
+              Artículos <span class="text-[#8f1522]">Relacionados</span>
+            </h2>
+            <div class="w-[6vw] h-[0.2vw] bg-[#611717] mx-auto mt-[1vw]"></div>
+            <p class="text-gray-500 text-[1vw] mt-[0.5vw]">Noticias que podrían interesarte</p>
+          </div>
+          
+          <div v-if="loadingRelacionadas" class="flex justify-center py-8">
+            <div class="inline-block w-8 h-8 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+
+          <div v-else-if="noticiasRelacionadas.length > 0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div 
+                v-for="(relacionada, idx) in noticiasRelacionadas" 
+                :key="idx"
+                class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
+                @click="verNoticiaRelacionada(relacionada)"
+              >
+                <div class="relative aspect-[16/9] overflow-hidden">
+                  <img 
+                    :src="relacionada.featuredImage?.url || relacionada.imagen || '/images/default-news.jpg'" 
+                    :alt="limpiarAsteriscos(relacionada.title)"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div class="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#611717]/80 to-transparent"></div>
+                </div>
+                <div class="p-4">
+                  <p class="text-xs text-gray-500 mb-1">
+                    {{ formatearFecha(relacionada.publishedAt || relacionada.createdAt) }}
+                  </p>
+                  <h3 class="font-bold text-[1vw] text-gray-900 leading-tight line-clamp-2 group-hover:text-[#611717] transition-colors">
+                    <span v-html="formatTitleWithColors(relacionada.title)"></span>
+                  </h3>
+                  <p class="text-[0.8vw] text-gray-600 mt-2 line-clamp-2">
+                    {{ relacionada.excerpt || '' }}
+                  </p>
+                  <div class="mt-3 flex justify-end">
+                    <span class="text-[#611717] text-[0.8vw] font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Leer más
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="text-center py-8">
+            <p class="text-gray-500">No hay noticias relacionadas disponibles en este momento.</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Noticia no encontrada -->
+      <div v-else-if="!pending && !noticiaData?.noticia && !error" class="text-center py-12 bg-white rounded-xl">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Noticia no encontrada</h1>
+        <p class="text-gray-500 mb-6">Lo sentimos, la noticia que buscas no existe o ha sido removida.</p>
+        <NuxtLink to="/noticias" class="inline-block bg-[#611717] text-white px-6 py-3 rounded-lg hover:bg-[#3a060d] transition">
+          Ver todas las noticias
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, watch, nextTick, onActivated } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import SafeImage from '@/components/SafeImage.vue'
+
+const route = useRoute()
+const router = useRouter()
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const windowLocation = ref('')
+const currentIndex = ref(0)
+const imagenesCarrusel = ref([])
+const errorMsg = ref(null)
+
+const noticiasRelacionadas = ref([])
+const relacionadaCurrentIndex = ref(0)
+const loadingRelacionadas = ref(true)
+
+const noticiasPorPagina = 2
+const maxRelacionadaIndex = computed(() => Math.max(0, Math.ceil(noticiasRelacionadas.value.length / noticiasPorPagina) - 1))
+
+// ============================================
+// useAsyncData - OBTENER LOS DATOS
+// ============================================
+const { data: noticiaData, pending, error, refresh } = await useAsyncData(
+  `noticia-${route.params.slug}`,
+  async () => {
+    console.log(`🚀 Buscando noticia por slug: ${route.params.slug}`)
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/content/slug/${route.params.slug}`)
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          return { noticia: null, imagenes: [] }
+        }
+        throw new Error(`Error ${response.status}: ${response.statusText}`)
+      }
+      
+      const result = await response.json()
+      const noticia = result.data
+      
+      console.log(`✅ Noticia encontrada: ${noticia.title}`)
+      
+      const imagenes = []
+      
+      if (noticia.featuredImage?.url) {
+        imagenes.push({
+          url: noticia.featuredImage.url,
+          alt: noticia.featuredImage.alt || noticia.title,
+          caption: noticia.featuredImage.caption || noticia.featuredImage.name || noticia.title,
+          orientation: 'horizontal'
+        })
+      }
+      
+      if (noticia.gallery && Array.isArray(noticia.gallery)) {
+        noticia.gallery.forEach((img, idx) => {
+          imagenes.push({
+            url: img.url,
+            alt: img.alt || noticia.title,
+            caption: img.caption || img.name || `Imagen ${idx + 1}`,
+            orientation: 'horizontal'
+          })
+        })
+      }
+      
+      let blocks = noticia.blocks || []
+      if (blocks.length === 0 && noticia.content) {
+        blocks = convertirHTMLaBloques(noticia.content)
+      }
+      
+      const noticiaEnriquecida = {
+        ...noticia,
+        blocks: blocks,
+        categoria: noticia.category
+      }
+      
+      return { noticia: noticiaEnriquecida, imagenes }
+      
+    } catch (err) {
+      console.error(`❌ Error: ${err.message}`)
+      return { noticia: null, imagenes: [], error: err.message }
+    }
+  },
+  {
+    lazy: false,
+    server: true,
+    default: () => ({ noticia: null, imagenes: [] })
+  }
+)
+
+// ============================================
+// Computed - Verificar si la noticia es válida
+// ============================================
+const noticiaValida = computed(() => {
+  const noticia = noticiaData.value?.noticia
+  if (!noticia) return false
+  const tieneTitulo = noticia.title && noticia.title.trim().length > 0
+  const tieneContenido = noticia.blocks?.length > 0 || noticia.content?.length > 0
+  return tieneTitulo && tieneContenido
+})
+
+// ============================================
+// OBTENER LA IMAGEN PARA OG
+// ============================================
+const obtenerImagenOG = () => {
+  if (imagenesCarrusel.value && imagenesCarrusel.value.length > 0) {
+    return imagenesCarrusel.value[0].url
+  }
+  
+  const noticia = noticiaData.value?.noticia
+  if (noticia?.featuredImage?.url) {
+    return noticia.featuredImage.url
+  }
+  if (noticia?.gallery && noticia.gallery.length > 0) {
+    return noticia.gallery[0].url
+  }
+  
+  return '/images/default-news.jpg'
+}
+
+// ============================================
+// SEO dinámico
+// ============================================
+const seoData = computed(() => {
+  const noticia = noticiaData.value?.noticia
+  if (!noticia) {
+    return {
+      title: 'Noticia | Senado de Bolivia',
+      description: 'Noticias del Senado de Bolivia',
+      image: '/images/default-news.jpg'
+    }
+  }
+  
+  const tituloLimpio = noticia.title?.replace(/\*/g, '') || 'Noticia'
+  const descripcion = noticia.excerpt || noticia.description || noticia.content?.substring(0, 160) || 'Noticias del Senado de Bolivia'
+  const imagen = obtenerImagenOG()
+  
+  return {
+    title: `${tituloLimpio} | Senado de Bolivia`,
+    description: descripcion.substring(0, 160),
+    image: imagen,
+    url: `https://senado.gob.bo/noticias/${route.params.slug}`
+  }
+})
+
+// ============================================
+// useHead - SEO
+// ============================================
+useHead({
+  title: () => seoData.value.title,
+  meta: [
+    { name: 'description', content: () => seoData.value.description },
+    { property: 'og:title', content: () => seoData.value.title },
+    { property: 'og:description', content: () => seoData.value.description },
+    { property: 'og:image', content: () => seoData.value.image },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
+    { property: 'og:image:type', content: 'image/jpeg' },
+    { property: 'og:url', content: () => seoData.value.url },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:site_name', content: 'Senado de Bolivia' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: () => seoData.value.title },
+    { name: 'twitter:description', content: () => seoData.value.description },
+    { name: 'twitter:image', content: () => seoData.value.image }
+  ],
+  link: [
+    { rel: 'canonical', href: () => `https://senado.gob.bo/noticias/${route.params.slug}` }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: () => JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        'headline': seoData.value.title,
+        'description': seoData.value.description,
+        'image': seoData.value.image,
+        'url': seoData.value.url,
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'Senado de Bolivia'
+        },
+        'datePublished': noticiaData.value?.noticia?.publishedAt || new Date().toISOString(),
+        'dateModified': noticiaData.value?.noticia?.updatedAt || new Date().toISOString()
+      })
+    }
+  ]
+})
+
+// ============================================
+// FUNCIONES
+// ============================================
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const cargarNoticiasRelacionadas = async (noticiaId, categoria, tags) => {
+  loadingRelacionadas.value = true
+  try {
+    const response = await fetch(`${API_BASE_URL}/content/${noticiaId}/related?limit=6`)
+    const result = await response.json()
+    
+    if (result.success && result.data && result.data.length > 0) {
+      noticiasRelacionadas.value = result.data
+    } else {
+      const fallbackResponse = await fetch(`${API_BASE_URL}/content?category=${categoria}&limit=6`)
+      const fallbackResult = await fallbackResponse.json()
+      if (fallbackResult.success && fallbackResult.data?.contents) {
+        noticiasRelacionadas.value = fallbackResult.data.contents.filter(n => n._id !== noticiaId)
+      } else {
+        noticiasRelacionadas.value = []
+      }
+    }
+    relacionadaCurrentIndex.value = 0
+  } catch (err) {
+    console.error('Error cargando noticias relacionadas:', err)
+    noticiasRelacionadas.value = []
+  } finally {
+    loadingRelacionadas.value = false
+  }
+}
+
+const convertirHTMLaBloques = (htmlContent) => {
+  if (!htmlContent) return []
+  
+  const bloques = []
+  const tempDiv = document.createElement('div')
+  tempDiv.innerHTML = htmlContent
+  
+  tempDiv.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+      bloques.push({
+        type: 'paragraph',
+        content: node.textContent
+      })
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const element = node
+      const tagName = element.tagName.toLowerCase()
+      
+      if (tagName === 'p') {
+        bloques.push({
+          type: 'paragraph',
+          content: element.innerHTML
+        })
+      } else if (tagName === 'blockquote') {
+        const author = element.getAttribute('data-author') || 'Senado de Bolivia'
+        const role = element.getAttribute('data-role') || 'Cámara de Senadores'
+        const text = element.textContent || ''
+        const cleanText = text.replace(/—.*$/, '').trim()
+        bloques.push({
+          type: 'quote',
+          content: cleanText,
+          author: author,
+          role: role
+        })
+      } else if (tagName === 'div' && element.getAttribute('data-type') === 'video') {
+        const iframe = element.querySelector('iframe')
+        const captionEl = element.querySelector('.video-caption')
+        if (iframe) {
+          bloques.push({
+            type: 'video',
+            url: iframe.getAttribute('src') || '',
+            title: iframe.getAttribute('title') || '',
+            caption: captionEl?.textContent || ''
+          })
+        }
+      } else if (tagName === 'iframe') {
+        const src = element.src || ''
+        bloques.push({
+          type: 'video',
+          url: src,
+          title: element.title || 'Video institucional',
+          caption: ''
+        })
+      } else {
+        bloques.push({
+          type: 'paragraph',
+          content: element.outerHTML
+        })
+      }
+    }
+  })
+  
+  return bloques
+}
+
+const formatTitleWithColors = (title) => {
+  if (!title) return ''
+  return title.replace(/\*(.*?)\*/g, '<span class="text-[#611717] font-bold">$1</span>')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-ES', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  })
+}
+
+const anteriorRelacionada = () => {
+  if (relacionadaCurrentIndex.value > 0) relacionadaCurrentIndex.value--
+}
+
+const siguienteRelacionada = () => {
+  if (relacionadaCurrentIndex.value < maxRelacionadaIndex.value) relacionadaCurrentIndex.value++
+}
+
+const verNoticiaRelacionada = (noticia) => {
+  if (noticia && noticia.slug) {
+    router.push(`/noticias/${noticia.slug}`)
+  }
+}
+
+const forceScrollToTop = () => {
+  if (process.client) {
+    window.scrollTo(0, 0)
+    const container = document.querySelector('.snap-container')
+    if (container) container.scrollTo(0, 0)
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+    const mainContent = document.querySelector('main')
+    if (mainContent) mainContent.scrollTop = 0
+  }
+}
+
+// ============================================
+// COMPUTED DEL CARRUSEL
+// ============================================
+const imagenActual = computed(() => {
+  if (imagenesCarrusel.value.length === 0) return null
+  return imagenesCarrusel.value[currentIndex.value]
+})
+
+const imagenAnterior = computed(() => {
+  if (imagenesCarrusel.value.length === 0) return null
+  if (imagenesCarrusel.value.length === 1) return imagenActual.value
+  const prevIndex = currentIndex.value === 0 
+    ? imagenesCarrusel.value.length - 1 
+    : currentIndex.value - 1
+  return imagenesCarrusel.value[prevIndex]
+})
+
+const imagenSiguiente = computed(() => {
+  if (imagenesCarrusel.value.length === 0) return null
+  if (imagenesCarrusel.value.length === 1) return imagenActual.value
+  const nextIndex = currentIndex.value === imagenesCarrusel.value.length - 1 
+    ? 0 
+    : currentIndex.value + 1
+  return imagenesCarrusel.value[nextIndex]
+})
+
+const peekWidth = computed(() => {
+  if (imagenActual.value?.orientation === 'vertical') return 22
+  return 12
+})
+
+const imagenActualWidth = computed(() => {
+  return 100 - (peekWidth.value * 2)
+})
+
+const peekLeftWidth = computed(() => peekWidth.value)
+const peekRightWidth = computed(() => peekWidth.value)
+
+const siguienteImagen = () => {
+  if (imagenesCarrusel.value.length <= 1) return
+  currentIndex.value = (currentIndex.value + 1) % imagenesCarrusel.value.length
+}
+
+const anteriorImagen = () => {
+  if (imagenesCarrusel.value.length <= 1) return
+  currentIndex.value = currentIndex.value === 0 
+    ? imagenesCarrusel.value.length - 1 
+    : currentIndex.value - 1
+}
+
+const volverAtras = () => {
+  router.back()
+}
+
+const recargar = () => {
+  refresh()
+  if (noticiaData.value?.noticia) {
+    cargarNoticiasRelacionadas(noticiaData.value.noticia._id, noticiaData.value.noticia.category, noticiaData.value.noticia.tags)
+  }
+}
+
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowLeft') anteriorImagen()
+  else if (e.key === 'ArrowRight') siguienteImagen()
+}
+
+// ============================================
+// WATCHERS
+// ============================================
+watch(noticiaData, (newData) => {
+  if (newData?.noticia) {
+    cargarNoticiasRelacionadas(newData.noticia._id, newData.noticia.category, newData.noticia.tags)
+  }
+}, { immediate: true })
+
+if (noticiaData.value?.imagenes) {
+  imagenesCarrusel.value = noticiaData.value.imagenes
+}
+
+watch(noticiaData, (newData) => {
+  if (newData?.imagenes) {
+    imagenesCarrusel.value = newData.imagenes
+  }
+}, { immediate: true })
+
+if (error.value) {
+  errorMsg.value = error.value.message
+}
+
+// ============================================
+// LIFECYCLE
+// ============================================
+onMounted(() => {
+  windowLocation.value = window.location.href
+  window.addEventListener('keydown', handleKeydown)
+  console.log('✅ Frontend conectado a la API real en:', API_BASE_URL)
+  
+  forceScrollToTop()
+  setTimeout(forceScrollToTop, 100)
+  setTimeout(forceScrollToTop, 300)
+  setTimeout(forceScrollToTop, 500)
+  setTimeout(forceScrollToTop, 1000)
+})
+
+onActivated(() => {
+  forceScrollToTop()
+})
+
+watch(() => route.params.slug, () => {
+  forceScrollToTop()
+}, { immediate: true })
+
+watch(() => route.fullPath, () => {
+  forceScrollToTop()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
+// 🔥 LAYOUT CORRECTO
+definePageMeta({ layout: 'default' })
+</script>
+
+<style scoped>
+/* ========== FONTS ========== */
+@font-face {
+  font-family: 'Capitolium News';
+  src: url('/fonts/Capitolium News W01 2 Regular/Capitolium News W01 2 Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Capitolium News';
+  src: url('/fonts/Capitolium News W01 2 Bold/Capitolium News W01 2 Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Capitolium News';
+  src: url('/fonts/Capitolium News W01 2 Italic/Capitolium News W01 2 Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Capitolium News';
+  src: url('/fonts/Capitolium News W01 2 SemiBold/Capitolium News W01 2 SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.prose,
+.prose p,
+article,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+section {
+  font-family: 'Capitolium News', 'Montserrat', sans-serif !important;
+}
+
+.tag-noticia,
+.tag-importante {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 600 !important;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.tag-noticia {
+  background-color: #A54A4A;
+  color: white;
+}
+
+.tag-importante {
+  background-color: #eab308;
+  color: white;
+}
+
+.compartir-texto {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 500 !important;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.title-main,
+.title-main span,
+h1.title-main {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.excerpt-text {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.carousel-caption,
+.video-caption {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 300 !important;
+  color: #6b7280 !important;
+  font-size: 0.9rem !important;
+}
+
+.video-caption {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.quote-badge .badge-name {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.quote-badge .badge-role {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.quote-text {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+}
+
+.quote-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.quote-badge {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  display: inline-block;
+  text-align: right;
+  margin-bottom: 0;
+  width: auto;
+}
+
+.quote-container {
+  background-color: #f5f5f5;
+  width: 100%;
+  margin-top: 0;
+  padding: 2rem 2.5rem;
+  position: relative;
+}
+
+.quote-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.quote-mark {
+  position: absolute;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 15vw;
+  font-weight: 900;
+  color: #1a1a1a;
+  opacity: 0.12;
+  line-height: 1;
+  z-index: 0;
+}
+
+.quote-open {
+  top: -6vw;
+  left: -2vw;
+}
+
+.quote-close {
+  bottom: -13vw;
+  right: -2vw;
+}
+
+.quote-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #333;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  max-width: 85%;
+}
+
+.video-block iframe {
+  transition: transform 0.3s ease;
+  width: 100%;
+  border-radius: 0.75rem;
+  aspect-ratio: 16 / 9;
+}
+
+.video-block:hover iframe {
+  transform: scale(1.01);
+}
+
+/* ============================================ */
+/* ESTILOS PARA ICONOS DE REDES SOCIALES */
+/* ============================================ */
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  transition: all 0.3s ease;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  background-color: #ffffff;
+}
+
+.social-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+  fill: #000000;
+}
+
+.social-icon:hover {
+  background-color: #1a202c !important;
+  border-color: #000000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon:hover svg {
+  fill: #ffffff !important;
+}
+
+/* ============================================ */
+/* BLOQUES DE CONTENIDO */
+/* ============================================ */
+
+.block-item {
+  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.block-item:nth-child(1) { animation-delay: 0.05s; }
+.block-item:nth-child(2) { animation-delay: 0.1s; }
+.block-item:nth-child(3) { animation-delay: 0.15s; }
+.block-item:nth-child(4) { animation-delay: 0.2s; }
+.block-item:nth-child(5) { animation-delay: 0.25s; }
+.block-item:nth-child(6) { animation-delay: 0.3s; }
+.block-item:nth-child(7) { animation-delay: 0.35s; }
+.block-item:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+pages\senador\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="py-[2vw]">
+    <div v-if="senator" class="w-[80%] mx-auto">
+      <!-- Botón volver -->
+      <button 
+        @click="volver"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] cursor-pointer text-[1.1vw]"
+      >
+        ← Volver atras
+      </button>
+
+      <!-- Tarjeta del senador -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- PRIMERA FILA: 3 columnas -->
+        <div class="bg-[#EDEEED]">
+          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+            <!-- Columna 1: Foto -->
+            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
+              <img 
+                v-if="senator.foto"
+                :src="senator.foto" 
+                :alt="senator.name"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
+                :style="{ borderColor: senator.partyColor }"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+              <div 
+                v-else
+                class="w-[12vw] h-[12vw] rounded-full flex items-center justify-center text-white text-[4vw] font-bold shadow-lg"
+                :style="{ backgroundColor: senator.partyColor }"
+              >
+                {{ getInitials(senator.name) }}
+              </div>
+            </div>
+
+            <!-- Columna 2: Nombre y cargo -->
+            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ senator.name }}</h1>
+              <p class="text-[1.1vw] text-black">Senador por {{ senator.department }}</p>
+              <p v-if="senator.cargo" class="font-semibold text-[1.0vw] leading-tight">
+                {{ senator.cargo }}
+              </p>
+            </div>
+
+            <!-- Columna 3: Partido -->
+            <div class="md:col-span-3 flex flex-col items-center justify-center">
+              <div class="relative inline-block group">
+                <img 
+                  :src="getLogoPartido(senator.partyShort)" 
+                  :alt="senator.partyShort"
+                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  :class="{'group-hover:opacity-0': getLogoPartidoHover(senator.partyShort)}"
+                  @error="(e) => e.target.src = ''"
+                />
+                <img 
+                  :src="getLogoPartidoHover(senator.partyShort)" 
+                  :alt="senator.partyShort + ' hover'"
+                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  @error="(e) => e.target.style.display = 'none'"
+                />
+              </div>
+              <span 
+                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+              >
+                {{ senator.party?.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDA FILA: 3 columnas iguales -->
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Columna 1: Datos personales -->
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ senator.fechaNacimiento || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="senator.twitter" :href="senator.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="senator.instagram" :href="senator.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="senator.youtube" :href="senator.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="senator.tiktok" :href="senator.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
+                </div>
+              </div>
+              <!-- Fila 6: Senador Suplente -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Suplente:</span>
+                <NuxtLink 
+                  v-if="senator.slugSuplente" 
+                  :to="`/senador/suplente/${senator.slugSuplente}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ senator.suplente }}
+                </NuxtLink>
+                <span v-else class="text-gray-800">No disponible</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Mapa -->
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
+            <img 
+              :src="getMapaDepartamento(senator.department)" 
+              :alt="'Mapa de ' + senator.department"
+              class="h-[12vw] w-auto object-contain"
+              @error="(e) => e.target.src = '/images/mapa-default.svg'"
+            />
+          </div>
+
+          <!-- Columna 3: Asiento en el Hemiciclo -->
+          <div class="p-[1.2vw] flex flex-col justify-center">
+            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <div class="flex flex-col items-center">
+              <img 
+                :src="getAsientoHemiciclo(senator.seatNumber)" 
+                :alt="'Asiento ' + senator.seatNumber"
+                class="h-[15vw] w-[15vw] object-contain"
+                @error="(e) => e.target.src = ''"
+              />
+              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ senator.seatNumber }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🔥 NOTICIAS RELACIONADAS CON EL SENADOR -->
+      <NoticiasSenador 
+        :senador-id="senator.id" 
+        :nombre-senador="senator.name"
+        :limit="6"
+      />
+
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-[2vw]">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0 mx-[1vw]">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
+        Volver al inicio
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useSenadores } from '~/composables/useSenadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+import NoticiasSenador from '~/components/NoticiasSenador.vue'
+
+const route = useRoute()
+const { getSenadorBySlug } = useSenadores()
+
+const slug = computed(() => route.params.slug)
+
+const senator = computed(() => {
+  return getSenadorBySlug(slug.value)
+})
+
+const volver = () => {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigateTo('/')
+  }
+}
+
+const getInitials = (name) => {
+  if (!name) return '?'
+  const parts = name.split(' ')
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
+}
+
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || '/mapas/default.svg'
+}
+
+const getLogoPartido = (partyShort) => {
+  const logos = {
+    'PDC': '/logos FuerzasPoliticas/PDC.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
+    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
+    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+  }
+  return logos[partyShort] || ''
+}
+
+const getLogoPartidoHover = (partyShort) => {
+  const logosHover = {
+    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
+    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
+    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+  }
+  return logosHover[partyShort] || ''
+}
+
+const getAsientoHemiciclo = (seatNumber) => {
+  const asientos = {
+    1: '/hemiciclo/1WilderVeliz.svg',
+    2: '/hemiciclo/2JudithGarci╠üa.svg',
+    3: '/hemiciclo/3ClaudiaMallon.svg',
+    4: '/hemiciclo/4WandaMedrano.svg',
+    5: '/hemiciclo/5JoseOrmachea.svg',
+    6: '/hemiciclo/6SoledadChapeton.svg',
+    7: '/hemiciclo/7NicanorCochisvg.svg',
+    8: '/hemiciclo/8TomasaYarhui.svg',
+    9: '/hemiciclo/9AbdonPorcel.svg',
+    10: '/hemiciclo/10BerthaCartagena.svg',
+    11: '/hemiciclo/11BrankoMarinkovic.svg',
+    12: '/hemiciclo/12KhatiaQuiroga.svg',
+    13: '/hemiciclo/13TatianaAnez.svg',
+    14: '/hemiciclo/14PaolaLopez.svg',
+    15: '/hemiciclo/15BettyCanaviri.svg',
+    16: '/hemiciclo/16TeresaAlarcon.svg',
+    17: '/hemiciclo/17MarcelinoFlores.svg',
+    18: '/hemiciclo/18BerthaNurmy.svg',
+    19: '/hemiciclo/19ErickSoruco.svg',
+    20: '/hemiciclo/20JoseRoca.svg',
+    21: '/hemiciclo/21KarinaVelasco.svg',
+    22: '/hemiciclo/22ErnestoSuarez.svg',
+    23: '/hemiciclo/23AnaCrispin.svg',
+    24: '/hemiciclo/24DiegoRomana.svg',
+    25: '/hemiciclo/25CarolCarlo.svg',
+    26: '/hemiciclo/26MonicaPuerta.svg',
+    27: '/hemiciclo/27ElianaAcosta.svg',
+    28: '/hemiciclo/28DanielOrtiz.svg',
+    29: '/hemiciclo/29IsabelMoreno.svg',
+    30: '/hemiciclo/30CesarMentasti.svg',
+    31: '/hemiciclo/31RosalvaRomero.svg',
+    32: '/hemiciclo/32DiegoAvila.svg',
+    33: '/hemiciclo/33YasminEstivariz.svg',
+    34: '/hemiciclo/34FreddyCastillo.svg',
+    35: '/hemiciclo/35MariaAlcon.svg',
+    36: '/hemiciclo/36JoseSanchez.svg'
+  }
+  return asientos[seatNumber] || ''
+}
+</script>
+
+<style scoped>
+</style> 
+================================= 
+pages\senador\suplente\[slug].vue 
+================================= 
+ 
+<template>
+  <div class="py-[2vw]">
+    <div v-if="suplente" class="w-[80%] mx-auto">
+      <!-- Botón volver -->
+      <button 
+        @click="volver"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] text-[1.1vw] cursor-pointer"
+      >
+        ← Volver atras
+      </button>
+
+      <!-- Tarjeta del suplente -->
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- PRIMERA FILA: 3 columnas -->
+        <div class="bg-[#EDEEED]">
+          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+            <!-- Columna 1: Foto del suplente -->
+            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
+              <img 
+                :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
+                :alt="suplente.suplente"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
+                :style="{ borderColor: suplente.partyColor }"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+            </div>
+
+            <!-- Columna 2: Nombre y cargo -->
+            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
+              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.suplente }}</h1>
+              <p class="text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
+              <p class="text-[0.9vw] text-gray-500">
+                Senador Titular: 
+                <NuxtLink 
+                  :to="`/senador/${suplente.slugTitular}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ suplente.name }}
+                </NuxtLink>
+              </p>
+              <p v-if="suplente.cargoSuplente && suplente.cargoSuplente !== 'No disponible'" class="font-semibold text-[1.0vw] leading-tight">
+                {{ suplente.cargoSuplente }}
+              </p>
+            </div>
+
+            <!-- Columna 3: Partido -->
+            <div class="md:col-span-3 flex flex-col items-center justify-center">
+              <div class="relative inline-block group">
+                <img 
+                  :src="getLogoPartido(suplente.partyShort)" 
+                  :alt="suplente.partyShort"
+                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  :class="{'group-hover:opacity-0': getLogoPartidoHover(suplente.partyShort)}"
+                  @error="(e) => e.target.src = ''"
+                />
+                <img 
+                  :src="getLogoPartidoHover(suplente.partyShort)" 
+                  :alt="suplente.partyShort + ' hover'"
+                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  @error="(e) => e.target.style.display = 'none'"
+                />
+              </div>
+              <span 
+                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+              >
+                {{ suplente.party?.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDA FILA: 3 columnas iguales -->
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <!-- Columna 1: Datos personales del suplente -->
+          <div class="p-[1.2vw] border-r border-gray-200">
+            <div class="space-y-[1.4vw] text-[0.9vw]">
+              <!-- Fila 1: Fecha de Nacimiento -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
+                <span class="text-gray-800">{{ suplente.fechaNacimientoSuplente || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 2: Nacido en -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Nacido en:</span>
+                <span class="text-gray-800">{{ suplente.nacidoEnSuplente || suplente.department }}</span>
+              </div>
+              <!-- Fila 3: Ocupación -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Ocupación:</span>
+                <span class="text-gray-800">{{ suplente.ocupacionSuplente || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 4: Comité -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="text-gray-800">{{ suplente.comiteSuplente || 'No disponible' }}</span>
+              </div>
+              <!-- Fila 5: Contacto -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Contacto:</span>
+                <div class="flex gap-[.2vw] flex-wrap">
+                  <a v-if="suplente.facebookSuplente" :href="suplente.facebookSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                  <a v-if="suplente.twitterSuplente" :href="suplente.twitterSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a v-if="suplente.instagramSuplente" :href="suplente.instagramSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                  <a v-if="suplente.youtubeSuplente" :href="suplente.youtubeSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  </a>
+                  <a v-if="suplente.tiktokSuplente" :href="suplente.tiktokSuplente" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  </a>
+                </div>
+              </div>
+              <!-- Fila 6: Senador Titular -->
+              <div class="grid grid-cols-[40%_60%]">
+                <span class="font-semibold text-gray-600">Senador Titular:</span>
+                <NuxtLink 
+                  :to="`/senador/${suplente.slugTitular}`" 
+                  class="text-senado-primary hover:underline font-medium"
+                >
+                  {{ suplente.name }}
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Mapa -->
+          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
+            <img 
+              :src="getMapaDepartamento(suplente.department)" 
+              :alt="'Mapa de ' + suplente.department"
+              class="h-[12vw] w-auto object-contain"
+              @error="(e) => e.target.src = '/images/mapa-default.svg'"
+            />
+          </div>
+
+          <!-- Columna 3: Asiento en el Hemiciclo -->
+          <div class="p-[1.2vw] flex flex-col justify-center">
+            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <div class="flex flex-col items-center">
+              <img 
+                :src="getAsientoHemiciclo(suplente.seatNumber)" 
+                :alt="'Asiento ' + suplente.seatNumber"
+                class="h-[15vw] w-[15vw] object-contain"
+                @error="(e) => e.target.src = ''"
+              />
+              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ suplente.seatNumber }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🔥 NOTICIAS RELACIONADAS CON EL SUPLENTE (usa el ID del titular) -->
+      <NoticiasSenador 
+        :senador-id="suplente.id" 
+        :nombre-senador="suplente.suplente"
+        :limit="6"
+      />
+
+      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
+      <div class="flex items-center justify-center my-[2vw]">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0 mx-[1vw]">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <div v-else class="text-center py-[5vw]">
+      <h2 class="text-[2vw] font-bold text-gray-600">Suplente no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
+        Volver al inicio
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useSenadores } from '~/composables/useSenadores'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+import NoticiasSenador from '~/components/NoticiasSenador.vue'
+
+const route = useRoute()
+const { getSuplenteBySlug } = useSenadores()
+
+const slug = computed(() => route.params.slug)
+
+const suplente = computed(() => {
+  return getSuplenteBySlug(slug.value)
+})
+
+const volver = () => {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigateTo('/')
+  }
+}
+
+const getMapaDepartamento = (departamento) => {
+  const mapas = {
+    'Beni': '/mapas/Beni.svg',
+    'Cochabamba': '/mapas/Cochabamba.svg',
+    'La Paz': '/mapas/LaPaz.svg',
+    'Oruro': '/mapas/Oruro.svg',
+    'Pando': '/mapas/Pando.svg',
+    'Potosí': '/mapas/Potosi.svg',
+    'Santa Cruz': '/mapas/SantaCruz.svg',
+    'Chuquisaca': '/mapas/Sucre.svg',
+    'Tarija': '/mapas/TarijaMapa.svg'
+  }
+  return mapas[departamento] || '/mapas/default.svg'
+}
+
+const getLogoPartido = (partyShort) => {
+  const logos = {
+    'PDC': '/logos FuerzasPoliticas/PDC.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
+    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
+    'APB': '/logos FuerzasPoliticas/Sumate.svg'
+  }
+  return logos[partyShort] || ''
+}
+
+const getLogoPartidoHover = (partyShort) => {
+  const logosHover = {
+    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
+    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
+    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
+    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
+  }
+  return logosHover[partyShort] || ''
+}
+
+const getAsientoHemiciclo = (seatNumber) => {
+  const asientos = {
+    1: '/hemiciclo/1WilderVeliz.svg',
+    2: '/hemiciclo/2JudithGarci╠üa.svg',
+    3: '/hemiciclo/3ClaudiaMallon.svg',
+    4: '/hemiciclo/4WandaMedrano.svg',
+    5: '/hemiciclo/5JoseOrmachea.svg',
+    6: '/hemiciclo/6SoledadChapeton.svg',
+    7: '/hemiciclo/7NicanorCochisvg.svg',
+    8: '/hemiciclo/8TomasaYarhui.svg',
+    9: '/hemiciclo/9AbdonPorcel.svg',
+    10: '/hemiciclo/10BerthaCartagena.svg',
+    11: '/hemiciclo/11BrankoMarinkovic.svg',
+    12: '/hemiciclo/12KhatiaQuiroga.svg',
+    13: '/hemiciclo/13TatianaAnez.svg',
+    14: '/hemiciclo/14PaolaLopez.svg',
+    15: '/hemiciclo/15BettyCanaviri.svg',
+    16: '/hemiciclo/16TeresaAlarcon.svg',
+    17: '/hemiciclo/17MarcelinoFlores.svg',
+    18: '/hemiciclo/18BerthaNurmy.svg',
+    19: '/hemiciclo/19ErickSoruco.svg',
+    20: '/hemiciclo/20JoseRoca.svg',
+    21: '/hemiciclo/21KarinaVelasco.svg',
+    22: '/hemiciclo/22ErnestoSuarez.svg',
+    23: '/hemiciclo/23AnaCrispin.svg',
+    24: '/hemiciclo/24DiegoRomana.svg',
+    25: '/hemiciclo/25CarolCarlo.svg',
+    26: '/hemiciclo/26MonicaPuerta.svg',
+    27: '/hemiciclo/27ElianaAcosta.svg',
+    28: '/hemiciclo/28DanielOrtiz.svg',
+    29: '/hemiciclo/29IsabelMoreno.svg',
+    30: '/hemiciclo/30CesarMentasti.svg',
+    31: '/hemiciclo/31RosalvaRomero.svg',
+    32: '/hemiciclo/32DiegoAvila.svg',
+    33: '/hemiciclo/33YasminEstivariz.svg',
+    34: '/hemiciclo/34FreddyCastillo.svg',
+    35: '/hemiciclo/35MariaAlcon.svg',
+    36: '/hemiciclo/36JoseSanchez.svg'
+  }
+  return asientos[seatNumber] || ''
+}
+</script>
+
+<style scoped>
+</style> 
+================================= 
+public\robots.txt 
+================================= 
+ 
+User-Agent: *
+Disallow: 
+================================= 
+public\fonts\fonts.css 
+================================= 
+ 
+/* MONTSERRAT REGULAR (para Montserrat Alternates usa 'Montserrat Alternates' como font-family) */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/Montserrat-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* MONTSERRAT ALTERNATES (si prefieres esta variante) */
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('/MontserratAlternates-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} 
+================================= 
+stores\senadoStore.js 
+================================= 
+ 
+// stores/senadoStore.js
+import { defineStore } from 'pinia'
+
+export const useSenadoStore = defineStore('senado', {
+  state: () => ({
+    tipoVisualizacion: 'titulares', // 'titulares' | 'suplentes'
+    filtroPartido: null,
+    scrollPosicion: 0
+  }),
+  
+  actions: {
+    setTipoVisualizacion(tipo) {
+      this.tipoVisualizacion = tipo
+    },
+    
+    setFiltroPartido(filtro) {
+      this.filtroPartido = filtro
+    },
+    
+    toggleFiltroPartido(nombrePartido) {
+      if (this.filtroPartido === nombrePartido) {
+        this.filtroPartido = null
+      } else {
+        this.filtroPartido = nombrePartido
+      }
+    },
+    
+    guardarScrollPosicion() {
+      if (process.client) {
+        this.scrollPosicion = window.scrollY
+      }
+    },
+    
+    restaurarScrollPosicion() {
+      if (process.client && this.scrollPosicion > 0) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: this.scrollPosicion,
+            behavior: 'smooth'
+          })
+        }, 300)
+      }
+    },
+    
+    reset() {
+      this.tipoVisualizacion = 'titulares'
+      this.filtroPartido = null
+      this.scrollPosicion = 0
+    }
+  },
+  
+  persist: true // Si usas persistencia
+}) 

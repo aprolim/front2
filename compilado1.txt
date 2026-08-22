@@ -692,7 +692,8 @@ components\DescubraSenado.vue
               </g>
 
               <!-- ========================================== -->
-              <!-- ARCO (36 SENADORES - TODOS)                -->
+              <!-- ARCO - TODOS LOS 36 SENADORES              -->
+              <!-- 🔥 SIEMPRE SE RENDERIZAN LOS 36           -->
               <!-- ========================================== -->
               <g v-for="seat in filteredSeats" :key="seat.id">
                 <circle
@@ -749,7 +750,7 @@ components\DescubraSenado.vue
                 <div class="party-badge" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
                   {{ hoveredSeat.partyShort || 'Sin partido' }}
                 </div>
-                <div v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente" class="suplente-de">
+                <div v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplente && !hoveredSeat.esDirectiva" class="suplente-de">
                   Suplente de: {{ hoveredSeat.name }}
                 </div>
                 <div v-if="hoveredSeat.isEmpty" class="sin-suplente">
@@ -789,8 +790,8 @@ components\DescubraSenado.vue
                 </NuxtLink>
               </div>
               
-              <!-- 🔥 ENLACE AL TITULAR (si es modo suplentes y NO es directiva) -->
-              <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && !esDirectiva(hoveredSeat.id) && hoveredSeat.suplente && hoveredSeat.suplente !== null && hoveredSeat.suplente !== 'null'">
+              <!-- 🔥 ENLACE AL TITULAR (si es modo suplentes Y tiene suplente) -->
+              <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplente && hoveredSeat.suplente !== null && hoveredSeat.suplente !== 'null'">
                 <span class="label">Titular:</span>
                 <NuxtLink 
                   :to="`/senador/${hoveredSeat.slug}`" 
@@ -840,9 +841,9 @@ const router = useRouter()
 // ============================================
 // CONSTANTES
 // ============================================
-const DEFAULT_AVATAR = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
 
-// IDs de la directiva (SIEMPRE TITULARES)
+// IDs de la directiva (SIEMPRE muestran al TITULAR)
 const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
 
 // ============================================
@@ -965,7 +966,7 @@ const getSeatFilteredOut = (id) => {
 }
 
 // ============================================
-// COMPUTED - ARCO (36 SENADORES CON FILTRO)
+// COMPUTED - TODOS LOS ASIENTOS (36)
 // ============================================
 const allSeats = computed(() => {
   const senadoresOrdenados = [...senadores].sort((a, b) => a.seatNumber - b.seatNumber)
@@ -976,32 +977,13 @@ const allSeats = computed(() => {
     
     // ===== MODO SUPLENTES =====
     if (tipoVisualizacion.value === 'suplentes') {
-      // 🔥 DIRECTIVA: SIEMPRE muestra al TITULAR
-      if (isDirectiva) {
-        return {
-          ...senator,
-          nombreActual: senator.name,
-          fotoActual: senator.foto,
-          x: pos.x,
-          y: pos.y,
-          isEmpty: false,
-          partyColor: senator.partyColor,
-          esSuplente: false,
-          comite: senator.comite || null,
-          comision: senator.comision || null,
-          cargo: senator.cargo || null,
-          suplente: senator.suplente || null,
-          esDirectiva: true,
-          filteredOut: false
-        }
-      }
-      
-      // 🔥 NO DIRECTIVA: muestra el SUPLENTE si existe
+      // 🔥 SIEMPRE muestra el SUPLENTE si existe, incluso para la directiva
+      // PERO la directiva tiene su propia representación aparte
       if (senator.suplente && senator.suplente !== null && senator.suplente !== 'null') {
         return {
           ...senator,
           nombreActual: senator.suplente,
-          fotoActual: senator.fotoSuplente || DEFAULT_AVATAR,
+          fotoActual: senator.fotoSuplente || defaultAvatar,
           slugSuplente: generarSlug(senator.suplente),
           x: pos.x,
           y: pos.y,
@@ -1011,14 +993,15 @@ const allSeats = computed(() => {
           comite: senator.comite || null,
           comision: senator.comision || null,
           cargo: senator.cargo || null,
-          esDirectiva: false,
+          esDirectiva: isDirectiva,
           filteredOut: false
         }
       } else {
+        // 🔥 Sin suplente: muestra "Sin suplente" (asiento 16)
         return {
           ...senator,
           nombreActual: 'Sin suplente',
-          fotoActual: DEFAULT_AVATAR,
+          fotoActual: defaultAvatar,
           x: pos.x,
           y: pos.y,
           isEmpty: true,
@@ -1029,7 +1012,7 @@ const allSeats = computed(() => {
           comite: null,
           comision: null,
           cargo: null,
-          esDirectiva: false,
+          esDirectiva: isDirectiva,
           filteredOut: false
         }
       }
@@ -1093,6 +1076,7 @@ const getSeatDirectiva = (id) => {
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
   
+  // 🔥 DIRECTIVA SIEMPRE muestra al TITULAR
   return {
     ...senador,
     nombreActual: senador.name,
@@ -1116,8 +1100,10 @@ const partidosOrdenados = computed(() => {
   let baseSenadores
   
   if (tipoVisualizacion.value === 'suplentes') {
+    // 🔥 Excluir a los de la directiva del conteo en modo suplentes
+    // porque ellos siempre muestran al titular
     baseSenadores = senadores.filter(s => {
-      if (esDirectiva(s.id)) return true
+      if (esDirectiva(s.id)) return false
       return s.suplente && s.suplente !== null && s.suplente !== 'null'
     })
   } else {
@@ -1142,7 +1128,6 @@ const partidosOrdenados = computed(() => {
     'Autonomía para Bolivia Súmate': 'Autonomía Para Bolivia Súmate'
   }
   
-  // 🔥 ORDEN PERSONALIZADO - Cambia este array según el orden que quieras
   const orden = [
     'Partido Demócrata Cristiano',
     'Libre',
@@ -1158,7 +1143,6 @@ const partidosOrdenados = computed(() => {
     ordenIndex: orden.indexOf(nombre) === -1 ? 999 : orden.indexOf(nombre)
   }))
   
-  // Ordenar por el índice definido
   partidosArray.sort((a, b) => a.ordenIndex - b.ordenIndex)
   
   return partidosArray
@@ -1240,7 +1224,8 @@ const goToSenator = (id) => {
   isNavigating.value = true
   hoveredSeat.value = null
   
-  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && seat.suplente && !seat.esDirectiva) {
+  // 🔥 Si es modo suplentes Y es suplente Y NO es directiva, vamos al suplente
+  if (tipoVisualizacion.value === 'suplentes' && seat.esSuplente && !seat.esDirectiva) {
     router.push(`/senador/suplente/${seat.slugSuplente}`)
     return
   }
@@ -1853,13 +1838,83 @@ components\Header.vue
             </div>
             <div 
               class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
-              :class="submenus.institucional ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
+              :class="submenus.institucional ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <NuxtLink to="/mision" class="block hover:text-senado-primary transition-colors py-1">Misión</NuxtLink>
-              <NuxtLink to="/vision" class="block hover:text-senado-primary transition-colors py-1">Visión</NuxtLink>
-              <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary transition-colors py-1">Marco Normativo</NuxtLink>
-              <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary transition-colors py-1">Galeria de Imagenes</NuxtLink>
-              <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary transition-colors py-1">Memoria Institucional - Redactor</NuxtLink>
+              <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Misión, Vision, Valores y Principios</NuxtLink>
+              <NuxtLink to="/antecedentes-historicos" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-[600]" @click="closeMenu">Reseña histórica</NuxtLink>
+              <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Memoria Institucional - Redactor</NuxtLink>
+              
+              <!-- Auditoría -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('auditoriaInstitucional')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Auditoría</span>
+                    <span class="transition-transform duration-300" :class="submenus.auditoriaInstitucional ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.auditoriaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">POA-UAI</NuxtLink>
+                  <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Auditorías Ejecutadas</NuxtLink>
+                  <NuxtLink to="/auditoria/informes-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Informes de Actividades</NuxtLink>
+                  <NuxtLink to="/auditoria/otras-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Otras Actividades</NuxtLink>
+                </div>
+              </div>
+
+              <!-- Transparencia y Lucha contra la Corrupción -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('transparenciaInstitucional')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Transparencia y Lucha contra la Corrupción</span>
+                    <span class="transition-transform duration-300" :class="submenus.transparenciaInstitucional ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/unidad-transparencia" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Unidad de Transparencia y Lucha contra la Corrupción</NuxtLink>
+                  <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Gestión de Denuncia de Actos/Hechos de Corrupción</a>
+                  <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Solicitud de Información</NuxtLink>
+                  <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Rendición Pública de Cuentas</a>
+                </div>
+              </div>
+              
+              <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Marco Normativo</NuxtLink>
+              <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Galeria de Imagenes</NuxtLink>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- TRÁMITES Y SERVICIOS (NUEVO)              -->
+          <!-- ========================================== -->
+          <div>
+            <div 
+              @click="toggleSubmenu('tramites')"
+              class="cursor-pointer"
+            >
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+                <span>▸ Trámites y Servicios</span>
+                <span class="transition-transform duration-300" :class="submenus.tramites ? 'rotate-180' : ''">▼</span>
+              </div>
+            </div>
+            <div 
+              class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+              :class="submenus.tramites ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+            >
+              <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Consulta tu trámite</a>
+              <NuxtLink to="https://systemdemo.es/auth/login-external" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Plataforma Digital</NuxtLink>
+              <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Visita el Senado</NuxtLink>
+              <a href="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Productos Digitales</a>
+              <NuxtLink to="/cursos-capacitacion" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Cursos y Capacitación</NuxtLink>
             </div>
           </div>
 
@@ -1896,12 +1951,12 @@ components\Header.vue
                   class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley en Tratamiento</NuxtLink>
-                  <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Aprobados</NuxtLink>
-                  <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Sancionadas</NuxtLink>
-                  <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary transition-colors py-1">Leyes Promulgadas</NuxtLink>
-                  <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley con Modificaciones</NuxtLink>
-                  <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary transition-colors py-1">Proyectos de Ley Rechazados</NuxtLink>
+                  <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Proyectos de Ley en Tratamiento</NuxtLink>
+                  <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Proyectos de Ley Aprobados</NuxtLink>
+                  <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Leyes Sancionadas</NuxtLink>
+                  <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Leyes Promulgadas</NuxtLink>
+                  <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Proyectos de Ley con Modificaciones</NuxtLink>
+                  <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Proyectos de Ley Rechazados</NuxtLink>
                 </div>
               </div>
 
@@ -1920,8 +1975,8 @@ components\Header.vue
                   class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Escrito</NuxtLink>
-                  <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary transition-colors py-1">Peticiones de Informe Oral</NuxtLink>
+                  <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Peticiones de Informe Escrito</NuxtLink>
+                  <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Peticiones de Informe Oral</NuxtLink>
                 </div>
               </div>
 
@@ -1940,9 +1995,9 @@ components\Header.vue
                   class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Resoluciones Camarales</NuxtLink>
-                  <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary transition-colors py-1">Declaraciones Camarales</NuxtLink>
-                  <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary transition-colors py-1">Minutas de Comunicación</NuxtLink>
+                  <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Resoluciones Camarales</NuxtLink>
+                  <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Declaraciones Camarales</NuxtLink>
+                  <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Minutas de Comunicación</NuxtLink>
                 </div>
               </div>
             </div>
@@ -1965,9 +2020,9 @@ components\Header.vue
               class="ml-4 mt-2 space-y-1 text-[1.1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
               :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary transition-colors py-1">¿Quién me representa?</NuxtLink>
-              <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary transition-colors py-1">Directiva Camaral</NuxtLink>
-              <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary transition-colors py-1">Comisiones y Comités</NuxtLink>
+              <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">¿Quién me representa?</NuxtLink>
+              <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Directiva Camaral</NuxtLink>
+              <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Comisiones y Comités</NuxtLink>
             </div>
           </div>
 
@@ -2002,11 +2057,10 @@ components\Header.vue
                   class="ml-4 space-y-1 text-[1.0vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
                   :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
                 >
-                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1">Atribuciones del Senado</NuxtLink>
-                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1">Mandato Constitucional</NuxtLink>
+                  <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Atribuciones del Senado</NuxtLink>
+                  <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Mandato Constitucional</NuxtLink>
                 </div>
               </div>
-              <NuxtLink to="/antecedentes-historicos" class="block text-gray-600 hover:text-senado-primary transition-colors py-1 font-[600]">Antecedentes históricos</NuxtLink>
             </div>
           </div>
 
@@ -2027,31 +2081,94 @@ components\Header.vue
               class="ml-4 mt-2 space-y-1 text-[1.1vw] font-[600] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
               :class="submenus.abierto ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1">Noticias</NuxtLink>
-              <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1">Productos Digitales</NuxtLink>
-              <NuxtLink to="https://systemdemo.es/track-document" class="block hover:text-senado-primary transition-colors py-1">Consulta tus trámites</NuxtLink>
-              <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1">Visita el Senado</NuxtLink>
+              <NuxtLink to="/noticias" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Noticias</NuxtLink>
+              <a href="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Productos Digitales</a>
+              <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Consulta tus trámites</a>
+              <NuxtLink to="/visita-senado" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Visita el Senado</NuxtLink>
+            </div>
+          </div>
+
+          <!-- ========================================== -->
+          <!-- ÁREA ADMINISTRATIVA                        -->
+          <!-- ========================================== -->
+          <div>
+            <div 
+              @click="toggleSubmenu('administrativa')"
+              class="cursor-pointer"
+            >
+              <div class="flex items-center justify-between w-full text-left font-[600] text-senado-primary hover:text-senado-primary-dark text-lg transition-colors">
+                <span>▸ Área Administrativa</span>
+                <span class="transition-transform duration-300" :class="submenus.administrativa ? 'rotate-180' : ''">▼</span>
+              </div>
+            </div>
+            <div 
+              class="ml-4 mt-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out"
+              :class="submenus.administrativa ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
+            >
+              <!-- Auditoría -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('auditoriaAdministrativa')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Auditoría</span>
+                    <span class="transition-transform duration-300" :class="submenus.auditoriaAdministrativa ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.auditoriaAdministrativa ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">POA-UAI</NuxtLink>
+                  <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Auditorías Ejecutadas</NuxtLink>
+                  <NuxtLink to="/auditoria/informes-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Informes de Actividades</NuxtLink>
+                  <NuxtLink to="/auditoria/otras-actividades" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Otras Actividades</NuxtLink>
+                </div>
+              </div>
+
+              <!-- Transparencia y Lucha contra la Corrupción -->
+              <div>
+                <div 
+                  @click="toggleSubmenu('transparenciaAdministrativa')"
+                  class="cursor-pointer"
+                >
+                  <div class="flex items-center justify-between w-full text-left font-[600] text-gray-700 hover:text-senado-primary transition-colors text-[1.1vw]">
+                    <span>Transparencia y Lucha contra la Corrupción</span>
+                    <span class="transition-transform duration-300" :class="submenus.transparenciaAdministrativa ? 'rotate-180' : ''">▼</span>
+                  </div>
+                </div>
+                <div 
+                  class="ml-4 space-y-1 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[600]"
+                  :class="submenus.transparenciaAdministrativa ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                >
+                  <NuxtLink to="/unidad-transparencia" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Unidad de Transparencia y Lucha contra la Corrupción</NuxtLink>
+                  <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Gestión de Denuncia de Actos/Hechos de Corrupción</a>
+                  <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Solicitud de Información</NuxtLink>
+                  <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary transition-colors py-1" @click="closeMenu">Rendición Pública de Cuentas</a>
+                </div>
+              </div>
             </div>
           </div>
 
           <hr class="border-gray-200">
 
           <!-- ========================================== -->
-          <!-- INICIO Y CONTACTO (CON COLORES DE LA PALETA) -->
+          <!-- INICIO Y CONTACTO                          -->
           <!-- ========================================== -->
           <div class="space-y-3 mt-2">
-            <!-- 🔥 INICIO CON DORADO -->
             <NuxtLink 
               to="/" 
               class="flex items-center gap-3 bg-senado-gold-lightest text-senado-primary hover:bg-senado-gold hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[900] text-[1.4vw] shadow-sm hover:shadow-md"
+              @click="closeMenu"
             >
               <span>Inicio</span>
             </NuxtLink>
             
-            <!-- 🔥 CONTACTO CON BORDE DORADO -->
             <NuxtLink 
               to="/contacto" 
               class="flex items-center gap-3 text-senado-primary hover:bg-senado-gold-soft hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[800] text-[1.4vw]"
+              @click="closeMenu"
             >
               <span>Contacto</span>
             </NuxtLink>
@@ -2061,7 +2178,7 @@ components\Header.vue
     </div>
 
     <!-- ========================================== -->
-    <!-- MENÚ REDES SOCIALES (con Teleport)        -->
+    <!-- MENÚ REDES SOCIALES                        -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -2119,7 +2236,7 @@ components\Header.vue
     </Teleport>
 
     <!-- ========================================== -->
-    <!-- RESULTADOS DE BÚSQUEDA (con Teleport)      -->
+    <!-- RESULTADOS DE BÚSQUEDA                     -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -2174,7 +2291,7 @@ components\Header.vue
       </transition>
     </Teleport>
 
-    <!-- Sin resultados con Teleport -->
+    <!-- Sin resultados -->
     <Teleport to="body">
       <transition
         enter-active-class="transition-all duration-200 ease-out"
@@ -2213,6 +2330,7 @@ export default {
       defaultAvatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E',
       submenus: {
         institucional: false,
+        tramites: false, // NUEVO
         legislativa: false,
         legislacion: false,
         fiscalizacion: false,
@@ -2220,7 +2338,14 @@ export default {
         senadores: false,
         acerca: false,
         funciones: false,
-        abierto: false
+        abierto: false,
+        administrativa: false,
+        // Claves únicas para los submenús dentro de Institucional
+        auditoriaInstitucional: false,
+        transparenciaInstitucional: false,
+        // Claves únicas para los submenús dentro de Área Administrativa
+        auditoriaAdministrativa: false,
+        transparenciaAdministrativa: false
       }
     }
   },
@@ -2284,6 +2409,12 @@ export default {
           this.submenus[key] = false
         })
       }
+    },
+    closeMenu() {
+      this.menuAbierto = false
+      Object.keys(this.submenus).forEach(key => {
+        this.submenus[key] = false
+      })
     },
     toggleSubmenu(key) {
       this.submenus[key] = !this.submenus[key]
@@ -2824,166 +2955,6 @@ defineExpose({ recargarDatos })
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style> 
-================================= 
-components\NoticiasSenador.vue 
-================================= 
- 
-<template>
-  <div v-if="noticias.length > 0" class="mt-12">
-    <!-- Título de la sección -->
-    <div class="flex items-center gap-4 mb-6">
-      <div class="w-1 h-8 bg-[#611717] rounded-full"></div>
-      <h2 class="text-2xl font-bold text-[#611717]">
-        Noticias relacionadas con <span class="text-[#8f1522]">{{ nombreSenador }}</span>
-      </h2>
-    </div>
-    <div class="border-b border-gray-200 mb-6"></div>
-
-    <!-- Grid de noticias -->
-    <div v-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="noticia in noticiasMostradas"
-        :key="noticia.id"
-        class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
-        @click="irANoticia(noticia)"
-      >
-        <div class="relative aspect-[16/9] overflow-hidden">
-          <img
-            :src="noticia.imagen || '/images/default-news.jpg'"
-            :alt="limpiarAsteriscos(noticia.titulo)"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-            @error="(e) => e.target.src = '/images/default-news.jpg'"
-          />
-          <div class="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#611717]/80 to-transparent"></div>
-          <span 
-            v-if="noticia.categoria === 'importante'" 
-            class="absolute top-3 right-3 bg-[#8f1522] text-white text-xs px-3 py-1 rounded-full font-semibold"
-          >
-            ⭐ Importante
-          </span>
-        </div>
-        <div class="p-4">
-          <p class="text-xs text-gray-500 mb-1">
-            {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
-          </p>
-          <h3 
-            class="font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-[#611717] transition-colors"
-            v-html="formatTitleWithColors(noticia.titulo)"
-          >
-          </h3>
-          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-            {{ noticia.resumen || noticia.descripcion || '' }}
-          </p>
-          <div class="mt-3 flex justify-end">
-            <span class="text-[#611717] text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-              Leer más
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Estado de carga -->
-    <div v-else class="flex justify-center py-8">
-      <div class="inline-block w-8 h-8 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
-      <p class="ml-3 text-gray-500">Cargando noticias relacionadas...</p>
-    </div>
-
-    <!-- Sin resultados -->
-    <div v-if="!loading && noticias.length === 0" class="text-center py-8 bg-gray-50 rounded-xl">
-      <p class="text-gray-500">No hay noticias relacionadas con este senador.</p>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
-
-const props = defineProps({
-  senadorId: {
-    type: Number,
-    required: true
-  },
-  nombreSenador: {
-    type: String,
-    default: ''
-  },
-  limit: {
-    type: Number,
-    default: 6
-  }
-})
-
-const router = useRouter()
-const noticias = ref([])
-const loading = ref(false)
-
-// Funciones de utilidad
-const limpiarAsteriscos = (texto) => {
-  if (!texto) return ''
-  return texto.replace(/\*/g, '')
-}
-
-const formatTitleWithColors = (title) => {
-  if (!title) return ''
-  return title.replace(/\*(.*?)\*/g, '<span class="text-[#611717] font-bold">$1</span>')
-}
-
-const formatearFecha = (fecha) => {
-  if (!fecha) return ''
-  return new Date(fecha).toLocaleDateString('es-ES', { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric' 
-  })
-}
-
-const irANoticia = (noticia) => {
-  if (noticia && noticia.slug) {
-    router.push(`/noticias/${noticia.slug}`)
-  }
-}
-
-const noticiasMostradas = computed(() => {
-  return noticias.value.slice(0, props.limit)
-})
-
-const cargarNoticias = async () => {
-  if (!props.senadorId) return
-  
-  loading.value = true
-  try {
-    const { fetchNoticiasPorSenador } = useNoticias()
-    const resultados = await fetchNoticiasPorSenador(props.senadorId)
-    noticias.value = resultados
-  } catch (error) {
-    console.error('Error cargando noticias del senador:', error)
-  } finally {
-    loading.value = false
-  }
-}
-
-// Cargar cuando cambia el senador
-watch(() => props.senadorId, () => {
-  noticias.value = []
-  cargarNoticias()
-}, { immediate: true })
-</script>
-
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

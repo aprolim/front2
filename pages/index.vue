@@ -68,9 +68,9 @@
         playsinline
         preload="auto"
       >
-        <source src="/videos/fondo-senado.mp4" type="video/mp4" />
+        <source src="/videos/fondo-senado.webm" type="video/mp4" />
       </video>
-      <div class="absolute inset-0 bg-black/50"></div>
+      <div class="absolute inset-0"></div>
 
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
         <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">

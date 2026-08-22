@@ -4,7 +4,7 @@
       <!-- Título -->
       <div class="mb-12">
         <h1 class="text-[4vw] font-bold text-senado-primary text-center leading-tight">
-          Antecedentes Históricos
+          Reseña Histórica
         </h1>
         <p class="text-center text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
           Conoce la historia y evolución del Senado de Bolivia, desde sus orígenes hasta la actualidad

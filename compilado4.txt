@@ -2,6 +2,1803 @@ COMPILADO DE ARCHIVOS - Parte 4
  
  
 ================================= 
+pages\contacto.vue 
+================================= 
+ 
+<!-- pages/contacto.vue -->
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Hero / Banner con ARIA -->
+    <section 
+      class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white"
+      role="banner"
+      aria-labelledby="contacto-titulo"
+    >
+      <div class="container mx-auto px-4 py-8 md:py-16 lg:py-20">
+        <div class="flex flex-col items-center text-center">
+          <!-- Badge -->
+          <div 
+            class="inline-flex items-center bg-white/10 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-2 md:mb-3"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:email" class="text-senado-gold text-lg md:text-xl lg:text-2xl" />
+            <span class="text-white/80 tracking-wider font-medium text-xs md:text-sm ml-2">CONTACTO</span>
+          </div>
+          
+          <h1 
+            id="contacto-titulo"
+            class="font-bold leading-tight text-3xl md:text-5xl lg:text-6xl"
+          >
+            ¿Cómo podemos <span class="text-senado-gold">ayudarte</span>?
+          </h1>
+          
+          <p class="text-white/70 max-w-2xl text-sm md:text-base lg:text-lg mt-2 md:mt-3">
+            Estamos aquí para escucharte y brindarte la información que necesitas
+          </p>
+        </div>
+      </div>
+      
+      <!-- Onda inferior -->
+      <div class="absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full" role="presentation">
+          <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl">
+      
+      <!-- Tarjetas de contacto rápido -->
+      <div 
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 -mt-6 md:-mt-10 relative z-10"
+        role="list"
+      >
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:phone" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Teléfono</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">
+            <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+              (591-2) 2143400
+            </a>
+          </p>
+        </div>
+
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:email" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Correo Electrónico</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">
+            <a href="mailto:info@senado.gob.bo" class="hover:text-senado-primary transition-colors">
+              info@senado.gob.bo
+            </a>
+          </p>
+        </div>
+
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:clock" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Horario de Atención</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">Lunes a Viernes</p>
+          <p class="text-center text-gray-600 text-sm md:text-base">08:30 - 16:30 hrs</p>
+        </div>
+      </div>
+
+      <!-- Grid: Mapa + Dirección -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-8 md:mt-12">
+        
+        <!-- Mapa -->
+        <section 
+          class="bg-white rounded-xl shadow-lg overflow-hidden"
+          aria-labelledby="mapa-titulo"
+        >
+          <div class="bg-senado-primary text-white px-4 py-3 md:px-6 md:py-4">
+            <h2 id="mapa-titulo" class="font-bold text-lg md:text-xl flex items-center gap-2">
+              <Icon name="mdi:map-marker" />
+              Ubicación
+            </h2>
+          </div>
+          <div class="h-64 md:h-80 lg:h-96 w-full">
+            <iframe
+              title="Mapa de ubicación del Senado - Casa Grande del Pueblo"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.123456789!2d-68.13359296560174!3d-16.496656424958083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f21d1a1f1f1f1%3A0x0!2zMTbCsDI5JzQ4LjAiUyA2OMCsMDgnMDAuMCJX!5e0!3m2!1ses!2sbo!4v1234567890&markers=color:red%7C-16.496656424958083,-68.13359296560174"
+              width="100%"
+              height="100%"
+              style="border:0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </section>
+
+        <!-- Dirección detallada -->
+        <section 
+          class="bg-white rounded-xl shadow-lg p-4 md:p-6"
+          aria-labelledby="direccion-titulo"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <h3 id="direccion-titulo" class="font-bold text-senado-primary text-base flex items-center gap-2">
+                <Icon name="mdi:map-marker" />
+                Dirección
+              </h3>
+              <address class="not-italic text-gray-600 text-sm">
+                <strong>Casa Grande del Pueblo</strong><br />
+                Calle Comercio esquina Colón<br />
+                La Paz, Bolivia
+              </address>
+              <p class="text-gray-600 text-sm mt-2">
+                <Icon name="mdi:phone" class="inline text-senado-primary" />
+                <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+                  (591-2) 2143400
+                </a>
+              </p>
+            </div>
+            <div>
+              <h4 class="font-bold text-senado-primary text-base flex items-center gap-2">
+                <Icon name="mdi:car" />
+                Cómo llegar
+              </h4>
+              <p class="text-gray-600 text-sm">
+                🚗 Estacionamiento cercano disponible<br />
+                🚌 Transporte público: Líneas que pasan por la Plaza Murillo
+              </p>
+              <div class="mt-3">
+                <a 
+                  href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded text-sm"
+                >
+                  <Icon name="mdi:open-in-new" />
+                  Ver en Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-gray-200">
+            <a 
+              href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 bg-senado-primary text-white text-center rounded-lg hover:bg-senado-primary-dark transition font-medium flex items-center justify-center gap-2 px-4 py-2 text-sm"
+            >
+              <Icon name="mdi:google-maps" />
+              Google Maps
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Enlaces de interés -->
+      <div 
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12"
+        role="list"
+      >
+        <div 
+          class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-4 md:p-5"
+          role="listitem"
+        >
+          <div class="flex items-center gap-3">
+            <Icon name="mdi:headset" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
+            <div>
+              <h4 class="font-bold text-senado-primary text-sm md:text-base">Atención al Ciudadano</h4>
+              <p class="text-gray-600 text-sm">
+                <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+                  (591-2) 2143400
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div 
+          class="bg-senado-primary/5 rounded-xl border border-senado-primary/20 p-4 md:p-5"
+          role="listitem"
+        >
+          <div class="flex items-center gap-3">
+            <Icon name="mdi:file-document" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
+            <div>
+              <h4 class="font-bold text-senado-primary text-sm md:text-base">Transparencia</h4>
+              <p class="text-gray-600 text-sm">
+                <NuxtLink 
+                  to="/solicitud-informacion" 
+                  class="text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded"
+                >
+                  Solicita información
+                </NuxtLink>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ rápido -->
+      <section 
+        class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12"
+        aria-labelledby="faq-titulo"
+      >
+        <h3 id="faq-titulo" class="text-center font-bold text-gray-800 text-xl md:text-2xl mb-4">
+          ❓ Preguntas Frecuentes
+        </h3>
+        <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo puedo visitar el Senado?</dt>
+            <NuxtLink to="/visita-senado" class="text-senado-primary hover:underline">
+                Agenda tu visita en nuestra página de visitas
+              </NuxtLink>
+          </div>
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo solicito información?</dt>
+            <dd class="text-gray-600 text-sm">
+              <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline">
+                Solicita información aquí
+              </NuxtLink>
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Horario de atención?</dt>
+            <dd class="text-gray-600 text-sm">Lunes a Viernes 08:00 - 17:00 hrs</dd>
+          </div>
+        </dl>
+      </section>
+
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Contacto'
+}
+</script>
+
+<style scoped>
+/* Focus visible para accesibilidad */
+*:focus-visible {
+  outline: 2px solid #1a3c6e;
+  outline-offset: 2px;
+}
+
+/* Animaciones con preferencias de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style> 
+================================= 
+pages\cursos-capacitacion.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Encabezado -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-senado-primary mb-4">
+          Cursos y Capacitación
+        </h1>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Formación continua para el desarrollo de habilidades y conocimientos
+        </p>
+        <div class="w-24 h-1 bg-senado-gold mx-auto mt-4"></div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="mb-8 flex flex-wrap gap-4 justify-center">
+        <button
+          v-for="categoria in categorias"
+          :key="categoria"
+          @click="filtroCategoria = categoria"
+          class="px-6 py-2 rounded-full transition-all duration-300 text-sm font-medium"
+          :class="filtroCategoria === categoria 
+            ? 'bg-senado-primary text-white shadow-lg' 
+            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'"
+        >
+          {{ categoria }}
+        </button>
+        <button
+          @click="filtroCategoria = 'todos'"
+          class="px-6 py-2 rounded-full transition-all duration-300 text-sm font-medium"
+          :class="filtroCategoria === 'todos' 
+            ? 'bg-senado-primary text-white shadow-lg' 
+            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'"
+        >
+          Todos
+        </button>
+      </div>
+
+      <!-- Grid de cursos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          v-for="curso in cursosFiltrados" 
+          :key="curso.id"
+          class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        >
+          <!-- Imagen -->
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              :src="curso.imagen" 
+              :alt="curso.titulo"
+              class="w-full h-full object-cover"
+              @error="(e) => e.target.src = 'https://via.placeholder.com/400x200/1a3a5c/ffffff?text=Curso'"
+            />
+            <div class="absolute top-4 right-4">
+              <span class="px-3 py-1 bg-senado-primary text-white text-xs font-semibold rounded-full">
+                {{ curso.categoria }}
+              </span>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <span class="text-white text-sm font-medium">
+                {{ curso.duracion }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+              {{ curso.titulo }}
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+              {{ curso.descripcion }}
+            </p>
+            
+            <!-- Detalles -->
+            <div class="flex flex-wrap gap-3 mb-4 text-sm text-gray-500">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ curso.horas }} horas
+              </span>
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+                {{ curso.modalidad }}
+              </span>
+            </div>
+
+            <!-- Nivel y estado -->
+            <div class="flex items-center justify-between mb-4">
+              <span 
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                :class="curso.nivel === 'Básico' ? 'bg-green-100 text-green-800' :
+                        curso.nivel === 'Intermedio' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'"
+              >
+                {{ curso.nivel }}
+              </span>
+              <span 
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                :class="curso.estado === 'Disponible' ? 'bg-blue-100 text-blue-800' :
+                        curso.estado === 'Próximamente' ? 'bg-purple-100 text-purple-800' :
+                        'bg-gray-100 text-gray-800'"
+              >
+                {{ curso.estado }}
+              </span>
+            </div>
+
+            <!-- Botón -->
+            <button 
+              @click="verDetalle(curso)"
+              class="w-full py-2.5 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors duration-300 font-medium"
+            >
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje cuando no hay cursos -->
+      <div v-if="cursosFiltrados.length === 0" class="text-center py-12">
+        <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No hay cursos disponibles</h3>
+        <p class="text-gray-500">Pronto agregaremos nuevos cursos para ti</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'CursosCapacitacion',
+  data() {
+    return {
+      filtroCategoria: 'todos',
+      categorias: [
+        'Desarrollo Profesional',
+        'Liderazgo',
+        'Tecnología',
+        'Comunicación',
+        'Gestión Pública'
+      ],
+      cursos: [
+        {
+          id: 1,
+          titulo: 'Liderazgo y Gestión de Equipos Efectivos',
+          descripcion: 'Desarrolla habilidades de liderazgo para gestionar equipos de alto rendimiento en el sector público.',
+          categoria: 'Liderazgo',
+          nivel: 'Intermedio',
+          duracion: '4 semanas',
+          horas: 32,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=200&fit=crop'
+        },
+        {
+          id: 2,
+          titulo: 'Transformación Digital en el Sector Público',
+          descripcion: 'Aprende a implementar estrategias de transformación digital para mejorar la gestión pública.',
+          categoria: 'Tecnología',
+          nivel: 'Avanzado',
+          duracion: '6 semanas',
+          horas: 48,
+          modalidad: 'Mixta',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=200&fit=crop'
+        },
+        {
+          id: 3,
+          titulo: 'Comunicación Política y Oratoria',
+          descripcion: 'Domina las técnicas de comunicación política y desarrolla habilidades de oratoria efectiva.',
+          categoria: 'Comunicación',
+          nivel: 'Básico',
+          duracion: '3 semanas',
+          horas: 24,
+          modalidad: 'Presencial',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=200&fit=crop'
+        },
+        {
+          id: 4,
+          titulo: 'Gestión de Proyectos Públicos',
+          descripcion: 'Aprende a planificar, ejecutar y evaluar proyectos de inversión pública con metodologías ágiles.',
+          categoria: 'Gestión Pública',
+          nivel: 'Intermedio',
+          duracion: '5 semanas',
+          horas: 40,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=200&fit=crop'
+        },
+        {
+          id: 5,
+          titulo: 'Inteligencia Artificial y Análisis de Datos',
+          descripcion: 'Introducción a la IA y el análisis de datos para la toma de decisiones en el sector público.',
+          categoria: 'Tecnología',
+          nivel: 'Avanzado',
+          duracion: '8 semanas',
+          horas: 64,
+          modalidad: 'Virtual',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=400&h=200&fit=crop'
+        },
+        {
+          id: 6,
+          titulo: 'Desarrollo de Habilidades Directivas',
+          descripcion: 'Fortalece tus competencias directivas para liderar con efectividad en la administración pública.',
+          categoria: 'Desarrollo Profesional',
+          nivel: 'Intermedio',
+          duracion: '4 semanas',
+          horas: 30,
+          modalidad: 'Presencial',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=200&fit=crop'
+        },
+        {
+          id: 7,
+          titulo: 'Negociación y Resolución de Conflictos',
+          descripcion: 'Domina técnicas de negociación y resolución de conflictos en el ámbito institucional.',
+          categoria: 'Desarrollo Profesional',
+          nivel: 'Básico',
+          duracion: '3 semanas',
+          horas: 20,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=200&fit=crop'
+        },
+        {
+          id: 8,
+          titulo: 'Gestión de Recursos Públicos',
+          descripcion: 'Optimiza la gestión de recursos públicos con herramientas y técnicas modernas.',
+          categoria: 'Gestión Pública',
+          nivel: 'Avanzado',
+          duracion: '6 semanas',
+          horas: 45,
+          modalidad: 'Mixta',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=400&h=200&fit=crop'
+        },
+        {
+          id: 9,
+          titulo: 'Storytelling y Narrativa Digital',
+          descripcion: 'Aprende a contar historias efectivas para comunicar mensajes institucionales.',
+          categoria: 'Comunicación',
+          nivel: 'Básico',
+          duracion: '2 semanas',
+          horas: 16,
+          modalidad: 'Virtual',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=200&fit=crop'
+        }
+      ]
+    }
+  },
+  computed: {
+    cursosFiltrados() {
+      if (this.filtroCategoria === 'todos') {
+        return this.cursos
+      }
+      return this.cursos.filter(curso => curso.categoria === this.filtroCategoria)
+    }
+  },
+  methods: {
+    verDetalle(curso) {
+      // Por ahora solo mostraremos una alerta
+      // En el futuro esto redirigirá a una página de detalle
+      alert(`Curso: ${curso.titulo}\nDescripción: ${curso.descripcion}\nDuración: ${curso.duracion}\nModalidad: ${curso.modalidad}`)
+      
+      // Cuando tengas la página de detalle:
+      // this.$router.push(`/cursos-capacitacion/${curso.id}`)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+pages\directiva-camaral.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          🏛️ Directiva Camaral
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Directiva Camaral
+        </h1>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
+          Conoce a los miembros de la Directiva de la Cámara de Senadores para la Legislatura 2025-2026
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Presidente -->
+      <div class="max-w-4xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Presidente</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div
+          v-if="presidente"
+          class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
+        >
+          <div class="flex flex-col md:flex-row items-center p-8 gap-8">
+            <div class="flex-shrink-0">
+              <img
+                :src="presidente.foto || defaultAvatar"
+                :alt="presidente.name"
+                class="w-[14vw] h-[14vw] rounded-full object-cover border-4 shadow-lg"
+                :style="{ borderColor: presidente.partyColor || '#e3d194' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+            </div>
+            <div class="flex-1 text-center md:text-left">
+              <h2 class="text-2xl md:text-3xl font-bold text-senado-primary">
+                {{ presidente.name }}
+              </h2>
+              <div class="flex items-center justify-center md:justify-start gap-3 mt-2 flex-wrap">
+                <span
+                  class="text-sm font-medium px-3 py-1 rounded-full"
+                  :style="{
+                    backgroundColor: presidente.partyColor + '20',
+                    color: presidente.partyColor || '#666'
+                  }"
+                >
+                  {{ presidente.partyShort || presidente.party || 'Sin partido' }}
+                </span>
+                <span class="text-sm text-gray-500">
+                  {{ presidente.department }}
+                </span>
+              </div>
+              <p class="text-senado-primary font-semibold mt-3 text-lg">
+                Presidente del Senado
+              </p>
+              <NuxtLink
+                :to="`/senador/${presidente.slug}`"
+                class="inline-flex items-center gap-2 mt-4 text-senado-primary hover:text-senado-primary-dark font-medium transition-colors"
+              >
+                Ver perfil completo →
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vicepresidencias -->
+      <div class="max-w-5xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Vicepresidencias</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            v-for="cargo in vicepresidencias"
+            :key="cargo.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div class="flex items-center gap-4 p-6">
+              <img
+                :src="cargo.foto || defaultAvatar"
+                :alt="cargo.name"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
+                :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-bold text-senado-primary truncate">
+                  {{ cargo.name }}
+                </h3>
+                <div class="flex items-center gap-2 flex-wrap mt-1">
+                  <span
+                    class="text-xs font-medium px-2 py-0.5 rounded"
+                    :style="{
+                      backgroundColor: cargo.partyColor + '20',
+                      color: cargo.partyColor || '#666'
+                    }"
+                  >
+                    {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    {{ cargo.department }}
+                  </span>
+                </div>
+                <p class="text-sm font-semibold text-senado-primary mt-2">
+                  {{ cargo.cargo }}
+                </p>
+                <NuxtLink
+                  :to="`/senador/${cargo.slug}`"
+                  class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-1"
+                >
+                  Ver perfil →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secretarías -->
+      <div class="max-w-5xl mx-auto mb-16">
+        <div class="text-center mb-8">
+          <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Secretarías</span>
+          <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            v-for="cargo in secretarias"
+            :key="cargo.id"
+            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+          >
+            <div class="flex flex-col items-center p-6 text-center">
+              <img
+                :src="cargo.foto || defaultAvatar"
+                :alt="cargo.name"
+                class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
+                :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <h3 class="text-base font-bold text-senado-primary mt-3 truncate w-full">
+                {{ cargo.name }}
+              </h3>
+              <div class="flex items-center gap-2 flex-wrap mt-1 justify-center">
+                <span
+                  class="text-xs font-medium px-2 py-0.5 rounded"
+                  :style="{
+                    backgroundColor: cargo.partyColor + '20',
+                    color: cargo.partyColor || '#666'
+                  }"
+                >
+                  {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                </span>
+              </div>
+              <p class="text-sm font-semibold text-senado-primary mt-2">
+                {{ cargo.cargo }}
+              </p>
+              <NuxtLink
+                :to="`/senador/${cargo.slug}`"
+                class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-2"
+              >
+                Ver perfil →
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón volver -->
+      <div class="text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { senadores } from '~/data/senadores'
+
+// ========================================== //
+// CONSTANTES
+// ========================================== //
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// IDS DE LA DIRECTIVA
+// ========================================== //
+const DIRECTIVA_IDS = {
+  presidente: 32,      // Diego Esteban Mateo Ávila Navajas
+  primeraVice: 6,      // Carmen Soledad Chapeton Tancara
+  segundaVice: 12,     // Kathia Lizbeth Quiroga Fernández
+  primeraSecretaria: 33, // Yasmín Estivariz Villarroel
+  segundaSecretaria: 13, // Rosa Tatiana Áñez Carrasco
+  terceraSecretaria: 24 // Julio Diego Romaña Galindo
+}
+
+// ========================================== //
+// OBTENER SENADOR POR ID
+// ========================================== //
+const getSenadorById = (id) => {
+  return senadores.find(s => s.id === id) || null
+}
+
+// ========================================== //
+// COMPUTADAS
+// ========================================== //
+const presidente = computed(() => {
+  return getSenadorById(DIRECTIVA_IDS.presidente)
+})
+
+const vicepresidencias = computed(() => {
+  const cargos = []
+  const primera = getSenadorById(DIRECTIVA_IDS.primeraVice)
+  const segunda = getSenadorById(DIRECTIVA_IDS.segundaVice)
+
+  if (primera) {
+    cargos.push({
+      ...primera,
+      cargo: 'Primera Vicepresidencia'
+    })
+  }
+  if (segunda) {
+    cargos.push({
+      ...segunda,
+      cargo: 'Segunda Vicepresidencia'
+    })
+  }
+  return cargos
+})
+
+const secretarias = computed(() => {
+  const cargos = []
+  const primera = getSenadorById(DIRECTIVA_IDS.primeraSecretaria)
+  const segunda = getSenadorById(DIRECTIVA_IDS.segundaSecretaria)
+  const tercera = getSenadorById(DIRECTIVA_IDS.terceraSecretaria)
+
+  if (primera) {
+    cargos.push({
+      ...primera,
+      cargo: 'Primera Secretaria'
+    })
+  }
+  if (segunda) {
+    cargos.push({
+      ...segunda,
+      cargo: 'Segunda Secretaria'
+    })
+  }
+  if (tercera) {
+    cargos.push({
+      ...tercera,
+      cargo: 'Tercera Secretaria'
+    })
+  }
+  return cargos
+})
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\explorador.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-8">
+    <div class="mx-auto w-[85%]">
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-senado-primary">
+          Asistente Legislativo
+        </h1>
+        <p class="text-gray-600 text-lg mt-2">
+          Búsqueda semántica con trazabilidad · Cámara de Senadores
+        </p>
+        <div class="mt-2 inline-block bg-green-50 border border-green-200 text-green-700 text-xs px-3 py-1 rounded-full">
+          ✅ Conectado a la API de Leyes
+        </div>
+      </div>
+
+      <ConsultaLegislativa />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import ConsultaLegislativa from '~/components/asistente/ConsultaLegislativa.vue'
+</script> 
+================================= 
+pages\funciones-del-senado.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Funciones del Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            El Rol del Senado en la Asamblea Legislativa Plurinacional
+          </p>
+
+          <!-- Introducción -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              El Reglamento General de la Cámara de Senadores establece:
+            </p>
+          </div>
+
+          <!-- Artículo 2 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 2.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>(Marco Constitucional).</b> En el marco de lo establecido por la Constitución Política del Estado, la Cámara de Senadores de la Asamblea Legislativa Plurinacional reside en el Órgano Legislativo y ejerce las atribuciones de legislación, fiscalización y gestión, bajo los principios de coordinación y cooperación, promoviendo la participación activa de la ciudadanía en todo el territorio boliviano.
+            </p>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-stretch">
+          <div class="w-full rounded-xl overflow-hidden shadow-lg flex">
+            <img 
+              src="/Mandato Constitucional Senado/27.JPG" 
+              alt="Funciones del Senado"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\galeria-de-imagenes.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-100">
+    <!-- ============================================ -->
+    <!-- TÍTULO CON ESTILO SENADO -->
+    <!-- ============================================ -->
+    <div class="relative w-full" ref="topSection">
+      <div class="relative w-full">
+        <!-- Líneas animadas estilo Senado -->
+        <div class="absolute top-0 left-0 h-[2px] bg-[#E4D294] animate-slide-right" style="width: 100%;"></div>
+        <div class="absolute bottom-0 right-0 h-[2px] bg-[#E4D294] animate-slide-left" style="width: 100%;"></div>
+        <div class="absolute top-0 right-0 w-[2px] bg-[#E4D294] animate-slide-down" style="height: 100%;"></div>
+        <div class="absolute bottom-0 left-0 w-[2px] bg-[#E4D294] animate-slide-up" style="height: 100%;"></div>
+        
+        <div class="py-[0.8vw] text-center">
+          <h1 class="text-[3vw] text-senado-primary font-semibold">
+            Galería Institucional
+          </h1>
+        </div>
+      </div>
+      
+      <p class="text-gray-600 text-lg text-center max-w-2xl mx-auto mt-6 px-4">
+        Conoce la historia y el patrimonio del Senado de Bolivia
+      </p>
+      <p class="text-gray-500 text-sm text-center mt-2 px-4">
+        {{ totalImages }} imágenes | Página {{ currentPage }} de {{ totalPages }}
+        <span v-if="!useApi" class="ml-2 text-xs text-gray-400">(datos locales)</span>
+      </p>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- Loading -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#E03636] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-3 text-gray-600">Cargando galería...</p>
+      </div>
+
+      <!-- Grid de imágenes -->
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+        <div 
+          v-for="img in paginatedImages" 
+          :key="img.id"
+          class="gallery-item cursor-pointer group"
+          @click="openImageModal(img)"
+        >
+          <div class="relative overflow-hidden rounded-xl shadow-lg bg-gray-200" style="aspect-ratio: 4/3">
+            <img 
+              :src="`/G-Institucional/${img.id}.webp`"
+              :alt="img.description"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              @error="handleImageError"
+            />
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-senado-gold-dark backdrop-blur-sm py-2 px-2">
+              <p class="text-senado-primary text-xs md:text-sm font-medium line-clamp-2 text-center">
+                {{ img.description }}
+              </p>
+            </div>
+
+            <div class="absolute inset-0 border-2 border-white rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <div class="absolute inset-[3px] border border-black/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="flex justify-center items-center gap-2 mt-10 flex-wrap">
+        <button 
+          @click="goToPage(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          ← Anterior
+        </button>
+        
+        <div class="flex gap-1 mx-2">
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            @click="goToPage(page)"
+            class="w-8 h-8 md:w-10 md:h-10 rounded-full transition-all duration-300 text-sm font-medium"
+            :class="currentPage === page 
+              ? 'bg-senado-primary-light text-white scale-105 shadow-md' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          @click="goToPage(currentPage + 1)"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          Siguiente →
+        </button>
+      </div>
+
+      <p class="text-center text-gray-500 text-sm mt-4">
+        Página {{ currentPage }} de {{ totalPages }}
+      </p>
+    </div>
+
+    <!-- Modal de imagen ampliada -->
+    <Teleport to="body">
+      <div v-if="showImageModal" class="fixed inset-0 z-[100] backdrop-blur-lg flex items-center justify-center" @click.self="closeImageViewer">
+        <div class="relative w-full h-full flex flex-col items-center justify-center p-4">
+          <button 
+            @click="closeImageViewer"
+            class="absolute top-4 right-4 hover:text-[#E03636] transition-colors text-3xl z-10"
+          >
+            ✕
+          </button>
+
+          <button 
+            @click="prevImage"
+            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+          >
+            ‹
+          </button>
+
+          <div class="relative max-w-[90vw] max-h-[70vh] flex items-center justify-center">
+            <img 
+              :src="`/G-Institucional/${currentImage?.id}.webp`"
+              :alt="currentImage?.description"
+              class="max-w-full max-h-[70vh] object-contain rounded-lg"
+            />
+          </div>
+
+          <div class="mt-6 text-center max-w-2xl px-4">
+            <p class="text-senado-primary text-base md:text-xl font-[600] bg-senado-gold-dark">{{ currentImage?.description }}</p>
+          </div>
+
+          <button 
+            @click="nextImage"
+            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-black/70 hover:text-red-500 transition-colors text-3xl md:text-5xl z-10"
+          >
+            ›
+          </button>
+
+          <p class="text-white/50 text-sm mt-4">
+            {{ currentImageIndex + 1 }} / {{ totalImages }}
+          </p>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useGaleria } from '~/composables/useGaleria'
+
+
+const router = useRouter()
+const route = useRoute()
+const { images: allImages, loading, fetchImages, USE_API } = useGaleria()
+
+// Referencia a la sección superior
+const topSection = ref(null)
+
+// ============================================
+// 🔥 FUNCIÓN PARA FORZAR SCROLL AL INICIO
+// ============================================
+const forceScrollToTop = () => {
+  if (process.client) {
+    // Múltiples métodos para asegurar
+    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    document.body.scrollIntoView({ block: 'start', behavior: 'instant' })
+    
+    // Si existe la referencia, hacer scroll a ella
+    if (topSection.value) {
+      topSection.value.scrollIntoView({ block: 'start', behavior: 'instant' })
+    }
+  }
+}
+
+// ============================================
+// ESTADO
+// ============================================
+const totalImages = computed(() => allImages.value.length)
+const useApi = computed(() => USE_API)
+
+const itemsPerPage = 20
+const currentPage = ref(1)
+const totalPages = computed(() => Math.ceil(totalImages.value / itemsPerPage))
+
+const paginatedImages = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allImages.value.slice(start, end)
+})
+
+const visiblePages = computed(() => {
+  const maxVisible = 7
+  let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
+  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1)
+  }
+  
+  const pages = []
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+  forceScrollToTop()
+}
+
+// Manejo de error de carga
+const handleImageError = (event) => {
+  const img = event.target
+  img.src = '/images/placeholder.jpg'
+}
+
+// ============================================
+// MODAL
+// ============================================
+const showImageModal = ref(false)
+const currentImage = ref(null)
+const currentImageIndex = ref(0)
+
+const openImageModal = (image) => {
+  currentImage.value = image
+  currentImageIndex.value = image.id - 1
+  showImageModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeImageViewer = () => {
+  showImageModal.value = false
+  currentImage.value = null
+  document.body.style.overflow = ''
+}
+
+const nextImage = () => {
+  if (currentImageIndex.value < totalImages.value - 1) {
+    currentImageIndex.value++
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const prevImage = () => {
+  if (currentImageIndex.value > 0) {
+    currentImageIndex.value--
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const handleKeydown = (e) => {
+  if (!showImageModal.value) return
+  switch(e.key) {
+    case 'ArrowLeft': prevImage(); break
+    case 'ArrowRight': nextImage(); break
+    case 'Escape': closeImageViewer(); break
+  }
+}
+
+// ============================================
+// CICLO DE VIDA - FORZAR SCROLL AL INICIO
+// ============================================
+onMounted(async () => {
+  window.addEventListener('keydown', handleKeydown)
+  
+  // 🔥 FORZAR SCROLL INMEDIATAMENTE
+  forceScrollToTop()
+  
+  // Cargar datos
+  await fetchImages()
+  console.log(`📸 Galería cargada: ${totalImages.value} imágenes | Usando API: ${USE_API}`)
+  
+  // 🔥 FORZAR SCROLL NUEVAMENTE DESPUÉS DE CARGAR
+  nextTick(() => {
+    forceScrollToTop()
+  })
+  
+  // 🔥 FORZAR SCROLL CON DELAY (por si hay renderizado asíncrono)
+  setTimeout(() => {
+    forceScrollToTop()
+  }, 50)
+  
+  setTimeout(() => {
+    forceScrollToTop()
+  }, 200)
+})
+
+// 🔥 Escuchar cambios de ruta para forzar scroll
+if (process.client) {
+  // Cada vez que se complete la navegación
+  router.afterEach((to) => {
+    if (to.path === '/museo/galeria') {
+      forceScrollToTop()
+    }
+  })
+}
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
+})
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fixed {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gallery-item {
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-3px);
+}
+
+/* ============================================ */
+/* ANIMACIONES DE BORDES ESTILO SENADO */
+/* ============================================ */
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right {
+  animation: slide-right 4s ease-in-out infinite;
+}
+
+.animate-slide-left {
+  animation: slide-left 4s ease-in-out infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down 4s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 4s ease-in-out infinite;
+}
+</style> 
+================================= 
+pages\index.vue 
+================================= 
+ 
+<template>
+  <div class="overflow-visible">
+    <!-- BANNER DE BIENVENIDA -->
+    <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
+      <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
+        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
+          <div 
+            class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
+          ></div>
+        </div>
+        <div class="absolute right-0 z-[60] w-[22vw]" style="bottom: 0; pointer-events: none;">
+          <img 
+            src="/images/Cupula.png" 
+            alt="Senado derecha" 
+            style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
+          />
+        </div>
+        <div class="flex-1 text-center z-20">
+          <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
+            Bienvenido al sitio web oficial <br> del
+            <span class="text-senado-primary text-[4vw] text-justify font-bold">Senado de Bolivia</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE SESIÓN -->
+    <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
+      <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
+        <span class="text-senado-primary font-medium">
+          {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} -
+        </span>
+        <span class="text-gray-700 font-normal">
+          {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }}
+        </span>
+        <span class="text-senado-gold-dark">|</span>
+        <a 
+          v-if="sessionData?.path"
+          :href="sessionData.path" 
+          target="_blank"
+          class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline"
+        >
+          Mira en directo
+        </a>
+        <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
+        <button 
+          @click="openModal"
+          :disabled="!hasValidData"
+          class="text-black hover:underline font-thin underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ORDEN DEL DÍA
+        </button>
+        <!-- Mostrar mensaje de error si no hay datos -->
+        <span v-if="errorMessage && !isLoading" class="text-red-500 text-xs ml-2">
+          {{ errorMessage }}
+        </span>
+      </div>
+    </div>
+
+    <!-- VIDEO CON ESTADÍSTICAS -->
+    <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
+      <video
+        ref="videoRef"
+        class="absolute top-0 left-0 w-full h-full object-cover"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="/videos/fondo-senado.webm" type="video/mp4" />
+      </video>
+      <div class="absolute inset-0"></div>
+
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
+        <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
+            <defs>
+              <linearGradient id="comet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
+                <stop offset="20%" stop-color="#e3d194" stop-opacity="0.4" />
+                <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-1" />
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-2" />
+          </svg>
+
+          <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.enTratamiento }}</div>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.aprobados }}</div>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.sancionadas }}</div>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center px-1">
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Peticiones de<br />Informe</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.peticionesInforme }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="mx-auto w-[75%] py-[2vw]">
+      <div>
+        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.enTratamiento }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Aprobados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.aprobados }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.sancionadas }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.promulgadas }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.modificaciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.rechazados }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesEscrito }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Oral
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesOral }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
+            <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
+            <div class="p-4">
+              <ul class="mt-3 space-y-2 text-[1.2vw]">
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.resoluciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.declaraciones }}</span>
+                </li>
+                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
+                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
+                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.minutas }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
+      </div>
+      
+      <NoticiasDinamicas />
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+      <DescubraSenado />
+      <div class="flex items-center justify-center gap-4 my-10">
+        <div class="flex-1 h-px bg-[#75797B]"></div>
+      </div>
+      <MandatoFuncionesAntecedentes />
+    </div>
+
+    <!-- MODAL DE ORDEN DEL DÍA - Solo se muestra si hay datos válidos -->
+    <div 
+      v-if="showModal && hasValidData && modalData" 
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      @click.self="closeModal"
+    >
+      <div class="relative bg-white rounded-2xl shadow-2xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-8 md:p-10" style="width: 520px;">
+        <button @click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors text-3xl font-light z-10">×</button>
+        
+        <div class="text-center">
+          <!-- BANDA TRICOLOR -->
+          <div class="w-full h-[6px] flex rounded-full overflow-hidden mb-4">
+            <div class="flex-1 bg-[#D52B1E]"></div>
+            <div class="flex-1 bg-[#F9E300]"></div>
+            <div class="flex-1 bg-[#007A36]"></div>
+          </div>
+          
+          <!-- ESCUDO -->
+          <img 
+            src="/logo/log2_colores.png" 
+            alt="Senado de Bolivia" 
+            class="w-[90px] h-auto mx-auto mb-3"
+          />
+          
+          <!-- TÍTULO -->
+          <h2 class="text-2xl font-bold text-[#1a2b4c] mb-2 tracking-wide">
+            {{ modalData?.title || 'SESIÓN ORDINARIA' }}
+          </h2>
+          
+          <!-- LÍNEA DORADA -->
+          <div class="w-[60px] h-[3px] bg-[#c9a84c] mx-auto mb-4 rounded-full"></div>
+          
+          <!-- ORDEN DEL DÍA -->
+          <h3 class="text-sm font-semibold text-[#1a2b4c] mb-4 tracking-wider">
+            - ORDEN DEL DÍA -
+          </h3>
+          
+          <!-- ÍTEMS -->
+          <div class="text-left max-w-[380px] mx-auto text-sm text-gray-700">
+            <div 
+              v-for="(item, index) in modalData?.agendaItems || []" 
+              :key="index" 
+              class="flex items-start gap-3 py-1.5 border-b border-gray-100 last:border-0"
+            >
+              <span class="font-bold text-[#c9a84c] min-w-[22px]">{{ index + 1 }}.</span>
+              <span class="leading-relaxed">{{ item }}</span>
+            </div>
+          </div>
+
+          <!-- NOTA -->
+          <p class="text-sm text-gray-600 italic mt-4">
+            {{ modalData?.note || 'Nota: La sesión se desarrollará bajo la modalidad presencial.' }}
+          </p>
+
+          <!-- FECHA Y HORA -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <p class="text-sm font-bold text-[#1a2b4c] tracking-wide">
+              {{ modalData?.dateFormattedShort || 'FECHA NO DISPONIBLE' }}
+            </p>
+            <p class="text-sm text-gray-600 font-semibold">
+              HORA: {{ modalData?.time || '--:--' }}
+            </p>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="mt-4 pt-3 border-t border-gray-200">
+            <p class="text-[10px] text-gray-400 font-light tracking-wider">
+              Dirección de Comunicación y Prensa
+            </p>
+          </div>
+
+          <!-- BOTÓN DESCARGAR PDF -->
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <button 
+              @click="downloadPDF"
+              class="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a2b4c] hover:bg-[#2a3b5c] text-white text-sm font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useSessionData } from '~/composables/useSessionData'
+import DescubraSenado from '~/components/DescubraSenado.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+
+const {
+  sessionData,
+  formattedDate,
+  isLoading,
+  errorMessage,
+  showModal,
+  modalData,
+  estadisticas,
+  hasValidData,
+  fetchSessionData,
+  openModal,
+  closeModal,
+  handleKeydown,
+  downloadPDF
+} = useSessionData()
+
+const videoRef = ref(null)
+
+onMounted(() => {
+  fetchSessionData()
+  
+  if (process.client) {
+    const scrollPos = sessionStorage.getItem('scrollPosicion')
+    if (scrollPos) {
+      setTimeout(() => {
+        window.scrollTo({ top: parseInt(scrollPos), behavior: 'smooth' })
+        sessionStorage.removeItem('scrollPosicion')
+      }, 400)
+    }
+  }
+  
+  if (videoRef.value) {
+    videoRef.value.play().catch(() => {})
+  }
+  
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = 'auto'
+})
+</script>
+
+<style scoped>
+.comet-animation-1 {
+  animation: cometLoop1 10s linear infinite;
+}
+.comet-animation-2 {
+  animation: cometLoop2 10s linear infinite;
+}
+@keyframes cometLoop1 {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+@keyframes cometLoop2 {
+  from { stroke-dashoffset: -50; }
+  to { stroke-dashoffset: -150; }
+}
+</style> 
+================================= 
+pages\mandato-constitucional.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Mandato Constitucional Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            La Constitución Política del Estado establece:
+          </p>
+
+          <!-- Artículo 12 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 12.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>I.</b>  El Estado se organiza y estructura su poder público a través de los órganos Legislativo, Ejecutivo, Judicial y Electoral. La organización del Estado está fundamentada en la independencia, separación, coordinación y cooperación de estos órganos.
+            </p>
+          </div>
+
+          <!-- Artículo 148 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 148.
+            </h2>
+            <div class="space-y-4 text-[1.1vw] text-gray-700 leading-relaxed">
+              <p>
+                <b>I.</b> La Cámara de Senadores estará conformada por un total de 36 miembros.
+              </p>
+              <p>
+                <b>II.</b> En cada departamento se eligen 4 Senadores en circunscripción departamental, por votación universal, directa y secreta.
+              </p>
+              <p>
+                <b>III.</b> La asignación de los escaños de Senadores en cada departamento se hará mediante el sistema proporcional, de acuerdo a la Ley.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-start">
+          <div class="w-full max-w-[500px] rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src="/Mandato Constitucional Senado/6.png" 
+              alt="Mandato Constitucional Senado"
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
 pages\marco-normativo.vue 
 ================================= 
  
@@ -887,26 +2684,32 @@ const paginaSiguiente = () => {
 </style>
  
 ================================= 
-pages\mision.vue 
+pages\mision-vision-valores-principios.vue 
 ================================= 
  
+<!-- pages/mision-vision-valores.vue -->
 <template>
   <div class="min-h-screen bg-white py-12">
     <div class="mx-auto w-[85%]">
       <!-- Título -->
       <div class="mb-12">
         <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          📜 Institucional
+          Institucional
         </div>
         <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          Misión
+          Misión, Visión, <span class="text-senado-gold-dark">Valores y Principios</span>
         </h1>
         <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
       </div>
 
       <!-- Contenido -->
-      <div class="max-w-4xl mx-auto">
+      <div class="max-w-5xl mx-auto space-y-8">
+        
+        <!-- Misión -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="flex items-center gap-3 mb-6">
+            <h2 class="text-[2.5vw] font-bold text-senado-primary">Misión</h2>
+          </div>
           <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
             <p class="text-xl font-semibold text-senado-primary">
               “El horizonte estratégico del Estado Plurinacional es el Vivir Bien como modelo civilizatorio alternativo al capitalismo y al colonialismo; la legislación y fiscalización democrática y participativa nos permitirá consolidar la arquitectura de nuestro nuevo Estado al conmemorar los 200 años de fundación de la Patria.”
@@ -917,325 +2720,11 @@ pages\mision.vue
           </div>
         </div>
 
-        <!-- Cita destacada -->
-        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
-          <p class="text-gray-600 text-sm italic">
-            "La Cámara de Senadores, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera."
-          </p>
-        </div>
-
-        <!-- Botón volver -->
-        <div class="mt-12 text-center">
-          <NuxtLink 
-            to="/" 
-            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-          >
-            <ClientOnly>
-              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
-              <template #fallback>
-                <span class="text-[1.5vw]">←</span>
-              </template>
-            </ClientOnly>
-            Volver al inicio
-          </NuxtLink>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-// No necesita lógica adicional
-</script>
-<style scoped>
-/* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\quien-me-representa.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[85%]">
-      <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          👥 Tus Senadores
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          ¿Quién me representa?
-        </h1>
-        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
-          Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.
-        </p>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
-      </div>
-
-      <!-- Selector de Departamento -->
-      <div class="max-w-2xl mx-auto mb-12">
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
-          Selecciona tu departamento
-        </label>
-        <select
-          v-model="departamentoSeleccionado"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-transparent text-gray-700 bg-white shadow-sm text-lg"
-          @change="onDepartamentoChange"
-        >
-          <option value="">— Selecciona un departamento —</option>
-          <option
-            v-for="dept in departamentosOrdenados"
-            :key="dept"
-            :value="dept"
-          >
-            {{ dept }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Contenido -->
-      <div v-if="departamentoSeleccionado" class="max-w-5xl mx-auto">
-        <!-- Encabezado del departamento -->
-        <div class="bg-senado-gold-lightest rounded-2xl p-6 mb-8 border border-senado-gold-light">
-          <div class="flex items-center gap-4">
-            <img
-              :src="getMapaDepartamento(departamentoSeleccionado)"
-              :alt="'Mapa de ' + departamentoSeleccionado"
-              class="h-16 w-16 object-contain"
-              @error="(e) => e.target.src = ''"
-            />
-            <div>
-              <h2 class="text-2xl font-bold text-senado-primary">
-                {{ departamentoSeleccionado }}
-              </h2>
-              <p class="text-gray-600">
-                {{ senadoresPorDepartamento.length }} senadores representan a este departamento
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grid de Senadores -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            v-for="senador in senadoresPorDepartamento"
-            :key="senador.id"
-            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            <!-- Cabecera del senador -->
-            <div class="flex items-center gap-4 p-4 border-b border-gray-100">
-              <img
-                :src="senador.foto || defaultAvatar"
-                :alt="senador.name"
-                class="w-16 h-16 rounded-full object-cover border-2"
-                :style="{ borderColor: senador.partyColor || '#ccc' }"
-                @error="(e) => e.target.src = defaultAvatar"
-              />
-              <div class="flex-1 min-w-0">
-                <h3 class="text-lg font-bold text-senado-primary truncate">
-                  {{ senador.name }}
-                </h3>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span
-                    class="text-xs font-medium px-2 py-0.5 rounded"
-                    :style="{
-                      backgroundColor: senador.partyColor + '20',
-                      color: senador.partyColor || '#666'
-                    }"
-                  >
-                    {{ senador.partyShort || senador.party || 'Sin partido' }}
-                  </span>
-                  <span class="text-xs text-gray-500">
-                    Asiento {{ senador.seatNumber }}
-                  </span>
-                </div>
-              </div>
-              <NuxtLink
-                :to="`/senador/${senador.slug}`"
-                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
-              >
-                Ver perfil →
-              </NuxtLink>
-            </div>
-
-            <!-- Detalles -->
-            <div class="p-4 space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-gray-500">Departamento:</span>
-                <span class="font-medium">{{ senador.department }}</span>
-              </div>
-              <div v-if="senador.cargo" class="flex justify-between">
-                <span class="text-gray-500">Cargo:</span>
-                <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
-              </div>
-              <div v-if="senador.comite || senador.comision" class="flex justify-between">
-                <span class="text-gray-500">Comité/Comisión:</span>
-                <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">Estado:</span>
-                <span class="font-medium text-green-600">● Titular</span>
-              </div>
-
-              <!-- Suplente -->
-              <div
-                v-if="senador.suplente && senador.suplente !== 'null'"
-                class="mt-3 pt-3 border-t border-gray-100"
-              >
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="text-gray-500">🔄 Suplente:</span>
-                  <NuxtLink
-                    :to="`/senador/suplente/${senador.slugSuplente}`"
-                    class="font-medium text-senado-primary hover:underline"
-                  >
-                    {{ senador.suplente }}
-                  </NuxtLink>
-                </div>
-              </div>
-              <div v-else class="mt-3 pt-3 border-t border-gray-100">
-                <span class="text-sm text-gray-400">Sin suplente asignado</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sin senadores -->
-        <div v-if="senadoresPorDepartamento.length === 0" class="text-center py-12">
-          <div class="text-4xl mb-4">🔍</div>
-          <p class="text-gray-600 text-lg">No se encontraron senadores para este departamento</p>
-        </div>
-      </div>
-
-      <!-- Estado inicial -->
-      <div v-else class="text-center py-16">
-        <div class="text-6xl mb-6">🗳️</div>
-        <h3 class="text-2xl font-bold text-gray-700 mb-2">Selecciona un departamento</h3>
-        <p class="text-gray-500">Elige tu departamento para conocer a tus representantes en el Senado</p>
-      </div>
-
-      <!-- Botón volver -->
-      <div class="mt-12 text-center">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-        >
-          <ClientOnly>
-            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
-            <template #fallback>
-              <span class="text-[1.5vw]">←</span>
-            </template>
-          </ClientOnly>
-          Volver al inicio
-        </NuxtLink>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { senadores } from '~/data/senadores'
-
-// ========================================== //
-// ESTADO
-// ========================================== //
-const departamentoSeleccionado = ref('')
-const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
-
-// ========================================== //
-// DEPARTAMENTOS
-// ========================================== //
-const departamentos = [
-  'Beni',
-  'Chuquisaca',
-  'Cochabamba',
-  'La Paz',
-  'Oruro',
-  'Pando',
-  'Potosí',
-  'Santa Cruz',
-  'Tarija'
-]
-
-const departamentosOrdenados = computed(() => {
-  return [...departamentos].sort()
-})
-
-// ========================================== //
-// MAPAS POR DEPARTAMENTO
-// ========================================== //
-const getMapaDepartamento = (departamento) => {
-  const mapas = {
-    'Beni': '/mapas/Beni.svg',
-    'Cochabamba': '/mapas/Cochabamba.svg',
-    'La Paz': '/mapas/LaPaz.svg',
-    'Oruro': '/mapas/Oruro.svg',
-    'Pando': '/mapas/Pando.svg',
-    'Potosí': '/mapas/Potosi.svg',
-    'Santa Cruz': '/mapas/SantaCruz.svg',
-    'Chuquisaca': '/mapas/Sucre.svg',
-    'Tarija': '/mapas/TarijaMapa.svg'
-  }
-  return mapas[departamento] || ''
-}
-
-// ========================================== //
-// FILTRAR SENADORES POR DEPARTAMENTO
-// ========================================== //
-const senadoresPorDepartamento = computed(() => {
-  if (!departamentoSeleccionado.value) return []
-
-  return senadores
-    .filter(s => s.department === departamentoSeleccionado.value)
-    .sort((a, b) => a.seatNumber - b.seatNumber)
-})
-
-// ========================================== //
-// MÉTODOS
-// ========================================== //
-const onDepartamentoChange = () => {
-  // Guardar selección en localStorage si quieres persistencia
-  if (process.client) {
-    localStorage.setItem('departamentoSeleccionado', departamentoSeleccionado.value)
-  }
-}
-
-// ========================================== //
-// RESTAURAR SELECCIÓN GUARDADA
-// ========================================== //
-onMounted(() => {
-  if (process.client) {
-    const guardado = localStorage.getItem('departamentoSeleccionado')
-    if (guardado && departamentos.includes(guardado)) {
-      departamentoSeleccionado.value = guardado
-    }
-  }
-})
-</script>
-
-<style scoped>
-/* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\vision.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[85%]">
-      <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          📜 Institucional
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          Visión
-        </h1>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
-      </div>
-
-      <!-- Contenido -->
-      <div class="max-w-4xl mx-auto">
+        <!-- Visión -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="flex items-center gap-3 mb-6">
+            <h2 class="text-[2.5vw] font-bold text-senado-primary">Visión</h2>
+          </div>
           <div class="prose prose-lg text-gray-700 leading-relaxed space-y-6">
             <p>
               Al <strong>2025</strong>, conmemorando los <strong>200 años de fundación de la Patria</strong>, <strong>21 años del Estado Plurinacional</strong>, la Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo <strong>Estado Unitario, Social de Derecho Plurinacional, Comunitario, libre, independiente, soberano, democrático, intercultural, descentralizado con autonomías</strong>, como expresión de la pluralidad democrática, representativa, participativa y comunitaria.
@@ -1246,10 +2735,112 @@ pages\vision.vue
           </div>
         </div>
 
+        <!-- Valores y Principios -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-10">
+          <div class="flex items-center gap-3 mb-6">
+            <h2 class="text-[2.5vw] font-bold text-senado-primary">Valores y Principios</h2>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Valor 1 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🤝</span>
+                <h3 class="font-bold text-senado-primary text-lg">Democracia Participativa</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Fomentamos la participación activa de la ciudadanía en los procesos de toma de decisiones, garantizando que la voz del pueblo sea escuchada y respetada.
+              </p>
+            </div>
+
+            <!-- Valor 2 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">⚖️</span>
+                <h3 class="font-bold text-senado-primary text-lg">Justicia Social</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Promovemos la equidad y la igualdad de oportunidades para todos los bolivianos, trabajando por una sociedad más justa e inclusiva.
+              </p>
+            </div>
+
+            <!-- Valor 3 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🌍</span>
+                <h3 class="font-bold text-senado-primary text-lg">Plurinacionalidad</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Reconocemos y valoramos la diversidad cultural de los pueblos y naciones que conforman el Estado Plurinacional de Bolivia, respetando sus tradiciones y cosmovisiones.
+              </p>
+            </div>
+
+            <!-- Valor 4 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🔍</span>
+                <h3 class="font-bold text-senado-primary text-lg">Transparencia</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Actuamos con honestidad y claridad en la gestión pública, rindiendo cuentas a la ciudadanía y garantizando el acceso a la información.
+              </p>
+            </div>
+
+            <!-- Valor 5 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">💬</span>
+                <h3 class="font-bold text-senado-primary text-lg">Deliberación Democrática</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Fomentamos el diálogo respetuoso y la discusión abierta de ideas en el análisis de los proyectos de ley, buscando consensos que beneficien a la sociedad.
+              </p>
+            </div>
+
+            <!-- Valor 6 -->
+            <div class="bg-senado-gold-lightest rounded-xl p-6 border border-senado-gold/20 hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🏛️</span>
+                <h3 class="font-bold text-senado-primary text-lg">Soberanía Popular</h3>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Reconocemos que el poder reside en el pueblo, y nuestra labor es ejercer la representación democrática con responsabilidad y compromiso social.
+              </p>
+            </div>
+          </div>
+
+          <!-- Principios adicionales -->
+          <div class="mt-8 bg-senado-primary/5 rounded-xl p-6 border border-senado-primary/10">
+            <h4 class="font-bold text-senado-primary text-base mb-3 flex items-center gap-2">
+              <span>📋</span> Principios Fundamentales
+            </h4>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Vivir Bien como modelo civilizatorio
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Descolonización y despatriarcalización
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Interculturalidad y pluralismo
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Participación ciudadana
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Fiscalización propositiva
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-senado-gold-dark">•</span> Vocación de servicio al pueblo
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <!-- Cita destacada -->
-        <div class="mt-8 bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
+        <div class="bg-senado-gold-lightest rounded-2xl p-8 border-l-4 border-senado-primary">
           <p class="text-gray-600 text-sm italic">
-            "La Cámara de Senadores se consolida como uno de los pilares fundamentales del nuevo Estado Plurinacional, ejerciendo el principio deliberativo en la discusión y análisis de los proyectos de ley."
+            "La Cámara de Senadores, como expresión democrática y soberana del pueblo, institucionalizará el acompañamiento y presencia de las y los senadores donde el pueblo lo requiera, consolidando los valores del Estado Plurinacional."
           </p>
         </div>
 
@@ -1279,701 +2870,4 @@ pages\vision.vue
 
 <style scoped>
 /* Estilos específicos si son necesarios */
-</style> 
-================================= 
-pages\visita-senado.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[90%] max-w-7xl">
-      
-      <!-- Título -->
-      <div class="mb-12 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-senado-primary">
-          Visitas <span class="text-[#8f1522]">Guiadas</span>
-        </h1>
-        <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
-        <p class="text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
-          Conoce el Palacio Legislativo y la historia del Senado de Bolivia.
-          Reserva tu visita guiada gratuita.
-        </p>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- DESCRIPCIÓN DE LA VISITA                   -->
-      <!-- ========================================== -->
-      <div class="bg-[#f8f6f0] rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
-        <p class="text-gray-700 text-center leading-relaxed">
-          Las visitas guiadas al edificio legislativo tienen por objetivo generar un espacio de acercamiento al 
-          <strong>Poder Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
-          representantes del pueblo en la confección de las leyes que nos permiten ampliar nuestros derechos 
-          y fortalecer la democracia.
-        </p>
-        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p class="text-sm text-yellow-800 flex items-center gap-2">
-            <span class="text-lg">⚠️</span>
-            Para la asistencia se deberá cumplir con todas las medidas de prevención del Covid-19: 
-            uso correcto del tapabocas, mantener la distancia, uso de alcohol en gel, respeto de las indicaciones.
-          </p>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- GRID: INFORMACIÓN + FORMULARIO             -->
-      <!-- ========================================== -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        
-        <!-- ========================================== -->
-        <!-- COLUMNA IZQUIERDA: INFORMACIÓN            -->
-        <!-- ========================================== -->
-        <div>
-          <!-- Visitas Guiadas -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              Visitas Guiadas
-            </h3>
-            <div class="space-y-4 text-gray-700">
-              <div class="bg-white p-4 rounded-lg border border-gray-200">
-                <h4 class="font-semibold text-senado-primary mb-2">SISTEMA DE SOLICITUD</h4>
-                <p class="text-sm">
-                  Para brindarles un mejor servicio, les pedimos que envíen su solicitud con 
-                  <strong>15 días de anticipación</strong>, que sean puntuales en su cita y que 
-                  atiendan las normas de conducta previstas en el Reglamento del Senado.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Requisitos -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              REQUISITOS PARA EL INGRESO
-            </h3>
-            <p class="text-sm text-gray-600 mb-3">
-              Las personas que ingresen al Congreso Nacional en su calidad de visitantes deben cumplir 
-              con las siguientes normas:
-            </p>
-            <ul class="space-y-2 text-gray-700">
-              <li class="flex items-start gap-3">
-                <span class="text-senado-primary font-bold">•</span>
-                <span>Completar el <strong>Formulario de Registro</strong></span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-senado-primary font-bold">•</span>
-                <span>Presentar <strong>cédula de identidad</strong> el día de la visita</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-senado-primary font-bold">•</span>
-                <span>Respetar las <strong>normas de conducta</strong> del Reglamento del Senado</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="text-senado-primary font-bold">•</span>
-                <span>Uso obligatorio de <strong>tapabocas</strong> y medidas de bioseguridad</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Horarios -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Horarios de Visita
-            </h3>
-            <div class="space-y-2 text-gray-700">
-              <div class="flex justify-between py-2 border-b border-gray-200">
-                <span class="font-medium">Lunes a Viernes</span>
-                <span>09:00 - 12:00 / 14:00 - 17:00</span>
-              </div>
-              <div class="flex justify-between py-2">
-                <span class="font-medium">Sábados y Domingos</span>
-                <span class="text-gray-400">Cerrado</span>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
-
-        <!-- ========================================== -->
-        <!-- COLUMNA DERECHA: FORMULARIO DE RESERVA    -->
-        <!-- ========================================== -->
-        <div>
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 sticky top-8">
-            <h2 class="text-2xl font-bold text-senado-primary mb-2">
-              Formulario de Registro
-            </h2>
-            <p class="text-gray-500 text-sm mb-6">
-              Completa el formulario y te confirmaremos tu visita guiada.
-            </p>
-
-            <form @submit.prevent="enviarReserva" class="space-y-5">
-              <!-- Institución o Entidad -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Institución o Entidad <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.institucion"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: Colegio Nacional de Bolivia"
-                />
-              </div>
-
-              <!-- Fecha de visita -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Fecha de visita <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.fecha"
-                  type="date"
-                  required
-                  :min="fechaMinima"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                />
-                <p class="text-xs text-gray-400 mt-1">Se requiere solicitud con 15 días de anticipación</p>
-              </div>
-
-              <!-- Lugar de Procedencia -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Lugar de Procedencia <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.procedencia"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: La Paz, Bolivia"
-                />
-              </div>
-
-              <!-- Cantidad de visitantes -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Cantidad de visitantes <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model.number="form.personas"
-                  type="number"
-                  required
-                  min="1"
-                  max="25"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: 10"
-                />
-                <p class="text-xs text-gray-400 mt-1">Máximo 25 personas por grupo</p>
-              </div>
-
-              <!-- Nombre del coordinador -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre del coordinador <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.coordinador"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Nombre completo del responsable"
-                />
-              </div>
-
-              <!-- Correo electrónico -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Correo electrónico <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="correo@ejemplo.com"
-                />
-              </div>
-
-              <!-- Teléfono -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Teléfono / Celular <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.telefono"
-                  type="tel"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: 78945612"
-                />
-              </div>
-
-              <!-- Mensaje adicional -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Mensaje adicional <span class="text-gray-400 text-xs">(opcional)</span>
-                </label>
-                <textarea
-                  v-model="form.mensaje"
-                  rows="3"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition resize-none"
-                  placeholder="Ej: Somos un grupo de estudiantes de la UMSA, nos gustaría conocer el hemiciclo..."
-                ></textarea>
-              </div>
-
-              <!-- Aceptar términos -->
-              <div class="flex items-start gap-3">
-                <input
-                  v-model="form.aceptaTerminos"
-                  type="checkbox"
-                  required
-                  class="mt-1 w-4 h-4 text-senado-primary border-gray-300 rounded focus:ring-senado-primary"
-                />
-                <label class="text-sm text-gray-600">
-                  Acepto las <a href="#" class="text-senado-primary hover:underline">normas de conducta</a> y 
-                  <a href="#" class="text-senado-primary hover:underline">medidas de bioseguridad</a>
-                  <span class="text-red-500">*</span>
-                </label>
-              </div>
-
-              <!-- Botón enviar -->
-              <button
-                type="submit"
-                :disabled="enviando"
-                class="w-full py-3 bg-[#611717] text-white rounded-lg font-semibold hover:bg-[#3a060d] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <span v-if="enviando" class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                {{ enviando ? 'Enviando...' : 'Solicitar Visita' }}
-              </button>
-            </form>
-
-            <!-- Mensaje de éxito -->
-            <div v-if="exito" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div class="flex items-center gap-3">
-                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p class="font-medium text-green-800">¡Solicitud enviada con éxito!</p>
-                  <p class="text-sm text-green-700">Te contactaremos para confirmar tu visita.</p>
-                </div>
-              </div>
-              <button 
-                @click="resetearFormulario"
-                class="mt-3 text-sm text-green-700 hover:text-green-900 font-medium"
-              >
-                → Hacer otra solicitud
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Botón volver -->
-      <div class="text-center mt-12">
-        <NuxtLink 
-          to="/" 
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Volver al inicio
-        </NuxtLink>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed } from 'vue'
-
-// ============================================
-// ESTADO DEL FORMULARIO
-// ============================================
-const form = ref({
-  institucion: '',
-  fecha: '',
-  procedencia: '',
-  personas: 1,
-  coordinador: '',
-  email: '',
-  telefono: '',
-  mensaje: '',
-  aceptaTerminos: false
-})
-
-const enviando = ref(false)
-const exito = ref(false)
-
-// Fecha mínima (15 días después)
-const fechaMinima = computed(() => {
-  const fecha = new Date()
-  fecha.setDate(fecha.getDate() + 15)
-  return fecha.toISOString().split('T')[0]
-})
-
-// ============================================
-// ENVIAR RESERVA
-// ============================================
-const enviarReserva = () => {
-  // Validar que todos los campos requeridos estén llenos
-  if (!form.value.aceptaTerminos) {
-    alert('Debes aceptar las normas de conducta y medidas de bioseguridad.')
-    return
-  }
-
-  enviando.value = true
-  
-  // Simular envío al backend
-  setTimeout(() => {
-    enviando.value = false
-    exito.value = true
-    
-    // Aquí iría la llamada a la API real:
-    // const response = await fetch('/api/visitas', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(form.value)
-    // })
-    
-    console.log('📋 Solicitud de visita enviada:', form.value)
-  }, 1500)
-}
-
-const resetearFormulario = () => {
-  form.value = {
-    institucion: '',
-    fecha: '',
-    procedencia: '',
-    personas: 1,
-    coordinador: '',
-    email: '',
-    telefono: '',
-    mensaje: '',
-    aceptaTerminos: false
-  }
-  exito.value = false
-}
-</script> 
-================================= 
-pages\noticias\index.vue 
-================================= 
- 
-<template>
-  <div class="min-h-screen">
-    <!-- Fondo fijo -->
-    
-    <div class="container-vw">
-
-      <!-- Título -->
-      <div class="text-center pb-[3vw] pt-[3vw]">
-        <h1 class="text-[5vw] font-bolddrop-shadow-lg tracking-wide">
-          Todas las <span class="text-senado-primary-light">Noticias</span>
-        </h1>
-        <div class="w-[6vw] h-[0.2vw] bg-senado-primary-light mx-auto mt-[1vw]"></div>
-        <p class="text-senado-primary drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
-          Explora todas las noticias del Senado de Bolivia
-        </p>
-      </div>
-
-      <!-- Estado de carga -->
-      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
-        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
-        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
-      </div>
-
-      <!-- Estado de error -->
-      <div v-else-if="error" class="text-center py-[10vw]">
-        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
-        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
-          Reintentar
-        </button>
-      </div>
-
-      <!-- Grid de noticias -->
-      <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
-        <div class="grid grid-cols-4 gap-[1.5vw]">
-          <div 
-            v-for="noticia in noticiasPaginadas" 
-            :key="noticia._id || noticia.id"
-            class="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] relative"
-            @click="verNoticia(noticia)"
-          >
-            <div class="relative aspect-[4/5] w-full">
-              <img 
-                :src="noticia.featuredImage?.url || noticia.imagen || '/images/default-news.jpg'" 
-                :alt="limpiarAsteriscos(noticia.titulo || noticia.title)"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              
-              <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/70 to-transparent"></div>
-              
-              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
-                <p class="text-white/90 text-[0.7em] mb-[0.3em] text-shadow-sm font-[600]">
-                  {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
-                </p>
-                
-                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
-                  {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
-                </h3>
-                
-                <div class="mt-[0.8em] flex justify-end">
-                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
-                    Leer más
-                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sin resultados -->
-      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
-        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
-        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
-          Reintentar
-        </button>
-      </div>
-
-      <!-- 🔥 PAGINACIÓN CON COLORES SÓLIDOS -->
-      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
-        <button 
-          @click="cambiarPagina(paginaActual - 1)" 
-          :disabled="paginaActual === 1" 
-          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
-        >
-          Anterior
-        </button>
-        
-        <button 
-          v-for="p in paginasMostradas" 
-          :key="p" 
-          @click="cambiarPagina(p)" 
-          :class="[
-            'w-[3vw] h-[3vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold shadow-md',
-            paginaActual === p 
-              ? 'bg-[#8f1522] text-white hover:bg-[#6b111b] border-2 border-[#611717]' 
-              : 'bg-white text-[#611717] hover:bg-[#611717] hover:text-white'
-          ]"
-        >
-          {{ p }}
-        </button>
-        
-        <button 
-          @click="cambiarPagina(paginaActual + 1)" 
-          :disabled="paginaActual === totalPaginas" 
-          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
-        >
-          Siguiente
-        </button>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-
-definePageMeta({ layout: 'default' })
-
-const router = useRouter()
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
-
-const todasLasNoticias = ref([])
-const loading = ref(false)
-const error = ref(null)
-const paginaActual = ref(1)
-const itemsPorPagina = ref(12)
-
-const limpiarAsteriscos = (texto) => {
-  if (!texto) return ''
-  return texto.replace(/\*/g, '')
-}
-
-const formatearFecha = (fecha) => {
-  if (!fecha) return ''
-  return new Date(fecha).toLocaleDateString('es-ES', { 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric' 
-  })
-}
-
-const noticiasPaginadas = computed(() => {
-  const start = (paginaActual.value - 1) * itemsPorPagina.value
-  const end = start + itemsPorPagina.value
-  return todasLasNoticias.value.slice(start, end)
-})
-
-const totalPaginas = computed(() => {
-  return Math.ceil(todasLasNoticias.value.length / itemsPorPagina.value)
-})
-
-const paginasMostradas = computed(() => {
-  const total = totalPaginas.value
-  const actual = paginaActual.value
-  const rango = 5
-  
-  let start = Math.max(1, actual - Math.floor(rango / 2))
-  let end = Math.min(total, start + rango - 1)
-  
-  if (end - start + 1 < rango) {
-    start = Math.max(1, end - rango + 1)
-  }
-  
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
-})
-
-const cambiarPagina = (pagina) => {
-  if (pagina >= 1 && pagina <= totalPaginas.value) {
-    paginaActual.value = pagina
-    setTimeout(forceScrollToTop, 100)
-  }
-}
-
-const forceScrollToTop = () => {
-  if (process.client) {
-    window.scrollTo(0, 0)
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-  }
-}
-
-const verNoticia = (noticia) => {
-  const slug = noticia.slug || noticia._id
-  if (slug) {
-    router.push(`/noticias/${slug}`)
-  }
-}
-
-const fetchTodasLasNoticias = async () => {
-  loading.value = true
-  error.value = null
-  
-  try {
-    const response = await fetch(`${API_BASE_URL}/content?limit=100`)
-    
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`)
-    }
-    
-    const result = await response.json()
-    
-    if (result.success && result.data?.contents) {
-      todasLasNoticias.value = result.data.contents.sort((a, b) => {
-        const dateA = new Date(a.publishedAt || a.createdAt)
-        const dateB = new Date(b.publishedAt || b.createdAt)
-        return dateB - dateA
-      })
-    } else {
-      todasLasNoticias.value = []
-    }
-  } catch (err) {
-    console.error('Error fetching noticias:', err)
-    error.value = err.message || 'Error al cargar las noticias'
-    todasLasNoticias.value = []
-  } finally {
-    loading.value = false
-  }
-}
-
-const recargar = async () => {
-  await fetchTodasLasNoticias()
-  forceScrollToTop()
-}
-
-useHead({
-  title: 'Todas las Noticias - Senado Bolivia',
-  meta: [
-    { name: 'description', content: 'Explora todas las noticias del Senado de Bolivia.' },
-    { property: 'og:title', content: 'Todas las Noticias - Senado Bolivia' },
-    { property: 'og:description', content: 'Explora todas las noticias del Senado de Bolivia.' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:site_name', content: 'Senado de Bolivia' },
-    { name: 'twitter:card', content: 'summary_large_image' }
-  ]
-})
-
-onMounted(async () => {
-  await fetchTodasLasNoticias()
-  await nextTick()
-  forceScrollToTop()
-})
-</script>
-
-<style scoped>
-.container-vw {
-  width: 90vw;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2vw;
-  position: relative;
-  z-index: 10;
-}
-
-
-
-
-.min-h-screen {
-  background: rgba(250, 250, 250, 1);
-  min-height: 100vh;
-}
-
-.grid-cols-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5vw;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.aspect-\[4\/5\] {
-  aspect-ratio: 4 / 5;
-}
-</style>
-
-<style>
-html, body {
-  background: transparent !important;
-  margin: 0;
-  padding: 0;
-}
-
-#__nuxt,
-#__layout,
-#__layout > div,
-#__nuxt > div {
-  background: transparent !important;
-}
-
-
-
-footer {
-  position: relative;
-  z-index: 20 !important;
-  background: #ffffff !important;
-}
 </style>

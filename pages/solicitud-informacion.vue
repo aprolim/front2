@@ -245,7 +245,7 @@
       </section>
 
       <!-- Ejemplo de Solicitud -->
-      <section class="mb-[3vw]">
+      <!-- <section class="mb-[3vw]">
         <h2 class="font-bold text-senado-primary flex items-center gap-[0.8vw]" style="font-size: 2.2vw; margin-bottom: 1.5vw;">
           <Icon name="mdi:format-list-bulleted" style="font-size: 2.8vw;" />
           Ejemplo de Solicitud
@@ -283,7 +283,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
 
       <!-- Preguntas Frecuentes -->
       <section class="mb-[3vw]">

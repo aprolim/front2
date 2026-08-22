@@ -41,7 +41,7 @@
 
     <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2vw 0;">
       <!-- Tabs de navegación -->
-      <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 0.8vw; margin-bottom: 1.5vw;">
+      <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 0.8vw; margin-bottom: 1.5vw;">
         <button
           v-for="tab in tabs"
           :key="tab.key"
@@ -232,11 +232,11 @@
           <span class="font-semibold text-gray-700" style="font-size: 0.7vw;">Tipos de Actividades:</span>
           <span class="flex items-center" style="gap: 0.4vw;">
             <span class="rounded-full" style="width: 0.7vw; height: 0.7vw; background-color: #3b82f6;"></span>
-            <span style="font-size: 0.6vw; color: #4b5563;">Relevamientos</span>
+            <span style="font-size: 0.6vw; color: #4b5563;">Relevamientos de Información</span>
           </span>
           <span class="flex items-center" style="gap: 0.4vw;">
             <span class="rounded-full" style="width: 0.7vw; height: 0.7vw; background-color: #22c55e;"></span>
-            <span style="font-size: 0.6vw; color: #4b5563;">Seguimientos</span>
+            <span style="font-size: 0.6vw; color: #4b5563;">Informes de Seguimientos</span>
           </span>
           <span class="flex items-center ml-auto" style="gap: 0.3vw;">
             <span style="font-size: 0.55vw; color: #9ca3af;">💡 Haz clic en cualquier tarjeta para ver el PDF</span>
@@ -254,8 +254,8 @@ export default {
     return {
       tabActivo: 'relevamientos',
       tabs: [
-        { key: 'relevamientos', nombre: 'Relevamientos', icono: 'mdi:clipboard-search' },
-        { key: 'seguimientos', nombre: 'Seguimientos', icono: 'mdi:file-check' }
+        { key: 'relevamientos', nombre: 'Relevamientos de Información', icono: 'mdi:clipboard-search' },
+        { key: 'seguimientos', nombre: 'Informes de Seguimientos', icono: 'mdi:file-check' }
       ],
       actividades: {
         relevamientos: [
