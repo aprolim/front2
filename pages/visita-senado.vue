@@ -1,93 +1,64 @@
 <template>
-  <div class="min-h-screen bg-white py-12">
-    <div class="mx-auto w-[90%] max-w-7xl">
+  <div class="min-h-screen bg-white py-[2vw]">
+    <div class="mx-auto w-[85%] max-w-[90vw]">
       
-      <!-- Título -->
-      <div class="mb-12 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-senado-primary">
+      <!-- ========================================== -->
+      <!-- TÍTULO                                    -->
+      <!-- ========================================== -->
+      <div class="mb-[3vw] text-center">
+        <h1 class="text-[4vw] md:text-[4.5vw] font-bold text-senado-primary">
           Visitas <span class="text-[#8f1522]">Guiadas</span>
         </h1>
-        <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
-        <p class="text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
+        <div class="w-[6vw] h-[0.3vw] bg-[#611717] mx-auto mt-[1vw] rounded-full"></div>
+        <p class="text-[1.2vw] text-gray-600 mt-[1.5vw] max-w-[60vw] mx-auto">
           Conoce el Palacio Legislativo y la historia del Senado de Bolivia.
-          Reserva tu visita guiada gratuita.
+          Reserva tu visita guiada gratuita a través de nuestra plataforma digital.
         </p>
       </div>
 
       <!-- ========================================== -->
-      <!-- DESCRIPCIÓN DE LA VISITA                   -->
+      <!-- DESCRIPCIÓN GENERAL                        -->
       <!-- ========================================== -->
-      <div class="bg-[#f8f6f0] rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
-        <p class="text-gray-700 text-center leading-relaxed">
+      <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw] mb-[2vw] max-w-[80vw] mx-auto">
+        <p class="text-[1vw] text-gray-700 leading-relaxed text-center">
           Las visitas guiadas al edificio legislativo tienen por objetivo generar un espacio de acercamiento al 
           <strong>Poder Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
           representantes del pueblo en la confección de las leyes que nos permiten ampliar nuestros derechos 
           y fortalecer la democracia.
         </p>
-        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p class="text-sm text-yellow-800 flex items-center gap-2">
-            <span class="text-lg">⚠️</span>
-            Para la asistencia se deberá cumplir con todas las medidas de prevención del Covid-19: 
-            uso correcto del tapabocas, mantener la distancia, uso de alcohol en gel, respeto de las indicaciones.
-          </p>
-        </div>
       </div>
 
       <!-- ========================================== -->
-      <!-- GRID: INFORMACIÓN + FORMULARIO             -->
+      <!-- CONTENIDO PRINCIPAL - UNA COLUMNA         -->
       <!-- ========================================== -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div class="max-w-[70vw] mx-auto space-y-[2vw]">
         
         <!-- ========================================== -->
-        <!-- COLUMNA IZQUIERDA: INFORMACIÓN            -->
+        <!-- REQUISITOS Y HORARIOS (2 columnas internas) -->
         <!-- ========================================== -->
-        <div>
-          <!-- Visitas Guiadas -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              Visitas Guiadas
-            </h3>
-            <div class="space-y-4 text-gray-700">
-              <div class="bg-white p-4 rounded-lg border border-gray-200">
-                <h4 class="font-semibold text-senado-primary mb-2">SISTEMA DE SOLICITUD</h4>
-                <p class="text-sm">
-                  Para brindarles un mejor servicio, les pedimos que envíen su solicitud con 
-                  <strong>15 días de anticipación</strong>, que sean puntuales en su cita y que 
-                  atiendan las normas de conducta previstas en el Reglamento del Senado.
-                </p>
-              </div>
-            </div>
-          </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-[2vw]">
           <!-- Requisitos -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw]">
+            <h3 class="text-[1.2vw] font-bold text-senado-primary mb-[1vw] flex items-center gap-[0.5vw]">
+              <svg class="w-[1.5vw] h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               REQUISITOS PARA EL INGRESO
             </h3>
-            <p class="text-sm text-gray-600 mb-3">
-              Las personas que ingresen al Congreso Nacional en su calidad de visitantes deben cumplir 
-              con las siguientes normas:
-            </p>
-            <ul class="space-y-2 text-gray-700">
-              <li class="flex items-start gap-3">
+            <ul class="space-y-[0.6vw] text-[1vw] text-gray-700">
+              <li class="flex items-start gap-[0.8vw]">
                 <span class="text-senado-primary font-bold">•</span>
-                <span>Completar el <strong>Formulario de Registro</strong></span>
+                <span>Completar la <strong>solicitud en la plataforma digital</strong></span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-[0.8vw]">
                 <span class="text-senado-primary font-bold">•</span>
                 <span>Presentar <strong>cédula de identidad</strong> el día de la visita</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-[0.8vw]">
                 <span class="text-senado-primary font-bold">•</span>
                 <span>Respetar las <strong>normas de conducta</strong> del Reglamento del Senado</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-[0.8vw]">
                 <span class="text-senado-primary font-bold">•</span>
                 <span>Uso obligatorio de <strong>tapabocas</strong> y medidas de bioseguridad</span>
               </li>
@@ -95,288 +66,473 @@
           </div>
 
           <!-- Horarios -->
-          <div class="bg-[#f8f6f0] rounded-xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw]">
+            <h3 class="text-[1.2vw] font-bold text-senado-primary mb-[1vw] flex items-center gap-[0.5vw]">
+              <svg class="w-[1.5vw] h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Horarios de Visita
             </h3>
-            <div class="space-y-2 text-gray-700">
-              <div class="flex justify-between py-2 border-b border-gray-200">
+            <div class="space-y-[0.5vw] text-[1vw] text-gray-700">
+              <div class="flex justify-between py-[0.5vw] border-b border-gray-200">
                 <span class="font-medium">Lunes a Viernes</span>
                 <span>09:00 - 12:00 / 14:00 - 17:00</span>
               </div>
-              <div class="flex justify-between py-2">
+              <div class="flex justify-between py-[0.5vw]">
                 <span class="font-medium">Sábados y Domingos</span>
                 <span class="text-gray-400">Cerrado</span>
               </div>
             </div>
           </div>
-
-
         </div>
 
         <!-- ========================================== -->
-        <!-- COLUMNA DERECHA: FORMULARIO DE RESERVA    -->
+        <!-- ADVERTENCIA COVID                         -->
         <!-- ========================================== -->
-        <div>
-          <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 sticky top-8">
-            <h2 class="text-2xl font-bold text-senado-primary mb-2">
-              Formulario de Registro
-            </h2>
-            <p class="text-gray-500 text-sm mb-6">
-              Completa el formulario y te confirmaremos tu visita guiada.
+        <div class="p-[1.2vw] bg-yellow-50 border border-yellow-200 rounded-[0.8vw]">
+          <p class="text-[0.9vw] text-yellow-800 flex items-center gap-[0.5vw] justify-center">
+            <span class="text-[1.2vw]">⚠️</span>
+            Para la asistencia se deberá cumplir con todas las medidas de prevención del Covid-19: 
+            uso correcto del tapabocas, mantener la distancia, uso de alcohol en gel, respeto de las indicaciones.
+          </p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TÍTULO DEL PROCESO                         -->
+        <!-- ========================================== -->
+        <div class="text-center mt-[2vw]">
+          <h2 class="text-[2.5vw] font-bold text-senado-primary">
+            Proceso de Solicitud
+          </h2>
+          <p class="text-[1vw] text-gray-500 mt-[0.5vw]">
+            Sigue estos pasos para solicitar tu visita guiada a través de la Plataforma Digital
+          </p>
+          <div class="w-[4vw] h-[0.2vw] bg-[#611717] mx-auto mt-[0.8vw] rounded-full"></div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PASOS DEL PROCESO - UNA COLUMNA           -->
+        <!-- ========================================== -->
+        <div class="space-y-[3vw]">
+          <!-- Paso 1 -->
+          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
+            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
+              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">1</div>
+              <h3 class="text-[1.5vw] font-bold text-senado-primary">Ingresa a la Plataforma Digital</h3>
+            </div>
+            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+              Accede al sistema a través del siguiente enlace. Si no tienes cuenta, deberás registrarte.
             </p>
-
-            <form @submit.prevent="enviarReserva" class="space-y-5">
-              <!-- Institución o Entidad -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Institución o Entidad <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.institucion"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: Colegio Nacional de Bolivia"
+            <div class="ml-[4.5vw]">
+              <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso1.webp', 'Paso 1: Ingresar a la plataforma digital')">
+                <img 
+                  src="/images/visitas/paso1.webp" 
+                  alt="Paso 1: Ingresar a la plataforma digital"
+                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  loading="lazy"
                 />
-              </div>
-
-              <!-- Fecha de visita -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Fecha de visita <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.fecha"
-                  type="date"
-                  required
-                  :min="fechaMinima"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                />
-                <p class="text-xs text-gray-400 mt-1">Se requiere solicitud con 15 días de anticipación</p>
-              </div>
-
-              <!-- Lugar de Procedencia -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Lugar de Procedencia <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.procedencia"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: La Paz, Bolivia"
-                />
-              </div>
-
-              <!-- Cantidad de visitantes -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Cantidad de visitantes <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model.number="form.personas"
-                  type="number"
-                  required
-                  min="1"
-                  max="25"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: 10"
-                />
-                <p class="text-xs text-gray-400 mt-1">Máximo 25 personas por grupo</p>
-              </div>
-
-              <!-- Nombre del coordinador -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre del coordinador <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.coordinador"
-                  type="text"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Nombre completo del responsable"
-                />
-              </div>
-
-              <!-- Correo electrónico -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Correo electrónico <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="correo@ejemplo.com"
-                />
-              </div>
-
-              <!-- Teléfono -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Teléfono / Celular <span class="text-red-500">*</span>
-                </label>
-                <input
-                  v-model="form.telefono"
-                  type="tel"
-                  required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition"
-                  placeholder="Ej: 78945612"
-                />
-              </div>
-
-              <!-- Mensaje adicional -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  Mensaje adicional <span class="text-gray-400 text-xs">(opcional)</span>
-                </label>
-                <textarea
-                  v-model="form.mensaje"
-                  rows="3"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-senado-primary focus:border-senado-primary transition resize-none"
-                  placeholder="Ej: Somos un grupo de estudiantes de la UMSA, nos gustaría conocer el hemiciclo..."
-                ></textarea>
-              </div>
-
-              <!-- Aceptar términos -->
-              <div class="flex items-start gap-3">
-                <input
-                  v-model="form.aceptaTerminos"
-                  type="checkbox"
-                  required
-                  class="mt-1 w-4 h-4 text-senado-primary border-gray-300 rounded focus:ring-senado-primary"
-                />
-                <label class="text-sm text-gray-600">
-                  Acepto las <a href="#" class="text-senado-primary hover:underline">normas de conducta</a> y 
-                  <a href="#" class="text-senado-primary hover:underline">medidas de bioseguridad</a>
-                  <span class="text-red-500">*</span>
-                </label>
-              </div>
-
-              <!-- Botón enviar -->
-              <button
-                type="submit"
-                :disabled="enviando"
-                class="w-full py-3 bg-[#611717] text-white rounded-lg font-semibold hover:bg-[#3a060d] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <span v-if="enviando" class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                {{ enviando ? 'Enviando...' : 'Solicitar Visita' }}
-              </button>
-            </form>
-
-            <!-- Mensaje de éxito -->
-            <div v-if="exito" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div class="flex items-center gap-3">
-                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p class="font-medium text-green-800">¡Solicitud enviada con éxito!</p>
-                  <p class="text-sm text-green-700">Te contactaremos para confirmar tu visita.</p>
+                <!-- Overlay de zoom -->
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
+                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                    </svg>
+                    <span>Click para ampliar</span>
+                  </div>
+                </div>
+                <!-- Badge de zoom siempre visible -->
+                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
+                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                  </svg>
+                  <span>Ampliar</span>
                 </div>
               </div>
-              <button 
-                @click="resetearFormulario"
-                class="mt-3 text-sm text-green-700 hover:text-green-900 font-medium"
+              <a 
+                href="https://systemdemo.es/auth/login-external" 
+                target="_blank"
+                class="inline-flex items-center gap-[0.5vw] mt-[1vw] text-senado-primary hover:underline font-medium text-[1vw]"
               >
-                → Hacer otra solicitud
-              </button>
+                <span>Ir a la Plataforma</span>
+                <svg class="w-[1vw] h-[1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
+            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
+              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">2</div>
+              <h3 class="text-[1.5vw] font-bold text-senado-primary">Redacta una carta dirigida al Oficial Mayor</h3>
+            </div>
+            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+              Explica el motivo de tu visita guiada. Incluye la fecha deseada, número de visitantes y el nombre de la institución o grupo.
+            </p>
+            <div class="ml-[4.5vw]">
+              <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso2.webp', 'Paso 2: Redactar carta al Oficial Mayor')">
+                <img 
+                  src="/images/visitas/paso2.webp" 
+                  alt="Paso 2: Redactar carta al Oficial Mayor"
+                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
+                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                    </svg>
+                    <span>Click para ampliar</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
+                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                  </svg>
+                  <span>Ampliar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
+            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
+              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">3</div>
+              <h3 class="text-[1.5vw] font-bold text-senado-primary">Adjunta documentos anexos (opcional)</h3>
+            </div>
+            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+              Si tienes documentos adicionales que respalden tu solicitud, puedes adjuntarlos en la plataforma.
+            </p>
+            <div class="ml-[4.5vw]">
+              <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso3.webp', 'Paso 3: Adjuntar documentos anexos')">
+                <img 
+                  src="/images/visitas/paso3.webp" 
+                  alt="Paso 3: Adjuntar documentos anexos"
+                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
+                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                    </svg>
+                    <span>Click para ampliar</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
+                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                  </svg>
+                  <span>Ampliar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
+            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
+              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">4</div>
+              <h3 class="text-[1.5vw] font-bold text-senado-primary">Haz seguimiento a tu solicitud</h3>
+            </div>
+            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+              A través de la misma plataforma, podrás dar seguimiento a tu carta y recibir la respuesta del Oficial Mayor.
+            </p>
+            <div class="ml-[4.5vw]">
+              <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso4.webp', 'Paso 4: Seguimiento de la solicitud')">
+                <img 
+                  src="/images/visitas/paso4.webp" 
+                  alt="Paso 4: Seguimiento de la solicitud"
+                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
+                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                    </svg>
+                    <span>Click para ampliar</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
+                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                  </svg>
+                  <span>Ampliar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BOTÓN PRINCIPAL Y NOTA                     -->
+        <!-- ========================================== -->
+        <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw] mt-[2vw] text-center">
+          <a 
+            href="https://systemdemo.es/auth/login-external" 
+            target="_blank"
+            class="inline-flex items-center justify-center gap-[0.8vw] py-[0.8vw] px-[4vw] bg-[#611717] text-white rounded-[0.6vw] font-semibold hover:bg-[#3a060d] transition text-[1.2vw]"
+          >
+            <span>Iniciar Solicitud en la Plataforma</span>
+            <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <p class="text-[0.8vw] text-gray-400 mt-[0.8vw]">
+            La solicitud debe realizarse con al menos 15 días de anticipación.
+          </p>
+          <div class="mt-[1.5vw] p-[1.2vw] bg-blue-50 border border-blue-200 rounded-[0.8vw]">
+            <div class="flex items-start gap-[0.8vw] justify-center">
+              <svg class="w-[1.2vw] h-[1.2vw] text-blue-500 flex-shrink-0 mt-[0.1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p class="text-[0.9vw] text-blue-700">
+                  <strong>Importante:</strong> Una vez enviada tu solicitud, recibirás una respuesta a través de la misma plataforma. 
+                  El Oficial Mayor te confirmará la fecha y hora de tu visita.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Botón volver -->
-      <div class="text-center mt-12">
+      <!-- ========================================== -->
+      <!-- BOTÓN VOLVER                              -->
+      <!-- ========================================== -->
+      <div class="text-center mt-[3vw]">
         <NuxtLink 
           to="/" 
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          class="inline-flex items-center gap-[0.5vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Volver al inicio
         </NuxtLink>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- LIGHTBOX - ZOOM INTERACTIVO               -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-opacity duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div 
+          v-if="lightboxVisible"
+          class="fixed inset-0 z-[999999] bg-black/90 flex items-center justify-center p-[2vw]"
+          @click="cerrarLightbox"
+        >
+          <div class="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center" @click.stop>
+            <!-- Contenedor de la imagen con zoom -->
+            <div class="relative overflow-hidden rounded-[0.5vw]">
+              <img 
+                ref="lightboxImgRef"
+                :src="lightboxImage" 
+                :alt="lightboxAlt"
+                class="max-w-[85vw] max-h-[80vh] object-contain transition-transform duration-300 ease-out"
+                :style="{ transform: `scale(${zoomLevel})`, cursor: zoomLevel > 1 ? 'grab' : 'default' }"
+                @wheel="manejarZoom"
+                @mousedown="iniciarArrastre"
+                @mousemove="moverArrastre"
+                @mouseup="terminarArrastre"
+                @mouseleave="terminarArrastre"
+              />
+            </div>
+            
+            <!-- Controles -->
+            <div class="absolute bottom-[1vw] left-1/2 -translate-x-1/2 flex items-center gap-[1vw] bg-black/60 rounded-full px-[1.5vw] py-[0.6vw]">
+              <!-- Título -->
+              <span class="text-white text-[0.9vw] font-medium max-w-[30vw] truncate">{{ lightboxAlt }}</span>
+              
+              <div class="w-[0.1vw] h-[1.5vw] bg-white/30"></div>
+              
+              <!-- Botón Zoom Out -->
+              <button 
+                @click="zoomOut"
+                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                title="Alejar"
+              >
+                <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                </svg>
+              </button>
+              
+              <!-- Nivel de zoom -->
+              <span class="text-white text-[0.8vw] font-mono min-w-[3vw] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
+              
+              <!-- Botón Zoom In -->
+              <button 
+                @click="zoomIn"
+                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                title="Acercar"
+              >
+                <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m-3-3h6" />
+                </svg>
+              </button>
+              
+              <div class="w-[0.1vw] h-[1.5vw] bg-white/30"></div>
+              
+              <!-- Botón Restablecer -->
+              <button 
+                @click="resetearZoom"
+                class="text-white/60 hover:text-white transition-colors text-[0.8vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] hover:bg-white/10"
+                title="Restablecer zoom"
+              >
+                Reset
+              </button>
+              
+              <!-- Botón Cerrar -->
+              <button 
+                @click="cerrarLightbox"
+                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                title="Cerrar (ESC)"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 // ============================================
-// ESTADO DEL FORMULARIO
+// LIGHTBOX STATE
 // ============================================
-const form = ref({
-  institucion: '',
-  fecha: '',
-  procedencia: '',
-  personas: 1,
-  coordinador: '',
-  email: '',
-  telefono: '',
-  mensaje: '',
-  aceptaTerminos: false
-})
+const lightboxVisible = ref(false)
+const lightboxImage = ref('')
+const lightboxAlt = ref('')
+const zoomLevel = ref(1)
+const lightboxImgRef = ref(null)
 
-const enviando = ref(false)
-const exito = ref(false)
-
-// Fecha mínima (15 días después)
-const fechaMinima = computed(() => {
-  const fecha = new Date()
-  fecha.setDate(fecha.getDate() + 15)
-  return fecha.toISOString().split('T')[0]
-})
+// Variables para arrastre
+const isDragging = ref(false)
+const dragStartX = ref(0)
+const dragStartY = ref(0)
+const dragOffsetX = ref(0)
+const dragOffsetY = ref(0)
+const currentTranslateX = ref(0)
+const currentTranslateY = ref(0)
 
 // ============================================
-// ENVIAR RESERVA
+// FUNCIONES DEL LIGHTBOX
 // ============================================
-const enviarReserva = () => {
-  // Validar que todos los campos requeridos estén llenos
-  if (!form.value.aceptaTerminos) {
-    alert('Debes aceptar las normas de conducta y medidas de bioseguridad.')
-    return
+const abrirLightbox = (src, alt) => {
+  lightboxImage.value = src
+  lightboxAlt.value = alt
+  lightboxVisible.value = true
+  zoomLevel.value = 1
+  currentTranslateX.value = 0
+  currentTranslateY.value = 0
+  document.body.style.overflow = 'hidden'
+}
+
+const cerrarLightbox = () => {
+  lightboxVisible.value = false
+  document.body.style.overflow = 'auto'
+  zoomLevel.value = 1
+  currentTranslateX.value = 0
+  currentTranslateY.value = 0
+}
+
+// ============================================
+// ZOOM
+// ============================================
+const zoomIn = () => {
+  zoomLevel.value = Math.min(zoomLevel.value + 0.25, 3)
+  actualizarTransformacion()
+}
+
+const zoomOut = () => {
+  zoomLevel.value = Math.max(zoomLevel.value - 0.25, 0.5)
+  actualizarTransformacion()
+}
+
+const resetearZoom = () => {
+  zoomLevel.value = 1
+  currentTranslateX.value = 0
+  currentTranslateY.value = 0
+  actualizarTransformacion()
+}
+
+const manejarZoom = (event) => {
+  event.preventDefault()
+  const delta = event.deltaY > 0 ? -0.15 : 0.15
+  zoomLevel.value = Math.min(Math.max(zoomLevel.value + delta, 0.5), 3)
+  actualizarTransformacion()
+}
+
+const actualizarTransformacion = () => {
+  if (lightboxImgRef.value) {
+    lightboxImgRef.value.style.transform = `scale(${zoomLevel.value}) translate(${currentTranslateX.value}px, ${currentTranslateY.value}px)`
   }
+}
 
-  enviando.value = true
+// ============================================
+// ARRASTRE (para imágenes con zoom)
+// ============================================
+const iniciarArrastre = (event) => {
+  if (zoomLevel.value <= 1) return
+  isDragging.value = true
+  dragStartX.value = event.clientX - dragOffsetX.value
+  dragStartY.value = event.clientY - dragOffsetY.value
+  if (lightboxImgRef.value) {
+    lightboxImgRef.value.style.cursor = 'grabbing'
+  }
+}
+
+const moverArrastre = (event) => {
+  if (!isDragging.value || zoomLevel.value <= 1) return
+  dragOffsetX.value = event.clientX - dragStartX.value
+  dragOffsetY.value = event.clientY - dragStartY.value
   
-  // Simular envío al backend
-  setTimeout(() => {
-    enviando.value = false
-    exito.value = true
-    
-    // Aquí iría la llamada a la API real:
-    // const response = await fetch('/api/visitas', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(form.value)
-    // })
-    
-    console.log('📋 Solicitud de visita enviada:', form.value)
-  }, 1500)
+  // Limitar el arrastre
+  const maxOffset = 200 * zoomLevel.value
+  currentTranslateX.value = Math.min(Math.max(dragOffsetX.value, -maxOffset), maxOffset)
+  currentTranslateY.value = Math.min(Math.max(dragOffsetY.value, -maxOffset), maxOffset)
+  
+  actualizarTransformacion()
 }
 
-const resetearFormulario = () => {
-  form.value = {
-    institucion: '',
-    fecha: '',
-    procedencia: '',
-    personas: 1,
-    coordinador: '',
-    email: '',
-    telefono: '',
-    mensaje: '',
-    aceptaTerminos: false
+const terminarArrastre = () => {
+  isDragging.value = false
+  if (lightboxImgRef.value) {
+    lightboxImgRef.value.style.cursor = zoomLevel.value > 1 ? 'grab' : 'default'
   }
-  exito.value = false
 }
+
+// ============================================
+// TECLADO
+// ============================================
+const handleKeydown = (e) => {
+  if (!lightboxVisible.value) return
+  if (e.key === 'Escape') cerrarLightbox()
+  if (e.key === '+' || e.key === '=') zoomIn()
+  if (e.key === '-') zoomOut()
+  if (e.key === 'r' || e.key === 'R') resetearZoom()
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 </script>

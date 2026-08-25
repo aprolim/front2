@@ -30,32 +30,48 @@
     --senado-dark: #000001;
   }
 
-  /* ✅ FUENTE POR DEFECTO PARA TODO EL SITIO */
+  /* ✅ FUENTE POR DEFECTO PARA TODO EL SITIO - AHORA INTER */
   html {
-    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-family: 'Inter', 'Montserrat', 'Roboto', sans-serif;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* ✅ TÍTULOS CON MONTSERRAT (más pesados) */
+  /* ✅ TÍTULOS CON INTER (más pesados) */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-family: 'Inter', 'Montserrat', 'Roboto', sans-serif;
     font-weight: 700;
   }
 
   /* ✅ TEXTOS ESPECÍFICOS */
   p, span, a, li, button, input, textarea {
-    font-family: 'Montserrat', 'Roboto', sans-serif;
+    font-family: 'Inter', 'Montserrat', 'Roboto', sans-serif;
   }
 }
+
+/* ✅ CLASE PARA FORZAR INTER EN CUALQUIER ELEMENTO */
+.font-inter {
+  font-family: 'Inter', 'Montserrat', 'Roboto', sans-serif !important;
+}
+
+/* ✅ CLASES DE PESO PARA INTER */
+.font-inter-thin { font-family: 'Inter', sans-serif; font-weight: 100; }
+.font-inter-extralight { font-family: 'Inter', sans-serif; font-weight: 200; }
+.font-inter-light { font-family: 'Inter', sans-serif; font-weight: 300; }
+.font-inter-regular { font-family: 'Inter', sans-serif; font-weight: 400; }
+.font-inter-medium { font-family: 'Inter', sans-serif; font-weight: 500; }
+.font-inter-semibold { font-family: 'Inter', sans-serif; font-weight: 600; }
+.font-inter-bold { font-family: 'Inter', sans-serif; font-weight: 700; }
+.font-inter-extrabold { font-family: 'Inter', sans-serif; font-weight: 800; }
+.font-inter-black { font-family: 'Inter', sans-serif; font-weight: 900; }
 
 /* ✅ CLASE PARA FORZAR MONTSERRAT EN CUALQUIER ELEMENTO */
 .font-montserrat {
   font-family: 'Montserrat', 'Roboto', sans-serif !important;
 }
 
-/* ✅ CLASE PARA TÍTULOS CON PESO ESPECÍFICO */
+/* ✅ CLASES DE PESO PARA MONTSERRAT */
 .font-montserrat-light { font-family: 'Montserrat', sans-serif; font-weight: 300; }
 .font-montserrat-regular { font-family: 'Montserrat', sans-serif; font-weight: 400; }
 .font-montserrat-medium { font-family: 'Montserrat', sans-serif; font-weight: 500; }

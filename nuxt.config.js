@@ -26,6 +26,7 @@ export default defineNuxtConfig({
   // ==========================================
   googleFonts: {
     families: {
+      Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       Montserrat: [300, 400, 500, 600, 700, 800, 900],
       Roboto: [300, 400, 500, 700]
     },
@@ -106,7 +107,7 @@ export default defineNuxtConfig({
         },
         { 
           rel: 'stylesheet', 
-          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap' 
+          href: 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap' 
         }
       ]
     }

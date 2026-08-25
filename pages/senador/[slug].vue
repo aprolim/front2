@@ -163,16 +163,8 @@
         :limit="6"
       />
 
-      <!-- LÍNEA CON IMAGEN PEQUEÑA CENTRADA -->
-      <div class="flex items-center justify-center my-[2vw]">
-        <div class="flex-1 h-px bg-[#000]"></div>
-        <div class="flex-shrink-0 mx-[1vw]">
-          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
-        </div>
-        <div class="flex-1 h-px bg-[#000]"></div>
-      </div>
+
       
-      <MandatoFuncionesAntecedentes />
     </div>
 
     <div v-else class="text-center py-[5vw]">

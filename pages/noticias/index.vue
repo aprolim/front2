@@ -249,7 +249,6 @@ onMounted(async () => {
 <style scoped>
 .container-vw {
   width: 90vw;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2vw;
   position: relative;

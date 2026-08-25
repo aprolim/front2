@@ -5,6 +5,7 @@
 .nitro
 .cache
 dist
+public/pdfs/Recursos-humanos/POAIs 2026 APROBADO.pdf
 
 # Node dependencies
 node_modules

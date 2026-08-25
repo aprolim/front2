@@ -1,64 +1,11 @@
 <template>
   <div class="overflow-visible">
-    <!-- BANNER DE BIENVENIDA -->
-    <div class="w-full bg-[#f2f2f2] relative h-[19vw]" style="overflow: visible !important;">
-      <div class="mx-auto w-[70%] relative py-6 h-full flex items-center" style="overflow: visible !important;">
-        <div class="absolute left-0 top-[-2vw] z-10 h-[calc(100%+2vw)] aspect-[2/1] overflow-hidden">
-          <div 
-            class="w-full h-full scale-[2] origin-top bg-[#f8f8f8] [mask-image:url(/images/LogoBlanco.svg)] [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center]"
-          ></div>
-        </div>
-        <div class="absolute right-0 z-[60] w-[22vw]" style="bottom: 0; pointer-events: none;">
-          <img 
-            src="/images/Cupula.png" 
-            alt="Senado derecha" 
-            style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;"
-          />
-        </div>
-        <div class="flex-1 text-center z-20">
-          <h1 class="text-[2.85vw] text-black w-[65%] leading-[.9] font-medium">
-            Bienvenido al sitio web oficial <br> del
-            <span class="text-senado-primary text-[4vw] text-justify font-bold">Senado de Bolivia</span>
-          </h1>
-        </div>
-      </div>
-    </div>
-
-    <!-- BARRA DE SESIÓN -->
-    <div class="w-full border-b border-[#000] py-[.8vw] px-4 text-[1.2vw]">
-      <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
-        <span class="text-senado-primary font-medium">
-          {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} -
-        </span>
-        <span class="text-gray-700 font-normal">
-          {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }}
-        </span>
-        <span class="text-senado-gold-dark">|</span>
-        <a 
-          v-if="sessionData?.path"
-          :href="sessionData.path" 
-          target="_blank"
-          class="text-senado-primary hover:underline font-medium flex items-center gap-1 underline"
-        >
-          Mira en directo
-        </a>
-        <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
-        <button 
-          @click="openModal"
-          :disabled="!hasValidData"
-          class="text-black hover:underline font-thin underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          ORDEN DEL DÍA
-        </button>
-        <!-- Mostrar mensaje de error si no hay datos -->
-        <span v-if="errorMessage && !isLoading" class="text-red-500 text-xs ml-2">
-          {{ errorMessage }}
-        </span>
-      </div>
-    </div>
-
-    <!-- VIDEO CON ESTADÍSTICAS -->
-    <div class="relative w-full overflow-hidden" style="height: 40vw; min-height: 300px;">
+    <!-- VIDEO CON ESTADÍSTICAS Y BARRA DE SESIÓN -->
+    <div 
+      class="relative w-full overflow-hidden" 
+      :style="isDesktop ? { height: videoHeight } : { height: '70vw', minHeight: '300px' }"
+      ref="videoContainerRef"
+    >
       <video
         ref="videoRef"
         class="absolute top-0 left-0 w-full h-full object-cover"
@@ -70,8 +17,44 @@
       >
         <source src="/videos/fondo-senado.webm" type="video/mp4" />
       </video>
+      
+      <!-- BARRA DE SESIÓN - Sobre el video con fondo semitransparente y difuminado -->
+      <div class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
+          <span class="text-white/90 font-[700]">
+            {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }} -
+          </span>
+          <span class="text-white/90 font-medium">
+            {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} 
+          </span>
+
+          <span class="text-senado-gold-dark">|</span>
+          <a 
+            v-if="sessionData?.path"
+            :href="sessionData.path" 
+            target="_blank"
+            class="text-white/90 hover:underline font-medium flex items-center gap-1 underline"
+          >
+            Mira en directo
+          </a>
+          <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
+          <button 
+            @click="openModal"
+            :disabled="!hasValidData"
+            class="text-white/90 hover:text-white font-thin underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            ORDEN DEL DÍA
+          </button>
+          <!-- Mostrar mensaje de error si no hay datos -->
+          <span v-if="errorMessage && !isLoading" class="text-red-400 text-xs ml-2">
+            {{ errorMessage }}
+          </span>
+        </div>
+      </div>
+
       <div class="absolute inset-0"></div>
 
+      <!-- Estadísticas en la parte inferior -->
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
         <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
           <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
@@ -88,19 +71,19 @@
 
           <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
               <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.enTratamiento }}</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
               <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.aprobados }}</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
               <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.sancionadas }}</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
-              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-light tracking-wider leading-tight">Peticiones de<br />Informe</div>
+              <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Peticiones de<br />Informe</div>
               <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.peticionesInforme }}</div>
             </div>
           </div>
@@ -292,7 +275,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useSessionData } from '~/composables/useSessionData'
 import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
@@ -315,9 +298,62 @@ const {
 } = useSessionData()
 
 const videoRef = ref(null)
+const videoContainerRef = ref(null)
+const videoHeight = ref('100vh')
+const isDesktop = ref(false)
+
+// Función para detectar si es escritorio
+const checkIsDesktop = () => {
+  if (process.client) {
+    isDesktop.value = window.innerWidth >= 1024 // lg breakpoint
+  }
+}
+
+// Función para calcular la altura del video solo en escritorio
+const calculateVideoHeight = () => {
+  if (process.client && isDesktop.value) {
+    // Buscar el header por su clase
+    const header = document.querySelector('header') || document.querySelector('.sticky')
+    let headerHeight = 0
+    
+    if (header) {
+      headerHeight = header.offsetHeight
+    }
+    
+    // Calcular: 100vh - altura del header
+    const viewportHeight = window.innerHeight
+    const calculatedHeight = viewportHeight - headerHeight
+    
+    videoHeight.value = `${calculatedHeight}px`
+    
+    console.log('Header height:', headerHeight)
+    console.log('Video height:', videoHeight.value)
+  }
+}
+
+// Función para manejar el resize
+const handleResize = () => {
+  checkIsDesktop()
+  if (isDesktop.value) {
+    calculateVideoHeight()
+  }
+}
 
 onMounted(() => {
   fetchSessionData()
+  
+  // Detectar si es escritorio
+  checkIsDesktop()
+  
+  // Calcular altura inicial solo si es escritorio
+  nextTick(() => {
+    if (isDesktop.value) {
+      calculateVideoHeight()
+    }
+  })
+  
+  // Recalcular cuando cambie el tamaño de la ventana
+  window.addEventListener('resize', handleResize)
   
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
@@ -337,6 +373,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
   document.removeEventListener('keydown', handleKeydown)
   document.body.style.overflow = 'auto'
 })
