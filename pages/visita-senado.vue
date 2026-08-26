@@ -76,7 +76,7 @@
             <div class="space-y-[0.5vw] text-[1vw] text-gray-700">
               <div class="flex justify-between py-[0.5vw] border-b border-gray-200">
                 <span class="font-medium">Lunes a Viernes</span>
-                <span>09:00 - 12:00 / 14:00 - 17:00</span>
+                <span>08:30 - 16:30</span>
               </div>
               <div class="flex justify-between py-[0.5vw]">
                 <span class="font-medium">Sábados y Domingos</span>
