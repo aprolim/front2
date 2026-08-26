@@ -489,7 +489,7 @@
                     </div>
                   </div>
                   <div 
-                    class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
+                    class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
                     :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• ¿Quién me representa?</NuxtLink>
@@ -520,7 +520,7 @@
                     </div>
                   </div>
                   <div 
-                    class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                    class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                     :class="submenus.recursosHumanos ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <div class="">
