@@ -94,7 +94,7 @@
     <!-- CONTENIDO PRINCIPAL -->
     <div class="mx-auto w-[75%] py-[2vw]">
       <div>
-        <h2 class="text-[2.6vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
+        <h2 class="text-[2.2vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>

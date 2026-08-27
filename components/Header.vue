@@ -13,7 +13,7 @@
           <ClientOnly>
             <Icon 
               name="material-symbols:menu-rounded" 
-              class="text-[5vw]" 
+              class="text-[4vw]" 
               v-if="!menuAbierto" 
               style="font-variation-settings: 'wght' 900;"
             />
