@@ -16,13 +16,28 @@
           <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
             <!-- Columna 1: Foto del suplente -->
             <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
-              <img 
-                :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
-                :alt="suplente.suplente"
-                class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg"
-                :style="{ borderColor: suplente.partyColor }"
-                @error="(e) => e.target.src = '/images/default-avatar.png'"
-              />
+              <!-- Foto con cursor pointer para abrir modal -->
+              <div 
+                class="cursor-pointer group relative"
+                @click="abrirModal"
+              >
+                <img 
+                  :src="suplente.fotoSuplente || '/images/default-avatar.png'" 
+                  :alt="suplente.suplente"
+                  class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  :style="{ borderColor: suplente.partyColor }"
+                  @error="(e) => e.target.src = '/images/default-avatar.png'"
+                />
+                <!-- Overlay de ampliar -->
+                <div class="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.8vw] px-[1vw] py-[0.5vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
+                    <svg class="w-[1vw] h-[1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
+                    </svg>
+                    <span>Ampliar</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Columna 2: Nombre y cargo -->
@@ -161,9 +176,6 @@
         :nombre-senador="suplente.suplente"
         :limit="6"
       />
-
-
-      
     </div>
 
     <div v-else class="text-center py-[5vw]">
@@ -172,11 +184,58 @@
         Volver al inicio
       </NuxtLink>
     </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL PARA VER FOTO EN PANTALLA COMPLETA  -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-opacity duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div 
+          v-if="modalAbierto"
+          class="fixed inset-0 z-[999999] bg-black/80 flex items-center justify-center p-[4vw]"
+          @click="cerrarModal"
+        >
+          <div class="relative max-w-[80vw] max-h-[85vh] flex items-center justify-center" @click.stop>
+            <!-- Foto ampliada -->
+            <div class="relative">
+              <img 
+                :src="suplente?.fotoSuplente || '/images/default-avatar.png'" 
+                :alt="suplente?.suplente"
+                class="max-w-[70vw] max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                @error="(e) => e.target.src = '/images/default-avatar.png'"
+              />
+            </div>
+            
+            <!-- Botón cerrar -->
+            <button 
+              @click="cerrarModal"
+              class="absolute top-[-2vw] right-[-2vw] text-white hover:text-gray-300 transition-colors text-[2vw] bg-black/50 hover:bg-black/70 rounded-full w-[3vw] h-[3vw] flex items-center justify-center"
+            >
+              ✕
+            </button>
+            
+            <!-- Información del suplente -->
+            <div class="absolute bottom-[-4vw] left-1/2 -translate-x-1/2 bg-black/70 text-white text-[1vw] px-[2vw] py-[0.8vw] rounded-[0.5vw] text-center backdrop-blur-sm whitespace-nowrap">
+              <span class="font-bold">{{ suplente?.suplente }}</span>
+              <span class="mx-[0.8vw] text-gray-400">|</span>
+              <span>Senador Suplente por {{ suplente?.department }}</span>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useSenadores } from '~/composables/useSenadores'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 import NoticiasSenador from '~/components/NoticiasSenador.vue'
@@ -185,6 +244,7 @@ const route = useRoute()
 const { getSuplenteBySlug } = useSenadores()
 
 const slug = computed(() => route.params.slug)
+const modalAbierto = ref(false)
 
 const suplente = computed(() => {
   return getSuplenteBySlug(slug.value)
@@ -197,6 +257,34 @@ const volver = () => {
     navigateTo('/')
   }
 }
+
+// Funciones del modal
+const abrirModal = () => {
+  modalAbierto.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const cerrarModal = () => {
+  modalAbierto.value = false
+  document.body.style.overflow = 'auto'
+}
+
+// Cerrar con tecla ESC
+const handleKeydown = (e) => {
+  if (e.key === 'Escape' && modalAbierto.value) {
+    cerrarModal()
+  }
+}
+
+// Registrar y limpiar evento
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = 'auto'
+})
 
 const getMapaDepartamento = (departamento) => {
   const mapas = {
