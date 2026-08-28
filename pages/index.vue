@@ -1,3 +1,4 @@
+<!-- pages/index.vue -->
 <template>
   <div class="overflow-visible">
     <!-- VIDEO CON ESTADÍSTICAS Y BARRA DE SESIÓN -->
@@ -18,26 +19,45 @@
         <source src="/videos/fondo-senado.webm" type="video/mp4" />
       </video>
       
-      <!-- BARRA DE SESIÓN - Sobre el video con fondo semitransparente y difuminado -->
-      <div class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+      <!-- 🔥 BARRA DE SESIÓN - SOLO se muestra si hay datos y NO está cargando -->
+      <div 
+        v-if="hasValidData && !isLoading"
+        class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" 
+        style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"
+      >
         <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
           <span class="text-white/90 font-[700]">
-            {{ formattedDate || (errorMessage ? 'No disponible' : 'Cargando...') }} -
+            {{ formattedDate }} -
           </span>
           <span class="text-white/90 font-medium">
-            {{ sessionData?.title || (errorMessage ? '⚠️ Error' : 'Sesión') }} 
+            {{ sessionData?.title || 'Sesión' }} 
           </span>
 
-          <span class="text-senado-gold-dark">|</span>
-          <a 
-            v-if="sessionData?.path"
-            :href="sessionData.path" 
-            target="_blank"
-            class="text-white/90 hover:underline font-medium flex items-center gap-1 underline"
-          >
-            Mira en directo
-          </a>
-          <span v-if="sessionData?.path" class="text-senado-gold-dark">|</span>
+          <!-- 🔥 EN DIRECTO - Solo si hay un video LIVE activo -->
+          <template v-if="liveVideo">
+            <span class="text-senado-gold-dark">|</span>
+            <NuxtLink 
+              to="/en-vivo"
+              class="flex items-center gap-2 px-3 py-1 bg-red-600/80 hover:bg-red-700 rounded-full text-white font-bold text-xs transition-all duration-300 animate-pulse-border"
+            >
+              <span class="inline-block w-2 h-2 bg-white rounded-full animate-pulse-dot"></span>
+              EN DIRECTO
+            </NuxtLink>
+          </template>
+
+          <!-- 🔥 Si NO hay LIVE, mostrar "Ver sesiones" que lleva a /en-vivo -->
+          <template v-else>
+            <span class="text-senado-gold-dark">|</span>
+            <NuxtLink 
+              to="/en-vivo"
+              class="text-white/90 hover:text-white font-medium flex items-center gap-1 underline transition-colors"
+            >
+              Ver sesiones previas
+            </NuxtLink>
+          </template>
+
+          <span v-if="sessionData?.path || liveVideo" class="text-senado-gold-dark">|</span>
+          
           <button 
             @click="openModal"
             :disabled="!hasValidData"
@@ -45,16 +65,25 @@
           >
             ORDEN DEL DÍA
           </button>
-          <!-- Mostrar mensaje de error si no hay datos -->
-          <span v-if="errorMessage && !isLoading" class="text-red-400 text-xs ml-2">
-            {{ errorMessage }}
-          </span>
         </div>
       </div>
 
+      <!-- 🔥 BARRA DE CARGA (cuando está cargando) -->
+      <div 
+        v-else-if="isLoading"
+        class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" 
+        style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"
+      >
+        <div class="flex items-center justify-center gap-[.8vw] flex-wrap">
+          <span class="text-white/90 font-[700]">Cargando sesión...</span>
+        </div>
+      </div>
+
+      <!-- 🔥 SIN BARRA - cuando no hay datos (no se muestra nada) -->
+
       <div class="absolute inset-0"></div>
 
-      <!-- Estadísticas en la parte inferior -->
+      <!-- Estadísticas en la parte inferior (SIEMPRE visibles) -->
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
         <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
           <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
@@ -91,11 +120,12 @@
       </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO PRINCIPAL (siempre visible) -->
     <div class="mx-auto w-[75%] py-[2vw]">
       <div>
         <h2 class="text-[2.2vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- LEGISLACIÓN -->
           <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
@@ -128,6 +158,7 @@
             </div>
           </div>
 
+          <!-- FISCALIZACIÓN -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
             <div class="p-4">
@@ -144,6 +175,7 @@
             </div>
           </div>
 
+          <!-- GESTIÓN -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
             <div class="p-4">
@@ -175,8 +207,12 @@
       </div>
       
       <NoticiasDinamicas />
-      <div class="flex items-center justify-center gap-4 my-10">
-        <div class="flex-1 h-px bg-[#75797B]"></div>
+      <div class="flex items-center justify-center my-10">
+        <div class="flex-1 h-px bg-[#000]"></div>
+        <div class="flex-shrink-0">
+          <img src="/images/LogoBordo.svg" alt="Senado" class="h-[2vw] w-auto object-contain brightness-0 opacity-100" />
+        </div>
+        <div class="flex-1 h-px bg-[#000]"></div>
       </div>
       <DescubraSenado />
       <div class="flex items-center justify-center gap-4 my-10">
@@ -281,6 +317,10 @@ import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 
+// 🔥 NUEVO: Estado para el video LIVE
+const liveVideo = ref(null)
+const liveLoading = ref(false)
+
 const {
   sessionData,
   formattedDate,
@@ -291,11 +331,52 @@ const {
   estadisticas,
   hasValidData,
   fetchSessionData,
+  fetchEstadisticas,
   openModal,
   closeModal,
   handleKeydown,
   downloadPDF
 } = useSessionData()
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+// 🔥 Función para obtener la URL de watch de YouTube
+const getYoutubeWatchUrl = (input) => {
+  if (!input) return '#'
+  
+  if (input.includes('watch?v=')) return input
+  if (input.includes('youtu.be/')) return input
+  if (input.includes('youtube.com/embed/')) {
+    const videoId = input.split('/embed/')[1]?.split('?')[0]
+    return `https://www.youtube.com/watch?v=${videoId}`
+  }
+  if (input.length === 11) {
+    return `https://www.youtube.com/watch?v=${input}`
+  }
+  return `https://www.youtube.com/watch?v=${input}`
+}
+
+// 🔥 Función para cargar el video en vivo
+const cargarLive = async () => {
+  liveLoading.value = true
+  try {
+    const response = await fetch(`${API_BASE_URL}/sesiones/live`)
+    const result = await response.json()
+    
+    if (result.success && result.data) {
+      liveVideo.value = result.data
+      console.log('🔴 Video en vivo cargado:', liveVideo.value.title)
+    } else {
+      liveVideo.value = null
+      console.log('ℹ️ No hay transmisión en vivo activa')
+    }
+  } catch (error) {
+    console.error('❌ Error cargando LIVE:', error)
+    liveVideo.value = null
+  } finally {
+    liveLoading.value = false
+  }
+}
 
 const videoRef = ref(null)
 const videoContainerRef = ref(null)
@@ -305,14 +386,13 @@ const isDesktop = ref(false)
 // Función para detectar si es escritorio
 const checkIsDesktop = () => {
   if (process.client) {
-    isDesktop.value = window.innerWidth >= 1024 // lg breakpoint
+    isDesktop.value = window.innerWidth >= 1024
   }
 }
 
 // Función para calcular la altura del video solo en escritorio
 const calculateVideoHeight = () => {
   if (process.client && isDesktop.value) {
-    // Buscar el header por su clase
     const header = document.querySelector('header') || document.querySelector('.sticky')
     let headerHeight = 0
     
@@ -320,7 +400,6 @@ const calculateVideoHeight = () => {
       headerHeight = header.offsetHeight
     }
     
-    // Calcular: 100vh - altura del header
     const viewportHeight = window.innerHeight
     const calculatedHeight = viewportHeight - headerHeight
     
@@ -340,19 +419,25 @@ const handleResize = () => {
 }
 
 onMounted(() => {
-  fetchSessionData()
+  // Cargar datos de sesión, estadísticas y LIVE en paralelo
+  Promise.all([
+    fetchSessionData(),
+    fetchEstadisticas(),
+    cargarLive()
+  ]).then(() => {
+    console.log('✅ Todos los datos cargados correctamente')
+  }).catch((error) => {
+    console.error('❌ Error cargando datos:', error)
+  })
   
-  // Detectar si es escritorio
   checkIsDesktop()
   
-  // Calcular altura inicial solo si es escritorio
   nextTick(() => {
     if (isDesktop.value) {
       calculateVideoHeight()
     }
   })
   
-  // Recalcular cuando cambie el tamaño de la ventana
   window.addEventListener('resize', handleResize)
   
   if (process.client) {
@@ -393,5 +478,29 @@ onBeforeUnmount(() => {
 @keyframes cometLoop2 {
   from { stroke-dashoffset: -50; }
   to { stroke-dashoffset: -150; }
+}
+
+/* 🔥 Animación para el borde del botón EN DIRECTO */
+@keyframes pulse-border {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 1.5s ease-in-out infinite;
+}
+
+/* 🔥 Animación del punto del EN DIRECTO */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1s ease-in-out infinite;
 }
 </style>

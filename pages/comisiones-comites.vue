@@ -22,7 +22,7 @@
           <input
             v-model="busqueda"
             type="text"
-            placeholder="🔍 Buscar comisión o comité..."
+            placeholder="🔎︎ Buscar comisión o comité..."
             class="w-full px-[1.8vw] py-[1vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
             @input="filtrarComisiones"
           />

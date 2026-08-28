@@ -10,7 +10,7 @@ export const useSessionData = () => {
   const errorMessage = ref('')
   const showModal = ref(false)
   const modalData = ref(null)
-  const hasValidData = ref(false) // 🔥 Nuevo: indica si hay datos válidos
+  const hasValidData = ref(false)
 
   const estadisticas = reactive({
     enTratamiento: 15,
@@ -19,13 +19,138 @@ export const useSessionData = () => {
     promulgadas: 18,
     modificaciones: 7,
     rechazados: 5,
-    peticionesEscrito: 12,
-    peticionesOral: 8,
+    peticionesEscrito: 0,
+    peticionesOral: 0,
     peticionesInforme: 20,
-    resoluciones: 45,
-    declaraciones: 23,
-    minutas: 67
+    resoluciones: 0,      // 🔥 Cambiado de 45 a 0
+    declaraciones: 0,     // 🔥 Cambiado de 23 a 0
+    minutas: 0            // 🔥 Cambiado de 67 a 0
   })
+
+  // ========================================== //
+  // 🔥 FUNCIONES PARA OBTENER TOTALES         //
+  // ========================================== //
+
+  // Obtener total de peticiones de informe escrito
+  const fetchPeticionesEscrito = async () => {
+    try {
+      const response = await fetch('https://apisi.senado.gob.bo/page/peticion-informe-escrito?page=1')
+      if (!response.ok) {
+        console.warn('Error al obtener peticiones escrito:', response.status)
+        return 0
+      }
+      const data = await response.json()
+      const total = data.data?.total || 0
+      estadisticas.peticionesEscrito = total
+      return total
+    } catch (error) {
+      console.error('Error obteniendo peticiones escrito:', error)
+      estadisticas.peticionesEscrito = 0
+      return 0
+    }
+  }
+
+  // Obtener total de peticiones de informe oral
+  const fetchPeticionesOral = async () => {
+    try {
+      const response = await fetch('https://apisi.senado.gob.bo/page/peticion-informe-oral?page=1')
+      if (!response.ok) {
+        console.warn('Error al obtener peticiones oral:', response.status)
+        return 0
+      }
+      const data = await response.json()
+      const total = data.data?.total || 0
+      estadisticas.peticionesOral = total
+      return total
+    } catch (error) {
+      console.error('Error obteniendo peticiones oral:', error)
+      estadisticas.peticionesOral = 0
+      return 0
+    }
+  }
+
+  // 🔥 NUEVA: Obtener total de resoluciones camarales
+  const fetchResoluciones = async () => {
+    try {
+      const response = await fetch('https://apisi.senado.gob.bo/page/resolucion-camarales?page=1')
+      if (!response.ok) {
+        console.warn('Error al obtener resoluciones:', response.status)
+        return 0
+      }
+      const data = await response.json()
+      const total = data.data?.total || 0
+      estadisticas.resoluciones = total
+      return total
+    } catch (error) {
+      console.error('Error obteniendo resoluciones:', error)
+      estadisticas.resoluciones = 0
+      return 0
+    }
+  }
+
+  // 🔥 NUEVA: Obtener total de declaraciones camarales
+  const fetchDeclaraciones = async () => {
+    try {
+      const response = await fetch('https://apisi.senado.gob.bo/page/declaraciones-camarales?page=1')
+      if (!response.ok) {
+        console.warn('Error al obtener declaraciones:', response.status)
+        return 0
+      }
+      const data = await response.json()
+      const total = data.data?.total || 0
+      estadisticas.declaraciones = total
+      return total
+    } catch (error) {
+      console.error('Error obteniendo declaraciones:', error)
+      estadisticas.declaraciones = 0
+      return 0
+    }
+  }
+
+  // 🔥 NUEVA: Obtener total de minutas de comunicación
+  const fetchMinutas = async () => {
+    try {
+      const response = await fetch('https://apisi.senado.gob.bo/page/minutas-comunicacion?page=1')
+      if (!response.ok) {
+        console.warn('Error al obtener minutas:', response.status)
+        return 0
+      }
+      const data = await response.json()
+      const total = data.data?.total || 0
+      estadisticas.minutas = total
+      return total
+    } catch (error) {
+      console.error('Error obteniendo minutas:', error)
+      estadisticas.minutas = 0
+      return 0
+    }
+  }
+
+  // 🔥 Función principal para cargar todas las estadísticas
+  const fetchEstadisticas = async () => {
+    try {
+      await Promise.all([
+        fetchPeticionesEscrito(),
+        fetchPeticionesOral(),
+        fetchResoluciones(),    // 🔥 NUEVO
+        fetchDeclaraciones(),   // 🔥 NUEVO
+        fetchMinutas()          // 🔥 NUEVO
+      ])
+      console.log('✅ Estadísticas actualizadas:', {
+        peticionesEscrito: estadisticas.peticionesEscrito,
+        peticionesOral: estadisticas.peticionesOral,
+        resoluciones: estadisticas.resoluciones,
+        declaraciones: estadisticas.declaraciones,
+        minutas: estadisticas.minutas
+      })
+    } catch (error) {
+      console.error('Error cargando estadísticas:', error)
+    }
+  }
+
+  // ========================================== //
+  // FUNCIONES EXISTENTES (sin cambios)         //
+  // ========================================== //
 
   const formatDate = (dateString) => {
     if (!dateString) return ''
@@ -199,7 +324,6 @@ export const useSessionData = () => {
   // 🔥 GENERAR PDF SOLO SI HAY DATOS VÁLIDOS  //
   // ========================================== //
   const downloadPDF = async () => {
-    // 🔥 Validar que haya datos antes de generar el PDF
     if (!hasValidData.value || !modalData.value) {
       alert('⚠️ No hay datos disponibles para generar el PDF. Por favor, verifique la conexión a la API.')
       console.error('❌ Intento de generar PDF sin datos válidos')
@@ -207,7 +331,6 @@ export const useSessionData = () => {
     }
 
     try {
-      // Crear un contenedor con el diseño del PDF
       const container = document.createElement('div')
       container.style.cssText = `
         position: fixed;
@@ -222,30 +345,24 @@ export const useSessionData = () => {
       
       container.innerHTML = `
         <div style="max-width:520px;margin:0 auto;background:white;border-radius:16px;padding:30px 25px 25px 25px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
-          <!-- Banda tricolor -->
           <div style="width:100%;height:8px;display:flex;border-radius:4px;overflow:hidden;margin-bottom:18px;">
             <div style="flex:1;background:#D52B1E;"></div>
             <div style="flex:1;background:#F9E300;"></div>
             <div style="flex:1;background:#007A36;"></div>
           </div>
           
-          <!-- Escudo -->
           <img src="/logo/log2_colores.png" style="width:100px;height:auto;display:block;margin:0 auto 12px auto;" />
           
-          <!-- Título -->
           <div style="font-size:20px;font-weight:700;color:#1a2b4c;text-align:center;letter-spacing:0.5px;margin-bottom:8px;">
             ${modalData.value.title || 'SESIÓN ORDINARIA'}
           </div>
           
-          <!-- Línea dorada -->
           <div style="width:60px;height:3px;background:#c9a84c;margin:0 auto 16px auto;border-radius:2px;"></div>
           
-          <!-- ORDEN DEL DÍA -->
           <div style="font-size:14px;font-weight:600;color:#1a2b4c;text-align:center;letter-spacing:1.5px;margin-bottom:14px;">
             - ORDEN DEL DÍA -
           </div>
           
-          <!-- Ítems -->
           <div style="max-width:400px;margin:0 auto;padding:0 5px;">
             ${modalData.value.agendaItems.map((item, i) => 
               `<div style="display:flex;align-items:flex-start;gap:12px;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:13px;color:#333;line-height:1.4;">
@@ -255,12 +372,10 @@ export const useSessionData = () => {
             ).join('')}
           </div>
           
-          <!-- Nota -->
           <div style="text-align:center;font-style:italic;font-size:12.5px;color:#666;margin:14px 0 16px 0;padding:0 10px;">
             ${modalData.value.note || 'Nota: La sesión se desarrollará bajo la modalidad presencial.'}
           </div>
           
-          <!-- Fecha y hora -->
           <div style="text-align:center;border-top:1px solid #e0e0e0;padding-top:14px;margin-top:4px;">
             <div style="font-size:14px;font-weight:700;color:#1a2b4c;letter-spacing:0.5px;">
               ${modalData.value.dateFormattedShort || 'FECHA NO DISPONIBLE'}
@@ -270,7 +385,6 @@ export const useSessionData = () => {
             </div>
           </div>
           
-          <!-- Footer -->
           <div style="text-align:center;font-size:10px;color:#aaa;letter-spacing:0.5px;border-top:1px solid #e0e0e0;padding-top:14px;margin-top:14px;">
             Dirección de Comunicación y Prensa
           </div>
@@ -279,7 +393,6 @@ export const useSessionData = () => {
       
       document.body.appendChild(container)
 
-      // Esperar a que la imagen se cargue
       const img = container.querySelector('img')
       if (img) {
         await new Promise((resolve) => {
@@ -292,7 +405,6 @@ export const useSessionData = () => {
         })
       }
 
-      // Usar html2canvas para capturar el contenedor como imagen
       const canvas = await html2canvas(container, {
         scale: 2,
         useCORS: true,
@@ -304,7 +416,6 @@ export const useSessionData = () => {
         foreignObjectRendering: false
       })
 
-      // Crear PDF con jsPDF
       const imgData = canvas.toDataURL('image/jpeg', 0.98)
       const pdf = new jsPDF({
         unit: 'mm',
@@ -312,17 +423,13 @@ export const useSessionData = () => {
         orientation: 'portrait'
       })
 
-      // Calcular dimensiones para que quepa en A4
       const pdfWidth = pdf.internal.pageSize.getWidth()
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width
 
-      // Añadir la imagen al PDF
       pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
       
-      // Descargar automáticamente
       pdf.save(`ORDEN_DIA_${modalData.value.sessionNumber || 'SESION'}.pdf`)
       
-      // Limpiar
       setTimeout(() => {
         if (container.parentNode) {
           document.body.removeChild(container)
@@ -365,6 +472,7 @@ export const useSessionData = () => {
     estadisticas,
     hasValidData,
     fetchSessionData,
+    fetchEstadisticas,
     openModal,
     closeModal,
     handleKeydown,

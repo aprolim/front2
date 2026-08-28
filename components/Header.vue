@@ -276,7 +276,6 @@
                     class="bg-transparent ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
-                    <NuxtLink to="/unidad-transparencia" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Unidad de Transparencia y Lucha contra la Corrupción</NuxtLink>
                     <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</a>
                     <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Solicitud de Información</NuxtLink>
                     <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
@@ -393,7 +392,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
                     :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley en Tratamiento</NuxtLink>
@@ -419,7 +418,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
                     :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Escrito</NuxtLink>
@@ -441,7 +440,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] text-gray-600 overflow-hidden transition-all duration-300 ease-in-out"
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
                     :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Resoluciones Camarales</NuxtLink>
