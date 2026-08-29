@@ -79,8 +79,6 @@
         </div>
       </div>
 
-      <!-- 🔥 SIN BARRA - cuando no hay datos (no se muestra nada) -->
-
       <div class="absolute inset-0"></div>
 
       <!-- Estadísticas en la parte inferior (SIEMPRE visibles) -->
@@ -197,7 +195,20 @@
           </div>
         </div>
       </div>
-      
+
+      <!-- 🔥 CALENDARIO Y LÍNEA DE TIEMPO -->
+      <div class="mt-12">
+        <h2 class="text-[2.2vw] font-bold text-senado-primary mb-6 flex items-center gap-3">
+          <span>📅</span>
+          Agenda de Sesiones
+        </h2>
+        
+        <CalendarioActividades 
+          :fechas-sesiones="fechasSesiones"
+          :actividades="actividadesExtra"
+        />
+      </div>
+
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
@@ -205,8 +216,9 @@
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
-      
+  
       <NoticiasDinamicas />
+      
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
@@ -214,14 +226,19 @@
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
+
       <DescubraSenado />
+      
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
+
       <MandatoFuncionesAntecedentes />
     </div>
 
-    <!-- MODAL DE ORDEN DEL DÍA - Solo se muestra si hay datos válidos -->
+    <!-- ========================================== -->
+    <!-- MODAL DE ORDEN DEL DÍA - COMPLETO        -->
+    <!-- ========================================== -->
     <div 
       v-if="showModal && hasValidData && modalData" 
       class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
@@ -283,6 +300,12 @@
             <p class="text-sm text-gray-600 font-semibold">
               HORA: {{ modalData?.time || '--:--' }}
             </p>
+            <p v-if="modalData?.location" class="text-xs text-gray-500 mt-1">
+              📍 {{ modalData.location }}
+            </p>
+            <p v-if="modalData?.modality" class="text-xs text-gray-500 mt-0.5">
+              📋 Modalidad: {{ modalData.modality }}
+            </p>
           </div>
 
           <!-- FOOTER -->
@@ -311,16 +334,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { useSessionData } from '~/composables/useSessionData'
 import DescubraSenado from '~/components/DescubraSenado.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+import CalendarioActividades from '~/components/CalendarioActividades.vue'
 
-// 🔥 NUEVO: Estado para el video LIVE
+// ========================================== //
+// ESTADO DEL VIDEO EN VIVO
+// ========================================== //
 const liveVideo = ref(null)
 const liveLoading = ref(false)
 
+// ========================================== //
+// SESIÓN DE DATOS
+// ========================================== //
 const {
   sessionData,
   formattedDate,
@@ -330,6 +359,7 @@ const {
   modalData,
   estadisticas,
   hasValidData,
+  todasLasSesiones,
   fetchSessionData,
   fetchEstadisticas,
   openModal,
@@ -338,25 +368,21 @@ const {
   downloadPDF
 } = useSessionData()
 
+// 🔥 PASAR LAS SESIONES AL CALENDARIO
+const fechasSesiones = computed(() => {
+  return todasLasSesiones.value
+})
+
+// Actividades adicionales (puedes agregar más aquí si quieres)
+const actividadesExtra = computed(() => {
+  return []
+})
+
+// ========================================== //
+// API PARA VIDEO EN VIVO
+// ========================================== //
 const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
 
-// 🔥 Función para obtener la URL de watch de YouTube
-const getYoutubeWatchUrl = (input) => {
-  if (!input) return '#'
-  
-  if (input.includes('watch?v=')) return input
-  if (input.includes('youtu.be/')) return input
-  if (input.includes('youtube.com/embed/')) {
-    const videoId = input.split('/embed/')[1]?.split('?')[0]
-    return `https://www.youtube.com/watch?v=${videoId}`
-  }
-  if (input.length === 11) {
-    return `https://www.youtube.com/watch?v=${input}`
-  }
-  return `https://www.youtube.com/watch?v=${input}`
-}
-
-// 🔥 Función para cargar el video en vivo
 const cargarLive = async () => {
   liveLoading.value = true
   try {
@@ -378,19 +404,20 @@ const cargarLive = async () => {
   }
 }
 
+// ========================================== //
+// CONFIGURACIÓN DEL VIDEO DE FONDO
+// ========================================== //
 const videoRef = ref(null)
 const videoContainerRef = ref(null)
 const videoHeight = ref('100vh')
 const isDesktop = ref(false)
 
-// Función para detectar si es escritorio
 const checkIsDesktop = () => {
   if (process.client) {
     isDesktop.value = window.innerWidth >= 1024
   }
 }
 
-// Función para calcular la altura del video solo en escritorio
 const calculateVideoHeight = () => {
   if (process.client && isDesktop.value) {
     const header = document.querySelector('header') || document.querySelector('.sticky')
@@ -410,7 +437,6 @@ const calculateVideoHeight = () => {
   }
 }
 
-// Función para manejar el resize
 const handleResize = () => {
   checkIsDesktop()
   if (isDesktop.value) {
@@ -418,8 +444,11 @@ const handleResize = () => {
   }
 }
 
+// ========================================== //
+// LIFECYCLE
+// ========================================== //
 onMounted(() => {
-  // Cargar datos de sesión, estadísticas y LIVE en paralelo
+  // Cargar todos los datos en paralelo
   Promise.all([
     fetchSessionData(),
     fetchEstadisticas(),
@@ -430,6 +459,7 @@ onMounted(() => {
     console.error('❌ Error cargando datos:', error)
   })
   
+  // Configurar altura del video
   checkIsDesktop()
   
   nextTick(() => {
@@ -438,8 +468,10 @@ onMounted(() => {
     }
   })
   
+  // Event listeners
   window.addEventListener('resize', handleResize)
   
+  // Restaurar scroll position
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
@@ -450,10 +482,12 @@ onMounted(() => {
     }
   }
   
+  // Reproducir video
   if (videoRef.value) {
     videoRef.value.play().catch(() => {})
   }
   
+  // Teclado para cerrar modal
   document.addEventListener('keydown', handleKeydown)
 })
 
@@ -465,6 +499,9 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* ========================================== */
+/* ANIMACIONES COMETA                         */
+/* ========================================== */
 .comet-animation-1 {
   animation: cometLoop1 10s linear infinite;
 }
@@ -480,7 +517,9 @@ onBeforeUnmount(() => {
   to { stroke-dashoffset: -150; }
 }
 
-/* 🔥 Animación para el borde del botón EN DIRECTO */
+/* ========================================== */
+/* ANIMACIONES EN DIRECTO                     */
+/* ========================================== */
 @keyframes pulse-border {
   0%, 100% { 
     box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
@@ -494,7 +533,6 @@ onBeforeUnmount(() => {
   animation: pulse-border 1.5s ease-in-out infinite;
 }
 
-/* 🔥 Animación del punto del EN DIRECTO */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.3; transform: scale(0.8); }

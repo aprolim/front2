@@ -1,0 +1,2311 @@
+COMPILADO DE ARCHIVOS - Parte 4 
+ 
+ 
+================================= 
+pages\comisiones-comites.vue 
+================================= 
+ 
+<!-- pages/comisiones.vue -->
+<template>
+  <div class="min-h-screen bg-white py-[2vw]">
+    <div class="mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-[3vw]">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-[0.9vw] font-bold px-[1.2vw] py-[0.4vw] rounded-full mb-[0.8vw]">
+          📋 Comisiones y Comités
+        </div>
+        <h1 class="text-[4.5vw] font-bold text-senado-primary leading-tight">
+          Comisiones y Comités
+        </h1>
+        <p class="text-gray-600 text-[1.5vw] mt-[0.8vw] max-w-3xl">
+          Conoce las comisiones y comités de la Cámara de Senadores y los senadores que las integran.
+          <span class="block text-gray-400 text-[1.1vw] mt-[0.3vw]">Haz clic en una comisión para ver sus miembros.</span>
+        </p>
+        <div class="w-[6vw] h-[0.2vw] bg-senado-gold-dark mt-[1vw] rounded-full"></div>
+      </div>
+
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-[4vw]">
+        <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-4 text-gray-500 text-[1.2vw]">Cargando comisiones...</p>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="error" class="text-center py-[4vw] bg-red-50 rounded-xl border border-red-200">
+        <div class="text-4xl mb-3">⚠️</div>
+        <p class="text-red-600 font-medium text-[1.2vw]">{{ error }}</p>
+        <button @click="fetchComisiones" class="mt-4 px-6 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Contenido -->
+      <template v-else>
+        <!-- Buscador -->
+        <div class="max-w-3xl mx-auto mb-[2vw]">
+          <div class="relative">
+            <input
+              v-model="busqueda"
+              type="text"
+              placeholder="🔎︎ Buscar comisión o comité..."
+              class="w-full px-[1.8vw] py-[1vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
+              @input="filtrarComisiones"
+            />
+            <button
+              v-if="busqueda"
+              @click="limpiarBusqueda"
+              class="absolute right-[1.8vw] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[1.5vw]"
+            >
+              ✕
+            </button>
+          </div>
+          <div v-if="busqueda" class="text-[1vw] text-gray-500 mt-[0.5vw] text-center">
+            {{ resultadosCount }} resultado{{ resultadosCount !== 1 ? 's' : '' }} encontrado{{ resultadosCount !== 1 ? 's' : '' }}
+          </div>
+        </div>
+
+        <!-- Lista de Comisiones -->
+        <div class="max-w-6xl mx-auto space-y-[0.8vw]">
+          <div
+            v-for="comision in comisionesFiltradas"
+            :key="comision.nombre"
+            class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+            :class="comision.destacado ? 'border-senado-primary border-2' : ''"
+          >
+            <!-- Cabecera -->
+            <div
+              @click="toggleItem(comision.nombre)"
+              class="flex items-center justify-between px-[2vw] py-[0.7vw] cursor-pointer hover:bg-gray-50 transition-colors"
+              :class="isOpen(comision.nombre) ? 'bg-senado-gold-lightest' : ''"
+            >
+              <div class="flex items-center gap-[1vw] flex-wrap">
+                <div class="flex items-center gap-[0.6vw]">
+                  <span
+                    class="text-[1.3vw] font-bold"
+                    :class="isOpen(comision.nombre) ? 'text-senado-primary' : 'text-gray-500'"
+                  >
+                    {{ isOpen(comision.nombre) ? '▾' : '▸' }}
+                  </span>
+                  <h2 class="text-[1.3vw] font-bold text-senado-primary" v-html="resaltarTexto(comision.nombre)">
+                  </h2>
+                </div>
+                <span class="text-[0.7vw] font-semibold px-[0.7vw] py-[0.15vw] rounded-full bg-blue-100 text-blue-700">
+                  Comisión
+                </span>
+                <span class="text-[0.7vw] text-gray-400">
+                  {{ (comision.comites || []).length }} comités
+                </span>
+                <span v-if="comision.destacado" class="text-[0.6vw] font-semibold px-[0.5vw] py-[0.1vw] rounded-full bg-yellow-100 text-yellow-700">
+                  ✦ Coincidencia
+                </span>
+              </div>
+              <div class="text-gray-400 text-[0.8vw]">
+                {{ isOpen(comision.nombre) ? 'Cerrar ▲' : 'Abrir ▼' }}
+              </div>
+            </div>
+
+            <!-- Contenido -->
+            <transition
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="max-h-0 opacity-0"
+              enter-to-class="max-h-[5000px] opacity-100"
+              leave-active-class="transition-all duration-200 ease-in"
+              leave-from-class="max-h-[5000px] opacity-100"
+              leave-to-class="max-h-0 opacity-0"
+            >
+              <div v-if="isOpen(comision.nombre)" class="overflow-hidden">
+                <div class="px-[1.8vw] pb-[1.8vw] pt-[0.5vw]">
+                  <!-- Presidente + Suplente -->
+                  <div v-if="comision.presidente" class="mb-[1vw]">
+                    <div class="flex flex-wrap gap-[0.8vw]">
+                      <!-- Titular (Presidente) -->
+                      <div class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
+                        <div class="flex items-center gap-[1.2vw]">
+                          <NuxtLink
+                            :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                            class="flex-shrink-0"
+                          >
+                            <img
+                              :src="getImageUrl(comision.presidente.foto)"
+                              :alt="comision.presidente.nombreCompleto"
+                              class="foto-titular mx-[1vw]"
+                              :style="{ borderColor: comision.presidente.color || '#ccc' }"
+                              @error="(e) => e.target.src = defaultAvatar"
+                            />
+                          </NuxtLink>
+                          <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                              <NuxtLink
+                                :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                                class="text-[1.1vw] font-bold text-senado-primary hover:underline truncate"
+                              >
+                                {{ comision.presidente.nombreCompleto }}
+                              </NuxtLink>
+                              <span class="badge-titular">Titular</span>
+                            </div>
+                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                              <span
+                                class="badge-partido"
+                                :style="{
+                                  backgroundColor: comision.presidente.color + '20',
+                                  color: comision.presidente.color || '#666'
+                                }"
+                              >
+                                {{ comision.presidente.partido }}
+                              </span>
+                              <span class="text-[0.7vw] text-gray-500 font-medium">
+                                {{ comision.presidente.cargo || 'Senador' }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Suplente del Presidente -->
+                      <div v-if="comision.presidente.suplente && comision.presidente.suplenteNombre" class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
+                        <div class="flex items-center gap-[1.2vw]">
+                          <NuxtLink
+                            :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
+                            class="flex-shrink-0"
+                          >
+                            <img
+                              :src="getImageUrl(comision.presidente.fotoSuplente) || defaultAvatar"
+                              :alt="comision.presidente.suplenteNombre"
+                              class="foto-suplente mx-[1vw]"
+                              :style="{ borderColor: comision.presidente.color || '#ccc' }"
+                              @error="(e) => e.target.src = defaultAvatar"
+                            />
+                          </NuxtLink>
+                          <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                              <NuxtLink
+                                :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
+                                class="text-[0.95vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                              >
+                                {{ comision.presidente.suplenteNombre }}
+                              </NuxtLink>
+                              <span class="badge-suplente">Suplente</span>
+                            </div>
+                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                              <span
+                                class="badge-partido"
+                                :style="{
+                                  backgroundColor: comision.presidente.color + '20',
+                                  color: comision.presidente.color || '#666'
+                                }"
+                              >
+                                {{ comision.presidente.partido }}
+                              </span>
+                              <span class="text-[0.7vw] text-gray-500 font-medium">
+                                {{ comision.presidente.cargoSuplente || 'Senador Suplente' }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Comités -->
+                  <div v-if="comision.comites && comision.comites.length > 0" class="border-t border-gray-100 pt-[0.8vw]">
+                    <div class="space-y-[0.6vw]">
+                      <div
+                        v-for="comite in comision.comites"
+                        :key="comite.nombre"
+                        class="bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100"
+                        :class="comite.destacado ? 'border-senado-primary border-2 bg-senado-gold-lightest' : ''"
+                      >
+                        <div class="flex items-center gap-[0.4vw] flex-wrap mb-[0.4vw]">
+                          <h4 class="font-semibold text-gray-800 text-[1vw]" v-html="resaltarTexto(comite.nombre)">
+                          </h4>
+                          <span class="text-[0.55vw] font-semibold px-[0.4vw] py-[0.08vw] rounded-full bg-green-100 text-green-700">
+                            Comité
+                          </span>
+                          <span v-if="comite.destacado" class="text-[0.5vw] font-semibold px-[0.35vw] py-[0.08vw] rounded-full bg-yellow-100 text-yellow-700">
+                            ✦ Coincidencia
+                          </span>
+                        </div>
+
+                        <!-- Secretario + Suplente -->
+                        <div v-if="comite.secretario" class="flex flex-wrap gap-[0.8vw]">
+                          <!-- Secretario (Titular) -->
+                          <div class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
+                            <div class="flex items-center gap-[1vw]">
+                              <NuxtLink
+                                :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
+                                class="flex-shrink-0"
+                              >
+                                <img
+                                  :src="getImageUrl(comite.secretario.foto)"
+                                  :alt="comite.secretario.nombreCompleto"
+                                  class="foto-secretario mx-[1vw]"
+                                  :style="{ borderColor: comite.secretario.color || '#ccc' }"
+                                  @error="(e) => e.target.src = defaultAvatar"
+                                />
+                              </NuxtLink>
+                              <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                  <NuxtLink
+                                    :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
+                                    class="text-[0.95vw] font-bold text-senado-primary hover:underline truncate"
+                                  >
+                                    {{ comite.secretario.nombreCompleto }}
+                                  </NuxtLink>
+                                  <span class="badge-titular-sm">Titular</span>
+                                </div>
+                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                  <span
+                                    class="badge-partido-sm"
+                                    :style="{
+                                      backgroundColor: comite.secretario.color + '20',
+                                      color: comite.secretario.color || '#666'
+                                    }"
+                                  >
+                                    {{ comite.secretario.partido }}
+                                  </span>
+                                  <span class="text-[0.6vw] text-gray-500 font-medium">
+                                    {{ comite.secretario.cargo || 'Senador' }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Suplente del Secretario -->
+                          <div v-if="comite.secretario.suplente && comite.secretario.suplenteNombre" class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
+                            <div class="flex items-center gap-[1vw]">
+                              <NuxtLink
+                                :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
+                                class="flex-shrink-0"
+                              >
+                                <img
+                                  :src="getImageUrl(comite.secretario.fotoSuplente) || defaultAvatar"
+                                  :alt="comite.secretario.suplenteNombre"
+                                  class="foto-suplente-sm mx-[1vw]"
+                                  :style="{ borderColor: comite.secretario.color || '#ccc' }"
+                                  @error="(e) => e.target.src = defaultAvatar"
+                                />
+                              </NuxtLink>
+                              <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                  <NuxtLink
+                                    :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
+                                    class="text-[0.85vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                                  >
+                                    {{ comite.secretario.suplenteNombre }}
+                                  </NuxtLink>
+                                  <span class="badge-suplente-sm">Suplente</span>
+                                </div>
+                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                  <span
+                                    class="badge-partido-sm"
+                                    :style="{
+                                      backgroundColor: comite.secretario.color + '20',
+                                      color: comite.secretario.color || '#666'
+                                    }"
+                                  >
+                                    {{ comite.secretario.partido }}
+                                  </span>
+                                  <span class="text-[0.6vw] text-gray-500 font-medium">
+                                    {{ comite.secretario.cargoSuplente || 'Senador Suplente' }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+        </div>
+
+        <!-- Sin resultados -->
+        <div v-if="comisionesFiltradas.length === 0" class="text-center py-[4vw]">
+          <div class="text-[4vw] mb-[1vw]">🔍</div>
+          <h3 class="text-[2.2vw] font-bold text-gray-700 mb-[0.5vw]">No se encontraron resultados</h3>
+          <p class="text-gray-500 text-[1.2vw]">No hay comisiones o comités que coincidan con "<strong>{{ busqueda }}</strong>"</p>
+          <button
+            @click="limpiarBusqueda"
+            class="mt-[1.5vw] text-senado-primary hover:underline text-[1.1vw] font-medium"
+          >
+            Limpiar búsqueda
+          </button>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-[3vw] text-center">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-[0.5vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          >
+            <ClientOnly>
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <template #fallback>
+                <span class="text-[1.5vw]">←</span>
+              </template>
+            </ClientOnly>
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+
+// ========================================== //
+// CONSTANTES
+// ========================================== //
+const API_BASE_URL = 'http://demoback.senado.gob.bo'
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// ========================================== //
+// ESTADO
+// ========================================== //
+const comisionesData = ref([])
+const loading = ref(false)
+const error = ref(null)
+const itemsAbiertos = ref(new Set())
+const busqueda = ref('')
+
+// ========================================== //
+// FUNCIONES
+// ========================================== //
+const getImageUrl = (path) => {
+  if (!path) return defaultAvatar
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  if (path.startsWith('/')) {
+    return `${API_BASE_URL}${path}`
+  }
+  return path
+}
+
+const generarSlug = (nombre) => {
+  if (!nombre) return ''
+  return nombre
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ñ/g, 'n')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+const toggleItem = (nombre) => {
+  if (itemsAbiertos.value.has(nombre)) {
+    itemsAbiertos.value.delete(nombre)
+  } else {
+    itemsAbiertos.value.add(nombre)
+  }
+}
+
+const isOpen = (nombre) => {
+  return itemsAbiertos.value.has(nombre)
+}
+
+const limpiarBusqueda = () => {
+  busqueda.value = ''
+}
+
+const normalizarTexto = (texto) => {
+  if (!texto) return ''
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
+const resaltarTexto = (texto) => {
+  if (!busqueda.value || !texto) return texto
+  const busquedaNormalizada = normalizarTexto(busqueda.value)
+  const textoNormalizado = normalizarTexto(texto)
+  const index = textoNormalizado.indexOf(busquedaNormalizada)
+  if (index === -1) return texto
+  const inicio = texto.substring(0, index)
+  const coincidencia = texto.substring(index, index + busqueda.value.length)
+  const fin = texto.substring(index + busqueda.value.length)
+  return `${inicio}<span class="bg-yellow-200 font-bold">${coincidencia}</span>${fin}`
+}
+
+// ========================================== //
+// FETCH DATA
+// ========================================== //
+const fetchComisiones = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/legisladores/comisiones`)
+    const result = await response.json()
+
+    if (result.success && result.data) {
+      comisionesData.value = result.data
+      console.log('✅ Comisiones cargadas:', comisionesData.value.length)
+    } else {
+      throw new Error(result.message || 'Error al cargar comisiones')
+    }
+  } catch (err) {
+    console.error('❌ Error:', err)
+    error.value = err.message || 'Error al cargar comisiones'
+  } finally {
+    loading.value = false
+  }
+}
+
+// ========================================== //
+// FILTRADO
+// ========================================== //
+const comisionesFiltradas = computed(() => {
+  if (!busqueda.value.trim()) {
+    return comisionesData.value
+  }
+
+  const busquedaNormalizada = normalizarTexto(busqueda.value)
+  const palabras = busquedaNormalizada.split(/\s+/).filter(p => p.length > 0)
+
+  return comisionesData.value.map(comision => {
+    const comisionNombre = normalizarTexto(comision.nombre)
+    let comisionCoincide = false
+    let comitesCoinciden = false
+
+    for (const palabra of palabras) {
+      if (comisionNombre.includes(palabra)) {
+        comisionCoincide = true
+        break
+      }
+    }
+
+    const comitesFiltrados = (comision.comites || []).map(comite => {
+      const comiteNombre = normalizarTexto(comite.nombre)
+      let coincide = false
+      for (const palabra of palabras) {
+        if (comiteNombre.includes(palabra)) {
+          coincide = true
+          comitesCoinciden = true
+          break
+        }
+      }
+      return { ...comite, destacado: coincide }
+    })
+
+    if (comisionCoincide || comitesCoinciden) {
+      return {
+        ...comision,
+        destacado: comisionCoincide,
+        comites: comitesFiltrados
+      }
+    }
+
+    return null
+  }).filter(Boolean)
+})
+
+const resultadosCount = computed(() => {
+  return comisionesFiltradas.value.length
+})
+
+// ========================================== //
+// MOUNTED
+// ========================================== //
+onMounted(() => {
+  fetchComisiones()
+})
+</script>
+
+<style scoped>
+/* ========================================== */
+/* TAMAÑOS DE FOTOS */
+/* ========================================== */
+.foto-titular {
+  width: 12vw !important;
+  height: 12vw !important;
+  min-width: 12vw !important;
+  min-height: 12vw !important;
+  max-width: 12vw !important;
+  max-height: 12vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-suplente {
+  width: 10.8vw !important;
+  height: 10.8vw !important;
+  min-width: 10.8vw !important;
+  min-height: 10.8vw !important;
+  max-width: 10.8vw !important;
+  max-height: 10.8vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-secretario {
+  width: 10.8vw !important;
+  height: 10.8vw !important;
+  min-width: 10.8vw !important;
+  min-height: 10.8vw !important;
+  max-width: 10.8vw !important;
+  max-height: 10.8vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+.foto-suplente-sm {
+  width: 9.6vw !important;
+  height: 9.6vw !important;
+  min-width: 9.6vw !important;
+  min-height: 9.6vw !important;
+  max-width: 9.6vw !important;
+  max-height: 9.6vw !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+}
+
+/* ========================================== */
+/* BADGES */
+/* ========================================== */
+.badge-titular {
+  font-size: 0.75vw;
+  color: #16a34a;
+  font-weight: 600;
+  background: #dcfce7;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-suplente {
+  font-size: 0.75vw;
+  color: #ea580c;
+  font-weight: 600;
+  background: #ffedd5;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-titular-sm {
+  font-size: 0.65vw;
+  color: #16a34a;
+  font-weight: 600;
+  background: #dcfce7;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-suplente-sm {
+  font-size: 0.65vw;
+  color: #ea580c;
+  font-weight: 600;
+  background: #ffedd5;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-partido {
+  font-size: 0.75vw;
+  font-weight: 500;
+  padding: 0.08vw 0.5vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+.badge-partido-sm {
+  font-size: 0.65vw;
+  font-weight: 500;
+  padding: 0.06vw 0.4vw;
+  border-radius: 0.3vw;
+  white-space: nowrap;
+}
+
+/* ========================================== */
+/* TRANSICIONES */
+/* ========================================== */
+.max-h-0 {
+  max-height: 0;
+}
+.max-h-\[5000px\] {
+  max-height: 5000px;
+}
+.transition-all {
+  transition-property: all;
+}
+.duration-300 {
+  transition-duration: 300ms;
+}
+.ease-out {
+  transition-timing-function: ease-out;
+}
+.ease-in {
+  transition-timing-function: ease-in;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
+}
+
+/* ========================================== */
+/* RESPONSIVE - MÓVIL */
+/* ========================================== */
+@media (max-width: 768px) {
+  .foto-titular {
+    width: 25vw !important;
+    height: 25vw !important;
+    min-width: 25vw !important;
+    min-height: 25vw !important;
+    max-width: 25vw !important;
+    max-height: 25vw !important;
+  }
+  .foto-suplente {
+    width: 22vw !important;
+    height: 22vw !important;
+    min-width: 22vw !important;
+    min-height: 22vw !important;
+    max-width: 22vw !important;
+    max-height: 22vw !important;
+  }
+  .foto-secretario {
+    width: 22vw !important;
+    height: 22vw !important;
+    min-width: 22vw !important;
+    min-height: 22vw !important;
+    max-width: 22vw !important;
+    max-height: 22vw !important;
+  }
+  .foto-suplente-sm {
+    width: 19vw !important;
+    height: 19vw !important;
+    min-width: 19vw !important;
+    min-height: 19vw !important;
+    max-width: 19vw !important;
+    max-height: 19vw !important;
+  }
+  .badge-titular,
+  .badge-suplente {
+    font-size: 2.5vw;
+  }
+  .badge-titular-sm,
+  .badge-suplente-sm {
+    font-size: 2.2vw;
+  }
+  .badge-partido,
+  .badge-partido-sm {
+    font-size: 2.2vw;
+  }
+}
+</style> 
+================================= 
+pages\comunicados.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Encabezado -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-senado-primary mb-4">
+          Comunicados Oficiales
+        </h1>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Información institucional y comunicados oficiales de la Cámara de Senadores
+        </p>
+        <div class="w-24 h-1 bg-senado-gold mx-auto mt-4"></div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="mb-8 flex flex-wrap gap-4 justify-between items-center">
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="filtro in filtros"
+            :key="filtro"
+            @click="filtroActivo = filtro"
+            class="px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium"
+            :class="filtroActivo === filtro 
+              ? 'bg-senado-primary text-white shadow-lg' 
+              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'"
+          >
+            {{ filtro }}
+          </button>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <input
+            v-model="busqueda"
+            type="text"
+            placeholder="Buscar comunicados..."
+            class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-senado-primary text-sm w-64"
+          />
+          <button
+            @click="alternarVista"
+            class="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            <Icon :name="vista === 'grid' ? 'material-symbols:view-list' : 'material-symbols:grid-view'" class="text-2xl text-gray-600" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador -->
+      <div class="mb-4 text-sm text-gray-500">
+        Mostrando {{ comunicadosFiltrados.length }} de {{ comunicados.length }} comunicados
+      </div>
+
+      <!-- Grid de comunicados -->
+      <div v-if="vista === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          v-for="comunicado in comunicadosFiltrados"
+          :key="comunicado.id"
+          class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        >
+          <!-- Tipo -->
+          <div class="px-6 pt-4 flex justify-between items-start">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              :class="{
+                'bg-red-100 text-red-700': comunicado.tipo === 'Urgente',
+                'bg-yellow-100 text-yellow-700': comunicado.tipo === 'Importante',
+                'bg-blue-100 text-blue-700': comunicado.tipo === 'Informativo',
+                'bg-green-100 text-green-700': comunicado.tipo === 'Normal'
+              }"
+            >
+              {{ comunicado.tipo }}
+            </span>
+            <span class="text-xs text-gray-400">{{ comunicado.fecha }}</span>
+          </div>
+
+          <!-- Contenido -->
+          <div class="p-6 pt-2">
+            <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
+              {{ comunicado.titulo }}
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+              {{ comunicado.descripcion }}
+            </p>
+            
+            <!-- Etiquetas -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span
+                v-for="tag in comunicado.tags"
+                :key="tag"
+                class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+              >
+                #{{ tag }}
+              </span>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+              <button
+                @click="verDetalle(comunicado)"
+                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium transition-colors"
+              >
+                Leer más →
+              </button>
+              <button
+                v-if="comunicado.pdfId"
+                @click="descargarPDF(comunicado)"
+                class="flex items-center gap-1 text-gray-500 hover:text-senado-primary transition-colors text-sm"
+              >
+                <Icon name="material-symbols:file-download" class="text-lg" />
+                Descargar PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista de lista -->
+      <div v-else class="space-y-4">
+        <div
+          v-for="comunicado in comunicadosFiltrados"
+          :key="comunicado.id"
+          class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 p-4"
+        >
+          <div class="flex flex-col md:flex-row md:items-center gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-3 mb-1">
+                <span
+                  class="px-2 py-0.5 rounded-full text-xs font-semibold"
+                  :class="{
+                    'bg-red-100 text-red-700': comunicado.tipo === 'Urgente',
+                    'bg-yellow-100 text-yellow-700': comunicado.tipo === 'Importante',
+                    'bg-blue-100 text-blue-700': comunicado.tipo === 'Informativo',
+                    'bg-green-100 text-green-700': comunicado.tipo === 'Normal'
+                  }"
+                >
+                  {{ comunicado.tipo }}
+                </span>
+                <span class="text-xs text-gray-400">{{ comunicado.fecha }}</span>
+              </div>
+              <h3 class="text-lg font-bold text-gray-800 truncate">
+                {{ comunicado.titulo }}
+              </h3>
+              <p class="text-gray-600 text-sm line-clamp-2">
+                {{ comunicado.descripcion }}
+              </p>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span
+                  v-for="tag in comunicado.tags.slice(0, 3)"
+                  :key="tag"
+                  class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
+                >
+                  #{{ tag }}
+                </span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button
+                @click="verDetalle(comunicado)"
+                class="px-4 py-2 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors text-sm"
+              >
+                Ver
+              </button>
+              <button
+                v-if="comunicado.pdfId"
+                @click="descargarPDF(comunicado)"
+                class="p-2 text-gray-500 hover:text-senado-primary transition-colors"
+              >
+                <Icon name="material-symbols:file-download" class="text-xl" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div v-if="comunicadosFiltrados.length > 0" class="mt-8 flex justify-center">
+        <nav class="flex items-center gap-2">
+          <button
+            @click="paginaActual > 1 && paginaActual--"
+            class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors disabled:opacity-50"
+            :disabled="paginaActual === 1"
+          >
+            Anterior
+          </button>
+          <span class="px-3 py-1 text-sm text-gray-600">
+            Página {{ paginaActual }} de {{ totalPaginas }}
+          </span>
+          <button
+            @click="paginaActual < totalPaginas && paginaActual++"
+            class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors disabled:opacity-50"
+            :disabled="paginaActual === totalPaginas"
+          >
+            Siguiente
+          </button>
+        </nav>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-if="comunicadosFiltrados.length === 0" class="text-center py-12">
+        <Icon name="material-symbols:search-off" class="text-6xl text-gray-400 mb-4" />
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No hay comunicados</h3>
+        <p class="text-gray-500">Intenta con otros filtros o términos de búsqueda</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ComunicadosPage',
+  data() {
+    return {
+      vista: 'grid',
+      filtroActivo: 'Todos',
+      busqueda: '',
+      paginaActual: 1,
+      itemsPorPagina: 12,
+      filtros: ['Todos', 'Urgente', 'Importante', 'Informativo', 'Normal'],
+      comunicados: [
+        {
+          id: 1,
+          titulo: 'Convocatoria a Sesión Extraordinaria',
+          descripcion: 'Se convoca a sesión extraordinaria para el día 25 de agosto de 2026 a las 10:00 AM. Tratamiento de proyectos de ley pendientes.',
+          tipo: 'Urgente',
+          fecha: '21/08/2026',
+          tags: ['Sesión', 'Legislativo', 'Convocatoria'],
+          pdfId: '6a85bd37bb125a0a5c58c9a5'
+        },
+        {
+          id: 2,
+          titulo: 'Nuevo Reglamento de Funcionamiento Interno',
+          descripcion: 'Se aprueba el nuevo reglamento de funcionamiento interno de la Cámara de Senadores, que entrará en vigencia a partir del 1 de septiembre.',
+          tipo: 'Importante',
+          fecha: '20/08/2026',
+          tags: ['Reglamento', 'Interno', 'Normativa'],
+          pdfId: '7b96ce48cc236b1b6d69dab6'
+        },
+        {
+          id: 3,
+          titulo: 'Curso de Capacitación para Asesores',
+          descripcion: 'Se dictará un curso de capacitación en técnicas legislativas para asesores de la Cámara. Inscripciones abiertas hasta el 30 de agosto.',
+          tipo: 'Informativo',
+          fecha: '19/08/2026',
+          tags: ['Capacitación', 'Asesores', 'Formación'],
+          pdfId: null
+        },
+        {
+          id: 4,
+          titulo: 'Comunicado sobre Rendición de Cuentas',
+          descripcion: 'Se informa a la ciudadanía sobre el proceso de rendición de cuentas de la gestión 2025-2026. Fecha límite: 15 de septiembre.',
+          tipo: 'Normal',
+          fecha: '18/08/2026',
+          tags: ['Rendición', 'Cuentas', 'Transparencia'],
+          pdfId: '8c07df59dd347c2c7e7aebc7'
+        },
+        {
+          id: 5,
+          titulo: 'Conmemoración del Bicentenario',
+          descripcion: 'La Cámara de Senadores se une a la conmemoración del Bicentenario de la Independencia con una sesión especial el 6 de agosto.',
+          tipo: 'Importante',
+          fecha: '05/08/2026',
+          tags: ['Bicentenario', 'Independencia', 'Historia'],
+          pdfId: '9d18eg60ee458d3d8f8bfcd8'
+        },
+        {
+          id: 6,
+          titulo: 'Llamado a Concurso Público',
+          descripcion: 'Se convoca a concurso público para la contratación de personal administrativo. Las postulaciones estarán abiertas del 1 al 15 de septiembre.',
+          tipo: 'Normal',
+          fecha: '03/08/2026',
+          tags: ['Concurso', 'Empleo', 'Selección'],
+          pdfId: null
+        },
+        {
+          id: 7,
+          titulo: 'Modificación de la Ley N° 123',
+          descripcion: 'Se presenta proyecto de ley para la modificación de la Ley N° 123 sobre regulación de servicios públicos.',
+          tipo: 'Importante',
+          fecha: '30/07/2026',
+          tags: ['Legislación', 'Servicios', 'Públicos'],
+          pdfId: '0a29fh71ff569e4e9g9gcfd9'
+        },
+        {
+          id: 8,
+          titulo: 'Suspensión de Actividades por Fumigación',
+          descripcion: 'Las actividades en el edificio legislativo se suspenderán el día 25 de agosto por trabajos de fumigación y mantenimiento.',
+          tipo: 'Informativo',
+          fecha: '28/07/2026',
+          tags: ['Fumigación', 'Mantenimiento', 'Suspensión'],
+          pdfId: null
+        },
+        {
+          id: 9,
+          titulo: 'Nuevo Sistema de Gestión Documental',
+          descripcion: 'Se implementa un nuevo sistema de gestión documental para mejorar la eficiencia en el manejo de expedientes.',
+          tipo: 'Normal',
+          fecha: '25/07/2026',
+          tags: ['Tecnología', 'Gestión', 'Documentos'],
+          pdfId: '1b3agi82gg670f5f0h0hdeg0'
+        },
+        {
+          id: 10,
+          titulo: 'Asueto por Día del Funcionario Público',
+          descripcion: 'Se declara asueto el día 5 de agosto en conmemoración al Día del Funcionario Público.',
+          tipo: 'Informativo',
+          fecha: '24/07/2026',
+          tags: ['Asueto', 'Funcionario', 'Público'],
+          pdfId: null
+        }
+      ]
+    }
+  },
+  computed: {
+    comunicadosFiltrados() {
+      let resultado = this.comunicados
+
+      // Filtro por tipo
+      if (this.filtroActivo !== 'Todos') {
+        resultado = resultado.filter(c => c.tipo === this.filtroActivo)
+      }
+
+      // Filtro por búsqueda
+      if (this.busqueda) {
+        const busq = this.busqueda.toLowerCase()
+        resultado = resultado.filter(c =>
+          c.titulo.toLowerCase().includes(busq) ||
+          c.descripcion.toLowerCase().includes(busq) ||
+          c.tags.some(tag => tag.toLowerCase().includes(busq))
+        )
+      }
+
+      return resultado
+    },
+    totalPaginas() {
+      return Math.ceil(this.comunicadosFiltrados.length / this.itemsPorPagina)
+    }
+  },
+  methods: {
+    alternarVista() {
+      this.vista = this.vista === 'grid' ? 'lista' : 'grid'
+    },
+    verDetalle(comunicado) {
+      // En el futuro: this.$router.push(`/comunicados/${comunicado.id}`)
+      alert(`Comunicado: ${comunicado.titulo}\n\n${comunicado.descripcion}`)
+    },
+    descargarPDF(comunicado) {
+      if (comunicado.pdfId) {
+        // Simular descarga
+        alert(`Descargando PDF del comunicado: ${comunicado.titulo}`)
+        // En el futuro: window.open(`https://api.senado.bo/api_rrhh/readRelease/${comunicado.pdfId}`, '_blank')
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+pages\contacto.vue 
+================================= 
+ 
+<!-- pages/contacto.vue -->
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Hero / Banner con ARIA -->
+    <section 
+      class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white"
+      role="banner"
+      aria-labelledby="contacto-titulo"
+    >
+      <div class="container mx-auto px-4 py-8 md:py-16 lg:py-20">
+        <div class="flex flex-col items-center text-center">
+          <!-- Badge -->
+          <div 
+            class="inline-flex items-center bg-white/10 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-2 md:mb-3"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:email" class="text-senado-gold text-lg md:text-xl lg:text-2xl" />
+            <span class="text-white/80 tracking-wider font-medium text-xs md:text-sm ml-2">CONTACTO</span>
+          </div>
+          
+          <h1 
+            id="contacto-titulo"
+            class="font-bold leading-tight text-3xl md:text-5xl lg:text-6xl"
+          >
+            ¿Cómo podemos <span class="text-senado-gold">ayudarte</span>?
+          </h1>
+          
+          <p class="text-white/70 max-w-2xl text-sm md:text-base lg:text-lg mt-2 md:mt-3">
+            Estamos aquí para escucharte y brindarte la información que necesitas
+          </p>
+        </div>
+      </div>
+      
+      <!-- Onda inferior -->
+      <div class="absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full" role="presentation">
+          <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl">
+      
+      <!-- Tarjetas de contacto rápido -->
+      <div 
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 -mt-6 md:-mt-10 relative z-10"
+        role="list"
+      >
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:phone" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Teléfono</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">
+            <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+              (591-2) 2143400
+            </a>
+          </p>
+        </div>
+
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:email" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Correo Electrónico</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">
+            <a href="mailto:info@senado.gob.bo" class="hover:text-senado-primary transition-colors">
+              info@senado.gob.bo
+            </a>
+          </p>
+        </div>
+
+        <div 
+          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          role="listitem"
+        >
+          <div 
+            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:clock" class="text-3xl text-senado-primary" />
+          </div>
+          <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Horario de Atención</h3>
+          <p class="text-center text-gray-600 text-sm md:text-base">Lunes a Viernes</p>
+          <p class="text-center text-gray-600 text-sm md:text-base">08:30 - 16:30 hrs</p>
+        </div>
+      </div>
+
+      <!-- Grid: Mapa + Dirección -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-8 md:mt-12">
+        
+        <!-- Mapa -->
+        <section 
+          class="bg-white rounded-xl shadow-lg overflow-hidden"
+          aria-labelledby="mapa-titulo"
+        >
+          <div class="bg-senado-primary text-white px-4 py-3 md:px-6 md:py-4">
+            <h2 id="mapa-titulo" class="font-bold text-lg md:text-xl flex items-center gap-2">
+              <Icon name="mdi:map-marker" />
+              Ubicación
+            </h2>
+          </div>
+          <div class="h-64 md:h-80 lg:h-96 w-full">
+            <iframe
+              title="Mapa de ubicación del Senado - Casa Grande del Pueblo"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.123456789!2d-68.13359296560174!3d-16.496656424958083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f21d1a1f1f1f1%3A0x0!2zMTbCsDI5JzQ4LjAiUyA2OMCsMDgnMDAuMCJX!5e0!3m2!1ses!2sbo!4v1234567890&markers=color:red%7C-16.496656424958083,-68.13359296560174"
+              width="100%"
+              height="100%"
+              style="border:0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </section>
+
+        <!-- Dirección detallada -->
+        <section 
+          class="bg-white rounded-xl shadow-lg p-4 md:p-6"
+          aria-labelledby="direccion-titulo"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <h3 id="direccion-titulo" class="font-bold text-senado-primary text-base flex items-center gap-2">
+                <Icon name="mdi:map-marker" />
+                Dirección
+              </h3>
+              <address class="not-italic text-gray-600 text-sm">
+                <strong>Casa Grande del Pueblo</strong><br />
+                Calle Comercio esquina Colón<br />
+                La Paz, Bolivia
+              </address>
+              <p class="text-gray-600 text-sm mt-2">
+                <Icon name="mdi:phone" class="inline text-senado-primary" />
+                <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+                  (591-2) 2143400
+                </a>
+              </p>
+            </div>
+            <div>
+              <h4 class="font-bold text-senado-primary text-base flex items-center gap-2">
+                <Icon name="mdi:car" />
+                Cómo llegar
+              </h4>
+              <p class="text-gray-600 text-sm">
+                🚗 Estacionamiento cercano disponible<br />
+                🚌 Transporte público: Líneas que pasan por la Plaza Murillo
+              </p>
+              <div class="mt-3">
+                <a 
+                  href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded text-sm"
+                >
+                  <Icon name="mdi:open-in-new" />
+                  Ver en Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-gray-200">
+            <a 
+              href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 bg-senado-primary text-white text-center rounded-lg hover:bg-senado-primary-dark transition font-medium flex items-center justify-center gap-2 px-4 py-2 text-sm"
+            >
+              <Icon name="mdi:google-maps" />
+              Google Maps
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Enlaces de interés -->
+      <div 
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12"
+        role="list"
+      >
+        <div 
+          class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-4 md:p-5"
+          role="listitem"
+        >
+          <div class="flex items-center gap-3">
+            <Icon name="mdi:headset" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
+            <div>
+              <h4 class="font-bold text-senado-primary text-sm md:text-base">Atención al Ciudadano</h4>
+              <p class="text-gray-600 text-sm">
+                <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
+                  (591-2) 2143400
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div 
+          class="bg-senado-primary/5 rounded-xl border border-senado-primary/20 p-4 md:p-5"
+          role="listitem"
+        >
+          <div class="flex items-center gap-3">
+            <Icon name="mdi:file-document" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
+            <div>
+              <h4 class="font-bold text-senado-primary text-sm md:text-base">Transparencia</h4>
+              <p class="text-gray-600 text-sm">
+                <NuxtLink 
+                  to="/solicitud-informacion" 
+                  class="text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded"
+                >
+                  Solicita información
+                </NuxtLink>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ rápido -->
+      <section 
+        class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12"
+        aria-labelledby="faq-titulo"
+      >
+        <h3 id="faq-titulo" class="text-center font-bold text-gray-800 text-xl md:text-2xl mb-4">
+          ❓ Preguntas Frecuentes
+        </h3>
+        <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo puedo visitar el Senado?</dt>
+            <NuxtLink to="/visita-senado" class="text-senado-primary hover:underline">
+                Agenda tu visita en nuestra página de visitas
+              </NuxtLink>
+          </div>
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo solicito información?</dt>
+            <dd class="text-gray-600 text-sm">
+              <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline">
+                Solicita información aquí
+              </NuxtLink>
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Horario de atención?</dt>
+            <dd class="text-gray-600 text-sm">Lunes a Viernes 08:00 - 17:00 hrs</dd>
+          </div>
+        </dl>
+      </section>
+
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Contacto'
+}
+</script>
+
+<style scoped>
+/* Focus visible para accesibilidad */
+*:focus-visible {
+  outline: 2px solid #1a3c6e;
+  outline-offset: 2px;
+}
+
+/* Animaciones con preferencias de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style> 
+================================= 
+pages\contrataciones-oportunidades.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
+    <div class="w-[90%] max-w-6xl">
+      <!-- Botón volver -->
+      <div class="mb-6">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- CONTRATACIONES Y OPORTUNIDADES DE EMPLEO   -->
+      <!-- ========================================== -->
+      <div class="management-container">
+        <!-- Header -->
+        <div class="management-header">
+          <div class="header-left">
+            <h2 class="management-title">
+              Contrataciones y Oportunidades de Empleo
+              <span v-if="!loading && !error" class="badge">{{ documentos.length }} documentos</span>
+            </h2>
+          </div>
+          
+          <div class="header-controls">
+            <!-- Buscador -->
+            <div class="search-box">
+              <input 
+                type="text" 
+                v-model="terminoBusqueda"
+                @input="filtrarDocumentos"
+                placeholder="Buscar documentos..."
+                class="search-input"
+              >
+              <button class="search-button" :disabled="loading">
+                <span class="search-icon">🔍</span>
+              </button>
+              <button 
+                v-if="terminoBusqueda" 
+                @click="limpiarBusqueda" 
+                class="clear-button"
+                title="Limpiar búsqueda"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado de carga -->
+        <div v-if="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando documentos...</p>
+        </div>
+
+        <!-- Estado de error -->
+        <div v-else-if="error" class="error-state">
+          <span class="error-icon">⚠️</span>
+          <p>{{ error }}</p>
+          <button @click="cargarDocumentos" class="retry-button">Reintentar</button>
+        </div>
+
+        <!-- Lista de documentos -->
+        <div v-else class="table-responsive">
+          <table class="management-table">
+            <thead>
+              <tr>
+                <th @click="ordenarPor('nombre')" class="sortable">
+                  Nombre del archivo
+                  <span class="sort-icon">{{ getSortIcon('nombre') }}</span>
+                </th>
+                <th @click="ordenarPor('tipo')" class="sortable">
+                  Tipo
+                  <span class="sort-icon">{{ getSortIcon('tipo') }}</span>
+                </th>
+                <th @click="ordenarPor('gestion')" class="sortable">
+                  Gestión
+                  <span class="sort-icon">{{ getSortIcon('gestion') }}</span>
+                </th>
+                <th @click="ordenarPor('fecha')" class="sortable">
+                  Fecha de publicación
+                  <span class="sort-icon">{{ getSortIcon('fecha') }}</span>
+                </th>
+                <th class="actions-column">Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="doc in documentosFiltrados" :key="doc.id" class="management-row">
+                <td class="title-cell">
+                  <div class="titulo-principal">{{ doc.nombre }}</div>
+                  <div v-if="doc.descripcion" class="descripcion">{{ doc.descripcion }}</div>
+                </td>
+                <td>
+                  <span class="tipo-badge" :class="getTipoClase(doc.tipo)">
+                    {{ doc.tipo }}
+                  </span>
+                </td>
+                <td>{{ doc.gestion || '-' }}</td>
+                <td>{{ formatearFecha(doc.fecha) }}</td>
+                <td class="actions-cell">
+                  <a 
+                    :href="doc.url" 
+                    target="_blank"
+                    class="btn-documento"
+                    title="Ver documento"
+                  >
+                    <span class="btn-icon">📄</span>
+                    <span class="btn-text">Ver</span>
+                  </a>
+                </td>
+              </tr>
+              
+              <!-- Fila vacía -->
+              <tr v-if="documentosFiltrados.length === 0 && !loading">
+                <td colspan="5" class="empty-state">
+                  <p>No hay documentos disponibles</p>
+                  <p v-if="terminoBusqueda" class="text-sm text-gray-400 mt-1">
+                    No se encontraron resultados para "{{ terminoBusqueda }}"
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Información de depuración -->
+        <div v-if="documentos.length > 0 && !loading" class="debug-info p-2 text-xs border-t border-gray-200 bg-gray-50">
+          <p>Total documentos: {{ documentos.length }} | Mostrando: {{ documentosFiltrados.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// ============================================
+// ESTADO
+// ============================================
+const documentos = ref([])
+const documentosFiltrados = ref([])
+const loading = ref(false)
+const error = ref(null)
+const terminoBusqueda = ref('')
+const orden = ref({
+  columna: 'fecha',
+  direccion: 'desc'
+})
+
+// ============================================
+// CONFIGURACIÓN DEL ENDPOINT
+// ============================================
+// 🔥 CAMBIA ESTA URL CUANDO TENGAS EL BACKEND
+const API_URL = 'https://api.senado.gob.bo/contrataciones-oportunidades'
+
+// ============================================
+// FUNCIONES
+// ============================================
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-BO', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
+
+const getTipoClase = (tipo) => {
+  const tipos = {
+    'PAC': 'tipo-pac',
+    'Convocatoria': 'tipo-convocatoria',
+    'Resultados': 'tipo-resultados',
+    'Informe': 'tipo-informe',
+    'Programa Anual': 'tipo-pac'
+  }
+  return tipos[tipo] || 'tipo-otro'
+}
+
+const filtrarDocumentos = () => {
+  if (!terminoBusqueda.value.trim()) {
+    documentosFiltrados.value = [...documentos.value]
+    return
+  }
+  
+  const termino = terminoBusqueda.value.toLowerCase().trim()
+  documentosFiltrados.value = documentos.value.filter(doc => 
+    (doc.nombre && doc.nombre.toLowerCase().includes(termino)) ||
+    (doc.descripcion && doc.descripcion.toLowerCase().includes(termino)) ||
+    (doc.tipo && doc.tipo.toLowerCase().includes(termino)) ||
+    (doc.gestion && doc.gestion.toLowerCase().includes(termino))
+  )
+  
+  aplicarOrdenamiento()
+}
+
+const limpiarBusqueda = () => {
+  terminoBusqueda.value = ''
+  documentosFiltrados.value = [...documentos.value]
+  aplicarOrdenamiento()
+}
+
+const aplicarOrdenamiento = () => {
+  const columna = orden.value.columna
+  const direccion = orden.value.direccion
+  
+  documentosFiltrados.value.sort((a, b) => {
+    let valorA, valorB
+    
+    if (columna === 'nombre') {
+      valorA = a.nombre || ''
+      valorB = b.nombre || ''
+    } else if (columna === 'tipo') {
+      valorA = a.tipo || ''
+      valorB = b.tipo || ''
+    } else if (columna === 'gestion') {
+      valorA = a.gestion || ''
+      valorB = b.gestion || ''
+    } else if (columna === 'fecha') {
+      valorA = a.fecha ? new Date(a.fecha) : new Date(0)
+      valorB = b.fecha ? new Date(b.fecha) : new Date(0)
+    }
+    
+    if (valorA < valorB) return direccion === 'asc' ? -1 : 1
+    if (valorA > valorB) return direccion === 'asc' ? 1 : -1
+    return 0
+  })
+}
+
+const ordenarPor = (columna) => {
+  if (orden.value.columna === columna) {
+    orden.value.direccion = orden.value.direccion === 'asc' ? 'desc' : 'asc'
+  } else {
+    orden.value.columna = columna
+    orden.value.direccion = 'desc'
+  }
+  aplicarOrdenamiento()
+}
+
+const getSortIcon = (columna) => {
+  if (orden.value.columna !== columna) return '↕️'
+  return orden.value.direccion === 'asc' ? '↑' : '↓'
+}
+
+// ============================================
+// CARGAR DATOS DESDE API
+// ============================================
+const cargarDocumentos = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    // 🔥 SIMULACIÓN DE DATOS - REEMPLAZAR CON LLAMADA REAL
+    // const response = await fetch(API_URL)
+    // const data = await response.json()
+    // documentos.value = data
+    
+    // 📌 DATOS DE EJEMPLO (ELIMINAR CUANDO TENGA API)
+    await new Promise(resolve => setTimeout(resolve, 800))
+    //tipo: PAC, Convocatoria, Resultados, Informe, Programa Anual
+    
+    documentos.value = [
+      {
+        id: 1,
+        nombre: 'Programa Anual de Contrataciones 2026',
+        descripcion: 'PAC al 25.08.2026',
+        tipo: 'Programa Anual',
+        gestion: '2026',
+        fecha: '2026-08-25T10:30:00',
+        url: '/pdfs/Recursos-humanos/pac-2026.pdf'
+      }
+    ]
+    
+    documentosFiltrados.value = [...documentos.value]
+    aplicarOrdenamiento()
+    
+  } catch (err) {
+    error.value = 'Error al cargar los documentos: ' + err.message
+    console.error('Error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// ============================================
+// CARGAR DATOS AL MONTAR
+// ============================================
+onMounted(() => {
+  cargarDocumentos()
+})
+</script>
+
+<style scoped>
+.management-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  width: 100%;
+  background: transparent;
+}
+
+.management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.management-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.badge {
+  background: linear-gradient(135deg, #E03636, #b82c2c);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  gap: 4px;
+  background: white;
+  padding: 3px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.search-input {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  width: 260px;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s;
+  padding-right: 65px;
+}
+
+.search-input:focus {
+  border-color: #E03636;
+  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
+}
+
+.search-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.search-button:hover:not(:disabled) {
+  background: #b82c2c;
+}
+
+.search-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-button {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 6px;
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+}
+
+.clear-button:hover {
+  color: #E03636;
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: auto;
+  margin-bottom: 16px;
+}
+
+.management-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.management-table th {
+  background: #f8fafc;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background: #f1f5f9;
+}
+
+.sort-icon {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.management-row td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef2f6;
+  color: #334155;
+  line-height: 1.3;
+}
+
+.management-row:hover td {
+  background-color: #f8fafc;
+}
+
+.title-cell {
+  min-width: 220px;
+}
+
+.titulo-principal {
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+}
+
+.descripcion {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.tipo-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.tipo-pac {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tipo-convocatoria {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.tipo-resultados {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.tipo-informe {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.tipo-otro {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.actions-cell {
+  width: 80px;
+  text-align: center;
+}
+
+.btn-documento {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #E03636;
+  color: white;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-documento:hover {
+  background: #b82c2c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #E03636;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.retry-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.retry-button:hover {
+  background: #b82c2c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.debug-info {
+  background-color: #f1f5f9;
+  border-radius: 0 0 10px 10px;
+  font-family: monospace;
+  color: #334155;
+}
+
+@media (max-width: 768px) {
+  .management-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-left {
+    justify-content: center;
+  }
+  
+  .header-controls {
+    justify-content: center;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .btn-text {
+    display: none;
+  }
+}
+</style> 
+================================= 
+pages\cursos-capacitacion.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Encabezado -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-senado-primary mb-4">
+          Cursos y Capacitación
+        </h1>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Formación continua para el desarrollo de habilidades y conocimientos
+        </p>
+        <div class="w-24 h-1 bg-senado-gold mx-auto mt-4"></div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="mb-8 flex flex-wrap gap-4 justify-center">
+        <button
+          v-for="categoria in categorias"
+          :key="categoria"
+          @click="filtroCategoria = categoria"
+          class="px-6 py-2 rounded-full transition-all duration-300 text-sm font-medium"
+          :class="filtroCategoria === categoria 
+            ? 'bg-senado-primary text-white shadow-lg' 
+            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'"
+        >
+          {{ categoria }}
+        </button>
+        <button
+          @click="filtroCategoria = 'todos'"
+          class="px-6 py-2 rounded-full transition-all duration-300 text-sm font-medium"
+          :class="filtroCategoria === 'todos' 
+            ? 'bg-senado-primary text-white shadow-lg' 
+            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'"
+        >
+          Todos
+        </button>
+      </div>
+
+      <!-- Grid de cursos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          v-for="curso in cursosFiltrados" 
+          :key="curso.id"
+          class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        >
+          <!-- Imagen -->
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              :src="curso.imagen" 
+              :alt="curso.titulo"
+              class="w-full h-full object-cover"
+              @error="(e) => e.target.src = 'https://via.placeholder.com/400x200/1a3a5c/ffffff?text=Curso'"
+            />
+            <div class="absolute top-4 right-4">
+              <span class="px-3 py-1 bg-senado-primary text-white text-xs font-semibold rounded-full">
+                {{ curso.categoria }}
+              </span>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <span class="text-white text-sm font-medium">
+                {{ curso.duracion }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Contenido -->
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+              {{ curso.titulo }}
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+              {{ curso.descripcion }}
+            </p>
+            
+            <!-- Detalles -->
+            <div class="flex flex-wrap gap-3 mb-4 text-sm text-gray-500">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ curso.horas }} horas
+              </span>
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+                {{ curso.modalidad }}
+              </span>
+            </div>
+
+            <!-- Nivel y estado -->
+            <div class="flex items-center justify-between mb-4">
+              <span 
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                :class="curso.nivel === 'Básico' ? 'bg-green-100 text-green-800' :
+                        curso.nivel === 'Intermedio' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'"
+              >
+                {{ curso.nivel }}
+              </span>
+              <span 
+                class="px-3 py-1 rounded-full text-xs font-medium"
+                :class="curso.estado === 'Disponible' ? 'bg-blue-100 text-blue-800' :
+                        curso.estado === 'Próximamente' ? 'bg-purple-100 text-purple-800' :
+                        'bg-gray-100 text-gray-800'"
+              >
+                {{ curso.estado }}
+              </span>
+            </div>
+
+            <!-- Botón -->
+            <button 
+              @click="verDetalle(curso)"
+              class="w-full py-2.5 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors duration-300 font-medium"
+            >
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje cuando no hay cursos -->
+      <div v-if="cursosFiltrados.length === 0" class="text-center py-12">
+        <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No hay cursos disponibles</h3>
+        <p class="text-gray-500">Pronto agregaremos nuevos cursos para ti</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'CursosCapacitacion',
+  data() {
+    return {
+      filtroCategoria: 'todos',
+      categorias: [
+        'Desarrollo Profesional',
+        'Liderazgo',
+        'Tecnología',
+        'Comunicación',
+        'Gestión Pública'
+      ],
+      cursos: [
+        {
+          id: 1,
+          titulo: 'Liderazgo y Gestión de Equipos Efectivos',
+          descripcion: 'Desarrolla habilidades de liderazgo para gestionar equipos de alto rendimiento en el sector público.',
+          categoria: 'Liderazgo',
+          nivel: 'Intermedio',
+          duracion: '4 semanas',
+          horas: 32,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=200&fit=crop'
+        },
+        {
+          id: 2,
+          titulo: 'Transformación Digital en el Sector Público',
+          descripcion: 'Aprende a implementar estrategias de transformación digital para mejorar la gestión pública.',
+          categoria: 'Tecnología',
+          nivel: 'Avanzado',
+          duracion: '6 semanas',
+          horas: 48,
+          modalidad: 'Mixta',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=200&fit=crop'
+        },
+        {
+          id: 3,
+          titulo: 'Comunicación Política y Oratoria',
+          descripcion: 'Domina las técnicas de comunicación política y desarrolla habilidades de oratoria efectiva.',
+          categoria: 'Comunicación',
+          nivel: 'Básico',
+          duracion: '3 semanas',
+          horas: 24,
+          modalidad: 'Presencial',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=200&fit=crop'
+        },
+        {
+          id: 4,
+          titulo: 'Gestión de Proyectos Públicos',
+          descripcion: 'Aprende a planificar, ejecutar y evaluar proyectos de inversión pública con metodologías ágiles.',
+          categoria: 'Gestión Pública',
+          nivel: 'Intermedio',
+          duracion: '5 semanas',
+          horas: 40,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=200&fit=crop'
+        },
+        {
+          id: 5,
+          titulo: 'Inteligencia Artificial y Análisis de Datos',
+          descripcion: 'Introducción a la IA y el análisis de datos para la toma de decisiones en el sector público.',
+          categoria: 'Tecnología',
+          nivel: 'Avanzado',
+          duracion: '8 semanas',
+          horas: 64,
+          modalidad: 'Virtual',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=400&h=200&fit=crop'
+        },
+        {
+          id: 6,
+          titulo: 'Desarrollo de Habilidades Directivas',
+          descripcion: 'Fortalece tus competencias directivas para liderar con efectividad en la administración pública.',
+          categoria: 'Desarrollo Profesional',
+          nivel: 'Intermedio',
+          duracion: '4 semanas',
+          horas: 30,
+          modalidad: 'Presencial',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=200&fit=crop'
+        },
+        {
+          id: 7,
+          titulo: 'Negociación y Resolución de Conflictos',
+          descripcion: 'Domina técnicas de negociación y resolución de conflictos en el ámbito institucional.',
+          categoria: 'Desarrollo Profesional',
+          nivel: 'Básico',
+          duracion: '3 semanas',
+          horas: 20,
+          modalidad: 'Virtual',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=200&fit=crop'
+        },
+        {
+          id: 8,
+          titulo: 'Gestión de Recursos Públicos',
+          descripcion: 'Optimiza la gestión de recursos públicos con herramientas y técnicas modernas.',
+          categoria: 'Gestión Pública',
+          nivel: 'Avanzado',
+          duracion: '6 semanas',
+          horas: 45,
+          modalidad: 'Mixta',
+          estado: 'Disponible',
+          imagen: 'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=400&h=200&fit=crop'
+        },
+        {
+          id: 9,
+          titulo: 'Storytelling y Narrativa Digital',
+          descripcion: 'Aprende a contar historias efectivas para comunicar mensajes institucionales.',
+          categoria: 'Comunicación',
+          nivel: 'Básico',
+          duracion: '2 semanas',
+          horas: 16,
+          modalidad: 'Virtual',
+          estado: 'Próximamente',
+          imagen: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=200&fit=crop'
+        }
+      ]
+    }
+  },
+  computed: {
+    cursosFiltrados() {
+      if (this.filtroCategoria === 'todos') {
+        return this.cursos
+      }
+      return this.cursos.filter(curso => curso.categoria === this.filtroCategoria)
+    }
+  },
+  methods: {
+    verDetalle(curso) {
+      // Por ahora solo mostraremos una alerta
+      // En el futuro esto redirigirá a una página de detalle
+      alert(`Curso: ${curso.titulo}\nDescripción: ${curso.descripcion}\nDuración: ${curso.duracion}\nModalidad: ${curso.modalidad}`)
+      
+      // Cuando tengas la página de detalle:
+      // this.$router.push(`/cursos-capacitacion/${curso.id}`)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

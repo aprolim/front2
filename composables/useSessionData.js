@@ -1,5 +1,5 @@
 // composables/useSessionData.js
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
@@ -22,16 +22,112 @@ export const useSessionData = () => {
     peticionesEscrito: 0,
     peticionesOral: 0,
     peticionesInforme: 20,
-    resoluciones: 0,      // 🔥 Cambiado de 45 a 0
-    declaraciones: 0,     // 🔥 Cambiado de 23 a 0
-    minutas: 0            // 🔥 Cambiado de 67 a 0
+    resoluciones: 0,
+    declaraciones: 0,
+    minutas: 0
   })
 
   // ========================================== //
-  // 🔥 FUNCIONES PARA OBTENER TOTALES         //
+  // NUEVA COMPUTED: OBTENER TODAS LAS SESIONES
+  // ========================================== //
+  const todasLasSesiones = computed(() => {
+    if (!sessionData.value) return []
+    
+    if (sessionData.value) {
+      // Obtener el orden del día desde la descripción
+      const agendaItems = obtenerOrdenDelDia(sessionData.value.description)
+      const nota = obtenerNota(sessionData.value)
+      
+      return [{
+        fecha: sessionData.value.date,
+        titulo: sessionData.value.title,
+        descripcion: sessionData.value.description,
+        hora: sessionData.value.startTime,
+        estado: sessionData.value.status_agenda,
+        estadoLabel: sessionData.value.status_agenda === 'APROBADO' ? 'Aprobada' : 'Pendiente',
+        detalles: agendaItems || [
+          'Correspondencia.',
+          'Asuntos del día.',
+          'Asuntos en mesa.',
+          'Informes de comisiones.',
+          'Asuntos varios.'
+        ],
+        nota: nota || `Nota: La sesión se desarrollará bajo la modalidad ${sessionData.value.modality || 'presencial'}.`,
+        esSesionActual: sessionData.value.date === new Date().toISOString().split('T')[0],
+        modality: sessionData.value.modality,
+        location: sessionData.value.location,
+        path: sessionData.value.path
+      }]
+    }
+    
+    return []
+  })
+
+  // ========================================== //
+  // FUNCIONES PARA OBTENER EL ORDEN DEL DÍA
+  // ========================================== //
+  
+  const obtenerOrdenDelDia = (description) => {
+    if (!description) return null
+    
+    // Intentar extraer el orden del día del texto
+    const lines = description.split('\n').map(line => line.trim()).filter(line => line)
+    
+    // Buscar la sección de orden del día
+    const orderIndex = lines.findIndex(line => 
+      line.toUpperCase().includes('ORDEN DEL DÍA') || 
+      line.toUpperCase().includes('ORDEN DEL DIA')
+    )
+    
+    if (orderIndex === -1) return null
+    
+    const items = []
+    let currentIndex = orderIndex + 1
+    
+    while (currentIndex < lines.length) {
+      const line = lines[currentIndex]
+      
+      // Detener si encontramos "Nota:"
+      if (line.toLowerCase().includes('nota:')) break
+      
+      // Buscar números de ítem (1., 2., etc.)
+      const match = line.match(/^(\d+)\.\s*(.*)/)
+      if (match) {
+        items.push(match[2] || match[0])
+      } else if (line.match(/^[A-ZÁÉÍÓÚÑ]/) && items.length > 0) {
+        // Continuar el ítem anterior si la línea empieza con mayúscula
+        items[items.length - 1] += ' ' + line
+      } else if (line.match(/^[•\-*]\s*(.*)/)) {
+        const bulletMatch = line.match(/^[•\-*]\s*(.*)/)
+        if (bulletMatch) items.push(bulletMatch[1])
+      }
+      currentIndex++
+    }
+    
+    return items.length > 0 ? items : null
+  }
+
+  const obtenerNota = (session) => {
+    if (!session) return null
+    
+    // Intentar extraer nota de la descripción
+    if (session.description) {
+      const lines = session.description.split('\n').map(line => line.trim())
+      const notaLine = lines.find(line => 
+        line.toLowerCase().includes('nota:') || 
+        line.toLowerCase().includes('modalidad')
+      )
+      if (notaLine) return notaLine
+    }
+    
+    // Si no hay nota, generar una por defecto
+    return `Nota: La sesión se desarrollará bajo la modalidad ${session.modality || 'presencial'}.`
+  }
+
+  // ========================================== //
+  // FUNCIONES PARA OBTENER TOTALES
   // ========================================== //
 
-  // Obtener total de peticiones de informe escrito
   const fetchPeticionesEscrito = async () => {
     try {
       const response = await fetch('https://apisi.senado.gob.bo/page/peticion-informe-escrito?page=1')
@@ -50,7 +146,6 @@ export const useSessionData = () => {
     }
   }
 
-  // Obtener total de peticiones de informe oral
   const fetchPeticionesOral = async () => {
     try {
       const response = await fetch('https://apisi.senado.gob.bo/page/peticion-informe-oral?page=1')
@@ -69,7 +164,6 @@ export const useSessionData = () => {
     }
   }
 
-  // 🔥 NUEVA: Obtener total de resoluciones camarales
   const fetchResoluciones = async () => {
     try {
       const response = await fetch('https://apisi.senado.gob.bo/page/resolucion-camarales?page=1')
@@ -88,7 +182,6 @@ export const useSessionData = () => {
     }
   }
 
-  // 🔥 NUEVA: Obtener total de declaraciones camarales
   const fetchDeclaraciones = async () => {
     try {
       const response = await fetch('https://apisi.senado.gob.bo/page/declaraciones-camarales?page=1')
@@ -107,7 +200,6 @@ export const useSessionData = () => {
     }
   }
 
-  // 🔥 NUEVA: Obtener total de minutas de comunicación
   const fetchMinutas = async () => {
     try {
       const response = await fetch('https://apisi.senado.gob.bo/page/minutas-comunicacion?page=1')
@@ -126,15 +218,14 @@ export const useSessionData = () => {
     }
   }
 
-  // 🔥 Función principal para cargar todas las estadísticas
   const fetchEstadisticas = async () => {
     try {
       await Promise.all([
         fetchPeticionesEscrito(),
         fetchPeticionesOral(),
-        fetchResoluciones(),    // 🔥 NUEVO
-        fetchDeclaraciones(),   // 🔥 NUEVO
-        fetchMinutas()          // 🔥 NUEVO
+        fetchResoluciones(),
+        fetchDeclaraciones(),
+        fetchMinutas()
       ])
       console.log('✅ Estadísticas actualizadas:', {
         peticionesEscrito: estadisticas.peticionesEscrito,
@@ -149,7 +240,7 @@ export const useSessionData = () => {
   }
 
   // ========================================== //
-  // FUNCIONES EXISTENTES (sin cambios)         //
+  // FUNCIONES EXISTENTES
   // ========================================== //
 
   const formatDate = (dateString) => {
@@ -188,63 +279,22 @@ export const useSessionData = () => {
     }
   }
 
-  const extractNote = (description) => {
-    if (!description) return null
-    const noteMatch = description.match(/Nota:\s*(.*)/i)
-    if (noteMatch) {
-      return noteMatch[0].trim()
-    }
-    const modalityMatch = description.match(/modalidad\s*(presencial|virtual|mixta)/i)
-    if (modalityMatch) {
-      return `Nota: La sesión se desarrollará bajo la modalidad ${modalityMatch[1]}.`
-    }
-    return null
-  }
-
-  const parseDescription = (description) => {
-    if (!description) return null
-    try {
-      const lines = description.split('\n').map(line => line.trim()).filter(line => line)
-      const orderIndex = lines.findIndex(line => 
-        line.toUpperCase().includes('ORDEN DEL DÍA') || 
-        line.toUpperCase().includes('ORDEN DEL DIA')
-      )
-      if (orderIndex === -1) return null
-      
-      const items = []
-      let currentIndex = orderIndex + 1
-      
-      while (currentIndex < lines.length) {
-        const line = lines[currentIndex]
-        if (line.toLowerCase().includes('nota:')) break
-        
-        const match = line.match(/^(\d+)\.\s*(.*)/)
-        if (match) {
-          items.push(match[2] || match[0])
-        } else if (line.match(/^[A-ZÁÉÍÓÚÑ]/) && items.length > 0) {
-          items[items.length - 1] += ' ' + line
-        } else if (line.match(/^[•\-*]\s*(.*)/)) {
-          const bulletMatch = line.match(/^[•\-*]\s*(.*)/)
-          if (bulletMatch) items.push(bulletMatch[1])
-        }
-        currentIndex++
-      }
-      
-      return items.length > 0 ? items : null
-    } catch (error) {
-      console.error('Error parseando descripción:', error)
-      return null
-    }
-  }
-
   const prepareModalData = (session) => {
     if (!session) return null
     
-    const agendaItems = parseDescription(session.description)
-    let note = extractNote(session.description)
+    // Obtener el orden del día desde la descripción
+    let agendaItems = obtenerOrdenDelDia(session.description)
+    let nota = obtenerNota(session)
     
-    if (!note) {
-      note = `Nota: La sesión se desarrollará bajo la modalidad ${session.modality || 'presencial'}.`
+    // Si no hay orden del día en la descripción, usar los valores por defecto
+    if (!agendaItems) {
+      agendaItems = [
+        'Correspondencia.',
+        'Asuntos del día.',
+        'Asuntos en mesa.',
+        'Informes de comisiones.',
+        'Asuntos varios.'
+      ]
     }
     
     return {
@@ -252,18 +302,12 @@ export const useSessionData = () => {
       dateFormatted: formatDate(session.date),
       dateFormattedShort: formatDateShort(session.date),
       time: session.startTime || '10:00',
-      location: session.location,
-      agendaItems: agendaItems || [
-        'Correspondencia.',
-        'Asuntos del día.',
-        'Asuntos en mesa.',
-        'Informes de comisiones.',
-        'Asuntos varios.'
-      ],
-      note: note,
-      modality: session.modality,
+      location: session.location || 'NEAL, LA PAZ',
+      agendaItems: agendaItems,
+      note: nota || `Nota: La sesión se desarrollará bajo la modalidad ${session.modality || 'presencial'}.`,
+      modality: session.modality || 'PRESENCIAL',
       path: session.path,
-      sessionNumber: session.title.match(/(\d+)/)?.[0] || '159'
+      sessionNumber: session.title?.match(/(\d+)/)?.[0] || '159'
     }
   }
 
@@ -299,6 +343,7 @@ export const useSessionData = () => {
         modalData.value = prepareModalData(lastApproved)
         hasValidData.value = true
         console.log('✅ Última sesión aprobada:', lastApproved.title)
+        console.log('📋 Orden del día:', modalData.value?.agendaItems)
       } else {
         console.warn('⚠️ No se encontraron sesiones aprobadas')
         sessionData.value = null
@@ -321,7 +366,7 @@ export const useSessionData = () => {
   }
 
   // ========================================== //
-  // 🔥 GENERAR PDF SOLO SI HAY DATOS VÁLIDOS  //
+  // GENERAR PDF
   // ========================================== //
   const downloadPDF = async () => {
     if (!hasValidData.value || !modalData.value) {
@@ -471,6 +516,7 @@ export const useSessionData = () => {
     modalData,
     estadisticas,
     hasValidData,
+    todasLasSesiones,
     fetchSessionData,
     fetchEstadisticas,
     openModal,

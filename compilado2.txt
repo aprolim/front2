@@ -1,0 +1,2828 @@
+COMPILADO DE ARCHIVOS - Parte 2 
+ 
+ 
+================================= 
+components\Header.vue 
+================================= 
+ 
+<template>
+  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+    <div class="mx-auto w-[80%] py-[.5vw]">
+      <div class="flex items-center justify-between gap-[1vw]">
+        <!-- Botón sandwich -->
+        <button 
+          @click="toggleMenu"
+          @mouseenter="handleMenuHoverEnter"
+          @mouseleave="handleMenuHoverLeave"
+          class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
+          ref="menuButton"
+        >
+          <ClientOnly>
+            <Icon 
+              name="material-symbols:menu-rounded" 
+              class="text-[4vw]" 
+              v-if="!menuAbierto" 
+              style="font-variation-settings: 'wght' 900;"
+            />
+            <Icon 
+              name="material-symbols:close-rounded" 
+              class="text-[3vw]" 
+              v-else 
+            />
+            <template #fallback>
+              <span class="text-[3vw]">☰</span>
+            </template>
+          </ClientOnly>
+        </button>
+
+        <!-- Logo -->
+        <div class="w-[1vw]"></div>
+        <NuxtLink to="/" class="flex-shrink-0 spin-coin block">
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[7.5vw] w-auto" />
+        </NuxtLink>
+
+        <!-- Título -->
+        <div class="hidden md:block flex-shrink-0 text-left">
+          <h1 class="text-[2.5vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
+            Cámara de<br />
+            <span class="font-montserrat-bold">Senadores</span>
+          </h1>
+        </div>
+        <div class="flex-shrink-0 w-[13vw]"></div>
+
+        <!-- Redes Sociales -->
+        <div 
+          class="hidden lg:block flex-grow z-[1000] relative"
+          @mouseenter="handleRedesHoverEnter"
+          @mouseleave="handleRedesHoverLeave"
+        >
+          <div class="relative flex items-center">
+            <button 
+              ref="redesButton"
+              class="text-gray-600 hover:text-senado-primary transition-colors font-medium text-[1.2vw]"
+            >
+              Redes Sociales
+            </button>
+            
+            <transition
+              enter-active-class="transition-all duration-[1900ms] ease-in"
+              enter-from-class="opacity-0 scale-95"
+              enter-to-class="opacity-100 scale-100"
+              leave-active-class="transition-all duration-[1900ms] ease-out"
+              leave-from-class="opacity-100 scale-100"
+              leave-to-class="opacity-0 scale-95"
+            >
+              <div 
+                v-if="redesAbiertas"
+                ref="redesMenu"
+                class="absolute bg-white rounded-lg p-3 flex flex-row items-center gap-3 whitespace-nowrap"
+                style="top: 50%; left: calc(35% + 8px); transform: translateY(-50%); right: auto; z-index: 9999999999;"
+              >
+                <a href="https://www.facebook.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <ClientOnly>
+                    <Icon name="mdi:facebook" class="text-[2vw] text-blue-600" />
+                    <template #fallback>
+                      <span class="text-2xl">f</span>
+                    </template>
+                  </ClientOnly>
+                </a>
+                <a href="https://x.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <ClientOnly>
+                    <Icon name="ri:twitter-x-line" class="text-[2vw] text-[#222222]" />
+                    <template #fallback>
+                      <span class="text-2xl">𝕏</span>
+                    </template>
+                  </ClientOnly>
+                </a>
+                <a href="https://www.youtube.com/@senadobolivia2026" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <ClientOnly>
+                    <Icon name="mdi:youtube" class="text-[2vw] text-red-600" />
+                    <template #fallback>
+                      <span class="text-2xl">▶️</span>
+                    </template>
+                  </ClientOnly>
+                </a>
+                <a href="https://www.instagram.com/camarasenadores" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <ClientOnly>
+                    <Icon name="mdi:instagram" class="text-[2vw] text-pink-600" />
+                    <template #fallback>
+                      <span class="text-2xl">📷</span>
+                    </template>
+                  </ClientOnly>
+                </a>
+                <a href="https://www.tiktok.com/@senadobolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                  <ClientOnly>
+                    <Icon name="ri:tiktok-line" class="text-[2vw] text-black" />
+                    <template #fallback>
+                      <span class="text-2xl">♪</span>
+                    </template>
+                  </ClientOnly>
+                </a>
+              </div>
+            </transition>
+          </div>
+        </div>
+        <div class="hidden lg:block flex-grow max-w-[2vw] z-[1000]"></div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col items-center gap-2 mt-2">
+        <h1 class="text-xl font-bold text-senado-primary leading-tight text-center">
+          Cámara de<br />
+          <span class="text-2xl">Senadores</span>
+        </h1>
+        <p class="text-xs text-gray-500 font-medium tracking-wider">
+          ENCUENTRA TU SENADOR
+        </p>
+        <div class="w-full max-w-xs relative">
+          <div class="relative">
+            <input 
+              ref="searchInputMobile"
+              type="text" 
+              placeholder="Buscar senador..." 
+              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+              v-model="searchQuery"
+              @input="handleSearch"
+              @focus="handleFocus"
+              @blur="handleBlur"
+            />
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
+              <ClientOnly>
+                <Icon name="material-symbols:search-rounded" class="text-xl" />
+                <template #fallback>
+                  <span class="text-xl">🔍</span>
+                </template>
+              </ClientOnly>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MENÚ LATERAL - SLIDE IZQUIERDA A DERECHA  -->
+    <!-- ========================================== -->
+    <div
+      class="fixed inset-0 z-[99999999] overflow-hidden transition-opacity duration-300"
+      :class="menuAbierto ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+      @click.self="toggleMenu"
+      @mouseenter="handleOverlayHoverEnter"
+      @mouseleave="handleOverlayHoverLeave"
+    >
+      <div 
+        ref="menuPanel"
+        class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl rounded-r-2xl relative transition-all duration-500 ease-out hide-scrollbar"
+        :class="menuAbierto ? 'translate-x-0' : '-translate-x-full'"
+        @mouseenter="handleMenuPanelHoverEnter"
+        @mouseleave="handleMenuPanelHoverLeave"
+      >
+        <!-- Marca de agua -->
+        <div 
+          class="absolute inset-0 pointer-events-none z-0"
+          style="background-image: url('/images/LogoDorado.svg'); background-repeat: no-repeat; background-position: center; background-size: 70%; opacity: 0.15; filter: grayscale(100%)"
+        ></div>
+        
+        <!-- Contenido del menú -->
+        <div class="relative z-10">
+          <div class="bg-senado-primary text-white p-4 flex items-center justify-center sticky top-0 z-10 relative">
+            <span class="font-bold text-lg">Menú</span>
+            <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors absolute right-4">
+              ✕
+            </button>
+          </div>
+          <nav class="p-4 space-y-6">
+            <!-- ========================================== -->
+            <!-- INSTITUCIONAL                              -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('institucional')"
+              @mouseleave="handleSubmenuHoverLeave('institucional')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('institucional')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Institucional</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.institucional ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-transparent"
+                :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
+                <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
+                <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
+                
+                <!-- Funciones del Senado -->
+                <div class="">
+                  <div 
+                    @click="toggleSubmenu('funciones')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Funciones del Senado</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.funciones ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="bg-transparent ml-6 space-y-0 text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Atribuciones del Senado</NuxtLink>
+                    <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
+                  </div>
+                </div>
+
+                <!-- Auditoría -->
+                <div class="">
+                  <div 
+                    @click="toggleSubmenu('auditoriaInstitucional')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Auditoría</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.auditoriaInstitucional ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="bg-transparent ml-6 space-y-0 text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    :class="submenus.auditoriaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• POA-UAI</NuxtLink>
+                    <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Auditorías Ejecutadas</NuxtLink>
+                    <NuxtLink to="/auditoria/informes-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Informes de Actividades</NuxtLink>
+                    <NuxtLink to="/auditoria/otras-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Otras Actividades</NuxtLink>
+                  </div>
+                </div>
+
+                <!-- Transparencia -->
+                <div class="">
+                  <div 
+                    @click="toggleSubmenu('transparenciaInstitucional')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Transparencia y Lucha contra la Corrupción</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.transparenciaInstitucional ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="bg-transparent ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</a>
+                    <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Solicitud de Información</NuxtLink>
+                    <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
+                  </div>
+                </div>
+                
+                <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Marco Normativo</NuxtLink>
+                <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Galeria de Imagenes</NuxtLink>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TRÁMITES Y SERVICIOS                      -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('tramites')"
+              @mouseleave="handleSubmenuHoverLeave('tramites')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('tramites')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[400] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Trámites y Servicios</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.tramites ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.tramites ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Consulta tu trámite</a>
+                <NuxtLink to="https://systemdemo.es/auth/login-external" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plataforma Digital</NuxtLink>
+                <NuxtLink to="/visita-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Visita el Senado</NuxtLink>
+                <a href="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Productos Digitales</a>
+                <NuxtLink to="/cursos-capacitacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Cursos y Capacitación</NuxtLink>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- COMUNICACIÓN                              -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('comunicacion')"
+              @mouseleave="handleSubmenuHoverLeave('comunicacion')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('comunicacion')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Comunicación</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.comunicacion ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
+                <NuxtLink to="/noticias" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Notas de Prensa</NuxtLink>
+                <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Publicaciones</NuxtLink>
+                <NuxtLink to="/campanas-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Campañas y Actividades</NuxtLink>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- FACULTADES LEGISLATIVAS                    -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('legislativa')"
+              @mouseleave="handleSubmenuHoverLeave('legislativa')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('legislativa')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Facultades Legislativas</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.legislativa ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              
+              <div 
+                class="ml-4 mt-2 space-y-0 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.legislativa ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <!-- Legislación -->
+                <div class="bg-transparent">
+                  <div 
+                    @click="toggleSubmenu('legislacion')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Legislación</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.legislacion ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley en Tratamiento</NuxtLink>
+                    <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley Aprobados</NuxtLink>
+                    <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Leyes Sancionadas</NuxtLink>
+                    <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Leyes Promulgadas</NuxtLink>
+                    <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley con Modificaciones</NuxtLink>
+                    <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley Rechazados</NuxtLink>
+                  </div>
+                </div>
+
+                <!-- Fiscalización -->
+                <div class="bg-transparent">
+                  <div 
+                    @click="toggleSubmenu('fiscalizacion')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Fiscalización</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.fiscalizacion ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Escrito</NuxtLink>
+                    <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Oral</NuxtLink>
+                  </div>
+                </div>
+
+                <!-- Gestión -->
+                <div class="bg-transparent">
+                  <div 
+                    @click="toggleSubmenu('gestion')"
+                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  >
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Gestión</span>
+                    <span class="transition-transform duration-300 inline-flex" :class="submenus.gestion ? 'rotate-90' : ''">
+                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div 
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
+                  >
+                    <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Resoluciones Camarales</NuxtLink>
+                    <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Declaraciones Camarales</NuxtLink>
+                    <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Minutas de Comunicación</NuxtLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TUS SENADORES                              -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('senadores')"
+              @mouseleave="handleSubmenuHoverLeave('senadores')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('senadores')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Tus Senadores</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.senadores ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
+                :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• ¿Quién me representa?</NuxtLink>
+                <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Directiva Camaral</NuxtLink>
+                <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comisiones y Comités</NuxtLink>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- RECURSOS HUMANOS                           -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('recursosHumanos')"
+              @mouseleave="handleSubmenuHoverLeave('recursosHumanos')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('recursosHumanos')"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Recursos Humanos</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.recursosHumanos ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.recursosHumanos ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <div class="">
+                  <NuxtLink 
+                    to="/escala-salarial" 
+                    class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" 
+                    @click="closeMenu"
+                  >
+                    • Escala Salarial
+                  </NuxtLink>
+                </div>
+                <div class="">
+                  <NuxtLink 
+                    to="/poai" 
+                    class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" 
+                    @click="closeMenu"
+                  >
+                    • Plan Operativo Anual Individual - POAI
+                  </NuxtLink>
+                </div>
+                <div class="">
+                  <NuxtLink 
+                    to="/contrataciones-oportunidades" 
+                    class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" 
+                    @click="closeMenu"
+                  >
+                    • Contrataciones y Oportunidades de Empleo
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- INICIO Y CONTACTO                          -->
+            <!-- ========================================== -->
+            <div class="space-y-3 mt-2">
+              <NuxtLink 
+                to="/" 
+                class="flex items-center gap-3 bg-senado-gold-lightest/90 text-black hover:bg-[#611717]/10 hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[500] text-[1.2vw] shadow-sm hover:shadow-md"
+                @click="closeMenu"
+              >
+                <span>Inicio</span>
+              </NuxtLink>
+              
+              <NuxtLink 
+                to="/contacto" 
+                class="flex items-center gap-3 text-black hover:bg-[#611717]/10 hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[500] text-[1.2vw]"
+                @click="closeMenu"
+              >
+                <span>Contacto</span>
+              </NuxtLink>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- RESULTADOS DE BÚSQUEDA - Solo para mobile -->
+    <!-- ========================================== -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-opacity duration-500 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-400 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div 
+          v-if="showResults && searchResults.length > 0 && isMobile"
+          class="fixed bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[99999999]"
+          :style="searchResultsStyle"
+        >
+          <div class="max-h-[60vh] overflow-y-auto">
+            <div 
+              v-for="result in searchResults" 
+              :key="result.id + (result.esSuplente ? '-suplente' : '')"
+              class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-0"
+              @mousedown.prevent="selectResult(result)"
+            >
+              <img 
+                :src="result.foto || defaultAvatar" 
+                :alt="result.name"
+                class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                @error="(e) => e.target.src = defaultAvatar"
+              />
+              <div class="flex-1 min-w-0">
+                <div class="text-base font-semibold text-gray-800 truncate">{{ result.name }}</div>
+                <div class="text-sm text-gray-500 flex items-center gap-2 flex-wrap">
+                  <span>{{ result.department || 'Sin departamento' }}</span>
+                  <span class="w-1 h-1 bg-gray-300 rounded-full flex-shrink-0"></span>
+                  <span 
+                    class="px-2 py-0.5 rounded text-[11px] font-medium"
+                    :style="{ backgroundColor: result.partyColor + '20', color: result.partyColor || '#666' }"
+                  >
+                    {{ result.partyShort || result.party || 'Sin partido' }}
+                  </span>
+                  <span v-if="result.esSuplente" class="text-[11px] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
+                </div>
+              </div>
+              <ClientOnly>
+                <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-2xl flex-shrink-0" />
+                <template #fallback>
+                  <span class="text-gray-400 text-2xl">›</span>
+                </template>
+              </ClientOnly>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
+
+    <!-- Sin resultados - Solo para mobile -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-opacity duration-500 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-400 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div 
+          v-if="showResults && searchQuery && searchResults.length === 0 && isMobile"
+          class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-6 text-center z-[99999999]"
+          :style="searchResultsStyle"
+        >
+          <div class="text-5xl mb-3">🔍</div>
+          <p class="text-base text-gray-600 font-medium">No se encontraron senadores</p>
+          <p class="text-sm text-gray-400 mt-1">Intenta con otro término de búsqueda</p>
+        </div>
+      </transition>
+    </Teleport>
+
+  </header>
+</template>
+
+<script>
+import { senadores } from '~/data/senadores'
+
+export default {
+  data() {
+    return {
+      menuAbierto: false,
+      redesAbiertas: false,
+      searchQuery: '',
+      showResults: false,
+      searchResults: [],
+      defaultAvatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E',
+      submenus: {
+        institucional: false,
+        tramites: false,
+        comunicacion: false,
+        legislativa: false,
+        legislacion: false,
+        fiscalizacion: false,
+        gestion: false,
+        senadores: false,
+        funciones: false,
+        administrativa: false,
+        auditoriaInstitucional: false,
+        transparenciaInstitucional: false,
+        auditoriaAdministrativa: false,
+        transparenciaAdministrativa: false,
+        recursosHumanos: false
+      },
+      hoverOpenTimer: null,
+      hoverCloseTimer: null,
+      submenuHoverTimers: {},
+      isDesktop: false,
+      isMobile: false,
+      isMenuHoverOpen: false,
+      redesHoverTimer: null,
+      closeMenuTimer: null
+    }
+  },
+  computed: {
+    searchResultsStyle() {
+      if (process.client) {
+        const input = this.$refs.searchInputMobile
+        if (input) {
+          const rect = input.getBoundingClientRect()
+          const isMobile = window.innerWidth < 768
+          
+          return {
+            top: (rect.bottom + 4) + 'px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '90vw',
+            maxWidth: isMobile ? '90vw' : '40vw',
+            minWidth: isMobile ? '280px' : '20vw',
+            zIndex: 9999999999
+          }
+        }
+      }
+      return {
+        top: '50px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90vw',
+        maxWidth: '40vw',
+        minWidth: '280px',
+        zIndex: 9999999999
+      }
+    }
+  },
+  methods: {
+    handleRedesHoverEnter() {
+      if (!this.isDesktop) return
+      if (this.redesHoverTimer) {
+        clearTimeout(this.redesHoverTimer)
+        this.redesHoverTimer = null
+      }
+      this.redesAbiertas = true
+    },
+    handleRedesHoverLeave() {
+      if (!this.isDesktop) return
+      this.redesHoverTimer = setTimeout(() => {
+        this.redesAbiertas = false
+        this.redesHoverTimer = null
+      }, 300)
+    },
+    toggleMenu() {
+      console.log('🔄 toggleMenu - click en botón')
+      this.clearAllTimers()
+      this.menuAbierto = !this.menuAbierto
+      
+      if (this.menuAbierto) {
+        console.log('🔄 Menú abierto por CLICK - isMenuHoverOpen = false')
+        this.isMenuHoverOpen = false
+        if (this.closeMenuTimer) {
+          clearTimeout(this.closeMenuTimer)
+          this.closeMenuTimer = null
+        }
+      } else {
+        console.log('🔄 Menú cerrado por CLICK')
+        Object.keys(this.submenus).forEach(key => {
+          this.submenus[key] = false
+        })
+        this.isMenuHoverOpen = false
+      }
+    },
+    closeMenu() {
+      console.log('❌ closeMenu - cerrando menú manualmente')
+      this.clearAllTimers()
+      this.menuAbierto = false
+      Object.keys(this.submenus).forEach(key => {
+        this.submenus[key] = false
+      })
+      this.isMenuHoverOpen = false
+      if (this.closeMenuTimer) {
+        clearTimeout(this.closeMenuTimer)
+        this.closeMenuTimer = null
+      }
+    },
+    toggleSubmenu(key) {
+      this.clearSubmenuTimer(key)
+      this.submenus[key] = !this.submenus[key]
+    },
+    clearAllTimers() {
+      if (this.hoverOpenTimer) {
+        clearTimeout(this.hoverOpenTimer)
+        this.hoverOpenTimer = null
+      }
+      if (this.hoverCloseTimer) {
+        clearTimeout(this.hoverCloseTimer)
+        this.hoverCloseTimer = null
+      }
+      if (this.redesHoverTimer) {
+        clearTimeout(this.redesHoverTimer)
+        this.redesHoverTimer = null
+      }
+      if (this.closeMenuTimer) {
+        clearTimeout(this.closeMenuTimer)
+        this.closeMenuTimer = null
+      }
+      Object.keys(this.submenuHoverTimers).forEach(key => {
+        if (this.submenuHoverTimers[key]) {
+          clearTimeout(this.submenuHoverTimers[key])
+          delete this.submenuHoverTimers[key]
+        }
+      })
+    },
+    clearSubmenuTimer(key) {
+      if (this.submenuHoverTimers[key]) {
+        clearTimeout(this.submenuHoverTimers[key])
+        delete this.submenuHoverTimers[key]
+      }
+    },
+    handleMenuHoverEnter() {
+      console.log('🖱️ handleMenuHoverEnter - mouse entró al botón')
+      if (!this.isDesktop) {
+        console.log('🖱️ No es desktop, ignorando')
+        return
+      }
+      
+      this.clearAllTimers()
+      
+      if (this.menuAbierto && !this.isMenuHoverOpen) {
+        console.log('🖱️ Menú abierto por CLICK, ignorando hover')
+        return
+      }
+      
+      if (!this.menuAbierto) {
+        console.log('🖱️ Programando apertura por hover en 700ms')
+        this.hoverOpenTimer = setTimeout(() => {
+          console.log('🖱️ ✅ ABRIENDO menú por HOVER')
+          this.menuAbierto = true
+          this.isMenuHoverOpen = true
+          this.hoverOpenTimer = null
+        }, 700)
+      }
+    },
+    handleMenuHoverLeave() {
+      console.log('🖱️ handleMenuHoverLeave - mouse salió del botón')
+      console.log(`🖱️ isMenuHoverOpen: ${this.isMenuHoverOpen}, menuAbierto: ${this.menuAbierto}`)
+      
+      if (!this.isDesktop) {
+        console.log('🖱️ No es desktop, ignorando')
+        return
+      }
+      
+      if (this.hoverOpenTimer) {
+        console.log('🖱️ Cancelando timer de apertura (mouse salió antes de que se abriera)')
+        clearTimeout(this.hoverOpenTimer)
+        this.hoverOpenTimer = null
+        return
+      }
+      
+      // ✅ SOLO cerrar si fue abierto por hover
+      if (this.isMenuHoverOpen && this.menuAbierto) {
+        console.log('🖱️ Menú abierto por HOVER - verificando si el mouse fue al menú')
+        
+        if (this.closeMenuTimer) {
+          clearTimeout(this.closeMenuTimer)
+          this.closeMenuTimer = null
+        }
+        
+        // Verificar si el mouse está sobre el menú después de 100ms
+        setTimeout(() => {
+          const menuPanel = this.$refs.menuPanel
+          console.log('🖱️ Verificando si mouse está sobre el menú...')
+          
+          if (menuPanel) {
+            const rect = menuPanel.getBoundingClientRect()
+            const mouseX = window.event?.clientX || 0
+            const mouseY = window.event?.clientY || 0
+            const isOverMenu = mouseX >= rect.left && mouseX <= rect.right &&
+                              mouseY >= rect.top && mouseY <= rect.bottom
+            
+            console.log(`🖱️ mouseX: ${mouseX}, mouseY: ${mouseY}`)
+            console.log(`🖱️ rect.left: ${rect.left}, rect.right: ${rect.right}, rect.top: ${rect.top}, rect.bottom: ${rect.bottom}`)
+            console.log(`🖱️ ¿Mouse sobre el menú? ${isOverMenu}`)
+            
+            if (!isOverMenu) {
+              console.log('🖱️ Mouse NO está sobre el menú - iniciando timer de cierre (2 segundos)')
+              this.closeMenuTimer = setTimeout(() => {
+                console.log('🖱️ ⏰ CERRANDO menú por HOVER (timer cumplido)')
+                if (this.isMenuHoverOpen && this.menuAbierto) {
+                  this.menuAbierto = false
+                  this.isMenuHoverOpen = false
+                  Object.keys(this.submenus).forEach(key => {
+                    this.submenus[key] = false
+                  })
+                }
+                this.closeMenuTimer = null
+              }, 2000)
+            } else {
+              console.log('🖱️ Mouse SÍ está sobre el menú - NO se cierra')
+            }
+          } else {
+            console.log('🖱️ No se encontró el panel del menú ($refs.menuPanel)')
+            this.closeMenuTimer = setTimeout(() => {
+              console.log('🖱️ ⏰ CERRANDO menú por HOVER (timer por defecto)')
+              if (this.isMenuHoverOpen && this.menuAbierto) {
+                this.menuAbierto = false
+                this.isMenuHoverOpen = false
+                Object.keys(this.submenus).forEach(key => {
+                  this.submenus[key] = false
+                })
+              }
+              this.closeMenuTimer = null
+            }, 2000)
+          }
+        }, 100)
+      } else {
+        console.log('🖱️ Menú NO fue abierto por hover o ya está cerrado')
+      }
+    },
+    handleOverlayHoverEnter() {
+      console.log('🎭 handleOverlayHoverEnter - mouse entró al overlay')
+      if (!this.isDesktop) return
+      if (this.closeMenuTimer) {
+        console.log('🎭 Cancelando timer de cierre (mouse en overlay)')
+        clearTimeout(this.closeMenuTimer)
+        this.closeMenuTimer = null
+      }
+    },
+    handleOverlayHoverLeave() {
+      console.log('🎭 handleOverlayHoverLeave - mouse salió del overlay')
+      if (!this.isDesktop) return
+      
+      // ✅ Si el mouse sale del overlay Y el menú está abierto por hover, cerrar
+      if (this.isMenuHoverOpen && this.menuAbierto) {
+        console.log('🎭 Mouse salió del overlay - iniciando timer de cierre')
+        if (this.closeMenuTimer) {
+          clearTimeout(this.closeMenuTimer)
+          this.closeMenuTimer = null
+        }
+        this.closeMenuTimer = setTimeout(() => {
+          console.log('🎭 ⏰ CERRANDO menú por HOVER (overlay)')
+          if (this.isMenuHoverOpen && this.menuAbierto) {
+            this.menuAbierto = false
+            this.isMenuHoverOpen = false
+            Object.keys(this.submenus).forEach(key => {
+              this.submenus[key] = false
+            })
+          }
+          this.closeMenuTimer = null
+        }, 2000)
+      }
+    },
+    handleMenuPanelHoverEnter() {
+      console.log('📋 handleMenuPanelHoverEnter - mouse entró al panel del menú')
+      if (!this.isDesktop) return
+      if (this.closeMenuTimer) {
+        console.log('📋 Cancelando timer de cierre (mouse en menú)')
+        clearTimeout(this.closeMenuTimer)
+        this.closeMenuTimer = null
+      }
+    },
+    handleMenuPanelHoverLeave(e) {
+      console.log('📋 handleMenuPanelHoverLeave - mouse salió del panel del menú')
+      if (!this.isDesktop) return
+      
+      // ✅ Siempre iniciar timer cuando el mouse sale del menú (hover o click)
+      if (this.menuAbierto) {
+        const relatedTarget = e.relatedTarget
+        const isOverlay = relatedTarget && relatedTarget.classList && 
+                          relatedTarget.classList.contains('fixed')
+        
+        console.log(`📋 ¿Va al overlay? ${isOverlay}`)
+        
+        // ✅ Si el mouse sale del menú, iniciar timer de cierre
+        // (tanto si va al overlay como si va a otro lado)
+        if (this.closeMenuTimer) {
+          clearTimeout(this.closeMenuTimer)
+          this.closeMenuTimer = null
+        }
+        
+        // ✅ Solo cerrar automáticamente si fue abierto por hover
+        // Si fue abierto por click, NO se cierra automáticamente
+        if (this.isMenuHoverOpen) {
+          console.log('📋 Mouse salió del menú (abierto por hover) - iniciando timer de cierre')
+          this.closeMenuTimer = setTimeout(() => {
+            console.log('📋 ⏰ CERRANDO menú por HOVER (salió del menú)')
+            if (this.isMenuHoverOpen && this.menuAbierto) {
+              this.menuAbierto = false
+              this.isMenuHoverOpen = false
+              Object.keys(this.submenus).forEach(key => {
+                this.submenus[key] = false
+              })
+            }
+            this.closeMenuTimer = null
+          }, 2000)
+        } else {
+          console.log('📋 Mouse salió del menú (abierto por CLICK) - NO se cierra automáticamente')
+        }
+      }
+    },
+    handleSubmenuHoverEnter(key) {
+      if (!this.isDesktop) return
+      this.clearSubmenuTimer(key)
+      if (this.submenus[key]) return
+      this.submenuHoverTimers[key] = setTimeout(() => {
+        this.submenus[key] = true
+        delete this.submenuHoverTimers[key]
+      }, 700)
+    },
+    handleSubmenuHoverLeave(key) {
+      if (!this.isDesktop) return
+      if (this.submenuHoverTimers[key]) {
+        clearTimeout(this.submenuHoverTimers[key])
+        delete this.submenuHoverTimers[key]
+        return
+      }
+      if (this.submenus[key]) {
+        this.submenuHoverTimers[key] = setTimeout(() => {
+          this.submenus[key] = false
+          delete this.submenuHoverTimers[key]
+        }, 2000)
+      }
+    },
+    checkDesktop() {
+      if (process.client) {
+        const wasDesktop = this.isDesktop
+        this.isDesktop = window.innerWidth > 1024
+        this.isMobile = window.innerWidth < 768
+        if (!this.isDesktop && wasDesktop) {
+          this.clearAllTimers()
+          if (this.isMenuHoverOpen) {
+            this.menuAbierto = false
+            this.isMenuHoverOpen = false
+            Object.keys(this.submenus).forEach(key => {
+              this.submenus[key] = false
+            })
+          }
+          this.redesAbiertas = false
+        }
+      }
+    },
+    generarSlug(nombre) {
+      if (!nombre) return ''
+      return nombre
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/ñ/g, 'n')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+    },
+    normalizeText(text) {
+      if (!text) return ''
+      return text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+    },
+    levenshteinDistance(a, b) {
+      if (a.length === 0) return b.length
+      if (b.length === 0) return a.length
+      const matrix = []
+      for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i]
+      }
+      for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j
+      }
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b[i - 1] === a[j - 1]) {
+            matrix[i][j] = matrix[i - 1][j - 1]
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            )
+          }
+        }
+      }
+      return matrix[b.length][a.length]
+    },
+    getSimilarity(text1, text2) {
+      if (!text1 || !text2) return 0
+      const maxLen = Math.max(text1.length, text2.length)
+      if (maxLen === 0) return 1
+      const distance = this.levenshteinDistance(text1, text2)
+      return 1 - (distance / maxLen)
+    },
+    handleSearch() {
+      const query = this.searchQuery.trim()
+      if (!query) {
+        this.searchResults = []
+        this.showResults = false
+        return
+      }
+      const queryNormalized = this.normalizeText(query)
+      const searchTerms = queryNormalized.split(/\s+/).filter(term => term.length > 0)
+      const allCandidates = []
+      if (!senadores || senadores.length === 0) {
+        this.searchResults = []
+        this.showResults = true
+        return
+      }
+      senadores.forEach(s => {
+        allCandidates.push({
+          ...s,
+          esSuplente: false,
+          tipo: 'titular',
+          foto: s.foto || this.defaultAvatar,
+          nameNormalized: this.normalizeText(s.name),
+          departmentNormalized: this.normalizeText(s.department),
+          partyNormalized: this.normalizeText(s.party),
+          partyShortNormalized: this.normalizeText(s.partyShort)
+        })
+        if (s.suplente && s.suplente !== 'null' && s.suplente !== null && s.suplente.trim() !== '') {
+          const suplenteNormalized = this.normalizeText(s.suplente)
+          allCandidates.push({
+            id: s.id,
+            name: s.suplente,
+            nameNormalized: suplenteNormalized,
+            slug: s.slug,
+            slugSuplente: this.generarSlug(s.suplente),
+            department: s.department,
+            departmentNormalized: this.normalizeText(s.department),
+            party: s.party,
+            partyNormalized: this.normalizeText(s.party),
+            partyColor: s.partyColor,
+            partyShort: s.partyShort,
+            partyShortNormalized: this.normalizeText(s.partyShort),
+            foto: s.fotoSuplente || this.defaultAvatar,
+            esSuplente: true,
+            tipo: 'suplente',
+            titular: s.name,
+            titularSlug: s.slug,
+            titularNormalized: this.normalizeText(s.name)
+          })
+        }
+      })
+      const results = allCandidates.filter(candidate => {
+        const textsToCheck = [
+          { text: candidate.nameNormalized, weight: 1.0 },
+          { text: candidate.departmentNormalized, weight: 0.6 },
+          { text: candidate.partyNormalized, weight: 0.5 },
+          { text: candidate.partyShortNormalized, weight: 0.5 },
+          { text: candidate.titularNormalized, weight: 0.8 }
+        ].filter(item => item.text && item.text.length > 0)
+        let bestMatch = false
+        for (const term of searchTerms) {
+          for (const item of textsToCheck) {
+            if (item.text.includes(term)) {
+              bestMatch = true
+              break
+            }
+            const similarity = this.getSimilarity(term, item.text)
+            if (similarity > 0.65) {
+              bestMatch = true
+              break
+            }
+          }
+          if (bestMatch) break
+        }
+        return bestMatch
+      })
+      const getRelevance = (candidate) => {
+        let score = 0
+        const name = candidate.nameNormalized || ''
+        const queryLower = queryNormalized
+        if (name === queryLower) score += 100
+        const nameParts = name.split(' ')
+        const lastName = nameParts[nameParts.length - 1] || ''
+        if (lastName === queryLower) score += 80
+        const firstName = nameParts[0] || ''
+        if (firstName === queryLower) score += 70
+        if (name.startsWith(queryLower)) score += 50
+        if (name.includes(queryLower)) score += 30
+        const similarity = this.getSimilarity(queryLower, name)
+        if (similarity > 0.7) {
+          score += Math.round(similarity * 40)
+        }
+        if ((candidate.departmentNormalized || '').includes(queryLower)) score += 20
+        if ((candidate.partyNormalized || '').includes(queryLower)) score += 15
+        if (candidate.tipo === 'titular') score += 10
+        return score
+      }
+      results.sort((a, b) => {
+        const scoreA = getRelevance(a)
+        const scoreB = getRelevance(b)
+        if (scoreA !== scoreB) return scoreB - scoreA
+        return (a.nameNormalized || '').localeCompare(b.nameNormalized || '')
+      })
+      this.searchResults = results.slice(0, 10)
+      this.lastSearchQuery = query
+      this.showResults = true
+    },
+    handleFocus() {
+      if (this.searchQuery.trim() && this.searchResults.length > 0) {
+        this.showResults = true
+        return
+      }
+      if (this.searchQuery.trim()) {
+        this.handleSearch()
+      }
+    },
+    handleBlur() {
+      setTimeout(() => {
+        this.showResults = false
+      }, 200)
+    },
+    selectResult(result) {
+      this.searchQuery = ''
+      this.searchResults = []
+      this.showResults = false
+      if (result.esSuplente) {
+        this.$router.push(`/senador/suplente/${result.slugSuplente}`)
+      } else {
+        this.$router.push(`/senador/${result.slug}`)
+      }
+    },
+    handleKeydown(event) {
+      if (event.key === 'Escape') {
+        this.showResults = false
+      }
+    },
+    handleResize() {
+      this.checkDesktop()
+    }
+  },
+  mounted() {
+    console.log('✅ Header montado, senadores disponibles:', senadores ? senadores.length : 0)
+    document.addEventListener('keydown', this.handleKeydown)
+    this.checkDesktop()
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.handleKeydown)
+    window.removeEventListener('resize', this.handleResize)
+    this.clearAllTimers()
+  }
+}
+</script>
+
+<style scoped>
+@keyframes spin-coin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+.spin-coin {
+  animation: spin-coin 6s linear infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+/* Ocultar scrollbar en todos los navegadores */
+.hide-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+</style> 
+================================= 
+components\MandatoFuncionesAntecedentes.vue 
+================================= 
+ 
+<template>
+  <div class="mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-[2vw] items-end">
+      <!-- Mandato Constitucional -->
+      <NuxtLink to="/mandato-constitucional" class="text-center group block">
+        <h3 class="text-[2.2vw] font-[500] text-black mb-3 leading-[1.1] group-hover:text-[#4a1111] transition-colors duration-300 font-inter">
+          Mandato Constitucional
+        </h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/25.webp" 
+            alt="Mandato Constitucional" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </NuxtLink>
+
+      <!-- Funciones del Senado -->
+      <NuxtLink to="/funciones-del-senado" class="text-center group block">
+        <h3 class="text-[2.2vw] font-[500] text-black mb-3 leading-[1.1] group-hover:text-[#4a1111] transition-colors duration-300 font-inter">
+          Funciones del
+          <br> Senado 
+        </h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/26.webp" 
+            alt="Funciones del Senado" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </NuxtLink>
+
+      <!-- Antecedentes históricos -->
+      <NuxtLink to="/antecedentes-historicos" class="text-center group block">
+        <h3 class="text-[2.2vw] font-[500] text-black mb-3 leading-[1.1] group-hover:text-[#4a1111] transition-colors duration-300 font-inter">
+          Antecedentes históricos
+        </h3>
+        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+          <img 
+            src="/images/27.webp" 
+            alt="Antecedentes históricos" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita props ni lógica adicional por ahora
+</script>
+
+<style scoped>
+/* Estilos específicos del componente */
+</style> 
+================================= 
+components\NoticiasDinamicas.vue 
+================================= 
+ 
+<!-- components/NoticiasDinamicas.vue -->
+<template>
+  <div class="flex flex-col md:flex-row gap-[1vw]">
+    <!-- COLUMNA IZQUIERDA - 70% -->
+    <div class="md:w-[70%]">
+      <!-- Estado de carga -->
+      <div v-if="loading" class="w-full">
+        <div class="w-full bg-gray-200 animate-pulse rounded-t-lg aspect-[16/9]"></div>
+        <div class="w-full h-[1vw] bg-gray-300"></div>
+        <div class="mt-4">
+          <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+      </div>
+
+      <!-- Noticia Principal -->
+      <div v-else-if="noticiaPrincipal" class="group cursor-pointer" @click="irANoticia(noticiaPrincipal)">
+        <div class="w-full">
+          <div class="relative overflow-hidden rounded-t-lg aspect-[18/9] bg-gray-100">
+            <!-- Imagen con aspecto fijo 16:9 -->
+            <img 
+              :src="obtenerImagen(noticiaPrincipal)"
+              :alt="limpiarAsteriscos(noticiaPrincipal.titulo)"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="eager"
+              @error="imagenError = true"
+            />
+            
+            <!-- Fallback -->
+            <div 
+              v-if="imagenError"
+              class="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500 text-sm"
+            >
+              Imagen no disponible
+            </div>
+          </div>
+          <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
+        </div>
+        
+        <div class="mt-[2vw]">
+          <!-- Título con resaltado de asteriscos -->
+          <h2 
+            class="text-[1.5vw] font-bold group-hover:text-senado-primary transition-colors"
+            v-html="tituloResaltado(noticiaPrincipal.titulo)"
+          ></h2>
+          <p class="text-[0.8vw] text-gray-500 mt-1">
+            {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Sin noticias -->
+      <div v-else class="w-full text-center py-12 bg-gray-50 rounded-lg">
+        <p class="text-gray-600">No hay noticias disponibles</p>
+        <button @click="recargarDatos" class="mt-4 px-4 py-2 bg-[#E03636] text-white rounded-lg hover:bg-[#C12F2F] transition">
+          Reintentar
+        </button>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA - 30% -->
+    <div class="md:w-[30%] flex flex-col gap-[1vw]">
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex flex-col gap-4">
+        <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
+          <div class="h-[0.6vw] bg-gray-300"></div>
+          <div class="p-4">
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noticias secundarias -->
+      <template v-else-if="noticiasSecundarias.length > 0">
+        <div 
+          v-for="noticia in noticiasSecundarias" 
+          :key="noticia.id || noticia._id"
+          class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
+          @click="irANoticia(noticia)"
+        >
+          <div class="h-[0.6vw] bg-senado-gold-dark"></div>
+          <div class="p-[1vw]">
+            <p 
+              class="text-[1.0vw] font-semibold group-hover:text-senado-primary transition-colors line-clamp-3"
+              v-html="tituloResaltado(noticia.titulo, 'text-gray-800')"
+            ></p>
+            <p class="text-[.8vw] text-gray-500 mt-2">
+              {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Sin noticias secundarias -->
+      <div v-else-if="!loading" class="text-center py-8 bg-gray-50 rounded-lg">
+        <p class="text-gray-500 text-sm">No hay noticias secundarias</p>
+      </div>
+
+      <!-- Botón -->
+      <div class="mt-2">
+        <NuxtLink 
+          to="/noticias" 
+          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-[1vw] flex items-center justify-center gap-2 shadow-sm"
+        >
+          Ir a todas las noticias
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useNoticias } from '../composables/useNoticias'
+
+const props = defineProps({
+  secundariasLimit: { type: Number, default: 3 },
+  autoLoad: { type: Boolean, default: true }
+})
+
+const router = useRouter()
+const imagenError = ref(false)
+
+const { 
+  noticiasImportantes, 
+  loading, 
+  error, 
+  recargarDatos 
+} = useNoticias()
+
+// Resalta texto entre asteriscos
+const tituloResaltado = (texto, colorNormal = 'text-gray-900') => {
+  if (!texto) return ''
+  return texto.replace(/\*([^*]+)\*/g, (match, contenido) => {
+    return `<span class="text-senado-primary font-bold">${contenido}</span>`
+  })
+}
+
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return 'Fecha no disponible'
+  try {
+    const date = new Date(fecha)
+    return date.toLocaleDateString('es-ES', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    })
+  } catch {
+    return fecha
+  }
+}
+
+const obtenerImagen = (noticia) => {
+  if (!noticia) return '/images/default-news.jpg'
+  return noticia.featuredImage?.url || 
+         noticia.imagen || 
+         '/images/default-news.jpg'
+}
+
+const irANoticia = (noticia) => {
+  if (noticia?.slug) {
+    router.push(`/noticias/${noticia.slug}`)
+  }
+}
+
+// Computadas
+const noticias = computed(() => {
+  if (!noticiasImportantes.value) return []
+  return [...noticiasImportantes.value].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+})
+
+const noticiaPrincipal = computed(() => {
+  return noticias.value.length > 0 ? noticias.value[0] : null
+})
+
+const noticiasSecundarias = computed(() => {
+  return noticias.value.length > 1 
+    ? noticias.value.slice(1, 1 + props.secundariasLimit)
+    : []
+})
+
+onMounted(async () => {
+  if (props.autoLoad && noticiasImportantes.value.length === 0) {
+    await recargarDatos()
+  }
+})
+
+defineExpose({ recargarDatos })
+</script>
+
+<style scoped>
+/* Solo lo necesario para line-clamp (Tailwind no lo tiene por defecto) */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+components\NoticiasSenador.vue 
+================================= 
+ 
+<template>
+  <div v-if="noticias.length > 0" class="mt-12">
+    <!-- Título de la sección -->
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-1 h-8 bg-[#611717] rounded-full"></div>
+      <h2 class="text-2xl font-bold text-[#611717]">
+        Noticias relacionadas con <span class="text-[#8f1522]">{{ nombreSenador }}</span>
+      </h2>
+    </div>
+    <div class="border-b border-gray-200 mb-6"></div>
+
+    <!-- Grid de noticias -->
+    <div v-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="noticia in noticiasMostradas"
+        :key="noticia.id"
+        class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
+        @click="irANoticia(noticia)"
+      >
+        <div class="relative aspect-[16/9] overflow-hidden">
+          <img
+            :src="noticia.imagen || '/images/default-news.jpg'"
+            :alt="limpiarAsteriscos(noticia.titulo)"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            @error="(e) => e.target.src = '/images/default-news.jpg'"
+          />
+          <div class="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#611717]/80 to-transparent"></div>
+          <span 
+            v-if="noticia.categoria === 'importante'" 
+            class="absolute top-3 right-3 bg-[#8f1522] text-white text-xs px-3 py-1 rounded-full font-semibold"
+          >
+            ⭐ Importante
+          </span>
+        </div>
+        <div class="p-4">
+          <p class="text-xs text-gray-500 mb-1">
+            {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
+          </p>
+          <h3 
+            class="font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-[#611717] transition-colors"
+            v-html="formatTitleWithColors(noticia.titulo)"
+          >
+          </h3>
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
+            {{ noticia.resumen || noticia.descripcion || '' }}
+          </p>
+          <div class="mt-3 flex justify-end">
+            <span class="text-[#611717] text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              Leer más
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado de carga -->
+    <div v-else class="flex justify-center py-8">
+      <div class="inline-block w-8 h-8 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+      <p class="ml-3 text-gray-500">Cargando noticias relacionadas...</p>
+    </div>
+
+    <!-- Sin resultados -->
+    <div v-if="!loading && noticias.length === 0" class="text-center py-8 bg-gray-50 rounded-xl">
+      <p class="text-gray-500">No hay noticias relacionadas con este senador.</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
+  senadorId: {
+    type: Number,
+    required: true
+  },
+  nombreSenador: {
+    type: String,
+    default: ''
+  },
+  limit: {
+    type: Number,
+    default: 6
+  }
+})
+
+const router = useRouter()
+const noticias = ref([])
+const loading = ref(false)
+
+// Funciones de utilidad
+const limpiarAsteriscos = (texto) => {
+  if (!texto) return ''
+  return texto.replace(/\*/g, '')
+}
+
+const formatTitleWithColors = (title) => {
+  if (!title) return ''
+  return title.replace(/\*(.*?)\*/g, '<span class="text-[#611717] font-bold">$1</span>')
+}
+
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-ES', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  })
+}
+
+const irANoticia = (noticia) => {
+  if (noticia && noticia.slug) {
+    router.push(`/noticias/${noticia.slug}`)
+  }
+}
+
+const noticiasMostradas = computed(() => {
+  return noticias.value.slice(0, props.limit)
+})
+
+const cargarNoticias = async () => {
+  if (!props.senadorId) return
+  
+  loading.value = true
+  try {
+    const { fetchNoticiasPorSenador } = useNoticias()
+    const resultados = await fetchNoticiasPorSenador(props.senadorId)
+    noticias.value = resultados
+  } catch (error) {
+    console.error('Error cargando noticias del senador:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// Cargar cuando cambia el senador
+watch(() => props.senadorId, () => {
+  noticias.value = []
+  cargarNoticias()
+}, { immediate: true })
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style> 
+================================= 
+components\SafeImage.vue 
+================================= 
+ 
+<!-- components/SafeImage.vue -->
+<template>
+  <div class="relative overflow-hidden" :style="{ width: '100%', height: '100%' }">
+    <!-- Skeleton de carga -->
+    <div v-if="showSkeleton && !loaded" class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+    
+    <!-- Imagen -->
+    <img 
+      v-if="!error && src" 
+      :src="src" 
+      :alt="alt" 
+      :class="imageClass"
+      @error="handleError"
+      @load="handleLoad"
+      :loading="loadingStrategy === 'lazy' ? 'lazy' : 'eager'"
+      :style="{ opacity: loaded || !showSkeleton ? 1 : 0 }"
+    />
+    
+    <!-- Estado de error -->
+    <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center">
+      <span class="text-gray-400 text-sm">Imagen no disponible</span>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    default: ''
+  },
+  imageClass: {
+    type: String,
+    default: ''
+  },
+  priority: {
+    type: String,
+    default: 'low'
+  },
+  loadingStrategy: {
+    type: String,
+    default: 'lazy'
+  },
+  showSkeleton: {
+    type: Boolean,
+    default: false
+  },
+  maxRetries: {
+    type: Number,
+    default: 3
+  },
+  persistent: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const error = ref(false)
+const loaded = ref(false)
+let retryCount = 0
+
+const handleError = () => {
+  if (retryCount < props.maxRetries) {
+    retryCount++
+    // Reintentar después de un delay
+    setTimeout(() => {
+      error.value = false
+      // Forzar recarga de la imagen
+      const img = new Image()
+      img.src = props.src
+      img.onload = () => {
+        loaded.value = true
+        error.value = false
+      }
+      img.onerror = () => {
+        if (retryCount >= props.maxRetries) {
+          error.value = true
+        }
+      }
+    }, 1000 * retryCount)
+  } else {
+    error.value = true
+  }
+}
+
+const handleLoad = () => {
+  loaded.value = true
+  error.value = false
+}
+
+// Resetear estado cuando cambia la src
+watch(() => props.src, () => {
+  error.value = false
+  loaded.value = false
+  retryCount = 0
+})
+</script> 
+================================= 
+components\SesionesVideos.vue 
+================================= 
+ 
+<!-- components/SesionesVideos.vue -->
+<template>
+  <div class="sesiones-videos">
+    <!-- Estado de carga -->
+    <div v-if="loading" class="flex justify-center items-center py-12">
+      <div class="inline-block w-10 h-10 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+      <p class="ml-3 text-gray-500 text-sm">Cargando videos...</p>
+    </div>
+
+    <!-- Estado de error -->
+    <div v-else-if="error" class="text-center py-8 bg-red-50 rounded-xl border border-red-200">
+      <p class="text-red-600 text-sm">⚠️ {{ error }}</p>
+      <button @click="recargar" class="mt-3 px-4 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm">
+        Reintentar
+      </button>
+    </div>
+
+    <!-- Videos en grid de 3 columnas -->
+    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div 
+        v-for="video in videos" 
+        :key="video.position || video.id"
+        class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+      >
+        <!-- Video de YouTube -->
+        <div class="relative aspect-video bg-gray-900">
+          <iframe
+            :src="getYoutubeEmbedUrl(video.youtubeId || video.url)"
+            :title="video.title || 'Sesión del Senado'"
+            class="absolute inset-0 w-full h-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        
+        <!-- Información del video -->
+        <div class="p-4">
+          <h3 class="font-bold text-[#611717] text-sm md:text-base truncate">
+            {{ video.title || 'Sesión del Senado' }}
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin videos -->
+    <div v-if="!loading && videos.length === 0" class="text-center py-12 bg-gray-50 rounded-xl">
+      <div class="text-4xl mb-3">📹</div>
+      <p class="text-gray-500 font-medium">No hay videos disponibles</p>
+      <p class="text-gray-400 text-sm">Pronto se agregarán nuevas sesiones</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { onMounted } from 'vue'
+// ✅ IMPORTAR CORRECTAMENTE con llaves porque es named export
+import { useSesiones } from '~/composables/useSesiones'
+
+const { videos, loading, error, fetchVideos } = useSesiones()
+
+// Función para obtener la URL embed de YouTube
+const getYoutubeEmbedUrl = (input) => {
+  if (!input) return ''
+  
+  if (input.includes('youtube.com/embed/')) return input
+  if (input.includes('youtu.be/')) {
+    const videoId = input.split('/').pop()?.split('?')[0]
+    return `https://www.youtube.com/embed/${videoId}`
+  }
+  
+  if (input.includes('watch?v=')) {
+    const videoId = new URL(input).searchParams.get('v')
+    return `https://www.youtube.com/embed/${videoId}`
+  }
+  
+  if (input.length === 11) {
+    return `https://www.youtube.com/embed/${input}`
+  }
+  
+  return input
+}
+
+// Función para recargar
+const recargar = async () => {
+  await fetchVideos()
+}
+
+// Cargar videos al montar el componente
+onMounted(() => {
+  fetchVideos()
+})
+</script>
+
+<style scoped>
+.sesiones-videos {
+  width: 100%;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+}
+</style> 
+================================= 
+components\asistente\ConsultaLegislativa.vue 
+================================= 
+ 
+<template>
+  <div>
+    <!-- ENCABEZADO -->
+    <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+      <h2 class="text-2xl font-bold text-senado-primary">
+        Explorador Legislativo
+      </h2>
+      <span class="contexto-pill">
+        {{ contextoActual }}
+      </span>
+    </div>
+
+    <p class="text-gray-600 text-sm mb-6">
+      Escriba su consulta en lenguaje natural. El sistema busca en el cuerpo normativo
+      y responde citando el documento de origen.
+    </p>
+
+    <!-- ÁREA DE CONSULTA -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Consulta
+        </label>
+        <textarea
+          v-model="consulta"
+          rows="3"
+          placeholder="Ej: ¿Cuáles son los plazos definidos en la Ley 1581?"
+          class="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-senado-primary focus:border-transparent transition-colors"
+          @keydown.enter.prevent="procesarConsulta"
+        />
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          @click="procesarConsulta"
+          :disabled="loading"
+          class="bg-senado-primary text-white font-medium py-2 px-6 rounded-md hover:bg-senado-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          <span v-if="loading" class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          <span>{{ loading ? 'Procesando...' : 'Procesar Consulta' }}</span>
+        </button>
+        <button
+          @click="limpiarConsulta"
+          class="bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-md hover:bg-gray-300 transition-colors"
+        >
+          Limpiar
+        </button>
+        <button
+          @click="exportarFicha"
+          class="bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-md hover:bg-gray-300 transition-colors"
+        >
+          Exportar Ficha
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTEXTOS DE BÚSQUEDA -->
+    <div class="mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Contexto de búsqueda
+      </label>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="ctx in contextos"
+          :key="ctx.valor"
+          @click="contextoActual = ctx.valor"
+          class="px-4 py-2 text-sm font-medium rounded-full transition-all"
+          :class="contextoActual === ctx.valor
+            ? 'bg-senado-primary text-white'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        >
+          {{ ctx.etiqueta }}
+        </button>
+        <button
+          @click="cargarCategorias"
+          class="px-4 py-2 text-sm font-medium rounded-full bg-senado-gold-soft text-gray-700 hover:bg-senado-gold transition-all"
+        >
+          🔄 Cargar categorías
+        </button>
+      </div>
+      
+      <!-- Mostrar categorías disponibles -->
+      <div v-if="categorias.length > 0" class="mt-3 flex flex-wrap gap-1">
+        <span class="text-xs text-gray-500">Categorías disponibles:</span>
+        <span 
+          v-for="cat in categorias" 
+          :key="cat"
+          class="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600"
+        >
+          {{ cat }}
+        </span>
+      </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="mt-8">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">
+          Preguntas y respuestas de esta sesión
+        </h3>
+        <span class="text-xs text-gray-400">
+          {{ historial.length }} consulta{{ historial.length !== 1 ? 's' : '' }}
+        </span>
+      </div>
+
+      <div v-if="historial.length === 0" class="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+        <div class="text-4xl mb-3">🔍</div>
+        <p class="text-gray-500 font-medium">Aún no hay preguntas</p>
+        <p class="text-gray-400 text-sm">Haz una consulta para comenzar</p>
+      </div>
+
+      <div v-else class="space-y-4">
+        <div
+          v-for="(item, index) in historial"
+          :key="index"
+          class="space-y-3"
+        >
+          <div class="chat-bubble-user">
+            {{ item.pregunta }}
+          </div>
+          <div class="chat-bubble-bot" v-html="item.respuesta"></div>
+          <hr v-if="index < historial.length - 1" class="border-gray-200 my-4" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center text-sm text-gray-400 border-t border-gray-200 pt-6">
+      Plataforma de Inteligencia Legislativa — Motor de Búsqueda Normativa
+      <br />
+      <span class="font-medium text-gray-500">Cámara de Senadores · Asamblea Legislativa Plurinacional de Bolivia</span>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useApiLegislativa } from '~/composables/useApiLegislativa'
+
+const consulta = ref('')
+const loading = ref(false)
+const contextoActual = ref('Toda la Base Normativa')
+const historial = ref([])
+const categorias = ref([])
+const resultadosCache = ref([])
+
+const { buscarLeyes, obtenerCategorias, loading: apiLoading } = useApiLegislativa()
+
+const contextos = [
+  { valor: 'Toda la Base Normativa', etiqueta: 'Toda la Base Normativa' },
+  { valor: 'Leyes Promulgadas (Vigentes)', etiqueta: 'Leyes Promulgadas' },
+  { valor: 'Proyectos En Tratamiento', etiqueta: 'Proyectos en Tratamiento' },
+  { valor: 'Proyectos Rechazados', etiqueta: 'Proyectos Rechazados' },
+]
+
+// Cargar categorías disponibles
+const cargarCategorias = async () => {
+  try {
+    const cats = await obtenerCategorias()
+    categorias.value = cats
+    console.log('📚 Categorías cargadas:', cats)
+  } catch (error) {
+    console.error('Error cargando categorías:', error)
+  }
+}
+
+// Procesar consulta
+const procesarConsulta = async () => {
+  const texto = consulta.value.trim()
+  if (!texto) {
+    alert('Por favor, escribe una consulta.')
+    return
+  }
+
+  loading.value = true
+
+  try {
+    // Mapear contexto a estado para filtrar
+    let estado = null
+    if (contextoActual.value === 'Leyes Promulgadas (Vigentes)') {
+      estado = 'Promulgada'
+    } else if (contextoActual.value === 'Proyectos En Tratamiento') {
+      estado = 'En Tratamiento'
+    } else if (contextoActual.value === 'Proyectos Rechazados') {
+      estado = 'Rechazado'
+    }
+
+    // Buscar en la API
+    const result = await buscarLeyes(texto, estado)
+    resultadosCache.value = result.resultados
+
+    let respuestaHtml = ''
+
+    if (result.total === 0) {
+      respuestaHtml = `
+        <div class="text-gray-600">
+          <p>No se encontraron resultados para "<strong>${texto}</strong>".</p>
+          <p class="text-sm text-gray-400 mt-2">Sugerencias:</p>
+          <ul class="text-sm text-gray-400 list-disc pl-5">
+            <li>Revisa la ortografía de tu consulta</li>
+            <li>Prueba con términos más generales</li>
+            <li>Selecciona otro contexto de búsqueda</li>
+          </ul>
+        </div>
+      `
+    } else {
+      // Mostrar los primeros 5 resultados
+      const mostrar = result.resultados.slice(0, 5)
+      
+      respuestaHtml = `
+        <div>
+          <p class="font-medium text-gray-700 mb-2">
+            Encontrados <strong>${result.total}</strong> documento${result.total > 1 ? 's' : ''}:
+          </p>
+          <ul class="space-y-2">
+            ${mostrar.map((doc, idx) => `
+              <li class="border-b border-gray-100 pb-2">
+                <div class="flex items-start gap-2">
+                  <span class="text-senado-primary font-bold text-sm">${idx + 1}.</span>
+                  <div>
+                    <p class="font-medium text-gray-800">${doc.nombre_documento || 'Documento sin título'}</p>
+                    <p class="text-sm text-gray-600">${doc.texto_preview ? doc.texto_preview.substring(0, 150) + '...' : ''}</p>
+                    <div class="flex flex-wrap gap-1 mt-1">
+                      ${doc.estado ? `<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">${doc.estado}</span>` : ''}
+                      ${doc.fecha ? `<span class="text-xs text-gray-400">${doc.fecha}</span>` : ''}
+                    </div>
+                    ${doc.url_descarga ? `<a href="${doc.url_descarga}" target="_blank" class="text-xs text-senado-primary hover:underline">📄 Ver documento</a>` : ''}
+                  </div>
+                </div>
+              </li>
+            `).join('')}
+          </ul>
+          ${result.total > 5 ? `<p class="text-sm text-gray-500 mt-2">... y ${result.total - 5} más</p>` : ''}
+        </div>
+      `
+    }
+
+    historial.value.push({
+      pregunta: texto,
+      respuesta: respuestaHtml,
+    })
+
+    consulta.value = ''
+
+  } catch (error) {
+    console.error('Error al procesar consulta:', error)
+    historial.value.push({
+      pregunta: texto,
+      respuesta: `<span class="text-red-600">⚠️ Error al procesar la consulta. Por favor, intenta nuevamente.</span>`
+    })
+  } finally {
+    loading.value = false
+  }
+}
+
+const limpiarConsulta = () => {
+  consulta.value = ''
+}
+
+const exportarFicha = () => {
+  if (historial.value.length === 0) {
+    alert('No hay consultas para exportar.')
+    return
+  }
+
+  let texto = '📋 FICHA DE CONSULTAS LEGISLATIVAS\n'
+  texto += `📅 Fecha: ${new Date().toLocaleString()}\n`
+  texto += `📚 Contexto: ${contextoActual.value}\n`
+  texto += '═'.repeat(50) + '\n\n'
+
+  historial.value.forEach((item, index) => {
+    texto += `🔹 CONSULTA ${index + 1}:\n`
+    texto += `   ${item.pregunta}\n\n`
+    texto += `🔸 RESPUESTA:\n`
+    const respuestaPlana = item.respuesta.replace(/<[^>]*>/g, '')
+    texto += `   ${respuestaPlana}\n\n`
+    texto += '─'.repeat(40) + '\n\n'
+  })
+
+  const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `ficha_consultas_${new Date().toISOString().slice(0, 10)}.txt`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+// Cargar categorías al montar
+onMounted(() => {
+  cargarCategorias()
+})
+</script>
+
+<style scoped>
+.chat-bubble-user {
+  background: var(--senado-primary);
+  color: #ffffff;
+  padding: 0.7rem 1.1rem;
+  border-radius: 14px 14px 3px 14px;
+  margin: 0.4rem 0;
+  max-width: 88%;
+  margin-left: auto;
+  font-size: 0.92rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble-bot {
+  background: #ffffff;
+  color: #333;
+  padding: 0.8rem 1.15rem;
+  border-radius: 14px 14px 14px 3px;
+  margin: 0.4rem 0;
+  max-width: 92%;
+  border: 1px solid #e0e0e0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble-bot :deep(p) {
+  margin: 0.5rem 0;
+}
+
+.chat-bubble-bot :deep(ul) {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.chat-bubble-bot :deep(li) {
+  margin: 0.3rem 0;
+}
+
+.chat-bubble-bot :deep(strong) {
+  color: var(--senado-primary);
+}
+
+.contexto-pill {
+  background: var(--senado-gold-soft);
+  color: var(--senado-primary);
+  font-weight: 600;
+  padding: 0.2rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--senado-gold);
+  font-size: 0.8rem;
+}
+</style> 
+================================= 
+composables\useApiLegislativa.js 
+================================= 
+ 
+// composables/useApiLegislativa.js
+import { ref } from 'vue'
+
+const API_BASE_URL = 'http://10.0.0.21:8000/api/v1'
+
+export const useApiLegislativa = () => {
+  const loading = ref(false)
+  const error = ref(null)
+  const resultados = ref([])
+  const categorias = ref([])
+
+  // Obtener categorías disponibles
+  const obtenerCategorias = async () => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/categorias`)
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      categorias.value = data.categorias || []
+      return categorias.value
+    } catch (err) {
+      console.error('Error obteniendo categorías:', err)
+      error.value = err.message
+      return []
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Buscar leyes con filtros
+  const buscarLeyes = async (query, estado = null) => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      let url = `${API_BASE_URL}/leyes/buscar`
+      const params = new URLSearchParams()
+      
+      if (query && query.trim()) {
+        params.append('q', query.trim())
+      }
+      
+      if (estado) {
+        params.append('estado', estado)
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`
+      }
+      
+      console.log('🔍 Buscando:', url)
+      
+      const response = await fetch(url)
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      resultados.value = data.datos || []
+      return {
+        resultados: resultados.value,
+        total: data.total_resultados || 0
+      }
+    } catch (err) {
+      console.error('Error buscando leyes:', err)
+      error.value = err.message
+      return { resultados: [], total: 0 }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Obtener una ley específica
+  const obtenerLey = async (nombreDocumento) => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      // Buscar todas las leyes y filtrar por nombre
+      const result = await buscarLeyes(nombreDocumento)
+      const ley = result.resultados.find(r => r.nombre_documento === nombreDocumento)
+      return ley || null
+    } catch (err) {
+      console.error('Error obteniendo ley:', err)
+      error.value = err.message
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    loading,
+    error,
+    resultados,
+    categorias,
+    obtenerCategorias,
+    buscarLeyes,
+    obtenerLey
+  }
+} 
+================================= 
+composables\useGaleria.js 
+================================= 
+ 
+// composables/useGaleria.js
+import { ref } from 'vue'
+import { getAllImages } from '~/data/galeriaDescriptions'
+
+// Configuración de la API (fácil de cambiar cuando el backend esté listo)
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+export const useGaleria = () => {
+  const images = ref([])
+  const loading = ref(false)
+  const error = ref(null)
+  
+  // Flag para saber si usamos API o datos locales
+  // Cambiar a true cuando el backend esté listo
+  const USE_API = false
+  
+  const fetchImages = async () => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      if (USE_API) {
+        // 🔥 CUANDO EL BACKEND ESTÉ LISTO, ESTO FUNCIONARÁ
+        const response = await fetch(`${API_BASE_URL}/galeria/images`)
+        const result = await response.json()
+        
+        if (result.success) {
+          images.value = result.data
+        } else {
+          throw new Error(result.message)
+        }
+      } else {
+        // 🔥 MIENTRAS TANTO, USAMOS DATOS LOCALES
+        console.log('📸 Usando datos locales de galería (backend no conectado)')
+        images.value = getAllImages()
+      }
+    } catch (err) {
+      console.error('Error cargando galería:', err)
+      error.value = err.message
+      // Fallback a datos locales en caso de error
+      images.value = getAllImages()
+    } finally {
+      loading.value = false
+    }
+  }
+  
+  return {
+    images,
+    loading,
+    error,
+    fetchImages,
+    USE_API
+  }
+} 
+================================= 
+composables\useNoticias.js 
+================================= 
+ 
+// composables/useNoticias.js
+import { ref, computed } from 'vue'
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const transformarNoticia = (item) => {
+  if (!item) return null
+  
+  const textoPlano = item.content?.replace(/<[^>]*>/g, '') || ''
+  const esImportante = item.category === 'importante'
+  
+  return {
+    id: item._id || item.id,
+    titulo: item.title || 'Sin título',
+    slug: item.slug,
+    contenido: item.content || '',
+    resumen: item.excerpt || textoPlano.substring(0, 200),
+    descripcion: item.excerpt || textoPlano.substring(0, 150),
+    descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
+    fecha: item.publishedAt || item.createdAt,
+    publishedAt: item.publishedAt || item.createdAt,
+    imagen: item.featuredImage?.url || item.imagen,
+    featuredImage: item.featuredImage,
+    categoria: item.category,
+    importante: esImportante,
+    tipo: item.type || 'noticia',
+    status: item.status,
+    views: item.views || 0,
+    participantes: item.participantes || [],
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt
+  }
+}
+
+export const fetchNoticiasImportantes = async () => {
+  console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando importantes:', err)
+    return []
+  }
+}
+
+export const fetchNoticiasUltimas = async () => {
+  console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error('❌ Error cargando últimas:', err)
+    return []
+  }
+}
+
+// 🔥 FUNCIÓN PARA ORDENAR NOTICIAS POR FECHA
+const ordenarPorFecha = (noticias) => {
+  return [...noticias].sort((a, b) => {
+    const fechaA = new Date(a.publishedAt || a.fecha || 0)
+    const fechaB = new Date(b.publishedAt || b.fecha || 0)
+    return fechaB - fechaA
+  })
+}
+
+export const fetchNoticias = async () => {
+  console.log(`📡 [useNoticias] Cargando todas las noticias...`)
+  
+  const [noticiasImportantes, ultimasNoticias] = await Promise.all([
+    fetchNoticiasImportantes(),
+    fetchNoticiasUltimas()
+  ])
+  
+  const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
+  
+  console.log(`📊 [useNoticias] Total combinado: ${todasLasNoticias.length} noticias`)
+  
+  return {
+    noticiasImportantes: noticiasImportantes.slice(0, 4),
+    ultimasNoticias: ultimasNoticias.slice(0, 4),
+    todasLasNoticias: todasLasNoticias,
+    error: null
+  }
+}
+
+// 🔥 NUEVO: OBTENER NOTICIAS POR SENADOR
+export const fetchNoticiasPorSenador = async (senadorId) => {
+  console.log(`📡 [useNoticias] Buscando noticias del senador ID: ${senadorId}...`)
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/content/senador/${senadorId}?limit=10`)
+    const data = await response.json()
+    
+    if (data.success && data.data?.contents) {
+      const noticias = data.data.contents
+        .map(transformarNoticia)
+        .filter(Boolean)
+      
+      console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias para el senador ${senadorId}`)
+      return noticias
+    }
+    return []
+  } catch (err) {
+    console.error(`❌ Error cargando noticias del senador ${senadorId}:`, err)
+    return []
+  }
+}
+
+export const useNoticias = () => {
+  const noticiasImportantes = ref([])
+  const ultimasNoticias = ref([])
+  const todasLasNoticias = ref([])
+  const loading = ref(true)
+  const error = ref(null)
+  const loaded = ref(false)
+  
+  const cargarDatos = async () => {
+    if (loaded.value) {
+      console.log('📦 [useNoticias] Datos ya cargados, omitiendo...')
+      return
+    }
+    
+    console.log('🔄 [useNoticias] cargarDatos() ejecutándose...')
+    
+    loading.value = true
+    const result = await fetchNoticias()
+    
+    noticiasImportantes.value = result.noticiasImportantes
+    ultimasNoticias.value = result.ultimasNoticias
+    todasLasNoticias.value = result.todasLasNoticias
+    error.value = result.error
+    loading.value = false
+    loaded.value = true
+    
+    return result
+  }
+  
+  const recargarDatos = async () => {
+    console.log('🔄 [useNoticias] Recargando datos...')
+    loaded.value = false
+    await cargarDatos()
+  }
+  
+  return {
+    noticiasImportantes: computed(() => noticiasImportantes.value),
+    ultimasNoticias: computed(() => ultimasNoticias.value),
+    todasLasNoticias: computed(() => todasLasNoticias.value),
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    loaded: computed(() => loaded.value),
+    cargarDatos,
+    recargarDatos,
+    fetchNoticiasPorSenador // 🔥 NUEVO
+  }
+} 
+================================= 
+composables\useSenadores.js 
+================================= 
+ 
+// composables/useSenadores.js
+import { senadores } from '~/data/senadores'
+
+export const useSenadores = () => {
+  // Buscar un senador por slug
+  const getSenadorBySlug = (slug) => {
+    if (!slug) return null
+    console.log('Buscando slug:', slug)
+    console.log('Senadores disponibles:', senadores.map(s => ({ name: s.name, slug: s.slug })))
+    
+    // Buscar por slug exacto
+    let encontrado = senadores.find(s => s.slug === slug)
+    
+    // Si no se encuentra, intentar buscar generando el slug desde el nombre
+    if (!encontrado) {
+      for (const senador of senadores) {
+        // Generar slug manualmente (usando la misma función)
+        const slugGenerado = senador.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/ñ/g, 'n')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .trim()
+          .replace(/\s+/g, '-')
+        
+        if (slugGenerado === slug) {
+          encontrado = senador
+          break
+        }
+      }
+    }
+    
+    console.log('Senador encontrado:', encontrado)
+    return encontrado || null
+  }
+
+  // Buscar un suplente por slug - CORREGIDO CON TODOS LOS CAMPOS
+  const getSuplenteBySlug = (slug) => {
+    if (!slug) return null
+    
+    for (const senador of senadores) {
+      if (senador.slugSuplente === slug) {
+        return {
+          // ===== DATOS DEL TITULAR (heredados) =====
+          id: senador.id,
+          seatNumber: senador.seatNumber,
+          name: senador.name,
+          slug: senador.slug, // slug del TITULAR (para link)
+          slugTitular: senador.slug, // 🔥 EXPLÍCITAMENTE EL SLUG DEL TITULAR
+          party: senador.party,
+          partyShort: senador.partyShort,
+          partyColor: senador.partyColor,
+          department: senador.department,
+          distritos: senador.distritos,
+          
+          // ===== DATOS DEL SUPLENTE (propios) =====
+          suplente: senador.suplente,
+          slugSuplente: senador.slugSuplente,
+          fotoSuplente: senador.fotoSuplente,
+          fechaNacimientoSuplente: senador.fechaNacimientoSuplente || 'No disponible',
+          nacidoEnSuplente: senador.nacidoEnSuplente || senador.department,
+          ocupacionSuplente: senador.ocupacionSuplente || 'No disponible',
+          comiteSuplente: senador.comiteSuplente || 'No disponible',
+          cargoSuplente: senador.cargoSuplente || 'No disponible',
+          
+          // ===== REDES SOCIALES DEL SUPLENTE =====
+          facebookSuplente: senador.facebookSuplente || null,
+          twitterSuplente: senador.twitterSuplente || null,
+          instagramSuplente: senador.instagramSuplente || null,
+          youtubeSuplente: senador.youtubeSuplente || null,
+          tiktokSuplente: senador.tiktokSuplente || null,
+          
+          // ===== FLAG PARA IDENTIFICAR QUE ES SUPLENTE =====
+          esSuplente: true
+        }
+      }
+    }
+    return null
+  }
+
+  // Obtener todos los senadores
+  const getTodosLosSenadores = () => {
+    return senadores
+  }
+
+  // Obtener todos los suplentes
+  const getTodosLosSuplentes = () => {
+    return senadores
+      .filter(s => s.suplente && s.suplente !== null)
+      .map(s => ({
+        // ===== DATOS DEL TITULAR (heredados) =====
+        id: s.id,
+        seatNumber: s.seatNumber,
+        name: s.name,
+        slug: s.slug,
+        slugTitular: s.slug,
+        party: s.party,
+        partyShort: s.partyShort,
+        partyColor: s.partyColor,
+        department: s.department,
+        distritos: s.distritos,
+        
+        // ===== DATOS DEL SUPLENTE (propios) =====
+        suplente: s.suplente,
+        slugSuplente: s.slugSuplente,
+        fotoSuplente: s.fotoSuplente,
+        fechaNacimientoSuplente: s.fechaNacimientoSuplente || 'No disponible',
+        nacidoEnSuplente: s.nacidoEnSuplente || s.department,
+        ocupacionSuplente: s.ocupacionSuplente || 'No disponible',
+        comiteSuplente: s.comiteSuplente || 'No disponible',
+        cargoSuplente: s.cargoSuplente || 'No disponible',
+        
+        // ===== REDES SOCIALES DEL SUPLENTE =====
+        facebookSuplente: s.facebookSuplente || null,
+        twitterSuplente: s.twitterSuplente || null,
+        instagramSuplente: s.instagramSuplente || null,
+        youtubeSuplente: s.youtubeSuplente || null,
+        tiktokSuplente: s.tiktokSuplente || null,
+        
+        // ===== FLAG =====
+        esSuplente: true
+      }))
+  }
+
+  return {
+    getSenadorBySlug,
+    getSuplenteBySlug,
+    getTodosLosSenadores,
+    getTodosLosSuplentes
+  }
+} 
+================================= 
+composables\useSesiones.js 
+================================= 
+ 
+// composables/useSesiones.js
+import { ref } from 'vue'
+
+export const useSesiones = () => {
+  const videos = ref([])
+  const loading = ref(false)
+  const error = ref(null)
+  
+  const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+  
+  const fetchVideos = async () => {
+    loading.value = true
+    error.value = null
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/sesiones`)
+      const result = await response.json()
+      
+      if (result.success && result.data && result.data.length > 0) {
+        // Filtrar: SOLO videos NORMALES (excluir LIVE)
+        videos.value = result.data
+          .filter(v => v.isActive !== false && v.isLive !== true)
+          .sort((a, b) => a.position - b.position)
+        
+        // Si hay menos de 3 videos activos, completar con placeholders
+        if (videos.value.length < 3) {
+          const defaults = [
+            { position: 1, title: 'Sesión en vivo', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false },
+            { position: 2, title: '90 Sesión Ordinaria', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false },
+            { position: 3, title: '88 Sesión Ordinaria', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false }
+          ]
+          
+          for (let i = 0; i < 3; i++) {
+            if (!videos.value.find(v => v.position === i + 1)) {
+              videos.value.push({
+                position: i + 1,
+                title: defaults[i].title,
+                url: `https://www.youtube.com/watch?v=${defaults[i].youtubeId}`,
+                youtubeId: defaults[i].youtubeId,
+                isActive: true,
+                isLive: false
+              })
+            }
+          }
+          videos.value.sort((a, b) => a.position - b.position)
+        }
+      } else {
+        setDefaultVideos()
+      }
+    } catch (err) {
+      console.error('Error cargando videos de sesiones:', err)
+      error.value = err.message || 'Error desconocido'
+      setDefaultVideos()
+    } finally {
+      loading.value = false
+    }
+  }
+  
+  const setDefaultVideos = () => {
+    videos.value = [
+      { position: 1, title: 'Sesión en vivo', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false },
+      { position: 2, title: '90 Sesión Ordinaria', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false },
+      { position: 3, title: '88 Sesión Ordinaria', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', youtubeId: 'dQw4w9WgXcQ', isActive: true, isLive: false }
+    ]
+  }
+  
+  return { videos, loading, error, fetchVideos }
+}

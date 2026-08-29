@@ -1,0 +1,2607 @@
+COMPILADO DE ARCHIVOS - Parte 5 
+ 
+ 
+================================= 
+pages\declaraciones-camarales.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
+    <div class="w-[90%] max-w-7xl">
+      <!-- Botón volver -->
+      <div class="mb-6">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TABLA DE DECLARACIONES CAMARALES           -->
+      <!-- ========================================== -->
+      <div class="management-container">
+        <!-- Header -->
+        <div class="management-header">
+          <div class="header-left">
+            <h2 class="management-title">
+              Declaraciones Camarales
+              <span v-if="!loading && !error" class="badge">{{ totalItems }} registros</span>
+            </h2>
+          </div>
+          
+          <div class="header-controls">
+            <!-- Selector de filas por página -->
+            <div class="rows-per-page">
+              <span>Mostrar</span>
+              <select v-model.number="itemsPorPagina" @change="cambiarFilasPorPagina">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <span>filas</span>
+            </div>
+
+            <!-- Buscador -->
+            <div class="search-box">
+              <input 
+                type="text" 
+                v-model="terminoBusquedaLocal"
+                @keyup.enter="aplicarBusquedaLocal"
+                placeholder="Buscar por título, número o asunto..."
+                class="search-input"
+              >
+              <button @click="aplicarBusquedaLocal" class="search-button" :disabled="loading">
+                <span class="search-icon">🔍</span>
+              </button>
+              <button 
+                v-if="terminoBusquedaLocal" 
+                @click="limpiarBusquedaLocal" 
+                class="clear-button"
+                title="Limpiar búsqueda"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado de carga -->
+        <div v-if="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando documentos...</p>
+        </div>
+
+        <!-- Estado de error -->
+        <div v-else-if="error" class="error-state">
+          <span class="error-icon">⚠️</span>
+          <p>{{ error }}</p>
+          <button @click="cargarDatosCompletos" class="retry-button">Reintentar</button>
+        </div>
+
+        <!-- Tabla -->
+        <div v-else class="table-responsive">
+          <table class="management-table">
+            <thead>
+              <tr>
+                <th @click="ordenarPor('titulo')" class="sortable">
+                  Título / Número
+                  <span class="sort-icon">{{ getSortIcon('titulo') }}</span>
+                </th>
+                <th @click="ordenarPor('asunto')" class="sortable">
+                  Asunto
+                  <span class="sort-icon">{{ getSortIcon('asunto') }}</span>
+                </th>
+                <th class="actions-column">Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in itemsPaginados" :key="item.id" class="management-row">
+                <td class="title-cell">
+                  <div class="titulo-principal">{{ item.titulo }}</div>
+                  <div class="numero-ley">N° {{ item.numero }}</div>
+                  <div class="fecha-info" v-if="item.fecha_aprobacion">
+                    <span class="fecha-label">Aprobado:</span> {{ formatearFecha(item.fecha_aprobacion) }}
+                  </div>
+                </td>
+                <td class="asunto-cell">
+                  <div class="asunto-texto">{{ truncarTexto(item.asunto, 100) }}</div>
+                  <div class="gestion-info" v-if="item.gestion">
+                    <span class="gestion-label">Gestión:</span> {{ item.gestion }}
+                  </div>
+                  <div class="institucion-info" v-if="item.institucion_text">
+                    <span class="institucion-label">Institución:</span> {{ item.institucion_text }}
+                  </div>
+                </td>
+                <td class="actions-cell">
+                  <a 
+                    v-if="item.doc_archivo"
+                    :href="`https://apisi.senado.gob.bo/${item.doc_archivo}`" 
+                    target="_blank"
+                    class="btn-documento"
+                    title="Ver documento PDF"
+                  >
+                    <span class="btn-icon">📄</span>
+                    <span class="btn-text">PDF</span>
+                  </a>
+                  <span v-else class="sin-documento">Sin documento</span>
+                </td>
+              </tr>
+              
+              <!-- Fila vacía -->
+              <tr v-if="itemsFiltrados.length === 0">
+                <td colspan="3" class="empty-state">
+                  <p>No se encontraron documentos</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div v-if="itemsFiltrados.length > 0 && !loading" class="table-footer">
+          <div class="pagination-info">
+            Mostrando {{ (paginaActual - 1) * itemsPorPagina + 1 }} - 
+            {{ Math.min(paginaActual * itemsPorPagina, itemsFiltrados.length) }} de 
+            {{ itemsFiltrados.length }} documentos
+          </div>
+          
+          <div class="pagination-controls">
+            <button 
+              class="pagination-btn" 
+              :disabled="paginaActual === 1"
+              @click="cambiarPagina(paginaActual - 1)"
+            >
+              ← Anterior
+            </button>
+            
+            <div class="pagination-numbers">
+              <button 
+                v-for="page in paginasMostradas" 
+                :key="page"
+                class="pagination-number"
+                :class="{ active: page === paginaActual }"
+                @click="cambiarPagina(page)"
+              >
+                {{ page }}
+              </button>
+            </div>
+            
+            <button 
+              class="pagination-btn" 
+              :disabled="paginaActual === totalPaginas"
+              @click="cambiarPagina(paginaActual + 1)"
+            >
+              Siguiente →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+
+// ============================================
+// ESTADO
+// ============================================
+const todosLosDatos = ref([])
+const loading = ref(false)
+const error = ref(null)
+const paginaActual = ref(1)
+const itemsPorPagina = ref(10)
+const terminoBusquedaLocal = ref('')
+const busquedaLocalActiva = ref('')
+const orden = ref({
+  columna: 'titulo',
+  direccion: 'desc'
+})
+
+// ============================================
+// CONFIGURACIÓN DEL ENDPOINT
+// ============================================
+const ENDPOINT = {
+  url: 'https://apisi.senado.gob.bo/page/declaraciones-camarales',
+  procesarRespuesta: (data) => {
+    if (data.data && data.data.data) {
+      return data.data.data
+    }
+    return []
+  },
+  obtenerTotalPaginas: (data) => {
+    return data.data?.last_page || 1
+  }
+}
+
+// ============================================
+// COMPUTED
+// ============================================
+const itemsFiltrados = computed(() => {
+  let datos = [...todosLosDatos.value]
+  
+  if (busquedaLocalActiva.value && busquedaLocalActiva.value.trim() !== '') {
+    const termino = busquedaLocalActiva.value.toLowerCase().trim()
+    datos = datos.filter(item => 
+      (item.titulo && item.titulo.toLowerCase().includes(termino)) ||
+      (item.numero && item.numero.toLowerCase().includes(termino)) ||
+      (item.asunto && item.asunto.toLowerCase().includes(termino))
+    )
+  }
+  
+  return datos
+})
+
+const itemsOrdenados = computed(() => {
+  if (!itemsFiltrados.value.length) return []
+  
+  return [...itemsFiltrados.value].sort((a, b) => {
+    if (orden.value.columna === 'titulo') {
+      const textoA = a.titulo || ''
+      const textoB = b.titulo || ''
+      return orden.value.direccion === 'asc' 
+        ? textoA.localeCompare(textoB) 
+        : textoB.localeCompare(textoA)
+    } else if (orden.value.columna === 'asunto') {
+      const asuntoA = a.asunto || ''
+      const asuntoB = b.asunto || ''
+      return orden.value.direccion === 'asc' 
+        ? asuntoA.localeCompare(asuntoB) 
+        : asuntoB.localeCompare(asuntoA)
+    }
+    return 0
+  })
+})
+
+const itemsPaginados = computed(() => {
+  const inicio = (paginaActual.value - 1) * itemsPorPagina.value
+  const fin = inicio + itemsPorPagina.value
+  return itemsOrdenados.value.slice(inicio, fin)
+})
+
+const totalItems = computed(() => {
+  return todosLosDatos.value.length
+})
+
+const totalPaginas = computed(() => {
+  return Math.ceil(itemsFiltrados.value.length / itemsPorPagina.value)
+})
+
+const paginasMostradas = computed(() => {
+  const total = totalPaginas.value
+  const actual = paginaActual.value
+  const rango = 5
+  
+  let inicio = Math.max(1, actual - Math.floor(rango / 2))
+  let fin = Math.min(total, inicio + rango - 1)
+  
+  if (fin - inicio + 1 < rango) {
+    inicio = Math.max(1, fin - rango + 1)
+  }
+  
+  return Array.from({ length: fin - inicio + 1 }, (_, i) => inicio + i)
+})
+
+// ============================================
+// FUNCIONES
+// ============================================
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-BO')
+}
+
+const truncarTexto = (texto, longitud) => {
+  if (!texto) return ''
+  if (texto.length <= longitud) return texto
+  return texto.substring(0, longitud) + '...'
+}
+
+const obtenerPagina = async (page) => {
+  const url = `${ENDPOINT.url}?page=${page}`
+  
+  try {
+    const response = await fetch(url)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    console.error(`Error cargando página ${page}:`, err)
+    return null
+  }
+}
+
+const cargarDatosCompletos = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const primeraPagina = await obtenerPagina(1)
+    
+    if (!primeraPagina) {
+      throw new Error('No se pudo obtener la primera página')
+    }
+    
+    const datosPrimeraPagina = ENDPOINT.procesarRespuesta(primeraPagina) || []
+    const todasLasResoluciones = [...datosPrimeraPagina]
+    
+    const totalPaginas = ENDPOINT.obtenerTotalPaginas(primeraPagina)
+    
+    if (totalPaginas > 1) {
+      const paginasRestantes = Array.from(
+        { length: totalPaginas - 1 }, 
+        (_, i) => i + 2
+      )
+      
+      const promesas = paginasRestantes.map(page => obtenerPagina(page))
+      const resultados = await Promise.all(promesas)
+      
+      resultados.forEach(res => {
+        if (res) {
+          const datosPagina = ENDPOINT.procesarRespuesta(res) || []
+          todasLasResoluciones.push(...datosPagina)
+        }
+      })
+    }
+    
+    todosLosDatos.value = todasLasResoluciones
+    paginaActual.value = 1
+    
+    console.log(`✅ Cargados ${todosLosDatos.value.length} registros`)
+  } catch (err) {
+    error.value = 'Error al cargar los datos: ' + err.message
+    console.error('Error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const aplicarBusquedaLocal = () => {
+  busquedaLocalActiva.value = terminoBusquedaLocal.value || ''
+  paginaActual.value = 1
+}
+
+const limpiarBusquedaLocal = () => {
+  terminoBusquedaLocal.value = ''
+  busquedaLocalActiva.value = ''
+  paginaActual.value = 1
+}
+
+const cambiarPagina = (pagina) => {
+  if (pagina >= 1 && pagina <= totalPaginas.value) {
+    paginaActual.value = pagina
+  }
+}
+
+const cambiarFilasPorPagina = () => {
+  itemsPorPagina.value = Number(itemsPorPagina.value)
+  paginaActual.value = 1
+}
+
+const ordenarPor = (columna) => {
+  if (orden.value.columna === columna) {
+    orden.value.direccion = orden.value.direccion === 'asc' ? 'desc' : 'asc'
+  } else {
+    orden.value.columna = columna
+    orden.value.direccion = 'desc'
+  }
+  paginaActual.value = 1
+}
+
+const getSortIcon = (columna) => {
+  if (orden.value.columna !== columna) return '↕️'
+  return orden.value.direccion === 'asc' ? '↑' : '↓'
+}
+
+// ============================================
+// CARGAR DATOS
+// ============================================
+onMounted(() => {
+  cargarDatosCompletos()
+})
+</script>
+
+<style scoped>
+.management-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  width: 100%;
+  background: transparent;
+}
+
+.management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.management-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.badge {
+  background: linear-gradient(135deg, #E03636, #b82c2c);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rows-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.rows-per-page select {
+  border: 1px solid #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: white;
+  color: #0f172a;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.rows-per-page select:hover {
+  border-color: #E03636;
+}
+
+.search-box {
+  display: flex;
+  gap: 4px;
+  background: white;
+  padding: 3px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.search-input {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  width: 260px;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s;
+  padding-right: 65px;
+}
+
+.search-input:focus {
+  border-color: #E03636;
+  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
+}
+
+.search-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.search-button:hover:not(:disabled) {
+  background: #b82c2c;
+}
+
+.search-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-button {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 6px;
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+}
+
+.clear-button:hover {
+  color: #E03636;
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: auto;
+  margin-bottom: 16px;
+}
+
+.management-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.management-table th {
+  background: #f8fafc;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background: #f1f5f9;
+}
+
+.sort-icon {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.management-row td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef2f6;
+  color: #334155;
+  line-height: 1.3;
+}
+
+.management-row:hover td {
+  background-color: #f8fafc;
+}
+
+.title-cell {
+  min-width: 220px;
+}
+
+.titulo-principal {
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+}
+
+.numero-ley {
+  font-size: 0.7rem;
+  color: #64748b;
+  background: #f1f5f9;
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+}
+
+.fecha-info {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.fecha-label, .gestion-label, .institucion-label {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.asunto-cell {
+  max-width: 450px;
+}
+
+.asunto-texto {
+  line-height: 1.3;
+  color: #475569;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.gestion-info, .institucion-info {
+  font-size: 0.7rem;
+  color: #E03636;
+  margin-top: 2px;
+}
+
+.actions-cell {
+  width: 70px;
+  text-align: center;
+}
+
+.btn-documento {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #E03636;
+  color: white;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-documento:hover {
+  background: #b82c2c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
+}
+
+.sin-documento {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 0.85rem;
+}
+
+.pagination-info {
+  color: #64748b;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #E03636;
+  color: white;
+  border-color: #E03636;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 4px;
+}
+
+.pagination-number {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 6px;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.pagination-number:hover:not(.active):not(:disabled) {
+  background: #f1f5f9;
+  border-color: #E03636;
+}
+
+.pagination-number.active {
+  background: #E03636;
+  color: white;
+  border-color: #E03636;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #E03636;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.retry-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.retry-button:hover {
+  background: #b82c2c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .management-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-left {
+    justify-content: center;
+  }
+  
+  .header-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .rows-per-page {
+    justify-content: center;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .table-footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .btn-text {
+    display: none;
+  }
+  
+  .asunto-cell {
+    max-width: 150px;
+  }
+}
+</style> 
+================================= 
+pages\directiva-camaral.vue 
+================================= 
+ 
+<!-- pages/directiva-camaral.vue -->
+<template>
+  <div class="min-h-screen bg-white py-12 relative overflow-hidden">
+    <!-- Fondo de marca de agua -->
+    <div 
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+      style="background-image: url('/background/fondo3.png');"
+    ></div>
+    <div class="absolute inset-0 bg-white/70"></div>
+
+    <div class="relative z-10 mx-auto w-[85%]">
+      <!-- Título -->
+      <div class="mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          🏛️ Directiva Camaral
+        </div>
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+          Directiva Camaral
+        </h1>
+        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
+          Conoce a los miembros de la Directiva de la Cámara de Senadores para la Legislatura 2025-2026
+        </p>
+        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-4 text-gray-500">Cargando directiva...</p>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="error" class="text-center py-12 bg-red-50 rounded-xl border border-red-200">
+        <p class="text-red-600 font-medium">{{ error }}</p>
+        <button @click="fetchDirectiva" class="mt-4 px-6 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm">
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Contenido -->
+      <template v-else>
+        <!-- Presidente -->
+        <div class="max-w-4xl mx-auto mb-16" v-if="directiva.presidente">
+          <div class="text-center mb-8">
+            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Presidente</span>
+            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+          </div>
+          <div
+            class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
+          >
+            <div class="flex flex-col md:flex-row items-center p-8 gap-8">
+              <div class="flex-shrink-0">
+                <img
+                  :src="getImageUrl(directiva.presidente.foto)"
+                  :alt="directiva.presidente.name"
+                  class="w-[14vw] h-[14vw] rounded-full object-cover border-4 shadow-lg"
+                  :style="{ borderColor: directiva.presidente.partyColor || '#e3d194' }"
+                  @error="(e) => e.target.src = defaultAvatar"
+                />
+              </div>
+              <div class="flex-1 text-center md:text-left">
+                <h2 class="text-2xl md:text-3xl font-bold text-senado-primary">
+                  {{ directiva.presidente.name }}
+                </h2>
+                <div class="flex items-center justify-center md:justify-start gap-3 mt-2 flex-wrap">
+                  <span
+                    class="text-sm font-medium px-3 py-1 rounded-full"
+                    :style="{
+                      backgroundColor: (directiva.presidente.partyColor || '#2E7078') + '20',
+                      color: directiva.presidente.partyColor || '#2E7078'
+                    }"
+                  >
+                    {{ directiva.presidente.partyShort || directiva.presidente.party || 'Sin partido' }}
+                  </span>
+                  <span class="text-sm text-gray-500">
+                    {{ directiva.presidente.department }}
+                  </span>
+                </div>
+                <p class="text-senado-primary font-semibold mt-3 text-lg">
+                  Presidente del Senado
+                </p>
+                <NuxtLink
+                  :to="`/senador/${directiva.presidente.slug}`"
+                  class="inline-flex items-center gap-2 mt-4 text-senado-primary hover:text-senado-primary-dark font-medium transition-colors"
+                >
+                  Ver perfil completo →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vicepresidencias -->
+        <div class="max-w-5xl mx-auto mb-16" v-if="directiva.vicepresidencias && directiva.vicepresidencias.length > 0">
+          <div class="text-center mb-8">
+            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Vicepresidencias</span>
+            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              v-for="cargo in directiva.vicepresidencias"
+              :key="cargo.id"
+              class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              <div class="flex items-center gap-4 p-6">
+                <img
+                  :src="getImageUrl(cargo.foto)"
+                  :alt="cargo.name"
+                  class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
+                  :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                  @error="(e) => e.target.src = defaultAvatar"
+                />
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-bold text-senado-primary truncate">
+                    {{ cargo.name }}
+                  </h3>
+                  <div class="flex items-center gap-2 flex-wrap mt-1">
+                    <span
+                      class="text-xs font-medium px-2 py-0.5 rounded"
+                      :style="{
+                        backgroundColor: (cargo.partyColor || '#2E7078') + '20',
+                        color: cargo.partyColor || '#2E7078'
+                      }"
+                    >
+                      {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                    </span>
+                    <span class="text-xs text-gray-500">
+                      {{ cargo.department }}
+                    </span>
+                  </div>
+                  <p class="text-sm font-semibold text-senado-primary mt-2">
+                    {{ cargo.cargo || 'Vicepresidencia' }}
+                  </p>
+                  <NuxtLink
+                    :to="`/senador/${cargo.slug}`"
+                    class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-1"
+                  >
+                    Ver perfil →
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secretarías -->
+        <div class="max-w-5xl mx-auto mb-16" v-if="directiva.secretarias && directiva.secretarias.length > 0">
+          <div class="text-center mb-8">
+            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Secretarías</span>
+            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              v-for="cargo in directiva.secretarias"
+              :key="cargo.id"
+              class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              <div class="flex flex-col items-center p-6 text-center">
+                <img
+                  :src="getImageUrl(cargo.foto)"
+                  :alt="cargo.name"
+                  class="w-[12vw] h-[12vw] rounded-full object-cover border-2 flex-shrink-0"
+                  :style="{ borderColor: cargo.partyColor || '#ccc' }"
+                  @error="(e) => e.target.src = defaultAvatar"
+                />
+                <h3 class="text-base font-bold text-senado-primary mt-3 truncate w-full">
+                  {{ cargo.name }}
+                </h3>
+                <div class="flex items-center gap-2 flex-wrap mt-1 justify-center">
+                  <span
+                    class="text-xs font-medium px-2 py-0.5 rounded"
+                    :style="{
+                      backgroundColor: (cargo.partyColor || '#2E7078') + '20',
+                      color: cargo.partyColor || '#2E7078'
+                    }"
+                  >
+                    {{ cargo.partyShort || cargo.party || 'Sin partido' }}
+                  </span>
+                </div>
+                <p class="text-sm font-semibold text-senado-primary mt-2">
+                  {{ cargo.cargo || 'Secretaría' }}
+                </p>
+                <NuxtLink
+                  :to="`/senador/${cargo.slug}`"
+                  class="text-sm text-senado-primary hover:text-senado-primary-dark font-medium transition-colors inline-block mt-2"
+                >
+                  Ver perfil →
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Botón volver -->
+      <div class="text-center">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <ClientOnly>
+            <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+            <template #fallback>
+              <span class="text-[1.5vw]">←</span>
+            </template>
+          </ClientOnly>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+
+// 🔥 URL del backend donde están las imágenes
+const API_BASE_URL = 'http://demoback.senado.gob.bo'
+
+const directiva = ref({
+  presidente: null,
+  vicepresidencias: [],
+  secretarias: []
+})
+const loading = ref(false)
+const error = ref(null)
+
+// 🔥 Función para construir la URL completa de la imagen
+const getImageUrl = (path) => {
+  if (!path) return defaultAvatar
+  // Si ya es una URL completa, devolverla
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  // Si es una ruta relativa (empieza con /), agregar la URL del backend
+  if (path.startsWith('/')) {
+    return `${API_BASE_URL}${path}`
+  }
+  return path
+}
+
+const fetchDirectiva = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/legisladores/directiva`)
+    const result = await response.json()
+
+    if (result.success && result.data) {
+      directiva.value = result.data
+      console.log('✅ Directiva cargada:', directiva.value)
+    } else {
+      throw new Error(result.message || 'Error al cargar la directiva')
+    }
+  } catch (err) {
+    console.error('❌ Error:', err)
+    error.value = err.message || 'Error al cargar la directiva'
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchDirectiva()
+})
+</script> 
+================================= 
+pages\en-vivo.vue 
+================================= 
+ 
+<!-- pages/en-vivo.vue -->
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+      
+      <!-- 🔴 SECCIÓN: EN VIVO -->
+      <div class="mb-12">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="inline-block w-3 h-3 bg-red-600 rounded-full animate-pulse"></span>
+          <h1 class="text-2xl md:text-3xl font-bold text-[#611717] flex items-center gap-3">
+            <Icon name="mdi:television" class="text-red-600 text-3xl" />
+            EN VIVO
+          </h1>
+          <span class="text-sm text-gray-500 font-medium">Transmisión actual</span>
+        </div>
+
+        <!-- Estado de carga -->
+        <div v-if="liveLoading" class="flex justify-center items-center py-12">
+          <div class="inline-block w-10 h-10 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+          <p class="ml-4 text-gray-500">Cargando transmisión en vivo...</p>
+        </div>
+
+        <!-- Error -->
+        <div v-else-if="liveError" class="text-center py-12 bg-red-50 rounded-xl border border-red-200">
+          <div class="text-4xl mb-3 flex justify-center">
+            <Icon name="mdi:signal-off" class="text-red-600 text-5xl" />
+          </div>
+          <p class="text-red-600 font-medium">{{ liveError }}</p>
+          <button @click="cargarLive" class="mt-4 px-6 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm">
+            Reintentar
+          </button>
+        </div>
+
+        <!-- 🔥 VIDEO EN VIVO -->
+        <div v-else-if="liveVideo" class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="relative aspect-video bg-black">
+            <!-- YOUTUBE -->
+            <iframe
+              v-if="getPlatform(liveVideo.url) === 'youtube'"
+              :src="getYoutubeEmbedUrl(liveVideo.youtubeId || liveVideo.url)"
+              :title="liveVideo.title || 'Transmisión en vivo'"
+              class="absolute inset-0 w-full h-full"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+            
+            <!-- FACEBOOK -->
+            <iframe
+              v-else-if="getPlatform(liveVideo.url) === 'facebook'"
+              :src="getFacebookEmbedUrl(liveVideo.url)"
+              :title="liveVideo.title || 'Transmisión en vivo'"
+              class="absolute inset-0 w-full h-full"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+            
+            <!-- VIMEO -->
+            <iframe
+              v-else-if="getPlatform(liveVideo.url) === 'vimeo'"
+              :src="getVimeoEmbedUrl(liveVideo.url)"
+              :title="liveVideo.title || 'Transmisión en vivo'"
+              class="absolute inset-0 w-full h-full"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+            
+            <!-- TWITCH -->
+            <iframe
+              v-else-if="getPlatform(liveVideo.url) === 'twitch'"
+              :src="getTwitchEmbedUrl(liveVideo.url)"
+              :title="liveVideo.title || 'Transmisión en vivo'"
+              class="absolute inset-0 w-full h-full"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+            
+            <!-- PLATAFORMA NO SOPORTADA -->
+            <div v-else class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white p-6">
+              <Icon name="mdi:help-circle" class="text-6xl text-gray-500 mb-4" />
+              <p class="text-lg font-medium">Plataforma no soportada</p>
+              <p class="text-sm text-gray-400 mt-2">La URL no es de una plataforma compatible</p>
+              <a 
+                :href="liveVideo.url" 
+                target="_blank"
+                class="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+              >
+                Abrir enlace
+              </a>
+            </div>
+            
+            <!-- Badge "EN VIVO" -->
+            <span class="absolute top-4 left-4 px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-full animate-pulse flex items-center gap-2">
+              <span class="inline-block w-2 h-2 bg-white rounded-full animate-pulse-fast"></span>
+              EN VIVO
+            </span>
+            
+            <!-- Badge de plataforma -->
+            <span class="absolute top-4 right-4 px-3 py-1 bg-black/60 text-white text-xs font-medium rounded-full flex items-center gap-1 backdrop-blur-sm">
+              <Icon :name="getPlatformIcon(liveVideo.url)" class="text-sm" />
+              {{ getPlatformLabel(liveVideo.url) }}
+            </span>
+          </div>
+          
+          <div class="p-6">
+            <h2 class="text-xl md:text-2xl font-bold text-[#611717]">
+              {{ liveVideo.title || 'Transmisión en vivo del Senado' }}
+            </h2>
+            <p class="text-gray-500 text-sm mt-2 flex items-center gap-4">
+              <span class="flex items-center gap-1">
+                <span class="text-red-600">●</span> Transmitiendo ahora
+              </span>
+              <span class="flex items-center gap-1">
+                <Icon name="mdi:clock-outline" class="text-gray-500 text-sm" />
+                {{ fechaActual }}
+              </span>
+              <span class="flex items-center gap-1">
+                <Icon :name="getPlatformIcon(liveVideo.url)" class="text-gray-500 text-sm" />
+                {{ getPlatformLabel(liveVideo.url) }}
+              </span>
+            </p>
+            <a 
+              :href="liveVideo.url" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 mt-4 px-5 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm"
+            >
+              <Icon :name="getPlatformIcon(liveVideo.url)" class="text-white text-lg" />
+              Ver en {{ getPlatformLabel(liveVideo.url) }}
+            </a>
+          </div>
+        </div>
+
+        <!-- 🔥 SIN TRANSMISIÓN - VERSIÓN COMPACTA Y CENTRADA -->
+        <div v-else class="relative overflow-hidden rounded-xl border-2 border-dashed border-gray-300">
+          <!-- Fondo con imagen de asamblea.png como marca de agua -->
+          <div 
+            class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-65"
+            style="background-image: url('/background/asamblea.png');"
+          ></div>
+          
+          <!-- Overlay sutil -->
+          <div class="absolute inset-0 bg-gradient-to-br from-white/90 to-white/50"></div>
+          
+          <!-- Contenido centrado verticalmente -->
+          <div class="relative z-10 flex flex-col items-center justify-center w-full h-full text-center">
+            <!-- Icono + textos en columna -->
+            <div class="flex items-center gap-3">
+              <div class="translate-y-3 w-[8vw] h-[8vw] rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md flex-shrink-0">
+                <Icon name="mdi:television-off" class="text-gray-400 text-[6vw]" />
+              </div>
+              <div class="text-left">
+                <h3 class="text-base font-bold text-gray-700">
+                  No hay transmisión en vivo
+                </h3>
+                <p class="text-sm text-gray-500">
+                  Actualmente no hay ninguna sesión en curso
+                </p>
+              </div>
+            </div>
+            
+            <!-- Enlace a sesiones previas -->
+            <NuxtLink 
+              to="#sesiones-previas"
+              class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] font-medium text-sm transition-colors mt-2"
+            >
+              <Icon name="mdi:video" class="text-base" />
+              Ver sesiones previas
+              <Icon name="mdi:arrow-right" class="text-sm" />
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📹 SECCIÓN: VIDEOS DE SESIONES PREVIAS -->
+      <div id="sesiones-previas" class="border-t border-gray-200 pt-10 scroll-mt-20">
+        <div class="flex items-center gap-3 mb-6">
+          <h2 class="text-xl md:text-2xl font-bold text-[#611717] flex items-center gap-3">
+            <Icon name="mdi:video" class="text-[#611717] text-2xl" />
+            Sesiones Previas
+          </h2>
+          <span class="text-sm text-gray-500">Últimas sesiones grabadas</span>
+        </div>
+
+        <SesionesVideos />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+import SesionesVideos from '~/components/SesionesVideos.vue'
+
+const liveVideo = ref(null)
+const liveLoading = ref(false)
+const liveError = ref(null)
+
+const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+
+const fechaActual = computed(() => {
+  const ahora = new Date()
+  return ahora.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+})
+
+// ============================================
+// DETECCIÓN DE PLATAFORMA
+// ============================================
+
+const getPlatform = (url) => {
+  if (!url) return 'unknown'
+  
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube'
+  if (url.includes('facebook.com') || url.includes('fb.watch')) return 'facebook'
+  if (url.includes('vimeo.com')) return 'vimeo'
+  if (url.includes('twitch.tv')) return 'twitch'
+  
+  return 'unknown'
+}
+
+const getPlatformLabel = (url) => {
+  const platform = getPlatform(url)
+  const labels = {
+    youtube: 'YouTube',
+    facebook: 'Facebook',
+    vimeo: 'Vimeo',
+    twitch: 'Twitch',
+    unknown: 'Enlace'
+  }
+  return labels[platform] || 'Enlace'
+}
+
+const getPlatformIcon = (url) => {
+  const platform = getPlatform(url)
+  const icons = {
+    youtube: 'mdi:youtube',
+    facebook: 'mdi:facebook',
+    vimeo: 'mdi:vimeo',
+    twitch: 'mdi:twitch',
+    unknown: 'mdi:link-variant'
+  }
+  return icons[platform] || 'mdi:link-variant'
+}
+
+// ============================================
+// EMBED URLs POR PLATAFORMA
+// ============================================
+
+const getYoutubeEmbedUrl = (input) => {
+  if (!input) return ''
+  
+  if (input.includes('youtube.com/embed/')) return input
+  if (input.includes('youtu.be/')) {
+    const videoId = input.split('/').pop()?.split('?')[0]
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1`
+  }
+  if (input.includes('watch?v=')) {
+    const videoId = new URL(input).searchParams.get('v')
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1`
+  }
+  if (input.length === 11) {
+    return `https://www.youtube.com/embed/${input}?autoplay=1`
+  }
+  return input
+}
+
+const getFacebookEmbedUrl = (url) => {
+  if (!url) return ''
+  if (url.includes('facebook.com/plugins/video.php')) return url
+  
+  let videoId = ''
+  if (url.includes('/videos/')) {
+    const parts = url.split('/videos/')
+    videoId = parts[1]?.split('/')[0]?.split('?')[0] || ''
+  }
+  if (url.includes('fb.watch/')) {
+    videoId = url.split('fb.watch/')[1]?.split('?')[0] || ''
+  }
+  
+  if (videoId) {
+    return `https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/watch/?v=${videoId}&show_text=0&autoplay=1`
+  }
+  return url
+}
+
+const getVimeoEmbedUrl = (url) => {
+  if (!url) return ''
+  if (url.includes('vimeo.com/embed/')) return url
+  
+  const videoId = url.split('vimeo.com/')[1]?.split('/')[0]?.split('?')[0]
+  if (videoId) {
+    return `https://player.vimeo.com/video/${videoId}?autoplay=1`
+  }
+  return url
+}
+
+const getTwitchEmbedUrl = (url) => {
+  if (!url) return ''
+  if (url.includes('twitch.tv/embed')) return url
+  
+  const channel = url.split('twitch.tv/')[1]?.split('/')[0]?.split('?')[0]
+  if (channel) {
+    return `https://player.twitch.tv/?channel=${channel}&autoplay=true`
+  }
+  return url
+}
+
+// ============================================
+// CARGAR LIVE
+// ============================================
+
+const cargarLive = async () => {
+  liveLoading.value = true
+  liveError.value = null
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/sesiones/live`)
+    const result = await response.json()
+    
+    if (result.success && result.data) {
+      liveVideo.value = result.data
+      console.log('🔴 Video en vivo cargado:', liveVideo.value.title)
+    } else {
+      liveVideo.value = null
+    }
+  } catch (error) {
+    console.error('❌ Error cargando LIVE:', error)
+    liveError.value = 'Error al cargar la transmisión en vivo'
+    liveVideo.value = null
+  } finally {
+    liveLoading.value = false
+  }
+}
+
+onMounted(() => {
+  cargarLive()
+})
+</script>
+
+<style scoped>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes pulse-fast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.animate-pulse-fast {
+  animation: pulse-fast 1s ease-in-out infinite;
+}
+</style> 
+================================= 
+pages\escala-salarial.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
+    <div class="w-[90%] max-w-6xl">
+      <!-- Botón volver -->
+      <div class="mb-6">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </NuxtLink>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- ESCALA SALARIAL                           -->
+      <!-- ========================================== -->
+      <div class="management-container">
+        <!-- Header -->
+        <div class="management-header">
+          <div class="header-left">
+            <h2 class="management-title">
+              Escala Salarial
+              <span v-if="!loading && !error" class="badge">{{ documentos.length }} documentos</span>
+            </h2>
+          </div>
+          
+          <div class="header-controls">
+            <!-- Buscador -->
+            <div class="search-box">
+              <input 
+                type="text" 
+                v-model="terminoBusqueda"
+                @input="filtrarDocumentos"
+                placeholder="Buscar documentos..."
+                class="search-input"
+              >
+              <button class="search-button" :disabled="loading">
+                <span class="search-icon">🔍</span>
+              </button>
+              <button 
+                v-if="terminoBusqueda" 
+                @click="limpiarBusqueda" 
+                class="clear-button"
+                title="Limpiar búsqueda"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado de carga -->
+        <div v-if="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando documentos...</p>
+        </div>
+
+        <!-- Estado de error -->
+        <div v-else-if="error" class="error-state">
+          <span class="error-icon">⚠️</span>
+          <p>{{ error }}</p>
+          <button @click="cargarDocumentos" class="retry-button">Reintentar</button>
+        </div>
+
+        <!-- Lista de documentos -->
+        <div v-else class="table-responsive">
+          <table class="management-table">
+            <thead>
+              <tr>
+                <th @click="ordenarPor('nombre')" class="sortable">
+                  Nombre del archivo
+                  <span class="sort-icon">{{ getSortIcon('nombre') }}</span>
+                </th>
+                <th @click="ordenarPor('fecha')" class="sortable">
+                  Fecha de subida
+                  <span class="sort-icon">{{ getSortIcon('fecha') }}</span>
+                </th>
+                <th @click="ordenarPor('tamaño')" class="sortable">
+                  Tamaño
+                  <span class="sort-icon">{{ getSortIcon('tamaño') }}</span>
+                </th>
+                <th class="actions-column">Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="doc in documentosFiltrados" :key="doc.id" class="management-row">
+                <td class="title-cell">
+                  <div class="titulo-principal">{{ doc.nombre }}</div>
+                  <div v-if="doc.descripcion" class="descripcion">{{ doc.descripcion }}</div>
+                  <div v-if="doc.gestion" class="gestion-info">Gestión: {{ doc.gestion }}</div>
+                </td>
+                <td>{{ formatearFecha(doc.fecha) }}</td>
+                <td>{{ formatearTamaño(doc.tamaño) }}</td>
+                <td class="actions-cell">
+                  <a 
+                    :href="doc.url" 
+                    target="_blank"
+                    class="btn-documento"
+                    title="Ver PDF"
+                  >
+                    <span class="btn-icon">📄</span>
+                    <span class="btn-text">Ver PDF</span>
+                  </a>
+                </td>
+              </tr>
+              
+              <!-- Fila vacía -->
+              <tr v-if="documentosFiltrados.length === 0 && !loading">
+                <td colspan="4" class="empty-state">
+                  <p>No hay documentos disponibles</p>
+                  <p v-if="terminoBusqueda" class="text-sm text-gray-400 mt-1">
+                    No se encontraron resultados para "{{ terminoBusqueda }}"
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Información de depuración (opcional) -->
+        <div v-if="documentos.length > 0 && !loading" class="debug-info p-2 text-xs border-t border-gray-200 bg-gray-50">
+          <p>Total documentos: {{ documentos.length }} | Mostrando: {{ documentosFiltrados.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+
+// ============================================
+// ESTADO
+// ============================================
+const documentos = ref([])
+const documentosFiltrados = ref([])
+const loading = ref(false)
+const error = ref(null)
+const terminoBusqueda = ref('')
+const orden = ref({
+  columna: 'fecha',
+  direccion: 'desc'
+})
+
+// ============================================
+// CONFIGURACIÓN DEL ENDPOINT
+// ============================================
+// 🔥 CAMBIA ESTA URL CUANDO TENGAS EL BACKEND
+const API_URL = 'https://api.senado.gob.bo/escala-salarial'
+
+// ============================================
+// FUNCIONES
+// ============================================
+const formatearFecha = (fecha) => {
+  if (!fecha) return ''
+  return new Date(fecha).toLocaleDateString('es-BO', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
+
+const formatearTamaño = (bytes) => {
+  if (!bytes) return '0 KB'
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / 1048576).toFixed(1) + ' MB'
+}
+
+const filtrarDocumentos = () => {
+  if (!terminoBusqueda.value.trim()) {
+    documentosFiltrados.value = [...documentos.value]
+    return
+  }
+  
+  const termino = terminoBusqueda.value.toLowerCase().trim()
+  documentosFiltrados.value = documentos.value.filter(doc => 
+    (doc.nombre && doc.nombre.toLowerCase().includes(termino)) ||
+    (doc.descripcion && doc.descripcion.toLowerCase().includes(termino)) ||
+    (doc.gestion && doc.gestion.toLowerCase().includes(termino))
+  )
+  
+  // Re-aplicar ordenamiento
+  aplicarOrdenamiento()
+}
+
+const limpiarBusqueda = () => {
+  terminoBusqueda.value = ''
+  documentosFiltrados.value = [...documentos.value]
+  aplicarOrdenamiento()
+}
+
+const aplicarOrdenamiento = () => {
+  const columna = orden.value.columna
+  const direccion = orden.value.direccion
+  
+  documentosFiltrados.value.sort((a, b) => {
+    let valorA, valorB
+    
+    if (columna === 'nombre') {
+      valorA = a.nombre || ''
+      valorB = b.nombre || ''
+    } else if (columna === 'fecha') {
+      valorA = a.fecha ? new Date(a.fecha) : new Date(0)
+      valorB = b.fecha ? new Date(b.fecha) : new Date(0)
+    } else if (columna === 'tamaño') {
+      valorA = a.tamaño || 0
+      valorB = b.tamaño || 0
+    }
+    
+    if (valorA < valorB) return direccion === 'asc' ? -1 : 1
+    if (valorA > valorB) return direccion === 'asc' ? 1 : -1
+    return 0
+  })
+}
+
+const ordenarPor = (columna) => {
+  if (orden.value.columna === columna) {
+    orden.value.direccion = orden.value.direccion === 'asc' ? 'desc' : 'asc'
+  } else {
+    orden.value.columna = columna
+    orden.value.direccion = 'desc'
+  }
+  aplicarOrdenamiento()
+}
+
+const getSortIcon = (columna) => {
+  if (orden.value.columna !== columna) return '↕️'
+  return orden.value.direccion === 'asc' ? '↑' : '↓'
+}
+
+// ============================================
+// CARGAR DATOS DESDE API
+// ============================================
+const cargarDocumentos = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    // 🔥 SIMULACIÓN DE DATOS - REEMPLAZAR CON LLAMADA REAL
+    // const response = await fetch(API_URL)
+    // const data = await response.json()
+    // documentos.value = data
+    
+    // 📌 DATOS DE EJEMPLO (ELIMINAR CUANDO TENGA API)
+    await new Promise(resolve => setTimeout(resolve, 800))
+    documentos.value = [
+      {
+        id: 1,
+        nombre: 'Escala Salarial 2024',
+        descripcion: 'Escala salarial vigente para la gestión 2026, RM N° 280_29.05.24',
+        gestion: '2024',
+        fecha: '2026-08-25T10:30:00',
+        tamaño: 2027520,
+        url: '/pdfs/Recursos-humanos/EscalaCamSenadores.pdf'
+      }
+    ]
+    
+    documentosFiltrados.value = [...documentos.value]
+    aplicarOrdenamiento()
+    
+  } catch (err) {
+    error.value = 'Error al cargar los documentos: ' + err.message
+    console.error('Error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// ============================================
+// CARGAR DATOS AL MONTAR
+// ============================================
+onMounted(() => {
+  cargarDocumentos()
+})
+</script>
+
+<style scoped>
+.management-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  width: 100%;
+  background: transparent;
+}
+
+.management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.management-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.badge {
+  background: linear-gradient(135deg, #E03636, #b82c2c);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  gap: 4px;
+  background: white;
+  padding: 3px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.search-input {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  width: 260px;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s;
+  padding-right: 65px;
+}
+
+.search-input:focus {
+  border-color: #E03636;
+  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
+}
+
+.search-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+
+.search-button:hover:not(:disabled) {
+  background: #b82c2c;
+}
+
+.search-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-button {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 6px;
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+}
+
+.clear-button:hover {
+  color: #E03636;
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: auto;
+  margin-bottom: 16px;
+}
+
+.management-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.management-table th {
+  background: #f8fafc;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background: #f1f5f9;
+}
+
+.sort-icon {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.management-row td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef2f6;
+  color: #334155;
+  line-height: 1.3;
+}
+
+.management-row:hover td {
+  background-color: #f8fafc;
+}
+
+.title-cell {
+  min-width: 220px;
+}
+
+.titulo-principal {
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+}
+
+.descripcion {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.gestion-info {
+  font-size: 0.7rem;
+  color: #E03636;
+  margin-top: 2px;
+}
+
+.actions-cell {
+  width: 100px;
+  text-align: center;
+}
+
+.btn-documento {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #E03636;
+  color: white;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-documento:hover {
+  background: #b82c2c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #E03636;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.retry-button {
+  background: #E03636;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.retry-button:hover {
+  background: #b82c2c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.debug-info {
+  background-color: #f1f5f9;
+  border-radius: 0 0 10px 10px;
+  font-family: monospace;
+  color: #334155;
+}
+
+@media (max-width: 768px) {
+  .management-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-left {
+    justify-content: center;
+  }
+  
+  .header-controls {
+    justify-content: center;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .btn-text {
+    display: none;
+  }
+}
+</style> 
+================================= 
+pages\explorador.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-8">
+    <div class="mx-auto w-[85%]">
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-senado-primary">
+          Asistente Legislativo
+        </h1>
+        <p class="text-gray-600 text-lg mt-2">
+          Búsqueda semántica con trazabilidad · Cámara de Senadores
+        </p>
+        <div class="mt-2 inline-block bg-green-50 border border-green-200 text-green-700 text-xs px-3 py-1 rounded-full">
+          ✅ Conectado a la API de Leyes
+        </div>
+      </div>
+
+      <ConsultaLegislativa />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import ConsultaLegislativa from '~/components/asistente/ConsultaLegislativa.vue'
+</script> 
+================================= 
+pages\funciones-del-senado.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-white py-12">
+    <div class="mx-auto w-[80%]">
+      <!-- Título -->
+      <h1 class="text-[4vw] font-bold text-senado-primary text-center mb-8 leading-tight">
+        Funciones del Senado
+      </h1>
+
+      <!-- Contenido -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+        <!-- Texto -->
+        <div class="space-y-8">
+          <p class="text-[1.2vw] font-semibold text-gray-700 mb-6">
+            El Rol del Senado en la Asamblea Legislativa Plurinacional
+          </p>
+
+          <!-- Introducción -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              El Reglamento General de la Cámara de Senadores establece:
+            </p>
+          </div>
+
+          <!-- Artículo 2 -->
+          <div class="bg-gray-50 rounded-xl p-8 border-l-[.1vw] border-t-[.1vw] border-senado-primary">
+            <h2 class="text-[1.8vw] font-bold text-senado-primary mb-3">
+              Artículo 2.
+            </h2>
+            <p class="text-[1.1vw] text-gray-700 leading-relaxed">
+              <b>(Marco Constitucional).</b> En el marco de lo establecido por la Constitución Política del Estado, la Cámara de Senadores de la Asamblea Legislativa Plurinacional reside en el Órgano Legislativo y ejerce las atribuciones de legislación, fiscalización y gestión, bajo los principios de coordinación y cooperación, promoviendo la participación activa de la ciudadanía en todo el territorio boliviano.
+            </p>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="flex justify-center items-stretch">
+          <div class="w-full rounded-xl overflow-hidden shadow-lg flex">
+            <img 
+              src="/Mandato Constitucional Senado/27.JPG" 
+              alt="Funciones del Senado"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-12 text-center">
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+          Volver al inicio
+        </NuxtLink>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No necesita lógica adicional
+</script>
+
+<style scoped>
+/* Estilos específicos si son necesarios */
+</style> 
+================================= 
+pages\galeria-de-imagenes.vue 
+================================= 
+ 
+<template>
+  <div class="min-h-screen bg-gray-100">
+    <!-- ============================================ -->
+    <!-- TÍTULO CON ESTILO SENADO -->
+    <!-- ============================================ -->
+    <div class="relative w-full" ref="topSection">
+      <div class="relative w-full">
+        <!-- Líneas animadas estilo Senado -->
+        <div class="absolute top-0 left-0 h-[2px] bg-[#E4D294] animate-slide-right" style="width: 100%;"></div>
+        <div class="absolute bottom-0 right-0 h-[2px] bg-[#E4D294] animate-slide-left" style="width: 100%;"></div>
+        <div class="absolute top-0 right-0 w-[2px] bg-[#E4D294] animate-slide-down" style="height: 100%;"></div>
+        <div class="absolute bottom-0 left-0 w-[2px] bg-[#E4D294] animate-slide-up" style="height: 100%;"></div>
+        
+        <div class="py-[0.8vw] text-center">
+          <h1 class="text-[3vw] text-senado-primary font-semibold">
+            Galería Institucional
+          </h1>
+        </div>
+      </div>
+      
+      <p class="text-gray-600 text-lg text-center max-w-2xl mx-auto mt-6 px-4">
+        Conoce la historia y el patrimonio del Senado de Bolivia
+      </p>
+      <p class="text-gray-500 text-sm text-center mt-2 px-4">
+        {{ totalImages }} imágenes | Página {{ currentPage }} de {{ totalPages }}
+        <span v-if="!useApi" class="ml-2 text-xs text-gray-400">(datos locales)</span>
+      </p>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- Loading -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <div class="inline-block w-12 h-12 border-4 border-[#E03636] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-3 text-gray-600">Cargando galería...</p>
+      </div>
+
+      <!-- Grid de imágenes -->
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+        <div 
+          v-for="img in paginatedImages" 
+          :key="img.id"
+          class="gallery-item cursor-pointer group"
+          @click="openImageModal(img)"
+        >
+          <div class="relative overflow-hidden rounded-xl shadow-lg bg-gray-200" style="aspect-ratio: 4/3">
+            <img 
+              :src="`/G-Institucional/${img.id}.webp`"
+              :alt="img.description"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              @error="handleImageError"
+            />
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-senado-gold-dark backdrop-blur-sm py-2 px-2">
+              <p class="text-senado-primary text-xs md:text-sm font-medium line-clamp-2 text-center">
+                {{ img.description }}
+              </p>
+            </div>
+
+            <div class="absolute inset-0 border-2 border-white rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <div class="absolute inset-[3px] border border-black/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="flex justify-center items-center gap-2 mt-10 flex-wrap">
+        <button 
+          @click="goToPage(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          ← Anterior
+        </button>
+        
+        <div class="flex gap-1 mx-2">
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            @click="goToPage(page)"
+            class="w-8 h-8 md:w-10 md:h-10 rounded-full transition-all duration-300 text-sm font-medium"
+            :class="currentPage === page 
+              ? 'bg-senado-primary-light text-white scale-105 shadow-md' 
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          @click="goToPage(currentPage + 1)"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 bg-senado-primary-light text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C12F2F] transition-colors text-sm"
+        >
+          Siguiente →
+        </button>
+      </div>
+
+      <p class="text-center text-gray-500 text-sm mt-4">
+        Página {{ currentPage }} de {{ totalPages }}
+      </p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MODAL DE IMAGEN AMPLIADA                     -->
+    <!-- ============================================ -->
+    <Teleport to="body">
+      <!-- Fondo del modal -->
+      <div 
+        v-if="showImageModal" 
+        class="fixed inset-0 z-[100] backdrop-blur-lg flex items-center justify-center"
+        @click="closeImageViewer"
+      >
+        <!-- Contenedor del contenido - click aquí CIERRA -->
+        <div 
+          class="relative w-full h-full flex flex-col items-center justify-center p-4" 
+          @click="closeImageViewer"
+        >
+          <button 
+            @click.stop="closeImageViewer"
+            class="absolute top-4 right-4 text-white hover:text-[#E03636] transition-colors text-3xl z-10"
+          >
+            ✕
+          </button>
+
+          <button 
+            @click.stop="prevImage"
+            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors text-3xl md:text-5xl z-10"
+          >
+            ‹
+          </button>
+
+          <!-- Imagen - click aquí NO cierra -->
+          <div class="relative max-w-[90vw] max-h-[70vh] flex items-center justify-center" @click.stop>
+            <img 
+              :src="`/G-Institucional/${currentImage?.id}.webp`"
+              :alt="currentImage?.description"
+              class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+
+          <!-- Texto con efecto cometa - click aquí NO cierra -->
+          <div class="relative w-full max-w-2xl px-4 mt-6" @click.stop>
+            <div class="relative rounded-2xl p-[4px] bg-transparent">
+              <svg class="absolute inset-0 w-full h-full pointer-events-none z-20" style="overflow: visible;">
+                <defs>
+                  <linearGradient id="comet-grad-modal" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
+                    <stop offset="30%" stop-color="#e3d194" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <rect 
+                  x="4" y="4" 
+                  width="calc(100% - 8px)" 
+                  height="calc(100% - 8px)" 
+                  rx="16" ry="16" 
+                  fill="none" 
+                  stroke="url(#comet-grad-modal)" 
+                  stroke-width="4" 
+                  stroke-dasharray="25 75"
+                  class="comet-line-1"
+                />
+                <rect 
+                  x="4" y="4" 
+                  width="calc(100% - 8px)" 
+                  height="calc(100% - 8px)" 
+                  rx="16" ry="16" 
+                  fill="none" 
+                  stroke="url(#comet-grad-modal)" 
+                  stroke-width="4" 
+                  stroke-dasharray="25 75"
+                  class="comet-line-2"
+                />
+              </svg>
+              
+              <div class="relative z-10 bg-senado-gold-dark rounded-2xl p-4 md:p-6 text-center">
+                <p class="text-senado-primary text-base md:text-xl font-[600]">
+                  {{ currentImage?.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button 
+            @click.stop="nextImage"
+            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors text-3xl md:text-5xl z-10"
+          >
+            ›
+          </button>
+
+          <p class="text-white/50 text-sm mt-4" @click.stop>
+            {{ currentImageIndex + 1 }} / {{ totalImages }}
+          </p>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useGaleria } from '~/composables/useGaleria'
+
+const router = useRouter()
+const route = useRoute()
+const { images: allImages, loading, fetchImages, USE_API } = useGaleria()
+
+const topSection = ref(null)
+
+const forceScrollToTop = () => {
+  if (process.client) {
+    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    document.body.scrollIntoView({ block: 'start', behavior: 'instant' })
+    
+    if (topSection.value) {
+      topSection.value.scrollIntoView({ block: 'start', behavior: 'instant' })
+    }
+  }
+}
+
+const totalImages = computed(() => allImages.value.length)
+const useApi = computed(() => USE_API)
+
+const itemsPerPage = 20
+const currentPage = ref(1)
+const totalPages = computed(() => Math.ceil(totalImages.value / itemsPerPage))
+
+const paginatedImages = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allImages.value.slice(start, end)
+})
+
+const visiblePages = computed(() => {
+  const maxVisible = 7
+  let start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
+  let end = Math.min(totalPages.value, start + maxVisible - 1)
+  
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1)
+  }
+  
+  const pages = []
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+  forceScrollToTop()
+}
+
+const handleImageError = (event) => {
+  const img = event.target
+  img.src = '/images/placeholder.jpg'
+}
+
+const showImageModal = ref(false)
+const currentImage = ref(null)
+const currentImageIndex = ref(0)
+
+const openImageModal = (image) => {
+  currentImage.value = image
+  currentImageIndex.value = image.id - 1
+  showImageModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeImageViewer = () => {
+  showImageModal.value = false
+  currentImage.value = null
+  document.body.style.overflow = ''
+}
+
+const nextImage = () => {
+  if (currentImageIndex.value < totalImages.value - 1) {
+    currentImageIndex.value++
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const prevImage = () => {
+  if (currentImageIndex.value > 0) {
+    currentImageIndex.value--
+    currentImage.value = allImages.value[currentImageIndex.value]
+  }
+}
+
+const handleKeydown = (e) => {
+  if (!showImageModal.value) return
+  switch(e.key) {
+    case 'ArrowLeft': prevImage(); break
+    case 'ArrowRight': nextImage(); break
+    case 'Escape': closeImageViewer(); break
+  }
+}
+
+onMounted(async () => {
+  window.addEventListener('keydown', handleKeydown)
+  forceScrollToTop()
+  await fetchImages()
+  console.log(`📸 Galería cargada: ${totalImages.value} imágenes | Usando API: ${USE_API}`)
+  nextTick(() => { forceScrollToTop() })
+  setTimeout(() => { forceScrollToTop() }, 50)
+  setTimeout(() => { forceScrollToTop() }, 200)
+})
+
+if (process.client) {
+  router.afterEach((to) => {
+    if (to.path === '/museo/galeria') {
+      forceScrollToTop()
+    }
+  })
+}
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
+})
+</script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fixed {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gallery-item {
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-3px);
+}
+
+@keyframes slide-right {
+  0% { width: 0%; left: 0; }
+  50% { width: 100%; left: 0; }
+  100% { width: 0%; left: 100%; }
+}
+
+@keyframes slide-left {
+  0% { width: 0%; right: 0; }
+  50% { width: 100%; right: 0; }
+  100% { width: 0%; right: 100%; }
+}
+
+@keyframes slide-down {
+  0% { height: 0%; top: 0; }
+  50% { height: 100%; top: 0; }
+  100% { height: 0%; top: 100%; }
+}
+
+@keyframes slide-up {
+  0% { height: 0%; bottom: 0; }
+  50% { height: 100%; bottom: 0; }
+  100% { height: 0%; bottom: 100%; }
+}
+
+.animate-slide-right { animation: slide-right 4s ease-in-out infinite; }
+.animate-slide-left { animation: slide-left 4s ease-in-out infinite; }
+.animate-slide-down { animation: slide-down 4s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 4s ease-in-out infinite; }
+
+/* ============================================ */
+/* EFECTO COMETA                                */
+/* ============================================ */
+.comet-line-1 {
+  animation: comet1 8s linear infinite;
+}
+
+.comet-line-2 {
+  animation: comet2 8s linear infinite;
+}
+
+@keyframes comet1 {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100; }
+}
+
+@keyframes comet2 {
+  0% { stroke-dashoffset: -50; }
+  100% { stroke-dashoffset: -150; }
+}
+</style>
