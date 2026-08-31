@@ -19,7 +19,7 @@
         <source src="/videos/fondo-senado.webm" type="video/mp4" />
       </video>
       
-      <!-- 🔥 BARRA DE SESIÓN - SOLO se muestra si hay datos y NO está cargando -->
+      <!-- BARRA DE SESIÓN -->
       <div 
         v-if="hasValidData && !isLoading"
         class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" 
@@ -33,7 +33,6 @@
             {{ sessionData?.title || 'Sesión' }} 
           </span>
 
-          <!-- 🔥 EN DIRECTO - Solo si hay un video LIVE activo -->
           <template v-if="liveVideo">
             <span class="text-senado-gold-dark">|</span>
             <NuxtLink 
@@ -45,7 +44,6 @@
             </NuxtLink>
           </template>
 
-          <!-- 🔥 Si NO hay LIVE, mostrar "Ver sesiones" que lleva a /en-vivo -->
           <template v-else>
             <span class="text-senado-gold-dark">|</span>
             <NuxtLink 
@@ -68,7 +66,7 @@
         </div>
       </div>
 
-      <!-- 🔥 BARRA DE CARGA (cuando está cargando) -->
+      <!-- BARRA DE CARGA -->
       <div 
         v-else-if="isLoading"
         class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[.8vw] px-4 text-[1.2vw]" 
@@ -81,7 +79,7 @@
 
       <div class="absolute inset-0"></div>
 
-      <!-- Estadísticas en la parte inferior (SIEMPRE visibles) -->
+      <!-- Estadísticas -->
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl" style="width: 90%; height: 30%;">
         <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
           <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
@@ -118,77 +116,129 @@
       </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL (siempre visible) -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="mx-auto w-[75%] py-[2vw]">
       <div>
         <h2 class="text-[2.2vw] font-bold text-senado-primary mb-6">Facultades Legislativas</h2>
+        
+        <!-- ========================================== -->
+        <!-- GRID DE 3 COLUMNAS CON BADGES UNIFORMES   -->
+        <!-- ========================================== -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- LEGISLACIÓN -->
+          
+          <!-- ========================================== -->
+          <!-- LEGISLACIÓN - TODOS APUNTAN A /legislacion -->
+          <!-- ========================================== -->
           <div class="bg-senado-gold-lightest3 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">LEGISLACIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-[1.2vw]">
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley en Tratamiento
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.enTratamiento }}</span>
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Proyectos de Ley en Tratamiento</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.enTratamiento }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Aprobados
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.aprobados }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Proyectos de Ley Aprobados</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.aprobados }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Leyes Sancionadas
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.sancionadas }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Leyes Sancionadas</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.sancionadas }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Leyes Promulgadas
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.promulgadas }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Leyes Promulgadas</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.promulgadas }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley con Modificaciones
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.modificaciones }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Proyectos de Ley con Modificaciones</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.modificaciones }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Proyectos de Ley Rechazados
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.rechazados }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Proyectos de Ley Rechazados</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.rechazados }}</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <!-- FISCALIZACIÓN -->
+          <!-- ========================================== -->
+          <!-- FISCALIZACIÓN - ENLACES EXISTENTES        -->
+          <!-- ========================================== -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">FISCALIZACIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-[1.2vw]">
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Escrito
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesEscrito }}</span>
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/peticiones-informe-escrito" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Peticiones de Informe Escrito</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.peticionesEscrito }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Peticiones de Informe Oral
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.peticionesOral }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/peticiones-informe-oral" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Peticiones de Informe Oral</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.peticionesOral }}</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <!-- GESTIÓN -->
+          <!-- ========================================== -->
+          <!-- GESTIÓN - ENLACES EXISTENTES              -->
+          <!-- ========================================== -->
           <div class="bg-senado-gold-lightest2 rounded-[1.5vw] hover:shadow-lg transition-shadow overflow-hidden">
             <div class="bg-senado-gold-light text-black px-4 py-2 text-[1.4vw] text-center font-[500]">GESTIÓN</div>
             <div class="p-4">
               <ul class="mt-3 space-y-2 text-[1.2vw]">
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Resoluciones Camarales
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.resoluciones }}</span>
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/resoluciones-camarales" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Resoluciones Camarales</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.resoluciones }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Declaraciones Camarales
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.declaraciones }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/declaraciones-camarales" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Declaraciones Camarales</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.declaraciones }}</span>
                 </li>
-                <li class="hover:text-senado-primary transition-colors cursor-pointer flex items-center gap-2 text-gray-800">
-                  <span class="text-senado-gold-dark font-bold">></span> Minutas de Comunicación
-                  <span class="ml-auto bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full">{{ estadisticas.minutas }}</span>
+                
+                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
+                  <NuxtLink to="/minutas-comunicacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+                    <span class="text-senado-gold-dark font-bold">></span>
+                    <span>Minutas de Comunicación</span>
+                  </NuxtLink>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.minutas }}</span>
                 </li>
               </ul>
             </div>
@@ -196,10 +246,10 @@
         </div>
       </div>
 
-      <!-- 🔥 CALENDARIO Y LÍNEA DE TIEMPO -->
+      <!-- CALENDARIO Y LÍNEA DE TIEMPO -->
       <div class="mt-12">
         <h2 class="text-[2.2vw] font-bold text-senado-primary mb-6 flex items-center gap-3">
-          <span>📅</span>
+          <Icon name="mdi:calendar-month" class="text-[2.5vw] text-senado-primary" />
           Agenda de Sesiones
         </h2>
         
@@ -236,9 +286,7 @@
       <MandatoFuncionesAntecedentes />
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL DE ORDEN DEL DÍA - COMPLETO        -->
-    <!-- ========================================== -->
+    <!-- MODAL DE ORDEN DEL DÍA -->
     <div 
       v-if="showModal && hasValidData && modalData" 
       class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
@@ -373,7 +421,6 @@ const fechasSesiones = computed(() => {
   return todasLasSesiones.value
 })
 
-// Actividades adicionales (puedes agregar más aquí si quieres)
 const actividadesExtra = computed(() => {
   return []
 })
@@ -448,7 +495,6 @@ const handleResize = () => {
 // LIFECYCLE
 // ========================================== //
 onMounted(() => {
-  // Cargar todos los datos en paralelo
   Promise.all([
     fetchSessionData(),
     fetchEstadisticas(),
@@ -459,7 +505,6 @@ onMounted(() => {
     console.error('❌ Error cargando datos:', error)
   })
   
-  // Configurar altura del video
   checkIsDesktop()
   
   nextTick(() => {
@@ -468,10 +513,8 @@ onMounted(() => {
     }
   })
   
-  // Event listeners
   window.addEventListener('resize', handleResize)
   
-  // Restaurar scroll position
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
@@ -482,12 +525,10 @@ onMounted(() => {
     }
   }
   
-  // Reproducir video
   if (videoRef.value) {
     videoRef.value.play().catch(() => {})
   }
   
-  // Teclado para cerrar modal
   document.addEventListener('keydown', handleKeydown)
 })
 

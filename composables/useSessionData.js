@@ -12,20 +12,69 @@ export const useSessionData = () => {
   const modalData = ref(null)
   const hasValidData = ref(false)
 
+  const API_NORMATIVA = 'https://asistente.senado.gob.bo/ciudadana-api/api/v1'
+
   const estadisticas = reactive({
-    enTratamiento: 15,
-    aprobados: 42,
-    sancionadas: 28,
-    promulgadas: 18,
-    modificaciones: 7,
-    rechazados: 5,
+    enTratamiento: 0,
+    aprobados: 0,
+    sancionadas: 0,
+    promulgadas: 0,
+    modificaciones: 0,
+    rechazados: 0,
     peticionesEscrito: 0,
     peticionesOral: 0,
-    peticionesInforme: 20,
+    peticionesInforme: 0,
     resoluciones: 0,
     declaraciones: 0,
     minutas: 0
   })
+
+  // ========================================== //
+  // 🔥 FUNCIÓN PARA OBTENER DATOS DE NORMATIVA
+  // ========================================== //
+  const fetchNormativaData = async () => {
+    try {
+      const response = await fetch(`${API_NORMATIVA}/estados`)
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      console.log('📊 Datos completos de /estados:', data)
+      
+      if (data.estados && Array.isArray(data.estados)) {
+        const enTratamiento = data.estados.find(e => e.slug === 'en-tratamiento')
+        const aprobados = data.estados.find(e => e.slug === 'aprobado')
+        const sancionadas = data.estados.find(e => e.slug === 'sancionada')
+        const promulgadas = data.estados.find(e => e.slug === 'promulgada')
+        const modificaciones = data.estados.find(e => e.slug === 'devuelto')
+        const rechazados = data.estados.find(e => e.slug === 'rechazada')
+        
+        estadisticas.enTratamiento = enTratamiento?.cantidad || 0
+        estadisticas.aprobados = aprobados?.cantidad || 0
+        estadisticas.sancionadas = sancionadas?.cantidad || 0
+        estadisticas.promulgadas = promulgadas?.cantidad || 0
+        estadisticas.modificaciones = modificaciones?.cantidad || 0
+        estadisticas.rechazados = rechazados?.cantidad || 0
+        
+        console.log('📊 Datos de normativa actualizados:', {
+          enTratamiento: estadisticas.enTratamiento,
+          aprobados: estadisticas.aprobados,
+          sancionadas: estadisticas.sancionadas,
+          promulgadas: estadisticas.promulgadas,
+          modificaciones: estadisticas.modificaciones,
+          rechazados: estadisticas.rechazados
+        })
+      }
+      
+      return data
+    } catch (error) {
+      console.error('❌ Error obteniendo datos de normativa:', error)
+      return null
+    }
+  }
 
   // ========================================== //
   // NUEVA COMPUTED: OBTENER TODAS LAS SESIONES
@@ -34,7 +83,6 @@ export const useSessionData = () => {
     if (!sessionData.value) return []
     
     if (sessionData.value) {
-      // Obtener el orden del día desde la descripción
       const agendaItems = obtenerOrdenDelDia(sessionData.value.description)
       const nota = obtenerNota(sessionData.value)
       
@@ -70,10 +118,8 @@ export const useSessionData = () => {
   const obtenerOrdenDelDia = (description) => {
     if (!description) return null
     
-    // Intentar extraer el orden del día del texto
     const lines = description.split('\n').map(line => line.trim()).filter(line => line)
     
-    // Buscar la sección de orden del día
     const orderIndex = lines.findIndex(line => 
       line.toUpperCase().includes('ORDEN DEL DÍA') || 
       line.toUpperCase().includes('ORDEN DEL DIA')
@@ -87,15 +133,12 @@ export const useSessionData = () => {
     while (currentIndex < lines.length) {
       const line = lines[currentIndex]
       
-      // Detener si encontramos "Nota:"
       if (line.toLowerCase().includes('nota:')) break
       
-      // Buscar números de ítem (1., 2., etc.)
       const match = line.match(/^(\d+)\.\s*(.*)/)
       if (match) {
         items.push(match[2] || match[0])
       } else if (line.match(/^[A-ZÁÉÍÓÚÑ]/) && items.length > 0) {
-        // Continuar el ítem anterior si la línea empieza con mayúscula
         items[items.length - 1] += ' ' + line
       } else if (line.match(/^[•\-*]\s*(.*)/)) {
         const bulletMatch = line.match(/^[•\-*]\s*(.*)/)
@@ -110,7 +153,6 @@ export const useSessionData = () => {
   const obtenerNota = (session) => {
     if (!session) return null
     
-    // Intentar extraer nota de la descripción
     if (session.description) {
       const lines = session.description.split('\n').map(line => line.trim())
       const notaLine = lines.find(line => 
@@ -120,7 +162,6 @@ export const useSessionData = () => {
       if (notaLine) return notaLine
     }
     
-    // Si no hay nota, generar una por defecto
     return `Nota: La sesión se desarrollará bajo la modalidad ${session.modality || 'presencial'}.`
   }
 
@@ -220,6 +261,8 @@ export const useSessionData = () => {
 
   const fetchEstadisticas = async () => {
     try {
+      await fetchNormativaData()
+      
       await Promise.all([
         fetchPeticionesEscrito(),
         fetchPeticionesOral(),
@@ -227,34 +270,47 @@ export const useSessionData = () => {
         fetchDeclaraciones(),
         fetchMinutas()
       ])
-      console.log('✅ Estadísticas actualizadas:', {
-        peticionesEscrito: estadisticas.peticionesEscrito,
-        peticionesOral: estadisticas.peticionesOral,
-        resoluciones: estadisticas.resoluciones,
-        declaraciones: estadisticas.declaraciones,
-        minutas: estadisticas.minutas
+      
+      estadisticas.peticionesInforme = estadisticas.peticionesEscrito + estadisticas.peticionesOral
+      
+      console.log('✅ ESTADÍSTICAS COMPLETAS:', {
+        '📜 En Tratamiento': estadisticas.enTratamiento,
+        '📜 Aprobados': estadisticas.aprobados,
+        '📜 Sancionadas': estadisticas.sancionadas,
+        '📜 Promulgadas': estadisticas.promulgadas,
+        '📜 Modificaciones': estadisticas.modificaciones,
+        '📜 Rechazados': estadisticas.rechazados,
+        '📋 Peticiones Escrito': estadisticas.peticionesEscrito,
+        '📋 Peticiones Oral': estadisticas.peticionesOral,
+        '📋 Peticiones Informe': estadisticas.peticionesInforme,
+        '⚙️ Resoluciones': estadisticas.resoluciones,
+        '⚙️ Declaraciones': estadisticas.declaraciones,
+        '⚙️ Minutas': estadisticas.minutas
       })
     } catch (error) {
-      console.error('Error cargando estadísticas:', error)
+      console.error('❌ Error cargando estadísticas:', error)
     }
   }
 
   // ========================================== //
-  // FUNCIONES EXISTENTES
+  // 🔥 FUNCIONES DE FORMATEO CORREGIDAS
   // ========================================== //
 
   const formatDate = (dateString) => {
     if (!dateString) return ''
     try {
-      const date = new Date(dateString)
+      // 🔥 CORREGIDO: Usar UTC para evitar problemas de zona horaria
+      const date = new Date(dateString + 'T00:00:00Z')
       const options = { 
         weekday: 'long', 
         day: 'numeric', 
         month: 'long', 
-        year: 'numeric' 
+        year: 'numeric',
+        timeZone: 'UTC'
       }
       let formatted = date.toLocaleDateString('es-ES', options)
-      return formatted.replace(/\b\w/g, l => l.toUpperCase())
+      // Capitalizar solo la primera letra
+      return formatted.charAt(0).toUpperCase() + formatted.slice(1)
     } catch (error) {
       console.error('Error formateando fecha:', error)
       return dateString
@@ -264,29 +320,32 @@ export const useSessionData = () => {
   const formatDateShort = (dateString) => {
     if (!dateString) return ''
     try {
-      const date = new Date(dateString)
+      const date = new Date(dateString + 'T00:00:00Z')
       const options = { 
         weekday: 'long', 
         day: 'numeric', 
         month: 'long', 
-        year: 'numeric' 
+        year: 'numeric',
+        timeZone: 'UTC'
       }
       let formatted = date.toLocaleDateString('es-ES', options)
-      return formatted.toUpperCase()
+      return formatted.charAt(0).toUpperCase() + formatted.slice(1)
     } catch (error) {
       console.error('Error formateando fecha:', error)
       return dateString
     }
   }
 
+  // ========================================== //
+  // FUNCIONES EXISTENTES
+  // ========================================== //
+
   const prepareModalData = (session) => {
     if (!session) return null
     
-    // Obtener el orden del día desde la descripción
     let agendaItems = obtenerOrdenDelDia(session.description)
     let nota = obtenerNota(session)
     
-    // Si no hay orden del día en la descripción, usar los valores por defecto
     if (!agendaItems) {
       agendaItems = [
         'Correspondencia.',
@@ -343,7 +402,7 @@ export const useSessionData = () => {
         modalData.value = prepareModalData(lastApproved)
         hasValidData.value = true
         console.log('✅ Última sesión aprobada:', lastApproved.title)
-        console.log('📋 Orden del día:', modalData.value?.agendaItems)
+        console.log('📅 Fecha formateada:', formattedDate.value)
       } else {
         console.warn('⚠️ No se encontraron sesiones aprobadas')
         sessionData.value = null

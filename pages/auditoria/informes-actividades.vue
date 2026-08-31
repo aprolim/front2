@@ -6,7 +6,6 @@
       <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2.5vw 0;">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between" style="gap: 1.5vw;">
           <div>
-            <!-- Badge -->
             <div class="inline-flex items-center bg-white/10 rounded-full" style="gap: 0.4vw; padding: 0.2vw 0.8vw; margin-bottom: 0.5vw;">
               <Icon name="mdi:file-report" class="text-senado-gold" style="font-size: 1.2vw;" />
               <span class="text-white/80 tracking-wider font-medium" style="font-size: 0.7vw;">INFORMES</span>
@@ -21,7 +20,6 @@
             </p>
           </div>
           
-          <!-- Resumen -->
           <div class="flex gap-4">
             <div class="bg-white/10 backdrop-blur-sm rounded-lg text-center" style="padding: 0.6vw 1.5vw; min-width: 6vw;">
               <span class="font-bold text-senado-gold" style="font-size: 1.8vw;">{{ totalInformes }}</span>
@@ -31,7 +29,6 @@
         </div>
       </div>
       
-      <!-- Onda inferior -->
       <div class="absolute bottom-0 left-0 right-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full">
           <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
@@ -52,11 +49,10 @@
             : 'hover:shadow-md hover:scale-[1.01]'"
           style="padding: 0.8vw 1vw;"
         >
-          <!-- Fondo -->
           <div 
             class="absolute inset-0 transition-all duration-300"
             :class="tabActivo === tab.key 
-              ? 'bg-gradient-to-r from-senado-primary to-senado-primary-dark opacity-10' 
+              ? 'bg-gradient-to-r from-senado-primary to-senado-primary-dark' 
               : 'bg-white opacity-100'"
           ></div>
           
@@ -75,7 +71,7 @@
               <div>
                 <h3 
                   class="font-semibold transition-colors duration-300"
-                  :class="tabActivo === tab.key ? 'text-senado-primary' : 'text-gray-700'"
+                  :class="tabActivo === tab.key ? 'text-senado-gold' : 'text-gray-700'"
                   style="font-size: 0.85vw;"
                 >
                   {{ tab.nombre }}
@@ -83,7 +79,7 @@
                 <div class="flex items-center" style="gap: 0.5vw; margin-top: 0.1vw;">
                   <span 
                     class="font-bold"
-                    :class="tabActivo === tab.key ? 'text-senado-primary' : 'text-gray-500'"
+                    :class="tabActivo === tab.key ? 'text-senado-gold' : 'text-gray-500'"
                     style="font-size: 1.2vw;"
                   >
                     {{ obtenerTotalPorTipo(tab.key) }}
@@ -112,7 +108,6 @@
             </div>
           </div>
           
-          <!-- Barra de progreso inferior -->
           <div 
             class="absolute bottom-0 left-0 h-1 transition-all duration-300"
             :class="tabActivo === tab.key ? 'bg-senado-primary' : 'bg-transparent group-hover:bg-gray-200'"
@@ -124,7 +119,7 @@
       <!-- Contenido de los tabs -->
       <div v-for="tab in tabs" :key="tab.key">
         <div v-show="tabActivo === tab.key">
-          <!-- Estadísticas del tipo -->
+          <!-- Estadísticas -->
           <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 0.8vw; margin-bottom: 1.5vw;">
             <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
               <div class="font-bold text-senado-primary" style="font-size: 1.8vw;">{{ obtenerTotalPorTipo(tab.key) }}</div>
@@ -144,76 +139,71 @@
             </div>
           </div>
 
-          <!-- Tarjetas de informes -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: 1vw;">
-            <div 
-              v-for="(item, index) in obtenerDocumentosOrdenados(tab.key)" 
-              :key="index"
-              class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer group"
-              @click="verPDF(item)"
-              style="border-radius: 0.6vw;"
-            >
-              <!-- Header con año -->
-              <div class="bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white" style="padding: 0.6vw 0.8vw;">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold" style="font-size: 1.2vw;">{{ item.anio }}</span>
-                  <span 
-                    class="px-1.5 py-0.5 rounded-full bg-white/20 text-white font-medium"
-                    style="font-size: 0.5vw;"
+          <!-- Tabla de informes -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+            <div class="border-b border-gray-100 flex items-center justify-between" style="padding: 0.5vw 1vw;">
+              <h2 class="font-bold text-senado-primary flex items-center" style="font-size: 1vw; gap: 0.4vw;">
+                <Icon :name="tab.icono" style="font-size: 1.2vw;" />
+                {{ tab.nombre }}
+              </h2>
+              <span class="text-gray-400 flex items-center" style="font-size: 0.6vw; gap: 0.2vw;">
+                Ordenados: más reciente a más antiguo
+                <Icon name="mdi:arrow-down" style="font-size: 0.7vw;" />
+              </span>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Título</th>
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Año</th>
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Descripción</th>
+                    <th class="text-center text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Archivo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr 
+                    v-for="(item, index) in obtenerDocumentosOrdenados(tab.key)" 
+                    :key="index"
+                    class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors cursor-pointer"
+                    @click="verPDF(item)"
                   >
-                    {{ item.tipo }}
-                  </span>
-                </div>
-              </div>
-              
-              <!-- Contenido -->
-              <div style="padding: 0.8vw;">
-                <div class="flex items-center" style="gap: 0.6vw; margin-bottom: 0.4vw;">
-                  <Icon name="mdi:file-pdf-box" class="text-red-500" style="font-size: 2vw;" />
-                  <div>
-                    <h4 class="font-semibold text-gray-800" style="font-size: 0.8vw;">{{ item.titulo }}</h4>
-                    <p class="text-gray-500" style="font-size: 0.6vw;">{{ item.descripcion }}</p>
-                  </div>
-                </div>
-                
-                <!-- Metadatos -->
-                <div class="flex flex-wrap items-center" style="gap: 0.4vw; margin-top: 0.4vw; padding-top: 0.4vw; border-top: 1px solid #f3f4f6;">
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:calendar" style="font-size: 0.7vw;" />
-                    {{ item.fecha }}
-                  </span>
-                  <span class="w-px h-3 bg-gray-200"></span>
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:file" style="font-size: 0.7vw;" />
-                    {{ item.paginas }} páginas
-                  </span>
-                  <span class="w-px h-3 bg-gray-200"></span>
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:file-pdf-box" style="font-size: 0.7vw;" />
-                    {{ item.tamano }}
-                  </span>
-                </div>
-                
-                <!-- Acciones -->
-                <div class="flex items-center justify-end" style="gap: 0.5vw; margin-top: 0.5vw;">
-                  <button 
-                    class="text-senado-primary hover:text-senado-primary-dark transition-colors flex items-center" 
-                    style="gap: 0.2vw; font-size: 0.6vw;"
-                    @click.stop="verPDF(item)"
-                  >
-                    <Icon name="mdi:eye" style="font-size: 1vw;" />
-                    Ver
-                  </button>
-                  <button 
-                    class="text-gray-500 hover:text-gray-700 transition-colors flex items-center" 
-                    style="gap: 0.2vw; font-size: 0.6vw;"
-                    @click.stop="descargarPDF(item)"
-                  >
-                    <Icon name="mdi:download" style="font-size: 1vw;" />
-                    Descargar
-                  </button>
-                </div>
-              </div>
+                    <td style="padding: 0.35vw 0.6vw; width: 22vw;">
+                      <span class="font-mono font-medium text-senado-primary" style="font-size: 0.90vw;">{{ item.titulo }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw; width: 8vw;">
+                      <span class="font-bold" style="font-size: 0.90vw;">{{ item.anio }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw;">
+                      <span style="font-size: 0.85vw; color: #374151;">{{ item.descripcion }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw; width: 10vw;">
+                      <div class="flex items-center justify-center" style="gap: 0.9vw;">
+                        <a 
+                          v-if="item.url"
+                          :href="item.url" 
+                          target="_blank"
+                          class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium" 
+                          style="padding: 0.3vw 0.8vw; font-size: 0.7vw; gap: 0.3vw;"
+                          @click.stop
+                        >
+                          <Icon name="mdi:download" style="font-size: 0.9vw;" />
+                          Descargar
+                        </a>
+                        <span v-else class="text-gray-300 text-xs" style="font-size: 0.6vw;">Sin PDF</span>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                  <!-- Sin datos -->
+                  <tr v-if="obtenerDocumentosOrdenados(tab.key).length === 0">
+                    <td colspan="4" class="text-center py-8 text-gray-500" style="font-size: 0.9vw;">
+                      No hay documentos disponibles para {{ tab.nombre }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -232,7 +222,7 @@
             <span style="font-size: 0.6vw; color: #4b5563;">Semestrales</span>
           </span>
           <span class="flex items-center ml-auto" style="gap: 0.3vw;">
-            <span style="font-size: 0.55vw; color: #9ca3af;">💡 Haz clic en cualquier tarjeta para ver el PDF</span>
+            <span style="font-size: 0.55vw; color: #9ca3af;">💡 Haz clic en cualquier fila para ver el PDF</span>
           </span>
         </div>
       </div>
@@ -250,130 +240,83 @@ export default {
         { key: 'anuales', nombre: 'Informes Anuales', icono: 'mdi:calendar-year' },
         { key: 'semestrales', nombre: 'Informes Semestrales', icono: 'mdi:calendar-split' }
       ],
+      // 🔥 DATOS DE EJEMPLO PARA INFORMES
       informes: {
         anuales: [
-          {
-            id: 1,
-            anio: 2025,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2025',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2026',
-            paginas: 156,
-            tamano: '2.4 MB'
-          },
-          {
-            id: 2,
-            anio: 2024,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2024',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2025',
-            paginas: 142,
-            tamano: '2.1 MB'
-          },
-          {
-            id: 3,
-            anio: 2023,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2023',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2024',
-            paginas: 138,
-            tamano: '1.9 MB'
-          },
-          {
-            id: 4,
-            anio: 2022,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2022',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2023',
-            paginas: 125,
-            tamano: '1.7 MB'
-          },
-          {
-            id: 5,
-            anio: 2021,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2021',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2022',
-            paginas: 118,
-            tamano: '1.5 MB'
-          },
-          {
-            id: 6,
-            anio: 2020,
-            tipo: 'Anual',
-            titulo: 'Informe Anual de Actividades 2020',
-            descripcion: 'Informe de gestión anual de la Unidad de Auditoría Interna',
-            fecha: '15/01/2021',
-            paginas: 110,
-            tamano: '1.3 MB'
-          }
+          // {
+          //   titulo: 'INF-UAI-IA-006/2025',
+          //   anio: 2025,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2025',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IA-005/2024',
+          //   anio: 2024,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2024',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IA-004/2023',
+          //   anio: 2023,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2023',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IA-003/2022',
+          //   anio: 2022,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2022',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IA-002/2021',
+          //   anio: 2021,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2021',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IA-001/2020',
+          //   anio: 2020,
+          //   descripcion: 'INFORME ANUAL DE ACTIVIDADES DE LA UNIDAD DE AUDITORÍA INTERNA - GESTIÓN 2020',
+          //   url: ''
+          // }
         ],
         semestrales: [
-          {
-            id: 7,
-            anio: 2025,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2025 - 2do Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/07/2025',
-            paginas: 78,
-            tamano: '1.2 MB'
-          },
-          {
-            id: 8,
-            anio: 2025,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2025 - 1er Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/01/2025',
-            paginas: 72,
-            tamano: '1.1 MB'
-          },
-          {
-            id: 9,
-            anio: 2024,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2024 - 2do Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/07/2024',
-            paginas: 75,
-            tamano: '1.0 MB'
-          },
-          {
-            id: 10,
-            anio: 2024,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2024 - 1er Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/01/2024',
-            paginas: 68,
-            tamano: '0.9 MB'
-          },
-          {
-            id: 11,
-            anio: 2023,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2023 - 2do Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/07/2023',
-            paginas: 70,
-            tamano: '0.9 MB'
-          },
-          {
-            id: 12,
-            anio: 2023,
-            tipo: 'Semestral',
-            titulo: 'Informe Semestral de Actividades 2023 - 1er Semestre',
-            descripcion: 'Informe de gestión semestral de la Unidad de Auditoría Interna',
-            fecha: '15/01/2023',
-            paginas: 65,
-            tamano: '0.8 MB'
-          }
+          // {
+          //   titulo: 'INF-UAI-IS-012/2025',
+          //   anio: 2025,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - SEGUNDO SEMESTRE 2025',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IS-011/2025',
+          //   anio: 2025,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - PRIMER SEMESTRE 2025',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IS-010/2024',
+          //   anio: 2024,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - SEGUNDO SEMESTRE 2024',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IS-009/2024',
+          //   anio: 2024,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - PRIMER SEMESTRE 2024',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IS-008/2023',
+          //   anio: 2023,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - SEGUNDO SEMESTRE 2023',
+          //   url: ''
+          // },
+          // {
+          //   titulo: 'INF-UAI-IS-007/2023',
+          //   anio: 2023,
+          //   descripcion: 'INFORME SEMESTRAL DE ACTIVIDADES - PRIMER SEMESTRE 2023',
+          //   url: ''
+          // }
         ]
       }
     }
@@ -413,12 +356,18 @@ export default {
       return `${min} - ${max}`
     },
     verPDF(item) {
-      console.log('Ver PDF:', item)
-      alert(`📄 Ver PDF: ${item.titulo}\n\nAño: ${item.anio}\nPáginas: ${item.paginas}\nTamaño: ${item.tamano}`)
+      if (item.url) {
+        window.open(item.url, '_blank')
+      } else {
+        alert(`📄 ${item.titulo}\n\n${item.descripcion}\n\n⚠️ No hay PDF disponible para este documento.`)
+      }
     },
     descargarPDF(item) {
-      console.log('Descargar PDF:', item)
-      alert(`⬇️ Descargando: ${item.titulo}\n\n${item.tamano}`)
+      if (item.url) {
+        window.open(item.url, '_blank')
+      } else {
+        alert(`⚠️ No hay PDF disponible para: ${item.titulo}`)
+      }
     }
   }
 }
@@ -429,26 +378,54 @@ export default {
   max-width: 1200px;
 }
 
-/* Transiciones */
-.hover\:shadow-lg {
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+.hover\:bg-gray-50\/50:hover {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.transform {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .group:hover .transform {
   transform: scale(1.02);
 }
 
-/* Efecto hover en tarjetas */
-.bg-white {
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+.bg-senado-primary {
+  background-color: #611717;
 }
 
-.bg-white:hover {
-  transform: translateY(-0.2vw);
-  box-shadow: 0 0.5vw 1.5vw rgba(0, 0, 0, 0.1);
+.bg-senado-primary:hover {
+  background-color: #3a060d;
 }
 
-/* Accesibilidad */
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  [style*="font-size: 1vw;"] {
+    font-size: 2.5vw !important;
+  }
+  
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-2.md\:grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .overflow-x-auto {
+    overflow-x: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

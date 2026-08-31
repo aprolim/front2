@@ -6,7 +6,6 @@
       <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2.5vw 0;">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between" style="gap: 1.5vw;">
           <div>
-            <!-- Badge -->
             <div class="inline-flex items-center bg-white/10 rounded-full" style="gap: 0.4vw; padding: 0.2vw 0.8vw; margin-bottom: 0.5vw;">
               <Icon name="mdi:file-multiple" class="text-senado-gold" style="font-size: 1.2vw;" />
               <span class="text-white/80 tracking-wider font-medium" style="font-size: 0.7vw;">OTRAS ACTIVIDADES</span>
@@ -21,7 +20,6 @@
             </p>
           </div>
           
-          <!-- Resumen -->
           <div class="flex gap-4">
             <div class="bg-white/10 backdrop-blur-sm rounded-lg text-center" style="padding: 0.6vw 1.5vw; min-width: 6vw;">
               <span class="font-bold text-senado-gold" style="font-size: 1.8vw;">{{ totalActividades }}</span>
@@ -31,7 +29,6 @@
         </div>
       </div>
       
-      <!-- Onda inferior -->
       <div class="absolute bottom-0 left-0 right-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full">
           <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
@@ -52,7 +49,6 @@
             : 'hover:shadow-md hover:scale-[1.01]'"
           style="padding: 0.8vw 1vw;"
         >
-          <!-- Fondo -->
           <div 
             class="absolute inset-0 transition-all duration-300"
             :class="tabActivo === tab.key 
@@ -112,7 +108,6 @@
             </div>
           </div>
           
-          <!-- Barra de progreso inferior -->
           <div 
             class="absolute bottom-0 left-0 h-1 transition-all duration-300"
             :class="tabActivo === tab.key ? 'bg-senado-primary' : 'bg-transparent group-hover:bg-gray-200'"
@@ -124,7 +119,7 @@
       <!-- Contenido de los tabs -->
       <div v-for="tab in tabs" :key="tab.key">
         <div v-show="tabActivo === tab.key">
-          <!-- Estadísticas del tipo -->
+          <!-- Estadísticas -->
           <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 0.8vw; margin-bottom: 1.5vw;">
             <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
               <div class="font-bold text-senado-primary" style="font-size: 1.8vw;">{{ obtenerTotalPorTipo(tab.key) }}</div>
@@ -144,83 +139,71 @@
             </div>
           </div>
 
-          <!-- Tarjetas de actividades -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: 1vw;">
-            <div 
-              v-for="(item, index) in obtenerDocumentosOrdenados(tab.key)" 
-              :key="index"
-              class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer group"
-              @click="verPDF(item)"
-              style="border-radius: 0.6vw;"
-            >
-              <!-- Header con año -->
-              <div class="bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white" style="padding: 0.6vw 0.8vw;">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold" style="font-size: 1.2vw;">{{ item.gestion }}</span>
-                  <span 
-                    class="px-1.5 py-0.5 rounded-full bg-white/20 text-white font-medium"
-                    style="font-size: 0.5vw;"
+          <!-- Tabla de documentos (estilo tabla) -->
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+            <div class="border-b border-gray-100 flex items-center justify-between" style="padding: 0.5vw 1vw;">
+              <h2 class="font-bold text-senado-primary flex items-center" style="font-size: 1vw; gap: 0.4vw;">
+                <Icon :name="tab.icono" style="font-size: 1.2vw;" />
+                {{ tab.nombre }}
+              </h2>
+              <span class="text-gray-400 flex items-center" style="font-size: 0.6vw; gap: 0.2vw;">
+                Ordenados: más reciente a más antiguo
+                <Icon name="mdi:arrow-down" style="font-size: 0.7vw;" />
+              </span>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Título</th>
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Gestión</th>
+                    <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Descripción</th>
+                    <th class="text-center text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.4vw 0.6vw; font-size: 0.85vw;">Archivo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr 
+                    v-for="(item, index) in obtenerDocumentosOrdenados(tab.key)" 
+                    :key="index"
+                    class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors cursor-pointer"
+                    @click="verPDF(item)"
                   >
-                    {{ tab.nombre }}
-                  </span>
-                </div>
-              </div>
-              
-              <!-- Contenido -->
-              <div style="padding: 0.8vw;">
-                <div class="flex items-center" style="gap: 0.6vw; margin-bottom: 0.4vw;">
-                  <Icon name="mdi:file-pdf-box" class="text-red-500" style="font-size: 2vw;" />
-                  <div>
-                    <h4 class="font-semibold text-gray-800" style="font-size: 0.8vw;">{{ item.titulo }}</h4>
-                    <p class="text-gray-500" style="font-size: 0.6vw;">{{ item.descripcion || 'Sin descripción' }}</p>
-                  </div>
-                </div>
-                
-                <!-- Metadatos -->
-                <div class="flex flex-wrap items-center" style="gap: 0.4vw; margin-top: 0.4vw; padding-top: 0.4vw; border-top: 1px solid #f3f4f6;">
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:calendar" style="font-size: 0.7vw;" />
-                    {{ item.gestion }}
-                  </span>
-                  <span class="w-px h-3 bg-gray-200"></span>
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:file" style="font-size: 0.7vw;" />
-                    {{ item.paginas || 'N/A' }} páginas
-                  </span>
-                  <span class="w-px h-3 bg-gray-200"></span>
-                  <span class="text-gray-400" style="font-size: 0.55vw;">
-                    <Icon name="mdi:file-pdf-box" style="font-size: 0.7vw;" />
-                    {{ item.tamano || 'N/A' }}
-                  </span>
-                </div>
-                
-                <!-- Código del documento -->
-                <div class="mt-1" style="padding-top: 0.3vw; border-top: 1px solid #f3f4f6;">
-                  <span class="text-gray-400 font-mono" style="font-size: 0.5vw;">
-                    📄 {{ item.codigo }}
-                  </span>
-                </div>
-                
-                <!-- Acciones -->
-                <div class="flex items-center justify-end" style="gap: 0.5vw; margin-top: 0.4vw;">
-                  <button 
-                    class="text-senado-primary hover:text-senado-primary-dark transition-colors flex items-center" 
-                    style="gap: 0.2vw; font-size: 0.6vw;"
-                    @click.stop="verPDF(item)"
-                  >
-                    <Icon name="mdi:eye" style="font-size: 1vw;" />
-                    Ver
-                  </button>
-                  <button 
-                    class="text-gray-500 hover:text-gray-700 transition-colors flex items-center" 
-                    style="gap: 0.2vw; font-size: 0.6vw;"
-                    @click.stop="descargarPDF(item)"
-                  >
-                    <Icon name="mdi:download" style="font-size: 1vw;" />
-                    Descargar
-                  </button>
-                </div>
-              </div>
+                    <td style="padding: 0.35vw 0.6vw; width: 22vw;">
+                      <span class="font-mono font-medium text-senado-primary" style="font-size: 0.90vw;">{{ item.titulo }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw; width: 8vw;">
+                      <span class="font-bold" style="font-size: 0.90vw;">{{ item.gestion }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw;">
+                      <span style="font-size: 0.85vw; color: #374151;">{{ item.descripcion }}</span>
+                    </td>
+                    <td style="padding: 0.35vw 0.6vw; width: 10vw;">
+                      <div class="flex items-center justify-center" style="gap: 0.9vw;">
+                        <a 
+                          v-if="item.url"
+                          :href="item.url" 
+                          target="_blank"
+                          class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium" 
+                          style="padding: 0.3vw 0.8vw; font-size: 0.7vw; gap: 0.3vw;"
+                          @click.stop
+                        >
+                          <Icon name="mdi:download" style="font-size: 0.9vw;" />
+                          Descargar
+                        </a>
+                        <span v-else class="text-gray-300 text-xs" style="font-size: 0.6vw;">Sin PDF</span>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                  <!-- Sin datos -->
+                  <tr v-if="obtenerDocumentosOrdenados(tab.key).length === 0">
+                    <td colspan="4" class="text-center py-8 text-gray-500" style="font-size: 0.9vw;">
+                      No hay documentos disponibles para {{ tab.nombre }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -239,7 +222,7 @@
             <span style="font-size: 0.6vw; color: #4b5563;">Informes de Seguimientos</span>
           </span>
           <span class="flex items-center ml-auto" style="gap: 0.3vw;">
-            <span style="font-size: 0.55vw; color: #9ca3af;">💡 Haz clic en cualquier tarjeta para ver el PDF</span>
+            <span style="font-size: 0.55vw; color: #9ca3af;">💡 Haz clic en cualquier fila para ver el PDF</span>
           </span>
         </div>
       </div>
@@ -257,145 +240,130 @@ export default {
         { key: 'relevamientos', nombre: 'Relevamientos de Información', icono: 'mdi:clipboard-search' },
         { key: 'seguimientos', nombre: 'Informes de Seguimientos', icono: 'mdi:file-check' }
       ],
+      // 🔥 DATOS COMPLETOS DESDE LOS HTML
       actividades: {
         relevamientos: [
           {
-            codigo: 'INF-UAI-REL.-N°002-2024',
-            gestion: 2024,
-            titulo: 'INF-UAI-REL.-N°002-2024',
-            descripcion: 'RELEVAMIENTO DE INFORMACION AL SERVICIO DE SEGURIDAD FISICA ESTATAL, GESTION 2023',
-            paginas: 45,
-            tamano: '0.8 MB'
-          },
-          {
-            codigo: 'INF-UAI-REL.-N° 001-2024',
-            gestion: 2024,
-            titulo: 'INF-UAI-REL.-N° 001-2024',
-            descripcion: 'RELEVAMIENTO DE INFORMACIÓN AL SERVICIO DE FOTOCOPIAS, GESTIÓN 2023',
-            paginas: 38,
-            tamano: '0.6 MB'
-          },
-          {
-            codigo: 'INF-UAI-REL-N°001-2025',
-            gestion: 2025,
             titulo: 'INF-UAI-REL-N°001-2025',
+            gestion: 2025,
             descripcion: 'RELEVAMIENTO DE INFORMACIÓN ESPECIFICA – ADMINISTRACIÓN Y REPOSICIÓN DE ACTIVOS FIJOS',
-            paginas: 52,
-            tamano: '1.0 MB'
+            url: 'https://apisi.senado.gob.bo/images/a01d7987-0118-4533-878a-911a49e059fd_1760484533.pdf'
+          },
+          {
+            titulo: 'INF-UAI-REL.-N°002-2024',
+            gestion: 2024,
+            descripcion: 'RELEVAMIENTO DE INFORMACION AL SERVICIO DE SEGURIDAD FISICA ESTATAL, GESTION 2023',
+            url: 'https://apisi.senado.gob.bo/images/9dfc2285-f565-4475-8812-e326d653cf05_1737062365.pdf'
+          },
+          {
+            titulo: 'INF-UAI-REL.-N° 001-2024',
+            gestion: 2024,
+            descripcion: 'RELEVAMIENTO DE INFORMACIÓN AL SERVICIO DE FOTOCOPIAS, GESTIÓN 2023',
+            url: 'https://apisi.senado.gob.bo/images/9dfb8dec-2166-4196-b2e7-a056ee8306f7_1737037434.pdf'
           }
         ],
         seguimientos: [
           {
-            codigo: 'UAI-N° 008-2014',
-            gestion: 2014,
-            titulo: 'UAI-N° 008-2014',
-            descripcion: 'PRIMER SEGUIMIENTO A LA IMPLANTACIÓN, INF. UAI-N° 002-2012 2011 Y 30 DE JUNIO DE',
-            paginas: 28,
-            tamano: '0.5 MB'
-          },
-          {
-            codigo: 'INF-UAI-SCI-N°007-2025',
-            gestion: 2025,
-            titulo: 'INF-UAI-SCI-N°007-2025',
-            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE LOS ESTADOS FINANCIEROS Y LAS DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
-            paginas: 65,
-            tamano: '1.2 MB'
-          },
-          {
-            codigo: 'INF-UAI-SCI-N°006-2025',
-            gestion: 2025,
-            titulo: 'INF-UAI-SCI-N°006-2025',
-            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE REVISIÓN ANUAL AL CUMPLIMIENTO DEL PROCEDIMIENTO PARA EL CONTROL OPORTUNO DE LAS DECLARACIONES JURADAS DE BIENES Y RENTAS DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
-            paginas: 58,
-            tamano: '1.1 MB'
-          },
-          {
-            codigo: 'INF-UAI-SCI-N°005-2025',
-            gestion: 2025,
-            titulo: 'INF-UAI-SCI-N°005-2025',
-            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONTROL INTERNO DE LA AUDITORÍA OPERACIONAL SOBRE LA EFICACIA DE LAS ACTIVIDADES PROGRAMADAS QUE EJECUTO LA UNIDAD DE EVALUACIÓN, DESARROLLO Y CAPACITACIÓN DEL PERSONAL DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
-            paginas: 72,
-            tamano: '1.4 MB'
-          },
-          {
-            codigo: 'INF-UAI-SCI-N°004-2024',
-            gestion: 2024,
-            titulo: 'INF-UAI-SCI-N°004-2024',
-            descripcion: 'PRIMER SEGUIMIENTO A DECLARACIONES JURADAS DE BIENES Y RENTAS, GESTION 2022',
-            paginas: 42,
-            tamano: '0.7 MB'
-          },
-          {
-            codigo: 'UAI-NRO224/2025',
-            gestion: 2023,
-            titulo: 'UAI-NRO224/2025',
-            descripcion: '1er Seguimiento al Informe de Confiabilidad de los Registros y Deficiencia de control interno Camara Senadores 2023',
-            paginas: 55,
-            tamano: '0.9 MB'
-          },
-          {
-            codigo: 'UAI-NRO225/2025',
-            gestion: 2025,
-            titulo: 'UAI-NRO225/2025',
-            descripcion: '1er Seguimento al Informe de Confiabilidad de los Estados Financieros y las Deficiencias de Control Interno de la CS, 2023',
-            paginas: 48,
-            tamano: '0.8 MB'
-          },
-          {
-            codigo: 'UAI-NRO226/2025',
-            gestion: 2022,
-            titulo: 'UAI-NRO226/2025',
-            descripcion: '2do Seguimiento al Informe de Confiabilidad de los Registros y Deficiencia de control interno Camara Senadores 2022',
-            paginas: 62,
-            tamano: '1.0 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°001/2026',
-            gestion: 2026,
-            titulo: 'INF/UAI/SCI/N°001/2026',
-            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE REGISTROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CAMARA DE SENADORES, GESTION 2024',
-            paginas: 70,
-            tamano: '1.3 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°002/2026',
-            gestion: 2026,
-            titulo: 'INF/UAI/SCI/N°002/2026',
-            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE REGISTROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CAMARA DE SENADORES, GESTION 2023',
-            paginas: 68,
-            tamano: '1.2 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°003/2026',
-            gestion: 2026,
-            titulo: 'INF/UAI/SCI/N°003/2026',
-            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONTROL INTERNO RESULTADO DE LA AUDITORIA DE CUMPLIMIENTO A LOS GASTOS EJECUTADOS CON FONDOS EN AVANCE Y FONDO ROTATIVO DE LA CAMARA DE SENADORES, GESTION 2022',
-            paginas: 56,
-            tamano: '1.0 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°004/2026',
-            gestion: 2026,
-            titulo: 'INF/UAI/SCI/N°004/2026',
-            descripcion: 'SEGUNDOSEGUIMIENTO AL INFORME DE CONTROL INTERNO DE LA AUDITORIA OPERACIONAL SOBRE LA EFICACIA DE LAS ACTIVIDADES PROGRAMADAS QUE EJECUTO LA UNIDAD DE EVALUACIÓN, DESARROLLO Y CAPACITACIÓN DEL PERSONAL DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
-            paginas: 74,
-            tamano: '1.5 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°005/2026',
-            gestion: 2026,
-            titulo: 'INF/UAI/SCI/N°005/2026',
-            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE LOS ESTADOS FINANCIEROS Y LAS DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES, GESTIÓN 2024',
-            paginas: 66,
-            tamano: '1.1 MB'
-          },
-          {
-            codigo: 'INF/UAI/SCI/N°006/2026',
-            gestion: 2026,
             titulo: 'INF/UAI/SCI/N°006/2026',
-            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE ESTADOS FINANCIEROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES',
-            paginas: 60,
-            tamano: '1.0 MB'
+            gestion: 2026,
+            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE ESTADOS FINANCIEROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES, GESTIÓN 2023',
+            url: 'https://apisi.senado.gob.bo/images/a253fd6e-f2f0-43be-89b7-63bafe2a5a23_1784816178.pdf'
+          },
+          {
+            titulo: 'INF/UAI/SCI/N°005/2026',
+            gestion: 2026,
+            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE LOS ESTADOS FINANCIEROS Y LAS DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES, GESTIÓN 2024',
+            url: 'https://apisi.senado.gob.bo/images/a253fb9f-c3aa-4a30-8576-9d289add9a0f_1784815875.pdf'
+          },
+          {
+            titulo: 'INF/UAI/SCI/N°004/2026',
+            gestion: 2026,
+            descripcion: 'SEGUNDOSEGUIMIENTO AL INFORME DE CONTROL INTERNO DE LA AUDITORIA OPERACIONAL SOBRE LA EFICACIA DE LAS ACTIVIDADES PROGRAMADAS QUE EJECUTO LA UNIDAD DE EVALUACIÓN, DESARROLLO Y CAPACITACIÓN DEL PERSONAL DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
+            url: 'https://apisi.senado.gob.bo/images/a253fa4c-9669-4019-82f7-0c8682780024_1784815653.pdf'
+          },
+          {
+            titulo: 'INF/UAI/SCI/N°003/2026',
+            gestion: 2026,
+            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONTROL INTERNO RESULTADO DE LA AUDITORIA DE CUMPLIMIENTO A LOS GASTOS EJECUTADOS CON FONDOS EN AVANCE Y FONDO ROTATIVO DE LA CAMARA DE SENADORES, GESTION 2022',
+            url: 'https://apisi.senado.gob.bo/images/a253f910-b994-4de7-813c-31a34cf54dfe_1784815446.pdf'
+          },
+          {
+            titulo: 'INF/UAI/SCI/N°002/2026',
+            gestion: 2026,
+            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE REGISTROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CAMARA DE SENADORES, GESTION 2023',
+            url: 'https://apisi.senado.gob.bo/images/a253f754-b5ff-457c-8683-ec588ca99c1e_1784815155.pdf'
+          },
+          {
+            titulo: 'INF/UAI/SCI/N°001/2026',
+            gestion: 2026,
+            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE REGISTROS Y DEFICIENCIAS DE CONTROL INTERNO DE LA CAMARA DE SENADORES, GESTION 2024',
+            url: 'https://apisi.senado.gob.bo/images/a253f630-5f57-493d-b332-39ed086f6383_1784814963.pdf'
+          },
+          {
+            titulo: 'POA 2026 (REFORMULADO)',
+            gestion: 2026,
+            descripcion: 'PLAN OPERATIVO ANUAL (POA 2026 - REFORMULADO)',
+            url: 'https://apisi.senado.gob.bo/images/a2540509-cabb-492b-b139-2aab331738a8_1784817454.pdf'
+          },
+          {
+            titulo: 'INF-UAI-SCI-N°007-2025',
+            gestion: 2025,
+            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE CONFIABILIDAD DE LOS ESTADOS FINANCIEROS Y LAS DEFICIENCIAS DE CONTROL INTERNO DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
+            url: 'https://apisi.senado.gob.bo/images/a03b868a-b47b-45b3-9513-1d8aeec2971d_1761775207.pdf'
+          },
+          {
+            titulo: 'INF-UAI-SCI-N°006-2025',
+            gestion: 2025,
+            descripcion: 'SEGUNDO SEGUIMIENTO AL INFORME DE REVISIÓN ANUAL AL CUMPLIMIENTO DEL PROCEDIMIENTO PARA EL CONTROL OPORTUNO DE LAS DECLARACIONES JURADAS DE BIENES Y RENTAS DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
+            url: 'https://apisi.senado.gob.bo/images/a02b7552-fafc-4be9-a7bc-e5a2bb9d3a2c_1761085124.pdf'
+          },
+          {
+            titulo: 'INF-UAI-SCI-N°005-2025',
+            gestion: 2025,
+            descripcion: 'PRIMER SEGUIMIENTO AL INFORME DE CONTROL INTERNO DE LA AUDITORÍA OPERACIONAL SOBRE LA EFICACIA DE LAS ACTIVIDADES PROGRAMADAS QUE EJECUTO LA UNIDAD DE EVALUACIÓN, DESARROLLO Y CAPACITACIÓN DEL PERSONAL DE LA CÁMARA DE SENADORES, GESTIÓN 2022',
+            url: 'https://apisi.senado.gob.bo/images/9fe4e65a-401f-4358-9d8c-616e0e75a1cd_1758054660.pdf'
+          },
+          {
+            titulo: 'UAI-NRO225/2025',
+            gestion: 2025,
+            descripcion: '1er Seguimento al Informe de Confiabilidad de los Estados Financieros y las Deficiencias de Control Interno de la CS, 2023',
+            url: 'https://apisi.senado.gob.bo/images/9f59bff2-014c-421c-b7c5-3b0d79e551a3_1752078212.pdf'
+          },
+          {
+            titulo: 'POA 2026',
+            gestion: 2025,
+            descripcion: 'PLAN OPERATIVO ANUAL - GESTION 2026',
+            url: 'https://apisi.senado.gob.bo/images/a0dff120-d778-4550-9276-31221fbec2df_1768836836.pdf'
+          },
+          {
+            titulo: 'INF-UAI-SCI-N°004-2024',
+            gestion: 2024,
+            descripcion: 'PRIMER SEGUIMIENTO A DECLARACIONES JURADAS DE BIENES Y RENTAS , GESTION 2022',
+            url: 'https://apisi.senado.gob.bo/images/9ecb6d3a-458c-464a-8c53-059b0eff8b52_1745965480.pdf'
+          },
+          {
+            titulo: 'UAI-NRO224/2025',
+            gestion: 2023,
+            descripcion: '1er Seguimiento al Informe de Confiabilidad de los Registros y Deficiencia de control interno Camara Senadores 2023',
+            url: 'https://apisi.senado.gob.bo/images/9f59be72-6329-4d56-ad08-e995f3440b99_1752077960.pdf'
+          },
+          {
+            titulo: 'UAI-NRO226/2025',
+            gestion: 2022,
+            descripcion: '2do Seguimiento al Informe de Confiabilidad de los Registros y Deficiencia de control interno Camara Senadores 2022',
+            url: 'https://apisi.senado.gob.bo/images/9f59c29c-486a-4642-8f05-69ab3f784345_1752078659.pdf'
+          },
+          {
+            titulo: 'UAI-NRO226/2025',
+            gestion: 2022,
+            descripcion: '1er Seguimiento al Informe de Control interno cumplimineto de gastos ejecutados con fondos en avance y fondo rotativo de la Camara Senadores 2022',
+            url: 'https://apisi.senado.gob.bo/images/9f59c666-e38d-4337-be56-123c584ce031_1752079295.pdf'
+          },
+          {
+            titulo: 'UAI-N° 008-2014',
+            gestion: 2014,
+            descripcion: 'PRIMER SEGUIMIENTO A LA IMPLANTACIÓN, INF. UAI-N° 002-2012 2011 Y 30 DE JUNIO DE',
+            url: 'https://apisi.senado.gob.bo/images/9d5c90ed-034a-4350-8d53-5c5e2c75c3b1_1730208940.pdf'
           }
         ]
       }
@@ -436,12 +404,18 @@ export default {
       return `${min} - ${max}`
     },
     verPDF(item) {
-      console.log('Ver PDF:', item)
-      alert(`📄 Ver PDF: ${item.titulo}\n\nGestión: ${item.gestion}\nPáginas: ${item.paginas}\nTamaño: ${item.tamano}`)
+      if (item.url) {
+        window.open(item.url, '_blank')
+      } else {
+        alert(`📄 ${item.titulo}\n\n${item.descripcion}\n\n⚠️ No hay PDF disponible para este documento.`)
+      }
     },
     descargarPDF(item) {
-      console.log('Descargar PDF:', item)
-      alert(`⬇️ Descargando: ${item.titulo}\n\n${item.tamano}`)
+      if (item.url) {
+        window.open(item.url, '_blank')
+      } else {
+        alert(`⚠️ No hay PDF disponible para: ${item.titulo}`)
+      }
     }
   }
 }
@@ -452,26 +426,54 @@ export default {
   max-width: 1200px;
 }
 
-/* Transiciones */
-.hover\:shadow-lg {
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+.hover\:bg-gray-50\/50:hover {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.transform {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .group:hover .transform {
   transform: scale(1.02);
 }
 
-/* Efecto hover en tarjetas */
-.bg-white {
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+.bg-senado-primary {
+  background-color: #611717;
 }
 
-.bg-white:hover {
-  transform: translateY(-0.2vw);
-  box-shadow: 0 0.5vw 1.5vw rgba(0, 0, 0, 0.1);
+.bg-senado-primary:hover {
+  background-color: #3a060d;
 }
 
-/* Accesibilidad */
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  [style*="font-size: 1vw;"] {
+    font-size: 2.5vw !important;
+  }
+  
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-2.md\:grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .overflow-x-auto {
+    overflow-x: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

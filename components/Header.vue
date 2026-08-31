@@ -378,31 +378,7 @@
                 class="ml-4 mt-2 space-y-0 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.legislativa ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
               >
-                <!-- Legislación -->
-                <div class="bg-transparent">
-                  <div 
-                    @click="toggleSubmenu('legislacion')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
-                  >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Legislación</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.legislacion ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div 
-                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
-                    :class="submenus.legislacion ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/proyectos-en-tratamiento" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley en Tratamiento</NuxtLink>
-                    <NuxtLink to="/proyectos-aprobados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley Aprobados</NuxtLink>
-                    <NuxtLink to="/leyes-sancionadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Leyes Sancionadas</NuxtLink>
-                    <NuxtLink to="/leyes-promulgadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Leyes Promulgadas</NuxtLink>
-                    <NuxtLink to="/proyectos-modificaciones" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley con Modificaciones</NuxtLink>
-                    <NuxtLink to="/proyectos-rechazados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Proyectos de Ley Rechazados</NuxtLink>
-                  </div>
-                </div>
+                <NuxtLink to="/legislacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Legislación</NuxtLink>
 
                 <!-- Fiscalización -->
                 <div class="bg-transparent">

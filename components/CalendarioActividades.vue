@@ -230,7 +230,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 
 // ========================================== //
 // PROPS
@@ -404,7 +404,8 @@ const cambiarMes = (delta) => {
   const nuevaFecha = new Date(añoActual.value, mesActual.value + delta, 1)
   mesActual.value = nuevaFecha.getMonth()
   añoActual.value = nuevaFecha.getFullYear()
-  seleccionarDiaMasCercanoConEvento()
+  // 🔥 Después de cambiar de mes, seleccionar el día con evento
+  seleccionarDiaConEvento()
 }
 
 const seleccionarDia = (dia) => {
@@ -430,67 +431,57 @@ const seleccionarDia = (dia) => {
   }
 }
 
-const seleccionarDiaMasCercanoConEvento = () => {
-  const diasConEvento = diasDelMes.value.filter(d => d.tieneEvento && d.esMesActual)
-  
-  if (diasConEvento.length === 0) {
-    buscarEventoEnMesesCercanos()
-    return
-  }
-  
-  const hoyDate = new Date()
-  let diaSeleccionadoEncontrado = null
-  let distanciaMinima = Infinity
-  
-  for (const dia of diasConEvento) {
-    const fechaDia = new Date(dia.fechaStr)
-    const diffTime = fechaDia.getTime() - hoyDate.getTime()
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
-    if (diffDays >= 0 && diffDays < distanciaMinima) {
-      distanciaMinima = diffDays
-      diaSeleccionadoEncontrado = dia
-    }
-  }
-  
-  if (!diaSeleccionadoEncontrado && diasConEvento.length > 0) {
-    const ordenados = [...diasConEvento].sort((a, b) => {
-      return new Date(b.fechaStr) - new Date(a.fechaStr)
+// 🔥 CORREGIDO: Seleccionar el día exacto de la sesión
+const seleccionarDiaConEvento = () => {
+  // 🔥 1. Si hay sesiones, usar la fecha de la sesión más reciente
+  if (props.fechasSesiones && props.fechasSesiones.length > 0) {
+    // Obtener la sesión más reciente
+    const sesionesOrdenadas = [...props.fechasSesiones].sort((a, b) => {
+      return new Date(b.fecha) - new Date(a.fecha)
     })
-    diaSeleccionadoEncontrado = ordenados[0]
-  }
-  
-  if (diaSeleccionadoEncontrado) {
-    seleccionarDia(diaSeleccionadoEncontrado)
-  }
-}
-
-const buscarEventoEnMesesCercanos = () => {
-  const mesSiguiente = mesActual.value + 1
-  const añoSiguiente = mesSiguiente > 11 ? añoActual.value + 1 : añoActual.value
-  const mesReal = mesSiguiente > 11 ? 0 : mesSiguiente
-  
-  const fechaInicio = new Date(añoSiguiente, mesReal, 1)
-  const fechaFin = new Date(añoSiguiente, mesReal + 1, 0)
-  
-  for (const sesion of props.fechasSesiones) {
-    const fechaSesion = new Date(sesion.fecha)
-    if (fechaSesion >= fechaInicio && fechaSesion <= fechaFin) {
-      mesActual.value = mesReal
-      añoActual.value = añoSiguiente
-      seleccionarDiaMasCercanoConEvento()
+    
+    const sesionMasReciente = sesionesOrdenadas[0]
+    if (sesionMasReciente) {
+      const fechaSesion = new Date(sesionMasReciente.fecha)
+      const dia = fechaSesion.getDate()
+      const mes = fechaSesion.getMonth()
+      const año = fechaSesion.getFullYear()
+      
+      // Cambiar al mes de la sesión
+      mesActual.value = mes
+      añoActual.value = año
+      
+      // 🔥 Esperar a que se actualice el DOM para tener los días del mes
+      nextTick(() => {
+        const dias = diasDelMes.value
+        const diaEncontrado = dias.find(d => 
+          d.dia === dia && 
+          d.esMesActual && 
+          d.fechaStr === sesionMasReciente.fecha
+        )
+        if (diaEncontrado) {
+          seleccionarDia(diaEncontrado)
+        } else {
+          // Si no se encuentra el día exacto, buscar cualquier día con evento
+          const diaConEvento = dias.find(d => d.tieneEvento && d.esMesActual)
+          if (diaConEvento) {
+            seleccionarDia(diaConEvento)
+          }
+        }
+      })
       return
     }
   }
   
-  if (props.fechasSesiones.length > 0) {
-    const primeraSesion = props.fechasSesiones[0]
-    const fecha = new Date(primeraSesion.fecha)
-    mesActual.value = fecha.getMonth()
-    añoActual.value = fecha.getFullYear()
-    seleccionarDiaMasCercanoConEvento()
+  // 🔥 2. Fallback: si no hay sesiones, seleccionar el primer día con evento
+  const diasConEvento = diasDelMes.value.filter(d => d.tieneEvento && d.esMesActual)
+  if (diasConEvento.length > 0) {
+    seleccionarDia(diasConEvento[0])
   }
 }
+
+// Mantener función para compatibilidad con el watcher
+const seleccionarDiaMasCercanoConEvento = seleccionarDiaConEvento
 
 const getTipoColor = (tipo) => {
   const colores = {
@@ -510,14 +501,14 @@ const verDetalleSesion = (actividad) => {
 // WATCHERS
 // ========================================== //
 watch(() => props.fechasSesiones, () => {
-  seleccionarDiaMasCercanoConEvento()
+  seleccionarDiaConEvento()
 }, { deep: true, immediate: true })
 
 // ========================================== //
 // LIFECYCLE
 // ========================================== //
 onMounted(() => {
-  seleccionarDiaMasCercanoConEvento()
+  seleccionarDiaConEvento()
 })
 </script>
 

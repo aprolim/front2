@@ -25,7 +25,7 @@
           
           <!-- Año actual destacado -->
           <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 text-center" style="padding: 0.6vw 2vw;">
-            <span class="font-bold text-senado-gold" style="font-size: 2.5vw;">2026</span>
+            <span class="font-bold text-senado-gold" style="font-size: 2.5vw;">{{ añoActual }}</span>
             <p class="text-white/60 tracking-wider" style="font-size: 0.6vw;">VIGENTE</p>
           </div>
         </div>
@@ -45,15 +45,17 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between" style="gap: 1vw;">
           <div class="flex items-center" style="gap: 0.8vw;">
             <div class="bg-senado-primary text-white rounded-lg" style="padding: 0.5vw 1.2vw;">
-              <span class="font-bold" style="font-size: 1.8vw;">2026</span>
+              <span class="font-bold" style="font-size: 1.8vw;">{{ añoActual }}</span>
             </div>
             <div>
-              <h3 class="font-bold text-senado-primary" style="font-size: 1.1vw;">POA - UAI 2026</h3>
+              <h3 class="font-bold text-senado-primary" style="font-size: 1.1vw;">POA - UAI {{ añoActual }}</h3>
               <p class="text-gray-500" style="font-size: 0.7vw;">Plan Operativo Anual vigente</p>
             </div>
           </div>
           <a 
-            href="#" 
+            :href="poaActual?.pdfUrl || '#'" 
+            :download="poaActual?.pdfUrl ? 'POA_UAI_' + añoActual + '.pdf' : ''"
+            target="_blank"
             class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium whitespace-nowrap" 
             style="padding: 0.5vw 1.5vw; font-size: 0.8vw; gap: 0.4vw;"
           >
@@ -63,22 +65,22 @@
         </div>
       </div>
 
-      <!-- Estadísticas -->
+      <!-- 🔥 ESTADÍSTICAS CALCULADAS AUTOMÁTICAMENTE -->
       <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 0.8vw; margin-bottom: 1.5vw;">
         <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-senado-primary" style="font-size: 2vw;">5</div>
+          <div class="font-bold text-senado-primary" style="font-size: 2vw;">{{ totalPoas }}</div>
           <p class="text-gray-500" style="font-size: 0.7vw;">Total POAs</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-green-600" style="font-size: 2vw;">1</div>
+          <div class="font-bold text-green-600" style="font-size: 2vw;">{{ totalVigentes }}</div>
           <p class="text-gray-500" style="font-size: 0.7vw;">Vigentes</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-blue-600" style="font-size: 2vw;">5</div>
+          <div class="font-bold text-blue-600" style="font-size: 2vw;">{{ totalPublicados }}</div>
           <p class="text-gray-500" style="font-size: 0.7vw;">Publicados</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-yellow-600" style="font-size: 2vw;">0</div>
+          <div class="font-bold text-yellow-600" style="font-size: 2vw;">{{ totalEnRevision }}</div>
           <p class="text-gray-500" style="font-size: 0.7vw;">En Revisión</p>
         </div>
       </div>
@@ -104,7 +106,7 @@
             </thead>
             <tbody>
               <tr 
-                v-for="(poa, index) in poas" 
+                v-for="(poa, index) in poasOrdenados" 
                 :key="index" 
                 class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
                 :class="poa.activo ? 'bg-yellow-50/50' : ''"
@@ -123,7 +125,11 @@
                 <td style="padding: 0.5vw 0.8vw;">
                   <span 
                     class="rounded-full font-medium"
-                    :class="poa.estado === 'Publicado' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'"
+                    :class="{
+                      'bg-green-100 text-green-700': poa.estado === 'Publicado',
+                      'bg-yellow-100 text-yellow-700': poa.estado === 'En Revisión',
+                      'bg-gray-100 text-gray-700': poa.estado === 'Borrador'
+                    }"
                     style="padding: 0.1vw 0.6vw; font-size: 0.6vw;"
                   >
                     {{ poa.estado }}
@@ -131,12 +137,24 @@
                 </td>
                 <td style="padding: 0.5vw 0.8vw;">
                   <div class="flex items-center justify-center" style="gap: 0.6vw;">
-                    <button class="text-senado-primary hover:text-senado-primary-dark transition-colors" title="Ver">
+                    <button 
+                      @click="verPDF(poa)"
+                      class="text-senado-primary hover:text-senado-primary-dark transition-colors" 
+                      title="Ver"
+                    >
                       <Icon name="mdi:eye" style="font-size: 1.3vw;" />
                     </button>
-                    <button class="text-gray-400 hover:text-gray-600 transition-colors" title="Descargar">
+                    <a 
+                      v-if="poa.pdfUrl"
+                      :href="poa.pdfUrl" 
+                      download
+                      target="_blank"
+                      class="text-gray-400 hover:text-gray-600 transition-colors" 
+                      title="Descargar"
+                    >
                       <Icon name="mdi:download" style="font-size: 1.3vw;" />
-                    </button>
+                    </a>
+                    <span v-else class="text-gray-300 text-xs" style="font-size: 0.6vw;">Sin PDF</span>
                   </div>
                 </td>
               </tr>
@@ -229,42 +247,70 @@ export default {
   data() {
     return {
       poas: [
-        {
-          anio: 2026,
-          titulo: 'Plan Operativo Anual - UAI 2026',
-          fecha: '15/01/2026',
-          estado: 'Publicado',
-          activo: true
-        },
-        {
-          anio: 2025,
-          titulo: 'Plan Operativo Anual - UAI 2025',
-          fecha: '10/01/2025',
-          estado: 'Publicado',
-          activo: false
-        },
-        {
-          anio: 2024,
-          titulo: 'Plan Operativo Anual - UAI 2024',
-          fecha: '12/01/2024',
-          estado: 'Publicado',
-          activo: false
-        },
-        {
-          anio: 2023,
-          titulo: 'Plan Operativo Anual - UAI 2023',
-          fecha: '08/01/2023',
-          estado: 'Publicado',
-          activo: false
-        },
-        {
-          anio: 2022,
-          titulo: 'Plan Operativo Anual - UAI 2022',
-          fecha: '11/01/2022',
-          estado: 'Publicado',
-          activo: false
-        }
+        // {
+        //   anio: 2026,
+        //   titulo: 'Plan Operativo Anual - UAI 2026',
+        //   fecha: '15/01/2026',
+        //   estado: 'Publicado',
+        //   activo: true,
+        //   pdfUrl: '/pdfs/poa/POA_UAI_2026.pdf'
+        // },
+        // {
+        //   anio: 2025,
+        //   titulo: 'Plan Operativo Anual - UAI 2025',
+        //   fecha: '10/01/2025',
+        //   estado: 'Publicado',
+        //   activo: false,
+        //   pdfUrl: '/pdfs/poa/POA_UAI_2025.pdf'
+        // }
       ]
+    }
+  },
+  computed: {
+    // 🔥 Año actual desde los datos
+    añoActual() {
+      const hoy = new Date()
+      return hoy.getFullYear()
+    },
+    
+    // 🔥 Total de POAs
+    totalPoas() {
+      return this.poas.length
+    },
+    
+    // 🔥 POAs vigentes (activo = true)
+    totalVigentes() {
+      return this.poas.filter(p => p.activo === true).length
+    },
+    
+    // 🔥 POAs publicados
+    totalPublicados() {
+      return this.poas.filter(p => p.estado === 'Publicado').length
+    },
+    
+    // 🔥 POAs en revisión
+    totalEnRevision() {
+      return this.poas.filter(p => p.estado === 'En Revisión').length
+    },
+    
+    // 🔥 POA actual (el vigente)
+    poaActual() {
+      return this.poas.find(p => p.activo === true) || null
+    },
+    
+    // 🔥 POAs ordenados por año (más reciente primero)
+    poasOrdenados() {
+      return [...this.poas].sort((a, b) => b.anio - a.anio)
+    }
+  },
+  methods: {
+    // 🔥 Ver PDF (si no tiene URL, mostrar mensaje)
+    verPDF(poa) {
+      if (poa.pdfUrl) {
+        window.open(poa.pdfUrl, '_blank')
+      } else {
+        alert(`El documento POA ${poa.anio} no tiene PDF disponible.`)
+      }
     }
   }
 }
