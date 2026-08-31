@@ -179,9 +179,9 @@
                   {{ actividad.titulo }}
                 </h5>
                 
-                <p v-if="actividad.descripcion" class="card-descripcion">
+                <!-- <p v-if="actividad.descripcion" class="card-descripcion">
                   {{ actividad.descripcion }}
-                </p>
+                </p> -->
                 
                 <div v-if="actividad.detalles && actividad.detalles.length > 0" class="card-detalles">
                   <div 
@@ -208,17 +208,7 @@
                     {{ actividad.estadoLabel || actividad.estado || 'Pendiente' }}
                   </span>
                   
-                  <!-- Botón de detalles (simulado) -->
-                  <button 
-                    v-if="actividad.tipo === 'sesion'"
-                    class="btn-ver-detalle"
-                    @click="verDetalleSesion(actividad)"
-                  >
-                    Ver detalles
-                    <svg class="btn-icon-detalle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
+
                 </div>
               </div>
             </div>
