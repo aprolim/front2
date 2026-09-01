@@ -125,7 +125,6 @@
         <div class="timeline-contenido">
           <!-- Estado vacío -->
           <div v-if="actividadesDelDia.length === 0" class="timeline-vacio">
-            <div class="vacio-icono">📅</div>
             <p class="vacio-titulo">No hay actividades</p>
             <p class="vacio-subtitulo">Selecciona un día con sesión en el calendario</p>
           </div>
