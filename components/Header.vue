@@ -206,7 +206,7 @@
                 </div>
               </div>
               <div 
-                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-transparent"
+                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
@@ -227,7 +227,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-transparent ml-6 space-y-0 text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    class="bg-black/5 ml-6 space-y-0 text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
                     :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Atribuciones del Senado</NuxtLink>
@@ -249,7 +249,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-transparent ml-6 space-y-0 text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    class="bg-black/5 ml-6 space-y-0 text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.auditoriaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• POA-UAI</NuxtLink>
@@ -273,7 +273,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-transparent ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    class="bg-black/5 ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</a>
@@ -309,7 +309,7 @@
                 </div>
               </div>
               <div 
-                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.tramites ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Consulta tu trámite</a>
@@ -342,7 +342,7 @@
                 </div>
               </div>
               <div 
-                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
@@ -375,7 +375,7 @@
               </div>
               
               <div 
-                class="ml-4 mt-2 space-y-0 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="ml-4 mt-2 space-y-0 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.legislativa ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/legislacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Legislación</NuxtLink>
@@ -394,7 +394,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
                     :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Escrito</NuxtLink>
@@ -416,7 +416,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
                     :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Resoluciones Camarales</NuxtLink>
@@ -449,7 +449,7 @@
                 </div>
               </div>
               <div 
-                class="bg-transparent ml-4 mt-2 space-y-0 text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
                 :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• ¿Quién me representa?</NuxtLink>
@@ -480,7 +480,7 @@
                 </div>
               </div>
               <div 
-                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.recursosHumanos ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <div class="">

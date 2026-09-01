@@ -97,19 +97,19 @@
           <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
             <div class="flex flex-col items-center justify-center text-center px-1">
               <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.enTratamiento }}</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">293</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
               <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.aprobados }}</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">16</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
               <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.sancionadas }}</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">31</div>
             </div>
             <div class="flex flex-col items-center justify-center text-center px-1">
               <div class="text-[#e3d194] text-[1.1vw] md:text-[1.2vw] font-[700] tracking-wider leading-tight">Peticiones de<br />Informe</div>
-              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">{{ estadisticas.peticionesInforme }}</div>
+              <div class="text-white text-[3vw] md:text-[3.5vw] font-bold leading-none mt-1">1627</div>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Proyectos de Ley en Tratamiento</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.enTratamiento }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">293</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -146,7 +146,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Proyectos de Ley Aprobados</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.aprobados }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">16</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -154,15 +154,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Leyes Sancionadas</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.sancionadas }}</span>
-                </li>
-                
-                <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
-                  <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
-                    <span class="text-senado-gold-dark font-bold">></span>
-                    <span>Leyes Promulgadas</span>
-                  </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.promulgadas }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">31</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -170,7 +162,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Proyectos de Ley con Modificaciones</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.modificaciones }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">2</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -178,7 +170,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Proyectos de Ley Rechazados</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.rechazados }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">1</span>
                 </li>
               </ul>
             </div>
@@ -196,7 +188,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Peticiones de Informe Escrito</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.peticionesEscrito }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">1614</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -204,7 +196,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Peticiones de Informe Oral</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.peticionesOral }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">13</span>
                 </li>
               </ul>
             </div>
@@ -222,7 +214,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Resoluciones Camarales</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.resoluciones }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">46</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -230,7 +222,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Declaraciones Camarales</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.declaraciones }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">8</span>
                 </li>
                 
                 <li class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
@@ -238,7 +230,7 @@
                     <span class="text-senado-gold-dark font-bold">></span>
                     <span>Minutas de Comunicación</span>
                   </NuxtLink>
-                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">{{ estadisticas.minutas }}</span>
+                  <span class="bg-senado-primary text-white text-[0.8vw] px-2 py-0.5 rounded-full min-w-[3.2vw] text-center font-medium">178</span>
                 </li>
               </ul>
             </div>
