@@ -53,90 +53,157 @@
               </h2>
               <p class="text-gray-600">
                 {{ senadoresPorDepartamento.length }} senadores representan a este departamento
+                <span class="text-sm text-gray-400">({{ titularesPorDepartamento.length }} titulares, {{ suplentesPorDepartamento.length }} suplentes)</span>
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Grid de Senadores -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            v-for="senador in senadoresPorDepartamento"
-            :key="senador.id"
-            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            <!-- Cabecera del senador -->
-            <div class="flex items-center gap-4 p-4 border-b border-gray-100">
-              <img
-                :src="senador.foto || defaultAvatar"
-                :alt="senador.name"
-                class="w-16 h-16 rounded-full object-cover border-2"
-                :style="{ borderColor: senador.partyColor || '#ccc' }"
-                @error="(e) => e.target.src = defaultAvatar"
-              />
-              <div class="flex-1 min-w-0">
-                <h3 class="text-lg font-bold text-senado-primary truncate">
-                  {{ senador.name }}
-                </h3>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span
-                    class="text-xs font-medium px-2 py-0.5 rounded"
-                    :style="{
-                      backgroundColor: senador.partyColor + '20',
-                      color: senador.partyColor || '#666'
-                    }"
-                  >
-                    {{ senador.partyShort || senador.party || 'Sin partido' }}
-                  </span>
-                  <span class="text-xs text-gray-500">
-                    Asiento {{ senador.seatNumber }}
-                  </span>
+        <!-- TITULARES -->
+        <div v-if="titularesPorDepartamento.length > 0" class="mb-8">
+          <h3 class="text-xl font-bold text-senado-primary mb-4 flex items-center gap-2">
+            <span class="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full">●</span>
+            Senadores Titulares
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              v-for="senador in titularesPorDepartamento"
+              :key="senador.id"
+              class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              <!-- Cabecera del senador -->
+              <div class="flex items-center gap-4 p-4 border-b border-gray-100">
+                <img
+                  :src="senador.foto || defaultAvatar"
+                  :alt="senador.name"
+                  class="w-16 h-16 rounded-full object-cover border-2"
+                  :style="{ borderColor: senador.partyColor || '#ccc' }"
+                  @error="(e) => e.target.src = defaultAvatar"
+                />
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-bold text-senado-primary truncate">
+                    {{ senador.name }}
+                  </h3>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span
+                      class="text-xs font-medium px-2 py-0.5 rounded"
+                      :style="{
+                        backgroundColor: senador.partyColor + '20',
+                        color: senador.partyColor || '#666'
+                      }"
+                    >
+                      {{ senador.partyShort || senador.party || 'Sin partido' }}
+                    </span>
+                    <span class="text-xs text-gray-500">
+                      Asiento {{ senador.seatNumber }}
+                    </span>
+                  </div>
+                </div>
+                <NuxtLink
+                  :to="`/senador/${senador.slug}`"
+                  class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
+                >
+                  Ver perfil →
+                </NuxtLink>
+              </div>
+
+              <!-- Detalles -->
+              <div class="p-4 space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Departamento:</span>
+                  <span class="font-medium">{{ senador.department }}</span>
+                </div>
+                <div v-if="senador.cargo" class="flex justify-between">
+                  <span class="text-gray-500">Cargo:</span>
+                  <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
+                </div>
+                <div v-if="senador.comite || senador.comision" class="flex justify-between">
+                  <span class="text-gray-500">Comité/Comisión:</span>
+                  <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Estado:</span>
+                  <span class="font-medium text-green-600">● Titular</span>
+                </div>
+
+                <!-- Suplente -->
+                <div
+                  v-if="senador.suplente && senador.suplente !== 'null'"
+                  class="mt-3 pt-3 border-t border-gray-100"
+                >
+                  <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-500">🔄 Suplente:</span>
+                    <NuxtLink
+                      :to="`/senador/suplente/${senador.slugSuplente}`"
+                      class="font-medium text-senado-primary hover:underline"
+                    >
+                      {{ senador.suplente }}
+                    </NuxtLink>
+                  </div>
+                </div>
+                <div v-else class="mt-3 pt-3 border-t border-gray-100">
+                  <span class="text-sm text-gray-400">Sin suplente asignado</span>
                 </div>
               </div>
-              <NuxtLink
-                :to="`/senador/${senador.slug}`"
-                class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
-              >
-                Ver perfil →
-              </NuxtLink>
             </div>
+          </div>
+        </div>
 
-            <!-- Detalles -->
-            <div class="p-4 space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-gray-500">Departamento:</span>
-                <span class="font-medium">{{ senador.department }}</span>
-              </div>
-              <div v-if="senador.cargo" class="flex justify-between">
-                <span class="text-gray-500">Cargo:</span>
-                <span class="font-medium text-senado-primary">{{ senador.cargo }}</span>
-              </div>
-              <div v-if="senador.comite || senador.comision" class="flex justify-between">
-                <span class="text-gray-500">Comité/Comisión:</span>
-                <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">Estado:</span>
-                <span class="font-medium text-green-600">● Titular</span>
-              </div>
-
-              <!-- Suplente -->
-              <div
-                v-if="senador.suplente && senador.suplente !== 'null'"
-                class="mt-3 pt-3 border-t border-gray-100"
-              >
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="text-gray-500">🔄 Suplente:</span>
-                  <NuxtLink
-                    :to="`/senador/suplente/${senador.slugSuplente}`"
-                    class="font-medium text-senado-primary hover:underline"
-                  >
-                    {{ senador.suplente }}
-                  </NuxtLink>
+        <!-- SUPLENTES -->
+        <div v-if="suplentesPorDepartamento.length > 0">
+          <h3 class="text-xl font-bold text-senado-primary mb-4 flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full">●</span>
+            Senadores Suplentes
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              v-for="suplente in suplentesPorDepartamento"
+              :key="suplente.id"
+              class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow opacity-90"
+            >
+              <!-- Cabecera del suplente -->
+              <div class="flex items-center gap-4 p-4 border-b border-gray-100">
+                <img
+                  :src="suplente.foto || defaultAvatar"
+                  :alt="suplente.name"
+                  class="w-16 h-16 rounded-full object-cover border-2 border-dashed"
+                  :style="{ borderColor: suplente.partyColor || '#ccc' }"
+                  @error="(e) => e.target.src = defaultAvatar"
+                />
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-bold text-gray-700 truncate">
+                    {{ suplente.name }}
+                  </h3>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span
+                      class="text-xs font-medium px-2 py-0.5 rounded"
+                      :style="{
+                        backgroundColor: suplente.partyColor + '20',
+                        color: suplente.partyColor || '#666'
+                      }"
+                    >
+                      {{ suplente.partyShort || suplente.party || 'Sin partido' }}
+                    </span>
+                    <span class="text-xs text-gray-500">
+                      Asiento {{ suplente.seatNumber }}
+                    </span>
+                  </div>
                 </div>
+                <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                  Suplente
+                </span>
               </div>
-              <div v-else class="mt-3 pt-3 border-t border-gray-100">
-                <span class="text-sm text-gray-400">Sin suplente asignado</span>
+
+              <!-- Detalles -->
+              <div class="p-4 space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Departamento:</span>
+                  <span class="font-medium">{{ suplente.department }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Estado:</span>
+                  <span class="font-medium text-blue-600">● Suplente</span>
+                </div>
               </div>
             </div>
           </div>
@@ -177,7 +244,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { senadores } from '~/data/senadores'
+// 🔥 Importar TODOS los senadores (titulares Y suplentes)
+import { senadores } from '~/data/senadores-completo'
 
 // ========================================== //
 // ESTADO
@@ -227,17 +295,26 @@ const getMapaDepartamento = (departamento) => {
 // ========================================== //
 const senadoresPorDepartamento = computed(() => {
   if (!departamentoSeleccionado.value) return []
-
   return senadores
     .filter(s => s.department === departamentoSeleccionado.value)
     .sort((a, b) => a.seatNumber - b.seatNumber)
 })
 
 // ========================================== //
+// TITULARES Y SUPLENTES POR DEPARTAMENTO
+// ========================================== //
+const titularesPorDepartamento = computed(() => {
+  return senadoresPorDepartamento.value.filter(s => s.esTitular === true)
+})
+
+const suplentesPorDepartamento = computed(() => {
+  return senadoresPorDepartamento.value.filter(s => s.esTitular === false)
+})
+
+// ========================================== //
 // MÉTODOS
 // ========================================== //
 const onDepartamentoChange = () => {
-  // Guardar selección en localStorage si quieres persistencia
   if (process.client) {
     localStorage.setItem('departamentoSeleccionado', departamentoSeleccionado.value)
   }
