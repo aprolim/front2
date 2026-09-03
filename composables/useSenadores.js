@@ -2,7 +2,31 @@
 import { senadores } from '~/data/senadores'
 
 export const useSenadores = () => {
-  // Buscar un senador (titular) por slug
+  // ============================================
+  // FUNCIONES AUXILIARES
+  // ============================================
+  
+  // Obtener solo titulares
+  const getTitulares = () => {
+    return senadores.filter(s => s.tipo === 'titular')
+  }
+
+  // Obtener solo suplentes
+  const getSuplentes = () => {
+    return senadores.filter(s => s.tipo === 'suplente')
+  }
+
+  // Obtener un titular por ID
+  const getTitularById = (id) => {
+    return senadores.find(s => s.id === id && s.tipo === 'titular') || null
+  }
+
+  // Obtener un suplente por ID
+  const getSuplenteById = (id) => {
+    return senadores.find(s => s.id === id && s.tipo === 'suplente') || null
+  }
+
+  // Buscar un senador (titular o suplente) por slug
   const getSenadorBySlug = (slug) => {
     if (!slug) return null
     
@@ -33,89 +57,82 @@ export const useSenadores = () => {
   const getSuplenteBySlug = (slug) => {
     if (!slug) return null
     
-    // Buscar el senador que tenga este slugSuplente
-    const senador = senadores.find(s => s.slugSuplente === slug)
-    if (!senador) return null
+    let suplente = senadores.find(s => s.tipo === 'suplente' && s.slug === slug)
     
-    // Retornar los datos del suplente combinados con los del titular
+    if (!suplente) {
+      for (const s of senadores) {
+        if (s.tipo === 'suplente') {
+          const slugGenerado = s.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .replace(/ñ/g, 'n')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim()
+            .replace(/\s+/g, '-')
+          
+          if (slugGenerado === slug) {
+            suplente = s
+            break
+          }
+        }
+      }
+    }
+    
+    if (!suplente) return null
+    
+    const titular = senadores.find(s => s.id === suplente.titularId && s.tipo === 'titular')
+    
     return {
-      // ===== DATOS DEL TITULAR =====
-      id: senador.id,
-      seatNumber: senador.seatNumber,
-      name: senador.name,
-      slug: senador.slug,
-      slugTitular: senador.slug,
-      party: senador.party,
-      partyShort: senador.partyShort,
-      partyColor: senador.partyColor,
-      department: senador.department,
-      distritos: senador.distritos,
-      comite: senador.comite || null,
-      comision: senador.comision || null,
-      cargo: senador.cargo || null,
-      
-      // ===== DATOS DEL SUPLENTE =====
-      suplente: senador.suplente,
-      slugSuplente: senador.slugSuplente,
-      foto: senador.fotoSuplente || senador.foto,
-      fotoSuplente: senador.fotoSuplente,
-      fechaNacimiento: senador.fechaNacimientoSuplente || 'No disponible',
-      nacidoEn: senador.nacidoEnSuplente || senador.department,
-      ocupacion: senador.ocupacionSuplente || 'No disponible',
-      facebook: senador.facebookSuplente || null,
-      twitter: senador.twitterSuplente || null,
-      instagram: senador.instagramSuplente || null,
-      youtube: senador.youtubeSuplente || null,
-      tiktok: senador.tiktokSuplente || null,
-      
-      // ===== FLAG =====
-      esSuplente: true
+      ...suplente,
+      titularNombre: titular?.name || 'No disponible',
+      titularSlug: titular?.slug || null,
+      titularFoto: titular?.foto || null,
+      titularParty: titular?.party || null,
+      titularPartyShort: titular?.partyShort || null,
+      titularPartyColor: titular?.partyColor || null,
+      esSuplente: true,
+      esTitular: false
     }
   }
 
-  // Obtener todos los senadores (titulares)
-  const getTodosLosSenadores = () => {
-    return senadores
+  // Obtener el suplente de un titular
+  const getSuplenteByTitularId = (titularId) => {
+    if (!titularId) return null
+    return senadores.find(s => s.tipo === 'suplente' && s.titularId === titularId) || null
   }
 
-  // Obtener todos los suplentes
+  // Obtener el titular de un suplente
+  const getTitularBySuplenteId = (suplenteId) => {
+    if (!suplenteId) return null
+    const suplente = senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')
+    if (!suplente) return null
+    return senadores.find(s => s.id === suplente.titularId && s.tipo === 'titular') || null
+  }
+
+  // Obtener todos los senadores (titulares) - COMPATIBILIDAD
+  const getTodosLosSenadores = () => {
+    return getTitulares()
+  }
+
+  // Obtener todos los suplentes - COMPATIBILIDAD
   const getTodosLosSuplentes = () => {
-    return senadores
-      .filter(s => s.suplente && s.suplente !== null && s.suplente !== 'null')
-      .map(s => ({
-        id: s.id,
-        seatNumber: s.seatNumber,
-        name: s.name,
-        slug: s.slug,
-        slugTitular: s.slug,
-        party: s.party,
-        partyShort: s.partyShort,
-        partyColor: s.partyColor,
-        department: s.department,
-        distritos: s.distritos,
-        comite: s.comite || null,
-        comision: s.comision || null,
-        cargo: s.cargo || null,
-        suplente: s.suplente,
-        slugSuplente: s.slugSuplente,
-        foto: s.fotoSuplente || s.foto,
-        fotoSuplente: s.fotoSuplente,
-        fechaNacimiento: s.fechaNacimientoSuplente || 'No disponible',
-        nacidoEn: s.nacidoEnSuplente || s.department,
-        ocupacion: s.ocupacionSuplente || 'No disponible',
-        facebook: s.facebookSuplente || null,
-        twitter: s.twitterSuplente || null,
-        instagram: s.instagramSuplente || null,
-        youtube: s.youtubeSuplente || null,
-        tiktok: s.tiktokSuplente || null,
-        esSuplente: true
-      }))
+    return getSuplentes()
   }
 
   return {
+    // Funciones principales (mantienen compatibilidad)
     getSenadorBySlug,
     getSuplenteBySlug,
     getTodosLosSenadores,
-    getTodosLosSuplentes
+    getTodosLosSuplentes,
+    
+    // Nuevas funciones
+    getTitulares,
+    getSuplentes,
+    getTitularById,
+    getSuplenteById,
+    getSuplenteByTitularId,
+    getTitularBySuplenteId
   }
 }

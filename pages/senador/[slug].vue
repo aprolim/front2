@@ -138,11 +138,11 @@
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Senador Suplente:</span>
                 <NuxtLink 
-                  v-if="senator.slugSuplente" 
-                  :to="`/senador/suplente/${senator.slugSuplente}`" 
+                  v-if="suplenteData" 
+                  :to="`/senador/suplente/${suplenteData.slug}`" 
                   class="text-senado-primary hover:underline font-medium"
                 >
-                  {{ senator.suplente }}
+                  {{ suplenteData.name }}
                 </NuxtLink>
                 <span v-else class="text-gray-800">No disponible</span>
               </div>
@@ -248,19 +248,24 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useSenadores } from '~/composables/useSenadores'
-import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 import NoticiasSenador from '~/components/NoticiasSenador.vue'
 
 const route = useRoute()
-const { getSenadorBySlug } = useSenadores()
+const { getSenadorBySlug, getSuplenteByTitularId } = useSenadores()
 
 const slug = computed(() => route.params.slug)
 const modalAbierto = ref(false)
 
 const senator = computed(() => {
   return getSenadorBySlug(slug.value)
+})
+
+// 🔥 Obtener el suplente del titular
+const suplenteData = computed(() => {
+  if (!senator.value) return null
+  return getSuplenteByTitularId(senator.value.id)
 })
 
 const volver = () => {
@@ -289,10 +294,15 @@ const handleKeydown = (e) => {
   }
 }
 
-// Registrar evento de teclado
-if (process.client) {
+// Registrar y limpiar evento
+onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
-}
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = 'auto'
+})
 
 const getInitials = (name) => {
   if (!name) return '?'
