@@ -679,7 +679,7 @@ const updateTooltipPosition = (event) => {
 }
 
 // ============================================
-// goToSenator - CORREGIDO
+// goToSenator - CORREGIDO PARA DIRECTIVA
 // ============================================
 const goToSenator = (id) => {
   const seat = allSeats.value.find(s => s.id === id)
@@ -692,14 +692,23 @@ const goToSenator = (id) => {
   isNavigating.value = true
   hoveredSeat.value = null
   
-  // 🔥 CRUCIAL: Si es modo suplentes Y el asiento tiene slugSuplente
-  // Esto significa que el asiento tiene un suplente válido
+  // 🔥 CRUCIAL: Si es DIRECTIVA, SIEMPRE va al TITULAR
+  if (esDirectiva(id)) {
+    // Buscar el titular original (no el suplente)
+    const titular = senadores.find(s => s.id === id)
+    if (titular && titular.slug) {
+      router.push(`/senador/${titular.slug}`)
+      return
+    }
+  }
+  
+  // 🔥 Si es modo suplentes Y el asiento tiene slugSuplente
   if (tipoVisualizacion.value === 'suplentes' && seat.slugSuplente) {
     router.push(`/senador/suplente/${seat.slugSuplente}`)
     return
   }
   
-  // Para modo titulares o directiva o suplentes sin suplente
+  // Para modo titulares o suplentes sin suplente
   if (seat.slug) {
     router.push(`/senador/${seat.slug}`)
   }

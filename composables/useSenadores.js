@@ -1,20 +1,15 @@
 // composables/useSenadores.js
-import { senadores } from '~/data/senadores'
+import { senadores, suplentes, getSuplenteBySlugHelper, getTitularBySuplenteId } from '~/data/senadores'
 
 export const useSenadores = () => {
-  // Buscar un senador por slug
+  // Buscar un senador (titular) por slug
   const getSenadorBySlug = (slug) => {
     if (!slug) return null
-    console.log('Buscando slug:', slug)
-    console.log('Senadores disponibles:', senadores.map(s => ({ name: s.name, slug: s.slug })))
     
-    // Buscar por slug exacto
     let encontrado = senadores.find(s => s.slug === slug)
     
-    // Si no se encuentra, intentar buscar generando el slug desde el nombre
     if (!encontrado) {
       for (const senador of senadores) {
-        // Generar slug manualmente (usando la misma función)
         const slugGenerado = senador.name
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
@@ -31,96 +26,102 @@ export const useSenadores = () => {
       }
     }
     
-    console.log('Senador encontrado:', encontrado)
     return encontrado || null
   }
 
-  // Buscar un suplente por slug - CORREGIDO CON TODOS LOS CAMPOS
+  // Buscar un suplente por slug (usando el array de suplentes)
   const getSuplenteBySlug = (slug) => {
     if (!slug) return null
     
-    for (const senador of senadores) {
-      if (senador.slugSuplente === slug) {
-        return {
-          // ===== DATOS DEL TITULAR (heredados) =====
-          id: senador.id,
-          seatNumber: senador.seatNumber,
-          name: senador.name,
-          slug: senador.slug, // slug del TITULAR (para link)
-          slugTitular: senador.slug, // 🔥 EXPLÍCITAMENTE EL SLUG DEL TITULAR
-          party: senador.party,
-          partyShort: senador.partyShort,
-          partyColor: senador.partyColor,
-          department: senador.department,
-          distritos: senador.distritos,
-          
-          // ===== DATOS DEL SUPLENTE (propios) =====
-          suplente: senador.suplente,
-          slugSuplente: senador.slugSuplente,
-          fotoSuplente: senador.fotoSuplente,
-          fechaNacimientoSuplente: senador.fechaNacimientoSuplente || 'No disponible',
-          nacidoEnSuplente: senador.nacidoEnSuplente || senador.department,
-          ocupacionSuplente: senador.ocupacionSuplente || 'No disponible',
-          comiteSuplente: senador.comiteSuplente || 'No disponible',
-          cargoSuplente: senador.cargoSuplente || 'No disponible',
-          
-          // ===== REDES SOCIALES DEL SUPLENTE =====
-          facebookSuplente: senador.facebookSuplente || null,
-          twitterSuplente: senador.twitterSuplente || null,
-          instagramSuplente: senador.instagramSuplente || null,
-          youtubeSuplente: senador.youtubeSuplente || null,
-          tiktokSuplente: senador.tiktokSuplente || null,
-          
-          // ===== FLAG PARA IDENTIFICAR QUE ES SUPLENTE =====
-          esSuplente: true
-        }
-      }
+    // Buscar en el array de suplentes
+    const suplente = getSuplenteBySlugHelper(slug)
+    if (!suplente) return null
+    
+    // Obtener el titular correspondiente
+    const titular = getTitularBySuplenteId(suplente.id)
+    if (!titular) return null
+    
+    // Retornar datos combinados (igual que antes)
+    return {
+      // ===== DATOS DEL TITULAR =====
+      id: titular.id,
+      seatNumber: titular.seatNumber,
+      name: titular.name,
+      slug: titular.slug,
+      slugTitular: titular.slug,
+      party: titular.party,
+      partyShort: titular.partyShort,
+      partyColor: titular.partyColor,
+      department: titular.department,
+      distritos: titular.distritos,
+      comite: titular.comite || null,
+      comision: titular.comision || null,
+      cargo: titular.cargo || null,
+      
+      // ===== DATOS DEL SUPLENTE =====
+      suplente: suplente.name,
+      slugSuplente: suplente.slug,
+      foto: suplente.foto,
+      fotoSuplente: suplente.foto,
+      fechaNacimiento: suplente.fechaNacimiento || 'No disponible',
+      nacidoEn: suplente.nacidoEn || titular.department,
+      ocupacion: suplente.ocupacion || 'No disponible',
+      facebook: suplente.facebook || null,
+      twitter: suplente.twitter || null,
+      instagram: suplente.instagram || null,
+      youtube: suplente.youtube || null,
+      tiktok: suplente.tiktok || null,
+      
+      // ===== FLAG =====
+      esSuplente: true
     }
-    return null
   }
 
-  // Obtener todos los senadores
+  // Obtener todos los senadores (titulares)
   const getTodosLosSenadores = () => {
     return senadores
   }
 
-  // Obtener todos los suplentes
+  // Obtener todos los suplentes (desde el array separado)
   const getTodosLosSuplentes = () => {
-    return senadores
-      .filter(s => s.suplente && s.suplente !== null)
-      .map(s => ({
-        // ===== DATOS DEL TITULAR (heredados) =====
-        id: s.id,
-        seatNumber: s.seatNumber,
-        name: s.name,
-        slug: s.slug,
-        slugTitular: s.slug,
-        party: s.party,
-        partyShort: s.partyShort,
-        partyColor: s.partyColor,
-        department: s.department,
-        distritos: s.distritos,
+    return suplentes.map(suplente => {
+      const titular = getTitularBySuplenteId(suplente.id)
+      if (!titular) return null
+      
+      return {
+        // ===== DATOS DEL TITULAR =====
+        id: titular.id,
+        seatNumber: titular.seatNumber,
+        name: titular.name,
+        slug: titular.slug,
+        slugTitular: titular.slug,
+        party: titular.party,
+        partyShort: titular.partyShort,
+        partyColor: titular.partyColor,
+        department: titular.department,
+        distritos: titular.distritos,
+        comite: titular.comite || null,
+        comision: titular.comision || null,
+        cargo: titular.cargo || null,
         
-        // ===== DATOS DEL SUPLENTE (propios) =====
-        suplente: s.suplente,
-        slugSuplente: s.slugSuplente,
-        fotoSuplente: s.fotoSuplente,
-        fechaNacimientoSuplente: s.fechaNacimientoSuplente || 'No disponible',
-        nacidoEnSuplente: s.nacidoEnSuplente || s.department,
-        ocupacionSuplente: s.ocupacionSuplente || 'No disponible',
-        comiteSuplente: s.comiteSuplente || 'No disponible',
-        cargoSuplente: s.cargoSuplente || 'No disponible',
-        
-        // ===== REDES SOCIALES DEL SUPLENTE =====
-        facebookSuplente: s.facebookSuplente || null,
-        twitterSuplente: s.twitterSuplente || null,
-        instagramSuplente: s.instagramSuplente || null,
-        youtubeSuplente: s.youtubeSuplente || null,
-        tiktokSuplente: s.tiktokSuplente || null,
+        // ===== DATOS DEL SUPLENTE =====
+        suplente: suplente.name,
+        slugSuplente: suplente.slug,
+        foto: suplente.foto,
+        fotoSuplente: suplente.foto,
+        fechaNacimiento: suplente.fechaNacimiento || 'No disponible',
+        nacidoEn: suplente.nacidoEn || titular.department,
+        ocupacion: suplente.ocupacion || 'No disponible',
+        facebook: suplente.facebook || null,
+        twitter: suplente.twitter || null,
+        instagram: suplente.instagram || null,
+        youtube: suplente.youtube || null,
+        tiktok: suplente.tiktok || null,
         
         // ===== FLAG =====
         esSuplente: true
-      }))
+      }
+    }).filter(Boolean)
   }
 
   return {
