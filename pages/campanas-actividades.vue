@@ -371,17 +371,17 @@ export default {
       lastX: 0,
       lastY: 0,
       campanas: [
-        {
-          id: 1,
-          titulo: 'Lucha contra el Sarampión',
-          descripcion: 'Campaña de vacunación y prevención contra el sarampión, con el objetivo de proteger a la población boliviana. Se realizarán jornadas de vacunación en todo el país, con énfasis en zonas de difícil acceso.',
-          periodo: '10 ENE - 15 MAR 2026',
-          fechaInicio: '2026-01-10',
-          fechaFin: '2026-03-15',
-          estado: 'Finalizada',
-          destacado: false,
-          imagen: '/campanas/sarampion.jpg'
-        },
+        // {
+        //   id: 1,
+        //   titulo: 'Lucha contra el Sarampión',
+        //   descripcion: 'Campaña de vacunación y prevención contra el sarampión, con el objetivo de proteger a la población boliviana. Se realizarán jornadas de vacunación en todo el país, con énfasis en zonas de difícil acceso.',
+        //   periodo: '10 ENE - 15 MAR 2026',
+        //   fechaInicio: '2026-01-10',
+        //   fechaFin: '2026-03-15',
+        //   estado: 'Finalizada',
+        //   destacado: false,
+        //   imagen: '/campanas/sarampion.jpg'
+        // },
         
       ]
     }

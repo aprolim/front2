@@ -203,7 +203,7 @@ const liveVideo = ref(null)
 const liveLoading = ref(false)
 const liveError = ref(null)
 
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const fechaActual = computed(() => {
   const ahora = new Date()

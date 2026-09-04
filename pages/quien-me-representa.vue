@@ -73,17 +73,28 @@
             >
               <!-- Cabecera del senador -->
               <div class="flex items-center gap-4 p-4 border-b border-gray-100">
-                <img
-                  :src="senador.foto || defaultAvatar"
-                  :alt="senador.name"
-                  class="w-16 h-16 rounded-full object-cover border-2"
-                  :style="{ borderColor: senador.partyColor || '#ccc' }"
-                  @error="(e) => e.target.src = defaultAvatar"
-                />
+                <!-- Foto clickeable -->
+                <NuxtLink
+                  :to="`/senador/${senador.slug}`"
+                  class="flex-shrink-0"
+                >
+                  <img
+                    :src="senador.foto || defaultAvatar"
+                    :alt="senador.name"
+                    class="w-16 h-16 rounded-full object-cover border-2 hover:opacity-80 transition-opacity cursor-pointer"
+                    :style="{ borderColor: senador.partyColor || '#ccc' }"
+                    @error="(e) => e.target.src = defaultAvatar"
+                  />
+                </NuxtLink>
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-bold text-senado-primary truncate">
-                    {{ senador.name }}
-                  </h3>
+                  <NuxtLink
+                    :to="`/senador/${senador.slug}`"
+                    class="hover:underline"
+                  >
+                    <h3 class="text-lg font-bold text-senado-primary truncate">
+                      {{ senador.name }}
+                    </h3>
+                  </NuxtLink>
                   <div class="flex items-center gap-2 flex-wrap">
                     <span
                       class="text-xs font-medium px-2 py-0.5 rounded"
@@ -122,22 +133,22 @@
                   <span class="font-medium text-right">{{ senador.comite || senador.comision }}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-gray-500">Estado:</span>
+                  <span class="text-gray-500"></span>
                   <span class="font-medium text-green-600">● Titular</span>
                 </div>
 
-                <!-- Suplente -->
+                <!-- Suplente: buscar por suplenteId -->
                 <div
-                  v-if="senador.suplente && senador.suplente !== 'null'"
+                  v-if="senador.suplenteId"
                   class="mt-3 pt-3 border-t border-gray-100"
                 >
                   <div class="flex items-center gap-2 text-sm">
-                    <span class="text-gray-500">🔄 Suplente:</span>
+                    <span class="text-gray-500"> Suplente:</span>
                     <NuxtLink
-                      :to="`/senador/suplente/${senador.slugSuplente}`"
+                      :to="`/senador/suplente/${getSuplenteSlugById(senador.suplenteId)}`"
                       class="font-medium text-senado-primary hover:underline"
                     >
-                      {{ senador.suplente }}
+                      {{ getSuplenteNombreById(senador.suplenteId) }}
                     </NuxtLink>
                   </div>
                 </div>
@@ -163,17 +174,28 @@
             >
               <!-- Cabecera del suplente -->
               <div class="flex items-center gap-4 p-4 border-b border-gray-100">
-                <img
-                  :src="suplente.foto || defaultAvatar"
-                  :alt="suplente.name"
-                  class="w-16 h-16 rounded-full object-cover border-2 border-dashed"
-                  :style="{ borderColor: suplente.partyColor || '#ccc' }"
-                  @error="(e) => e.target.src = defaultAvatar"
-                />
+                <!-- Foto clickeable -->
+                <NuxtLink
+                  :to="`/senador/suplente/${suplente.slug}`"
+                  class="flex-shrink-0"
+                >
+                  <img
+                    :src="suplente.foto || defaultAvatar"
+                    :alt="suplente.name"
+                    class="w-16 h-16 rounded-full object-cover border-2 border-dashed hover:opacity-80 transition-opacity cursor-pointer"
+                    :style="{ borderColor: suplente.partyColor || '#ccc' }"
+                    @error="(e) => e.target.src = defaultAvatar"
+                  />
+                </NuxtLink>
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-bold text-gray-700 truncate">
-                    {{ suplente.name }}
-                  </h3>
+                  <NuxtLink
+                    :to="`/senador/suplente/${suplente.slug}`"
+                    class="hover:underline"
+                  >
+                    <h3 class="text-lg font-bold text-gray-700 truncate">
+                      {{ suplente.name }}
+                    </h3>
+                  </NuxtLink>
                   <div class="flex items-center gap-2 flex-wrap">
                     <span
                       class="text-xs font-medium px-2 py-0.5 rounded"
@@ -189,9 +211,12 @@
                     </span>
                   </div>
                 </div>
-                <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-                  Suplente
-                </span>
+                <NuxtLink
+                  :to="`/senador/suplente/${suplente.slug}`"
+                  class="text-senado-primary hover:text-senado-primary-dark text-sm font-medium whitespace-nowrap"
+                >
+                  Ver perfil →
+                </NuxtLink>
               </div>
 
               <!-- Detalles -->
@@ -200,8 +225,18 @@
                   <span class="text-gray-500">Departamento:</span>
                   <span class="font-medium">{{ suplente.department }}</span>
                 </div>
+                <!-- Mostrar de quién es suplente -->
+                <div v-if="suplente.suplenteDe" class="flex justify-between">
+                  <span class="text-gray-500">Titular:</span>
+                  <NuxtLink
+                    :to="`/senador/${getTitularSlugById(suplente.titularId)}`"
+                    class="font-medium text-senado-primary hover:underline"
+                  >
+                    {{ suplente.suplenteDe }}
+                  </NuxtLink>
+                </div>
                 <div class="flex justify-between">
-                  <span class="text-gray-500">Estado:</span>
+                  <span class="text-gray-500"></span>
                   <span class="font-medium text-blue-600">● Suplente</span>
                 </div>
               </div>
@@ -244,8 +279,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-// 🔥 Importar TODOS los senadores (titulares Y suplentes)
-import { senadores } from '~/data/senadores-completo'
+import { senadores } from '~/data/senadores'
 
 // ========================================== //
 // ESTADO
@@ -271,6 +305,30 @@ const departamentos = [
 const departamentosOrdenados = computed(() => {
   return [...departamentos].sort()
 })
+
+// ========================================== //
+// FUNCIONES PARA OBTENER DATOS DE SUPLENTES POR ID
+// ========================================== //
+const getSuplenteById = (suplenteId) => {
+  if (!suplenteId) return null
+  return senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')
+}
+
+const getSuplenteNombreById = (suplenteId) => {
+  const suplente = getSuplenteById(suplenteId)
+  return suplente?.name || null
+}
+
+const getSuplenteSlugById = (suplenteId) => {
+  const suplente = getSuplenteById(suplenteId)
+  return suplente?.slug || null
+}
+
+const getTitularSlugById = (titularId) => {
+  if (!titularId) return ''
+  const titular = senadores.find(s => s.id === titularId && s.tipo === 'titular')
+  return titular?.slug || ''
+}
 
 // ========================================== //
 // MAPAS POR DEPARTAMENTO
@@ -304,11 +362,11 @@ const senadoresPorDepartamento = computed(() => {
 // TITULARES Y SUPLENTES POR DEPARTAMENTO
 // ========================================== //
 const titularesPorDepartamento = computed(() => {
-  return senadoresPorDepartamento.value.filter(s => s.esTitular === true)
+  return senadoresPorDepartamento.value.filter(s => s.tipo === 'titular')
 })
 
 const suplentesPorDepartamento = computed(() => {
-  return senadoresPorDepartamento.value.filter(s => s.esTitular === false)
+  return senadoresPorDepartamento.value.filter(s => s.tipo === 'suplente')
 })
 
 // ========================================== //

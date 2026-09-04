@@ -6,7 +6,7 @@ export const useSesiones = () => {
   const loading = ref(false)
   const error = ref(null)
   
-  const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+  const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
   
   const fetchVideos = async () => {
     loading.value = true

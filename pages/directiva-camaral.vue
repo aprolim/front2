@@ -217,7 +217,7 @@ import { ref, onMounted } from 'vue'
 const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
 
 // 🔥 URL del backend donde están las imágenes
-const API_BASE_URL = 'http://demoback.senado.gob.bo'
+const API_BASE_URL = 'https://demoback.senado.gob.bo'
 
 const directiva = ref({
   presidente: null,

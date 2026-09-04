@@ -1,7 +1,7 @@
 // composables/useNoticias.js
 import { ref, computed } from 'vue'
 
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const transformarNoticia = (item) => {
   if (!item) return null

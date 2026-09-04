@@ -122,7 +122,7 @@ import { useRouter } from 'vue-router'
 definePageMeta({ layout: 'default' })
 
 const router = useRouter()
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const todasLasNoticias = ref([])
 const loading = ref(false)

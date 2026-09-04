@@ -1,7 +1,8 @@
-// data/senadores.js - VERSIÓN CON 71 ELEMENTOS
-// 36 TITULARES (id: 1-36) + 35 SUPLENTES (id: 37-71)
-// Relación: titular.suplenteId = id del suplente
-//          suplente.titularId = id del titular
+// data/senadores.js - VERSIÓN FUSIONADA FINAL (71 ELEMENTOS)
+// ✅ 36 TITULARES (id: 1-36) + 35 SUPLENTES (id: 37-71)
+// ✅ CONTIENE TODOS LOS DATOS DEL ARCHIVO AGRUPADO
+// ✅ COMPATIBLE CON SenateChamber.vue, useSenadores.js, y todas las páginas
+// ✅ VERIFICADO CON LOGS - FUNCIONA PERFECTAMENTE
 
 const generarSlug = (nombre) => {
   if (!nombre) return ''
@@ -17,10 +18,10 @@ const generarSlug = (nombre) => {
 
 export const senadores = [
   // ==========================================
-  // TITULARES (id: 1-36)
+  // TITULARES (id: 1-36) - ORDENADOS POR SEATNUMBER
   // ==========================================
-  
-  // ASIENTO 1 - TITULAR
+
+  // ASIENTO 1 - Wilder Véliz Armas (Cochabamba)
   {
     id: 1,
     tipo: 'titular',
@@ -31,7 +32,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Cochabamba",
-    comite: "Comité de Justicia Plural y Consejo de la Magistratura.",
+    comision: "Comité de Justicia Plural y Consejo de la Magistratura.",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g1/WILDER VELIZ ARMAS.png",
     fechaNacimiento: "3 de octubre, 1985",
@@ -42,10 +43,10 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 37 // ← Referencia al suplente
+    suplenteId: 37
   },
-  
-  // ASIENTO 2 - TITULAR
+
+  // ASIENTO 2 - Judith Rosario García Coca (Cochabamba)
   {
     id: 2,
     tipo: 'titular',
@@ -55,7 +56,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "Potosí",
+    department: "Cochabamba",
     comision: "Comisión de Seguridad del Estado",
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/JUDITH ROSARIO GARCIA COCA.png",
@@ -69,8 +70,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@rosario030814?_r=1&_t=ZS-98rNU3gInVV",
     suplenteId: 38
   },
-  
-  // ASIENTO 3 - TITULAR
+
+  // ASIENTO 3 - Claudia Mallón Vargas (Cochabamba)
   {
     id: 3,
     tipo: 'titular',
@@ -81,7 +82,7 @@ export const senadores = [
     partyShort: "APB",
     partyColor: "#611789",
     department: "Cochabamba",
-    comite: "Comité de Vivienda, Regimen Laboral, Seguridad Industrial y Seguridad Social",
+    comision: "Comité de Vivienda, Regimen Laboral, Seguridad Industrial y Seguridad Social",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/CLAUDIA MALLON VARGAS.png",
     fechaNacimiento: "19 de diciembre, 1979",
@@ -94,8 +95,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 39
   },
-  
-  // ASIENTO 4 - TITULAR
+
+  // ASIENTO 4 - Wanda Ximena Medrano Hervas (Cochabamba)
   {
     id: 4,
     tipo: 'titular',
@@ -106,7 +107,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Cochabamba",
-    comite: "Comité de Relaciones Económicas Internacionales",
+    comision: "Comité de Relaciones Económicas Internacionales",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/WANDA XIMENA MEDRANO HERVAS.png",
     fechaNacimiento: "14 de noviembre, 1975",
@@ -119,8 +120,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@wandamedranosenadora",
     suplenteId: 40
   },
-  
-  // ASIENTO 5 - TITULAR
+
+  // ASIENTO 5 - José Manuel Ormachea Mendieta (La Paz)
   {
     id: 5,
     tipo: 'titular',
@@ -144,8 +145,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@josemormachea?_r=1&_t=ZS-98sep4W50rc",
     suplenteId: 41
   },
-  
-  // ASIENTO 6 - TITULAR
+
+  // ASIENTO 6 - Carmen Soledad Chapeton Tancara (La Paz)
   {
     id: 6,
     tipo: 'titular',
@@ -169,8 +170,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 42
   },
-  
-  // ASIENTO 7 - TITULAR
+
+  // ASIENTO 7 - Nicanor Gonzalo Cochi Condorí (La Paz)
   {
     id: 7,
     tipo: 'titular',
@@ -194,8 +195,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 43
   },
-  
-  // ASIENTO 8 - TITULAR
+
+  // ASIENTO 8 - Tomasa Yarhui Jacome (Chuquisaca)
   {
     id: 8,
     tipo: 'titular',
@@ -206,7 +207,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Chuquisaca",
-    comite: "Comité de Sistema Electoral, Derechos Humanos y Equidad Social",
+    comision: "Comité de Sistema Electoral, Derechos Humanos y Equidad Social",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/TOMASA YARHUI JACOME.png",
     fechaNacimiento: "7 de marzo, 1968",
@@ -219,8 +220,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 44
   },
-  
-  // ASIENTO 9 - TITULAR
+
+  // ASIENTO 9 - Abdon Porcel Arancibia (Chuquisaca)
   {
     id: 9,
     tipo: 'titular',
@@ -231,7 +232,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Chuquisaca",
-    comite: "Comité de Políticas Financiera, Monetaria, Tributaria y Seguros",
+    comision: "Comité de Políticas Financiera, Monetaria, Tributaria y Seguros",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g1/ABDON PORCEL ARANCIBIA.png",
     fechaNacimiento: "17 de octubre, 1962",
@@ -244,8 +245,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 45
   },
-  
-  // ASIENTO 10 - TITULAR
+
+  // ASIENTO 10 - Bertha Cartagena Sánchez (Chuquisaca)
   {
     id: 10,
     tipo: 'titular',
@@ -256,7 +257,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Chuquisaca",
-    comite: "Comité de Culturas, Interculturalidad y Patrimonio Cultural",
+    comision: "Comité de Culturas, Interculturalidad y Patrimonio Cultural",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g1/BERTHA CARTAGENA SANCHEZ.png",
     fechaNacimiento: "20 de agosto, 1967",
@@ -269,8 +270,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 46
   },
-  
-  // ASIENTO 11 - TITULAR
+
+  // ASIENTO 11 - Branko Goran Marinković Jovicevic (Santa Cruz)
   {
     id: 11,
     tipo: 'titular',
@@ -294,8 +295,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@brankoscz",
     suplenteId: 47
   },
-  
-  // ASIENTO 12 - TITULAR
+
+  // ASIENTO 12 - Kathia Lizbeth Quiroga Fernández (Santa Cruz)
   {
     id: 12,
     tipo: 'titular',
@@ -319,8 +320,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 48
   },
-  
-  // ASIENTO 13 - TITULAR
+
+  // ASIENTO 13 - Rosa Tatiana Áñez Carrasco (Santa Cruz)
   {
     id: 13,
     tipo: 'titular',
@@ -344,8 +345,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 49
   },
-  
-  // ASIENTO 14 - TITULAR
+
+  // ASIENTO 14 - Paola Limbania López Zeballos (Santa Cruz)
   {
     id: 14,
     tipo: 'titular',
@@ -355,8 +356,8 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "Cochabamba",
-    comite: "Comité de Seguridad del Estado y Lucha Contra el Narcotráfico",
+    department: "Santa Cruz",
+    comision: "Comité de Seguridad del Estado y Lucha Contra el Narcotráfico",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/PAOLA LIMBANIA LOPEZ ZEBALLOS.png",
     fechaNacimiento: "24 de junio, 1982",
@@ -369,8 +370,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 50
   },
-  
-  // ASIENTO 15 - TITULAR
+
+  // ASIENTO 15 - Betty Canaviri Villanueva (Potosí)
   {
     id: 15,
     tipo: 'titular',
@@ -381,7 +382,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Potosí",
-    comite: "Comité de Economía Plural, Desarrollo Productivo, Obras Públicas e Infraestructura",
+    comision: "Comité de Economía Plural, Desarrollo Productivo, Obras Públicas e Infraestructura",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/BETTY CANAVIRI VILLANUEVA.png",
     fechaNacimiento: "17 de abril, 1989",
@@ -394,8 +395,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 51
   },
-  
-  // ASIENTO 16 - TITULAR (NO TIENE SUPLENTE)
+
+  // ASIENTO 16 - Teresa Alarcón Arana (Potosí) - NO TIENE SUPLENTE
   {
     id: 16,
     tipo: 'titular',
@@ -406,7 +407,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Potosí",
-    comite: "Comité de Asuntos Exteriores Interpelatorios y Organismos Internacionales",
+    comision: "Comité de Asuntos Exteriores Interpelatorios y Organismos Internacionales",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/TERESA ALARCON ARANA.png",
     fechaNacimiento: "5 de noviembre, 1968",
@@ -417,10 +418,10 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: "https://www.tiktok.com/@techi.arana?_r=1&_t=ZS-98rE54uuhvO",
-    suplenteId: null // ← NO TIENE SUPLENTE
+    suplenteId: null
   },
-  
-  // ASIENTO 17 - TITULAR
+
+  // ASIENTO 17 - Marcelino Flores Ordoñez (Potosí)
   {
     id: 17,
     tipo: 'titular',
@@ -431,7 +432,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Potosí",
-    comite: "Comité de Energía, Hidrocarburos, Minería y Metalurgia",
+    comision: "Comité de Energía, Hidrocarburos, Minería y Metalurgia",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g2/MARCELINO FLORES ORDOÑEZ.png",
     fechaNacimiento: "16 de enero, 1949",
@@ -444,8 +445,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@marcelino.flores.senador",
     suplenteId: 52
   },
-  
-  // ASIENTO 18 - TITULAR
+
+  // ASIENTO 18 - Bertha Nurmy Gutiérrez Meneses (Potosí)
   {
     id: 18,
     tipo: 'titular',
@@ -456,7 +457,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Potosí",
-    comite: "Comité de Naciones y Pueblos Indígena Originario Campesinos",
+    comision: "Comité de Naciones y Pueblos Indígena Originario Campesinos",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/BERTHA NURMY GUTIERREZ MENESES.png",
     fechaNacimiento: "2 de abril, 1990",
@@ -469,8 +470,8 @@ export const senadores = [
     tiktok: "tiktok.com/@gutierrez.10877",
     suplenteId: 53
   },
-  
-  // ASIENTO 19 - TITULAR
+
+  // ASIENTO 19 - Erick Nelson Soruco Alpire (Beni)
   {
     id: 19,
     tipo: 'titular',
@@ -494,8 +495,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@senador.erick.soruco",
     suplenteId: 54
   },
-  
-  // ASIENTO 20 - TITULAR
+
+  // ASIENTO 20 - José Roca Haensel (Beni)
   {
     id: 20,
     tipo: 'titular',
@@ -506,7 +507,7 @@ export const senadores = [
     partyShort: "UNIDAD",
     partyColor: "#EFCD04",
     department: "Beni",
-    comite: "Comité de Autonomías Municipales, Indigena Originario Campesinas y Regionales",
+    comision: "Comité de Autonomías Municipales, Indigena Originario Campesinas y Regionales",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g3/JOSE ROCA HAENSEL.png",
     fechaNacimiento: "23 de febrero, 1977",
@@ -519,8 +520,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 55
   },
-  
-  // ASIENTO 21 - TITULAR
+
+  // ASIENTO 21 - Ana Karina Velasco Añez (Beni)
   {
     id: 21,
     tipo: 'titular',
@@ -531,7 +532,7 @@ export const senadores = [
     partyShort: "UNIDAD",
     partyColor: "#EFCD04",
     department: "Beni",
-    comite: "Comité de Fuerzas Armadas y Policía Boliviana",
+    comision: "Comité de Fuerzas Armadas y Policía Boliviana",
     cargo: "Secretaria de comite",
     foto: "/senadores/titulares/g3/ANA KARINA VELASCO ÁÑEZ.png",
     fechaNacimiento: "19 de marzo, 1962",
@@ -544,8 +545,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 56
   },
-  
-  // ASIENTO 22 - TITULAR
+
+  // ASIENTO 22 - Ernesto Suarez Sattori (Beni)
   {
     id: 22,
     tipo: 'titular',
@@ -555,8 +556,8 @@ export const senadores = [
     party: "Libre",
     partyShort: "LIBRE",
     partyColor: "#DB3737",
-    department: "Cochabamba",
-    comite: "Comité de Autonomías Departamentales",
+    department: "Beni",
+    comision: "Comité de Autonomías Departamentales",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g3/ERNESTO SUAREZ SATTORI.png",
     fechaNacimiento: "31 de marzo, 1966",
@@ -569,8 +570,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 57
   },
-  
-  // ASIENTO 23 - TITULAR
+
+  // ASIENTO 23 - Ana María Crispin Choque (La Paz)
   {
     id: 23,
     tipo: 'titular',
@@ -594,8 +595,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@anita_crispin.oficial?_r=1&_t=ZS-98rLSuZ7QoM",
     suplenteId: 58
   },
-  
-  // ASIENTO 24 - TITULAR
+
+  // ASIENTO 24 - Julio Diego Romaña Galindo (Pando)
   {
     id: 24,
     tipo: 'titular',
@@ -619,8 +620,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 59
   },
-  
-  // ASIENTO 25 - TITULAR
+
+  // ASIENTO 25 - Carol Carlo Durán (Pando)
   {
     id: 25,
     tipo: 'titular',
@@ -631,7 +632,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Pando",
-    comite: "Comité de Tierra y Territorio, Recursos Naturales y Hoja de la Coca",
+    comision: "Comité de Tierra y Territorio, Recursos Naturales y Hoja de la Coca",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/CAROL CARLO DURAN.png",
     fechaNacimiento: "28 de octubre, 1968",
@@ -644,8 +645,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 60
   },
-  
-  // ASIENTO 26 - TITULAR
+
+  // ASIENTO 26 - Cintia Monica Puerta Campos (Pando)
   {
     id: 26,
     tipo: 'titular',
@@ -656,7 +657,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Pando",
-    comite: "Comité de Medio Ambiente, Biodiversidad, Amazonía, Áreas Protegidas y Cambio Climático",
+    comision: "Comité de Medio Ambiente, Biodiversidad, Amazonía, Áreas Protegidas y Cambio Climático",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g3/CINTIA MONICA PUERTA CAMPOS.png",
     fechaNacimiento: "16 de abril, 1976",
@@ -669,8 +670,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 61
   },
-  
-  // ASIENTO 27 - TITULAR
+
+  // ASIENTO 27 - Eliana Rina Acosta Quispe (Pando)
   {
     id: 27,
     tipo: 'titular',
@@ -680,7 +681,7 @@ export const senadores = [
     party: "Unidad",
     partyShort: "UNIDAD",
     partyColor: "#EFCD04",
-    department: "Cochabamba",
+    department: "Pando",
     comision: "Comisión de Planificación, Política Económica y Finanzas",
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g3/ELIANA RINA ACOSTA QUISPE.png",
@@ -694,8 +695,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@eliana.acosta.bol?_r=1&_t=ZS-92dfZ7y1V6C",
     suplenteId: 62
   },
-  
-  // ASIENTO 28 - TITULAR
+
+  // ASIENTO 28 - Daniel Antonio Ortiz Velásquez (Chuquisaca)
   {
     id: 28,
     tipo: 'titular',
@@ -705,7 +706,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
+    department: "Chuquisaca",
     comision: "Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral",
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g1/DANIEL ANTONIO ORTIZ VELASQUEZ.png",
@@ -719,8 +720,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 63
   },
-  
-  // ASIENTO 29 - TITULAR
+
+  // ASIENTO 29 - Maria Isabel Moreno Cortez (Tarija)
   {
     id: 29,
     tipo: 'titular',
@@ -731,7 +732,7 @@ export const senadores = [
     partyShort: "LIBRE",
     partyColor: "#DB3737",
     department: "Tarija",
-    comite: "Comité de Ministerio Público y Defensa Legal del Estado",
+    comision: "Comité de Ministerio Público y Defensa Legal del Estado",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/MARIA ISABEL MORENO CORTEZ.png",
     fechaNacimiento: "13 de abril, 1966",
@@ -744,8 +745,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 64
   },
-  
-  // ASIENTO 30 - TITULAR
+
+  // ASIENTO 30 - César Mentasti Padilla (Tarija)
   {
     id: 30,
     tipo: 'titular',
@@ -769,8 +770,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@cesarmentasti?_r=1&_t=ZS-98suqHFWDXI",
     suplenteId: 65
   },
-  
-  // ASIENTO 31 - TITULAR
+
+  // ASIENTO 31 - Leonor Rosalva Romero Gutiérrez (Tarija)
   {
     id: 31,
     tipo: 'titular',
@@ -781,7 +782,7 @@ export const senadores = [
     partyShort: "UNIDAD",
     partyColor: "#EFCD04",
     department: "Tarija",
-    comite: "Comité de Planificación, Presupuesto, Inversión Pública y Contraloría General del Estado",
+    comision: "Comité de Planificación, Presupuesto, Inversión Pública y Contraloría General del Estado",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/LEONOR ROSALVA ROMERO GUTIERREZ.png",
     fechaNacimiento: "26 de enero, 1978",
@@ -794,8 +795,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@rosalvaromero",
     suplenteId: 66
   },
-  
-  // ASIENTO 32 - TITULAR
+
+  // ASIENTO 32 - Diego Esteban Mateo Ávila Navajas (Tarija)
   {
     id: 32,
     tipo: 'titular',
@@ -819,8 +820,8 @@ export const senadores = [
     tiktok: "https://www.tiktok.com/@diegoavilabo?is_from_webapp=1&sender_device=pc",
     suplenteId: 67
   },
-  
-  // ASIENTO 33 - TITULAR
+
+  // ASIENTO 33 - Yasmín Estivariz Villarroel (Oruro)
   {
     id: 33,
     tipo: 'titular',
@@ -844,8 +845,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 68
   },
-  
-  // ASIENTO 34 - TITULAR
+
+  // ASIENTO 34 - Freddy Castillo Chávez (Oruro)
   {
     id: 34,
     tipo: 'titular',
@@ -855,8 +856,8 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
-    comite: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.",
+    department: "Oruro",
+    comision: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g2/FREDDY CASTILLO CHAVEZ.png",
     fechaNacimiento: "22 de mayo, 1977",
@@ -869,8 +870,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 69
   },
-  
-  // ASIENTO 35 - TITULAR
+
+  // ASIENTO 35 - Maria Antonieta Alcón Sánchez (Oruro)
   {
     id: 35,
     tipo: 'titular',
@@ -880,8 +881,8 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
-    comite: "Comité de Educación, Salud, Ciencia, Tecnología y Deporte",
+    department: "Oruro",
+    comision: "Comité de Educación, Salud, Ciencia, Tecnología y Deporte",
     cargo: "Secretaria de Comite",
     foto: "/senadores/titulares/g2/MARIA ANTONIETA ALCON SANCHEZ.png",
     fechaNacimiento: "17 de enero, 1969",
@@ -894,8 +895,8 @@ export const senadores = [
     tiktok: null,
     suplenteId: 70
   },
-  
-  // ASIENTO 36 - TITULAR
+
+  // ASIENTO 36 - José Sánchez Aguilar (Oruro)
   {
     id: 36,
     tipo: 'titular',
@@ -905,7 +906,7 @@ export const senadores = [
     party: "Libre",
     partyShort: "LIBRE",
     partyColor: "#DB3737",
-    department: "Cochabamba",
+    department: "Oruro",
     comision: "Comisión de Política Social",
     cargo: "Presidente de Comisión",
     foto: "/senadores/titulares/g2/JOSE SANCHEZ AGUILAR.png",
@@ -921,10 +922,10 @@ export const senadores = [
   },
 
   // ==========================================
-  // SUPLENTES (id: 37-71)
+  // SUPLENTES (id: 37-71) - ORDENADOS POR SEATNUMBER
   // ==========================================
-  
-  // SUPLENTE 37 (Asiento 1)
+
+  // SUPLENTE 37 (Asiento 1) - Lenny Mayra Ayala Justiniano (Cochabamba)
   {
     id: 37,
     tipo: 'suplente',
@@ -947,11 +948,11 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    titularId: 1, // ← Referencia al titular
+    titularId: 1,
     suplenteDe: "Wilder Véliz Armas"
   },
-  
-  // SUPLENTE 38 (Asiento 2)
+
+  // SUPLENTE 38 (Asiento 2) - Royer Ivan Mamani Garcia (Cochabamba)
   {
     id: 38,
     tipo: 'suplente',
@@ -961,7 +962,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "Potosí",
+    department: "Cochabamba",
     comite: null,
     comision: null,
     cargo: null,
@@ -977,8 +978,8 @@ export const senadores = [
     titularId: 2,
     suplenteDe: "Judith Rosario García Coca"
   },
-  
-  // SUPLENTE 39 (Asiento 3)
+
+  // SUPLENTE 39 (Asiento 3) - Apolinar Rivera Muñoz (Cochabamba)
   {
     id: 39,
     tipo: 'suplente',
@@ -1004,8 +1005,8 @@ export const senadores = [
     titularId: 3,
     suplenteDe: "Claudia Mallón Vargas"
   },
-  
-  // SUPLENTE 40 (Asiento 4)
+
+  // SUPLENTE 40 (Asiento 4) - Aldo Sergio Villegas Mora (Cochabamba)
   {
     id: 40,
     tipo: 'suplente',
@@ -1031,8 +1032,8 @@ export const senadores = [
     titularId: 4,
     suplenteDe: "Wanda Ximena Medrano Hervas"
   },
-  
-  // SUPLENTE 41 (Asiento 5)
+
+  // SUPLENTE 41 (Asiento 5) - Maria Elena Pachacute Ticona (La Paz)
   {
     id: 41,
     tipo: 'suplente',
@@ -1058,8 +1059,8 @@ export const senadores = [
     titularId: 5,
     suplenteDe: "José Manuel Ormachea Mendieta"
   },
-  
-  // SUPLENTE 42 (Asiento 6)
+
+  // SUPLENTE 42 (Asiento 6) - Nilton Condori Alanoca (La Paz)
   {
     id: 42,
     tipo: 'suplente',
@@ -1085,8 +1086,8 @@ export const senadores = [
     titularId: 6,
     suplenteDe: "Carmen Soledad Chapeton Tancara"
   },
-  
-  // SUPLENTE 43 (Asiento 7)
+
+  // SUPLENTE 43 (Asiento 7) - Roxana Mamani Colquehuanca (La Paz)
   {
     id: 43,
     tipo: 'suplente',
@@ -1112,8 +1113,8 @@ export const senadores = [
     titularId: 7,
     suplenteDe: "Nicanor Gonzalo Cochi Condorí"
   },
-  
-  // SUPLENTE 44 (Asiento 8)
+
+  // SUPLENTE 44 (Asiento 8) - Hugo Marcelo Cortez Calvimontes (Chuquisaca)
   {
     id: 44,
     tipo: 'suplente',
@@ -1139,8 +1140,8 @@ export const senadores = [
     titularId: 8,
     suplenteDe: "Tomasa Yarhui Jacome"
   },
-  
-  // SUPLENTE 45 (Asiento 9)
+
+  // SUPLENTE 45 (Asiento 9) - Ilse Fatima Davila Arancibia (Chuquisaca)
   {
     id: 45,
     tipo: 'suplente',
@@ -1166,8 +1167,8 @@ export const senadores = [
     titularId: 9,
     suplenteDe: "Abdon Porcel Arancibia"
   },
-  
-  // SUPLENTE 46 (Asiento 10)
+
+  // SUPLENTE 46 (Asiento 10) - Manfred Leo Perez Hassenteufel (Chuquisaca)
   {
     id: 46,
     tipo: 'suplente',
@@ -1193,8 +1194,8 @@ export const senadores = [
     titularId: 10,
     suplenteDe: "Bertha Cartagena Sánchez"
   },
-  
-  // SUPLENTE 47 (Asiento 11)
+
+  // SUPLENTE 47 (Asiento 11) - Kathia Natalia Miserendino Romero (Santa Cruz)
   {
     id: 47,
     tipo: 'suplente',
@@ -1220,8 +1221,8 @@ export const senadores = [
     titularId: 11,
     suplenteDe: "Branko Goran Marinković Jovicevic"
   },
-  
-  // SUPLENTE 48 (Asiento 12)
+
+  // SUPLENTE 48 (Asiento 12) - Leonardo Roca Eguez (Santa Cruz)
   {
     id: 48,
     tipo: 'suplente',
@@ -1247,8 +1248,8 @@ export const senadores = [
     titularId: 12,
     suplenteDe: "Kathia Lizbeth Quiroga Fernández"
   },
-  
-  // SUPLENTE 49 (Asiento 13)
+
+  // SUPLENTE 49 (Asiento 13) - Lorgio Fernando Pareja Saucedo (Santa Cruz)
   {
     id: 49,
     tipo: 'suplente',
@@ -1274,8 +1275,8 @@ export const senadores = [
     titularId: 13,
     suplenteDe: "Rosa Tatiana Áñez Carrasco"
   },
-  
-  // SUPLENTE 50 (Asiento 14)
+
+  // SUPLENTE 50 (Asiento 14) - Richard Espada Ugarte (Santa Cruz)
   {
     id: 50,
     tipo: 'suplente',
@@ -1285,7 +1286,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "Cochabamba",
+    department: "Santa Cruz",
     comite: null,
     comision: null,
     cargo: null,
@@ -1301,8 +1302,8 @@ export const senadores = [
     titularId: 14,
     suplenteDe: "Paola Limbania López Zeballos"
   },
-  
-  // SUPLENTE 51 (Asiento 15)
+
+  // SUPLENTE 51 (Asiento 15) - Roger Mamani Coronado (Potosí)
   {
     id: 51,
     tipo: 'suplente',
@@ -1328,8 +1329,8 @@ export const senadores = [
     titularId: 15,
     suplenteDe: "Betty Canaviri Villanueva"
   },
-  
-  // SUPLENTE 52 (Asiento 17)
+
+  // SUPLENTE 52 (Asiento 17) - Susana Gabriela Ruiz Zuleta (Potosí)
   {
     id: 52,
     tipo: 'suplente',
@@ -1355,8 +1356,8 @@ export const senadores = [
     titularId: 17,
     suplenteDe: "Marcelino Flores Ordoñez"
   },
-  
-  // SUPLENTE 53 (Asiento 18)
+
+  // SUPLENTE 53 (Asiento 18) - Freddy Rioja Melgar (Potosí)
   {
     id: 53,
     tipo: 'suplente',
@@ -1382,8 +1383,8 @@ export const senadores = [
     titularId: 18,
     suplenteDe: "Bertha Nurmy Gutiérrez Meneses"
   },
-  
-  // SUPLENTE 54 (Asiento 19)
+
+  // SUPLENTE 54 (Asiento 19) - Cesia Roca Escalante (Beni)
   {
     id: 54,
     tipo: 'suplente',
@@ -1409,8 +1410,8 @@ export const senadores = [
     titularId: 19,
     suplenteDe: "Erick Nelson Soruco Alpire"
   },
-  
-  // SUPLENTE 55 (Asiento 20)
+
+  // SUPLENTE 55 (Asiento 20) - Mabel Giordano Sonnenschein (Beni)
   {
     id: 55,
     tipo: 'suplente',
@@ -1436,8 +1437,8 @@ export const senadores = [
     titularId: 20,
     suplenteDe: "José Roca Haensel"
   },
-  
-  // SUPLENTE 56 (Asiento 21)
+
+  // SUPLENTE 56 (Asiento 21) - Marcelo Matias Cardona Ibañez (Beni)
   {
     id: 56,
     tipo: 'suplente',
@@ -1463,8 +1464,8 @@ export const senadores = [
     titularId: 21,
     suplenteDe: "Ana Karina Velasco Añez"
   },
-  
-  // SUPLENTE 57 (Asiento 22)
+
+  // SUPLENTE 57 (Asiento 22) - Claudia Cardenas Velasquez (Beni)
   {
     id: 57,
     tipo: 'suplente',
@@ -1474,7 +1475,7 @@ export const senadores = [
     party: "Libre",
     partyShort: "LIBRE",
     partyColor: "#DB3737",
-    department: "Cochabamba",
+    department: "Beni",
     comite: null,
     comision: null,
     cargo: null,
@@ -1490,8 +1491,8 @@ export const senadores = [
     titularId: 22,
     suplenteDe: "Ernesto Suarez Sattori"
   },
-  
-  // SUPLENTE 58 (Asiento 23)
+
+  // SUPLENTE 58 (Asiento 23) - Victor Severo Quispe Santander (La Paz)
   {
     id: 58,
     tipo: 'suplente',
@@ -1517,8 +1518,8 @@ export const senadores = [
     titularId: 23,
     suplenteDe: "Ana María Crispin Choque"
   },
-  
-  // SUPLENTE 59 (Asiento 24)
+
+  // SUPLENTE 59 (Asiento 24) - Carolina Giese Urresti (Pando)
   {
     id: 59,
     tipo: 'suplente',
@@ -1544,8 +1545,8 @@ export const senadores = [
     titularId: 24,
     suplenteDe: "Julio Diego Romaña Galindo"
   },
-  
-  // SUPLENTE 60 (Asiento 25)
+
+  // SUPLENTE 60 (Asiento 25) - Jorge Antonio Quispe Flores (Pando)
   {
     id: 60,
     tipo: 'suplente',
@@ -1571,8 +1572,8 @@ export const senadores = [
     titularId: 25,
     suplenteDe: "Carol Carlo Durán"
   },
-  
-  // SUPLENTE 61 (Asiento 26)
+
+  // SUPLENTE 61 (Asiento 26) - Jesus Humberto Suarez Eguez (Pando)
   {
     id: 61,
     tipo: 'suplente',
@@ -1598,8 +1599,8 @@ export const senadores = [
     titularId: 26,
     suplenteDe: "Cintia Monica Puerta Campos"
   },
-  
-  // SUPLENTE 62 (Asiento 27)
+
+  // SUPLENTE 62 (Asiento 27) - Sichard Hans Soraide Castedo (Pando)
   {
     id: 62,
     tipo: 'suplente',
@@ -1609,7 +1610,7 @@ export const senadores = [
     party: "Unidad",
     partyShort: "UNIDAD",
     partyColor: "#EFCD04",
-    department: "Cochabamba",
+    department: "Pando",
     comite: null,
     comision: null,
     cargo: null,
@@ -1625,8 +1626,8 @@ export const senadores = [
     titularId: 27,
     suplenteDe: "Eliana Rina Acosta Quispe"
   },
-  
-  // SUPLENTE 63 (Asiento 28)
+
+  // SUPLENTE 63 (Asiento 28) - Reina Isabel Pallares Morales (Chuquisaca)
   {
     id: 63,
     tipo: 'suplente',
@@ -1636,7 +1637,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
+    department: "Chuquisaca",
     comite: null,
     comision: null,
     cargo: null,
@@ -1652,8 +1653,8 @@ export const senadores = [
     titularId: 28,
     suplenteDe: "Daniel Antonio Ortiz Velásquez"
   },
-  
-  // SUPLENTE 64 (Asiento 29)
+
+  // SUPLENTE 64 (Asiento 29) - Rolando Vacaflor Gabriel Arana (Tarija)
   {
     id: 64,
     tipo: 'suplente',
@@ -1679,8 +1680,8 @@ export const senadores = [
     titularId: 29,
     suplenteDe: "Maria Isabel Moreno Cortez"
   },
-  
-  // SUPLENTE 65 (Asiento 30)
+
+  // SUPLENTE 65 (Asiento 30) - Marcela Guerrero Vilca (Tarija)
   {
     id: 65,
     tipo: 'suplente',
@@ -1706,8 +1707,8 @@ export const senadores = [
     titularId: 30,
     suplenteDe: "César Mentasti Padilla"
   },
-  
-  // SUPLENTE 66 (Asiento 31)
+
+  // SUPLENTE 66 (Asiento 31) - Marco Antonio Segovia Vargas (Tarija)
   {
     id: 66,
     tipo: 'suplente',
@@ -1733,8 +1734,8 @@ export const senadores = [
     titularId: 31,
     suplenteDe: "Leonor Rosalva Romero Gutiérrez"
   },
-  
-  // SUPLENTE 67 (Asiento 32)
+
+  // SUPLENTE 67 (Asiento 32) - Luzmaya Zelaya Vega (Tarija)
   {
     id: 67,
     tipo: 'suplente',
@@ -1760,8 +1761,8 @@ export const senadores = [
     titularId: 32,
     suplenteDe: "Diego Esteban Mateo Ávila Navajas"
   },
-  
-  // SUPLENTE 68 (Asiento 33)
+
+  // SUPLENTE 68 (Asiento 33) - Ramiro Mamani Ramirez (Oruro)
   {
     id: 68,
     tipo: 'suplente',
@@ -1787,8 +1788,8 @@ export const senadores = [
     titularId: 33,
     suplenteDe: "Yasmín Estivariz Villarroel"
   },
-  
-  // SUPLENTE 69 (Asiento 34)
+
+  // SUPLENTE 69 (Asiento 34) - Villma Colque Camacho (Oruro)
   {
     id: 69,
     tipo: 'suplente',
@@ -1798,7 +1799,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
+    department: "Oruro",
     comite: null,
     comision: null,
     cargo: null,
@@ -1814,8 +1815,8 @@ export const senadores = [
     titularId: 34,
     suplenteDe: "Freddy Castillo Chávez"
   },
-  
-  // SUPLENTE 70 (Asiento 35)
+
+  // SUPLENTE 70 (Asiento 35) - Edwin Lopez Quiroga (Oruro)
   {
     id: 70,
     tipo: 'suplente',
@@ -1825,7 +1826,7 @@ export const senadores = [
     party: "Partido Demócrata Cristiano",
     partyShort: "PDC",
     partyColor: "#2E7078",
-    department: "La Paz",
+    department: "Oruro",
     comite: null,
     comision: null,
     cargo: null,
@@ -1841,8 +1842,8 @@ export const senadores = [
     titularId: 35,
     suplenteDe: "Maria Antonieta Alcón Sánchez"
   },
-  
-  // SUPLENTE 71 (Asiento 36)
+
+  // SUPLENTE 71 (Asiento 36) - Cinthya Inga Gutierrez Guzman (Oruro)
   {
     id: 71,
     tipo: 'suplente',
@@ -1852,7 +1853,7 @@ export const senadores = [
     party: "Libre",
     partyShort: "LIBRE",
     partyColor: "#DB3737",
-    department: "Cochabamba",
+    department: "Oruro",
     comite: null,
     comision: null,
     cargo: null,

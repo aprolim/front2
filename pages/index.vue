@@ -420,7 +420,7 @@ const actividadesExtra = computed(() => {
 // ========================================== //
 // API PARA VIDEO EN VIVO
 // ========================================== //
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const cargarLive = async () => {
   liveLoading.value = true

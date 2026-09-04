@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { getAllImages } from '~/data/galeriaDescriptions'
 
 // Configuración de la API (fácil de cambiar cuando el backend esté listo)
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 export const useGaleria = () => {
   const images = ref([])

@@ -336,7 +336,7 @@ import SafeImage from '@/components/SafeImage.vue'
 const route = useRoute()
 const router = useRouter()
 
-const API_BASE_URL = 'http://demoback.senado.gob.bo/api'
+const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const windowLocation = ref('')
 const currentIndex = ref(0)

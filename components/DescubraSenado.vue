@@ -461,9 +461,20 @@ const getSeatFilteredOut = (id) => {
 // COMPUTED - TODOS LOS ASIENTOS (36)
 // ============================================
 const allSeats = computed(() => {
+  // 🔥 LOG 1: Ver qué hay en senadores
+  console.log('🔍 [DEBUG] senadores.length:', senadores.length)
+  console.log('🔍 [DEBUG] Primeros 5 senadores:', senadores.slice(0, 5).map(s => ({ id: s.id, tipo: s.tipo, name: s.name, seatNumber: s.seatNumber })))
+  
   // Obtener SOLO titulares para los asientos
   const titulares = senadores.filter(s => s.tipo === 'titular')
+  console.log('🔍 [DEBUG] Titulares encontrados:', titulares.length)
+  console.log('🔍 [DEBUG] Titulares:', titulares.map(s => ({ id: s.id, name: s.name, seatNumber: s.seatNumber, department: s.department })))
+  
   const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
+  console.log('🔍 [DEBUG] Titulares ordenados por seatNumber:')
+  titularesOrdenados.forEach((s, i) => {
+    console.log(`  Posición ${i}: ID=${s.id}, seatNumber=${s.seatNumber}, name=${s.name}`)
+  })
   
   return titularesOrdenados.map((senator, index) => {
     const pos = seatPositionsArco[index] || { x: 400, y: 300 }
@@ -795,10 +806,80 @@ const tooltipStyle = computed(() => {
 // ============================================
 onMounted(() => {
   restaurarEstado()
-  console.log('✅ SenateChamber montado')
+  
+  // ============================================
+  // 🔥 LOGS DETALLADOS DE DEBUG
+  // ============================================
+  console.log('========================================')
+  console.log('🔍 [DEBUG] SenateChamber - INFORMACIÓN COMPLETA')
+  console.log('========================================')
+  
+  // 1. Total de senadores
   console.log('📊 Total senadores:', senadores.length)
-  console.log('📊 Titulares:', senadores.filter(s => s.tipo === 'titular').length)
-  console.log('📊 Suplentes:', senadores.filter(s => s.tipo === 'suplente').length)
+  
+  // 2. Tipos
+  const titulares = senadores.filter(s => s.tipo === 'titular')
+  const suplentes = senadores.filter(s => s.tipo === 'suplente')
+  console.log('📊 Titulares:', titulares.length)
+  console.log('📊 Suplentes:', suplentes.length)
+  
+  // 3. Verificar IDs duplicados
+  const ids = senadores.map(s => s.id)
+  const idsUnicos = new Set(ids)
+  console.log('📊 IDs únicos:', idsUnicos.size)
+  if (ids.length !== idsUnicos.size) {
+    console.warn('⚠️ HAY IDs DUPLICADOS!')
+    const duplicados = ids.filter((id, index) => ids.indexOf(id) !== index)
+    console.warn('Duplicados:', duplicados)
+  }
+  
+  // 4. Verificar que haya 36 titulares
+  if (titulares.length !== 36) {
+    console.warn(`⚠️ Se esperaban 36 titulares, pero hay ${titulares.length}`)
+  }
+  
+  // 5. Verificar que haya 35 suplentes (o 34 si Teresa Alarcón no tiene)
+  if (suplentes.length !== 35 && suplentes.length !== 34) {
+    console.warn(`⚠️ Se esperaban 35 suplentes, pero hay ${suplentes.length}`)
+  }
+  
+  // 6. Mostrar todos los titulares con su seatNumber
+  console.log('📊 TITULARES ordenados por seatNumber:')
+  const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
+  titularesOrdenados.forEach((s, index) => {
+    console.log(`  ${index+1}. ID:${s.id} | seatNumber:${s.seatNumber} | ${s.name} | ${s.department}`)
+  })
+  
+  // 7. Verificar que los seatNumber sean 1-36
+  const seatNumbers = titulares.map(s => s.seatNumber).sort((a, b) => a - b)
+  console.log('📊 SeatNumbers de titulares:', seatNumbers.join(', '))
+  
+  const expectedSeats = Array.from({ length: 36 }, (_, i) => i + 1)
+  const missingSeats = expectedSeats.filter(s => !seatNumbers.includes(s))
+  if (missingSeats.length > 0) {
+    console.warn(`⚠️ Faltan los asientos: ${missingSeats.join(', ')}`)
+  }
+  
+  // 8. Mostrar suplentes
+  console.log('📊 SUPLENTES:')
+  suplentes.forEach((s, index) => {
+    console.log(`  ${index+1}. ID:${s.id} | seatNumber:${s.seatNumber} | ${s.name} | titularId:${s.titularId} | ${s.department}`)
+  })
+  
+  // 9. Verificar relaciones titular-suplente
+  console.log('📊 RELACIONES TITULAR-SUPLENTE:')
+  titulares.forEach(t => {
+    const suplente = suplentes.find(s => s.titularId === t.id)
+    if (suplente) {
+      console.log(`  ✅ Asiento ${t.seatNumber}: ${t.name} → ${suplente.name}`)
+    } else {
+      console.log(`  ⚠️ Asiento ${t.seatNumber}: ${t.name} → SIN SUPLENTE`)
+    }
+  })
+  
+  console.log('========================================')
+  console.log('✅ SenateChamber montado')
+  console.log('========================================')
 })
 </script>
 
