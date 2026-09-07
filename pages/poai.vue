@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
+  <div class="min-h-screen bg-gray-50 py-[8vw] sm:py-8 flex justify-center">
     <div class="w-[90%] max-w-6xl">
       <!-- Botón volver -->
-      <div class="mb-6">
+      <div class="mb-[4vw] sm:mb-6">
         <NuxtLink 
           to="/" 
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors text-[3.6vw] sm:text-[1vw]"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-[5vw] sm:w-5 h-[5vw] sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Volver al inicio
@@ -21,9 +21,9 @@
         <!-- Header -->
         <div class="management-header">
           <div class="header-left">
-            <h2 class="management-title">
+            <h2 class="management-title text-[5.4vw] sm:text-[1.4rem] font-bold text-senado-primary">
               Plan Operativo Anual Individual - POAI
-              <span v-if="!loading && !error" class="badge">{{ documentos.length }} documentos</span>
+              <span v-if="!loading && !error" class="badge text-[2.4vw] sm:text-[0.75rem]">{{ documentos.length }} documentos</span>
             </h2>
           </div>
           
@@ -35,15 +35,15 @@
                 v-model="terminoBusqueda"
                 @input="filtrarDocumentos"
                 placeholder="Buscar documentos..."
-                class="search-input"
+                class="search-input text-[3vw] sm:text-[0.85rem]"
               >
-              <button class="search-button" :disabled="loading">
+              <button class="search-button text-[3vw] sm:text-[0.85rem]" :disabled="loading">
                 <span class="search-icon">🔍</span>
               </button>
               <button 
                 v-if="terminoBusqueda" 
                 @click="limpiarBusqueda" 
-                class="clear-button"
+                class="clear-button text-[3.6vw] sm:text-[0.9rem]"
                 title="Limpiar búsqueda"
               >
                 ✕
@@ -55,14 +55,14 @@
         <!-- Estado de carga -->
         <div v-if="loading" class="loading-state">
           <div class="spinner"></div>
-          <p>Cargando documentos...</p>
+          <p class="text-[3.6vw] sm:text-[1vw]">Cargando documentos...</p>
         </div>
 
         <!-- Estado de error -->
         <div v-else-if="error" class="error-state">
-          <span class="error-icon">⚠️</span>
-          <p>{{ error }}</p>
-          <button @click="cargarDocumentos" class="retry-button">Reintentar</button>
+          <span class="error-icon text-[6vw] sm:text-[2rem]">⚠️</span>
+          <p class="text-[3.6vw] sm:text-[1vw]">{{ error }}</p>
+          <button @click="cargarDocumentos" class="retry-button text-[3.6vw] sm:text-[0.9rem]">Reintentar</button>
         </div>
 
         <!-- Lista de documentos -->
@@ -70,38 +70,38 @@
           <table class="management-table">
             <thead>
               <tr>
-                <th @click="ordenarPor('nombre')" class="sortable">
+                <th @click="ordenarPor('nombre')" class="sortable text-[2.4vw] sm:text-[0.8rem]">
                   Nombre del archivo
-                  <span class="sort-icon">{{ getSortIcon('nombre') }}</span>
+                  <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('nombre') }}</span>
                 </th>
-                <th @click="ordenarPor('fecha')" class="sortable">
+                <th @click="ordenarPor('fecha')" class="sortable text-[2.4vw] sm:text-[0.8rem]">
                   Fecha de subida
-                  <span class="sort-icon">{{ getSortIcon('fecha') }}</span>
+                  <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('fecha') }}</span>
                 </th>
-                <th @click="ordenarPor('tamaño')" class="sortable">
+                <th @click="ordenarPor('tamaño')" class="sortable text-[2.4vw] sm:text-[0.8rem]">
                   Tamaño
-                  <span class="sort-icon">{{ getSortIcon('tamaño') }}</span>
+                  <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('tamaño') }}</span>
                 </th>
-                <th class="actions-column">Documento</th>
+                <th class="actions-column text-[2.4vw] sm:text-[0.8rem]">Documento</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="doc in documentosFiltrados" :key="doc.id" class="management-row">
                 <td class="title-cell">
-                  <div class="titulo-principal">{{ doc.nombre }}</div>
-                  <div v-if="doc.descripcion" class="descripcion">{{ doc.descripcion }}</div>
-                  <div v-if="doc.gestion" class="gestion-info">Gestión: {{ doc.gestion }}</div>
+                  <div class="titulo-principal text-[3vw] sm:text-[0.85rem]">{{ doc.nombre }}</div>
+                  <div v-if="doc.descripcion" class="descripcion text-[2.4vw] sm:text-[0.7rem]">{{ doc.descripcion }}</div>
+                  <div v-if="doc.gestion" class="gestion-info text-[2.4vw] sm:text-[0.7rem]">Gestión: {{ doc.gestion }}</div>
                 </td>
-                <td>{{ formatearFecha(doc.fecha) }}</td>
-                <td>{{ formatearTamaño(doc.tamaño) }}</td>
+                <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearFecha(doc.fecha) }}</td>
+                <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearTamaño(doc.tamaño) }}</td>
                 <td class="actions-cell">
                   <a 
                     :href="doc.url" 
                     target="_blank"
-                    class="btn-documento"
+                    class="btn-documento text-[2.4vw] sm:text-[0.7rem]"
                     title="Ver PDF"
                   >
-                    <span class="btn-icon">📄</span>
+                    <span class="btn-icon text-[3.6vw] sm:text-[1rem]">📄</span>
                     <span class="btn-text">Ver PDF</span>
                   </a>
                 </td>
@@ -109,9 +109,9 @@
               
               <!-- Fila vacía -->
               <tr v-if="documentosFiltrados.length === 0 && !loading">
-                <td colspan="4" class="empty-state">
+                <td colspan="4" class="empty-state text-[3.6vw] sm:text-[0.95rem]">
                   <p>No hay documentos disponibles</p>
-                  <p v-if="terminoBusqueda" class="text-sm text-gray-400 mt-1">
+                  <p v-if="terminoBusqueda" class="text-[3vw] sm:text-sm text-gray-400 mt-1">
                     No se encontraron resultados para "{{ terminoBusqueda }}"
                   </p>
                 </td>
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Información de depuración (opcional) -->
-        <div v-if="documentos.length > 0 && !loading" class="debug-info p-2 text-xs border-t border-gray-200 bg-gray-50">
+        <div v-if="documentos.length > 0 && !loading" class="debug-info p-2 text-[2.4vw] sm:text-xs border-t border-gray-200 bg-gray-50">
           <p>Total documentos: {{ documentos.length }} | Mostrando: {{ documentosFiltrados.length }}</p>
         </div>
       </div>
@@ -288,9 +288,15 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 4vw;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .management-header {
+    margin-bottom: 16px;
+  }
 }
 
 .header-left {
@@ -301,7 +307,6 @@ onMounted(() => {
 }
 
 .management-title {
-  font-size: 1.4rem;
   font-weight: 600;
   color: #0f172a;
   display: flex;
@@ -315,7 +320,6 @@ onMounted(() => {
   color: white;
   padding: 2px 8px;
   border-radius: 16px;
-  font-size: 0.75rem;
   font-weight: 500;
 }
 
@@ -339,8 +343,8 @@ onMounted(() => {
 .search-input {
   border: 1px solid #e2e8f0;
   padding: 6px 10px;
-  font-size: 0.85rem;
-  width: 260px;
+  width: 100%;
+  max-width: 260px;
   border-radius: 6px;
   outline: none;
   transition: all 0.2s;
@@ -360,7 +364,6 @@ onMounted(() => {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.85rem;
   position: absolute;
   right: 3px;
   top: 3px;
@@ -380,7 +383,6 @@ onMounted(() => {
   border: none;
   color: #94a3b8;
   cursor: pointer;
-  font-size: 0.9rem;
   padding: 0 6px;
   position: absolute;
   right: 60px;
@@ -404,7 +406,6 @@ onMounted(() => {
 .management-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
 }
 
 .management-table th {
@@ -415,7 +416,6 @@ onMounted(() => {
   color: #475569;
   border-bottom: 2px solid #e2e8f0;
   white-space: nowrap;
-  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
@@ -431,7 +431,6 @@ onMounted(() => {
 
 .sort-icon {
   margin-left: 4px;
-  font-size: 0.75rem;
   opacity: 0.6;
 }
 
@@ -454,16 +453,13 @@ onMounted(() => {
   font-weight: 500;
   color: #0f172a;
   margin-bottom: 2px;
-  font-size: 0.85rem;
 }
 
 .descripcion {
-  font-size: 0.7rem;
   color: #94a3b8;
 }
 
 .gestion-info {
-  font-size: 0.7rem;
   color: #E03636;
   margin-top: 2px;
 }
@@ -482,7 +478,6 @@ onMounted(() => {
   text-decoration: none;
   padding: 4px 8px;
   border-radius: 5px;
-  font-size: 0.7rem;
   font-weight: 500;
   transition: all 0.2s;
   border: none;
@@ -525,8 +520,6 @@ onMounted(() => {
 }
 
 .error-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
   display: block;
 }
 
@@ -536,7 +529,6 @@ onMounted(() => {
   border: none;
   padding: 8px 20px;
   border-radius: 6px;
-  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 12px;
@@ -550,7 +542,6 @@ onMounted(() => {
   text-align: center;
   padding: 40px !important;
   color: #94a3b8;
-  font-size: 0.95rem;
 }
 
 .debug-info {
@@ -575,11 +566,17 @@ onMounted(() => {
   }
   
   .search-input {
-    width: 100%;
+    max-width: 100%;
   }
   
   .btn-text {
     display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .btn-text {
+    display: inline;
   }
 }
 </style>

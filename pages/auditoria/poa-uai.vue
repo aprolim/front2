@@ -1,32 +1,31 @@
-<!-- pages/poa-uai.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50" style="font-size: 1vw;">
+  <div class="min-h-screen bg-gray-50">
     <!-- Hero / Banner - Versión Compacta -->
     <section class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white">
-      <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2.5vw 0;">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between" style="gap: 1.5vw;">
+      <div class="container mx-auto px-4 max-w-[90vw] py-[5vw] sm:py-12 sm:px-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[3vw] sm:gap-6">
           <div>
             <!-- Badge pequeño -->
-            <div class="inline-flex items-center bg-white/10 rounded-full" style="gap: 0.4vw; padding: 0.2vw 0.8vw; margin-bottom: 0.5vw;">
-              <Icon name="mdi:file-pdf-box" class="text-senado-gold" style="font-size: 1.2vw;" />
-              <span class="text-white/80 tracking-wider font-medium" style="font-size: 0.7vw;">PLAN OPERATIVO ANUAL</span>
+            <div class="inline-flex items-center bg-white/10 rounded-full gap-[1.2vw] sm:gap-1 px-[2.4vw] sm:px-3 py-[0.6vw] sm:py-1 mb-[1.5vw] sm:mb-2">
+              <Icon name="mdi:file-pdf-box" class="text-senado-gold text-[3.6vw] sm:text-lg" />
+              <span class="text-white/80 tracking-wider font-medium text-[2.1vw] sm:text-xs">PLAN OPERATIVO ANUAL</span>
             </div>
             
             <!-- Título en línea -->
-            <h1 class="font-bold leading-tight" style="font-size: 3.5vw;">
+            <h1 class="font-bold leading-tight text-[10.5vw] sm:text-4xl md:text-5xl">
               POA - <span class="text-senado-gold">UAI</span>
             </h1>
             
             <!-- Subtítulo -->
-            <p class="text-white/60 tracking-widest font-light" style="font-size: 0.9vw;">
+            <p class="text-white/60 tracking-widest font-light text-[2.7vw] sm:text-sm">
               UNIDAD DE AUDITORÍA INTERNA
             </p>
           </div>
           
           <!-- Año actual destacado -->
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 text-center" style="padding: 0.6vw 2vw;">
-            <span class="font-bold text-senado-gold" style="font-size: 2.5vw;">{{ añoActual }}</span>
-            <p class="text-white/60 tracking-wider" style="font-size: 0.6vw;">VIGENTE</p>
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 text-center px-[6vw] sm:px-8 py-[1.8vw] sm:py-3">
+            <span class="font-bold text-senado-gold text-[7.5vw] sm:text-3xl">{{ añoActual }}</span>
+            <p class="text-white/60 tracking-wider text-[1.8vw] sm:text-xs">VIGENTE</p>
           </div>
         </div>
       </div>
@@ -39,57 +38,56 @@
       </div>
     </section>
 
-    <div class="container mx-auto px-4" style="max-width: 90vw; padding: 2vw 0;">
+    <div class="container mx-auto px-4 max-w-[90vw] py-[6vw] sm:py-8">
       <!-- Tarjeta del Año Actual -->
-      <div class="bg-white rounded-xl shadow-md border border-gray-100 relative z-10" style="padding: 1.2vw; margin-top: -0.8vw; margin-bottom: 1.5vw;">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between" style="gap: 1vw;">
-          <div class="flex items-center" style="gap: 0.8vw;">
-            <div class="bg-senado-primary text-white rounded-lg" style="padding: 0.5vw 1.2vw;">
-              <span class="font-bold" style="font-size: 1.8vw;">{{ añoActual }}</span>
+      <div class="bg-white rounded-xl shadow-md border border-gray-100 relative z-10 px-[3.6vw] sm:px-6 py-[3.6vw] sm:py-4 -mt-[2.4vw] sm:-mt-4 mb-[4.5vw] sm:mb-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[3vw] sm:gap-4">
+          <div class="flex items-center gap-[2.4vw] sm:gap-4">
+            <div class="bg-senado-primary text-white rounded-lg px-[3.6vw] sm:px-4 py-[1.5vw] sm:py-2">
+              <span class="font-bold text-[5.4vw] sm:text-2xl">{{ añoActual }}</span>
             </div>
             <div>
-              <h3 class="font-bold text-senado-primary" style="font-size: 1.1vw;">POA - UAI {{ añoActual }}</h3>
-              <p class="text-gray-500" style="font-size: 0.7vw;">Plan Operativo Anual vigente</p>
+              <h3 class="font-bold text-senado-primary text-[3.3vw] sm:text-lg">POA - UAI {{ añoActual }}</h3>
+              <p class="text-gray-500 text-[2.1vw] sm:text-sm">Plan Operativo Anual vigente</p>
             </div>
           </div>
           <a 
             :href="poaActual?.pdfUrl || '#'" 
             :download="poaActual?.pdfUrl ? 'POA_UAI_' + añoActual + '.pdf' : ''"
             target="_blank"
-            class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium whitespace-nowrap" 
-            style="padding: 0.5vw 1.5vw; font-size: 0.8vw; gap: 0.4vw;"
+            class="bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors inline-flex items-center font-medium whitespace-nowrap px-[4.5vw] sm:px-4 py-[1.5vw] sm:py-2 text-[2.4vw] sm:text-sm gap-[1.2vw] sm:gap-2"
           >
-            <Icon name="mdi:download" style="font-size: 1.1vw;" />
+            <Icon name="mdi:download" class="text-[3.3vw] sm:text-lg" />
             Descargar PDF
           </a>
         </div>
       </div>
 
-      <!-- 🔥 ESTADÍSTICAS CALCULADAS AUTOMÁTICAMENTE -->
-      <div class="grid grid-cols-2 md:grid-cols-4" style="gap: 0.8vw; margin-bottom: 1.5vw;">
-        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-senado-primary" style="font-size: 2vw;">{{ totalPoas }}</div>
-          <p class="text-gray-500" style="font-size: 0.7vw;">Total POAs</p>
+      <!-- ESTADÍSTICAS CALCULADAS AUTOMÁTICAMENTE -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-4">
+          <div class="font-bold text-senado-primary text-[6vw] sm:text-2xl">{{ totalPoas }}</div>
+          <p class="text-gray-500 text-[2.1vw] sm:text-sm">Total POAs</p>
         </div>
-        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-green-600" style="font-size: 2vw;">{{ totalVigentes }}</div>
-          <p class="text-gray-500" style="font-size: 0.7vw;">Vigentes</p>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-4">
+          <div class="font-bold text-green-600 text-[6vw] sm:text-2xl">{{ totalVigentes }}</div>
+          <p class="text-gray-500 text-[2.1vw] sm:text-sm">Vigentes</p>
         </div>
-        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-blue-600" style="font-size: 2vw;">{{ totalPublicados }}</div>
-          <p class="text-gray-500" style="font-size: 0.7vw;">Publicados</p>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-4">
+          <div class="font-bold text-blue-600 text-[6vw] sm:text-2xl">{{ totalPublicados }}</div>
+          <p class="text-gray-500 text-[2.1vw] sm:text-sm">Publicados</p>
         </div>
-        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100" style="padding: 0.8vw;">
-          <div class="font-bold text-yellow-600" style="font-size: 2vw;">{{ totalEnRevision }}</div>
-          <p class="text-gray-500" style="font-size: 0.7vw;">En Revisión</p>
+        <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-4">
+          <div class="font-bold text-yellow-600 text-[6vw] sm:text-2xl">{{ totalEnRevision }}</div>
+          <p class="text-gray-500 text-[2.1vw] sm:text-sm">En Revisión</p>
         </div>
       </div>
 
       <!-- Tabla de Documentos -->
       <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
-        <div class="border-b border-gray-100" style="padding: 0.6vw 1.2vw;">
-          <h2 class="font-bold text-senado-primary flex items-center" style="font-size: 1.1vw; gap: 0.5vw;">
-            <Icon name="mdi:file-document" style="font-size: 1.4vw;" />
+        <div class="border-b border-gray-100 px-[3.6vw] sm:px-4 py-[1.8vw] sm:py-3">
+          <h2 class="font-bold text-senado-primary flex items-center gap-[1.5vw] sm:gap-2 text-[3.3vw] sm:text-lg">
+            <Icon name="mdi:file-document" class="text-[4.2vw] sm:text-xl" />
             Documentos POA - UAI
           </h2>
         </div>
@@ -97,11 +95,11 @@
           <table class="w-full">
             <thead>
               <tr class="bg-gray-50 border-b border-gray-200">
-                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Año</th>
-                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Documento</th>
-                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Fecha</th>
-                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Estado</th>
-                <th class="text-center text-gray-500 font-semibold uppercase tracking-wider" style="padding: 0.5vw 0.8vw; font-size: 0.6vw;">Acciones</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[1.8vw] sm:text-xs">Año</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[1.8vw] sm:text-xs">Documento</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[1.8vw] sm:text-xs">Fecha</th>
+                <th class="text-left text-gray-500 font-semibold uppercase tracking-wider px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[1.8vw] sm:text-xs">Estado</th>
+                <th class="text-center text-gray-500 font-semibold uppercase tracking-wider px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[1.8vw] sm:text-xs">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -111,38 +109,37 @@
                 class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
                 :class="poa.activo ? 'bg-yellow-50/50' : ''"
               >
-                <td style="padding: 0.5vw 0.8vw;">
-                  <span class="font-bold" style="font-size: 0.85vw;">{{ poa.anio }}</span>
-                  <span v-if="poa.activo" class="ml-1 font-bold text-yellow-600 bg-yellow-100 rounded-full" style="padding: 0.05vw 0.5vw; font-size: 0.5vw;">VIGENTE</span>
+                <td class="px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2">
+                  <span class="font-bold text-[2.55vw] sm:text-sm">{{ poa.anio }}</span>
+                  <span v-if="poa.activo" class="ml-1 font-bold text-yellow-600 bg-yellow-100 rounded-full px-[1.5vw] sm:px-2 py-[0.15vw] sm:py-0.5 text-[1.5vw] sm:text-[10px]">VIGENTE</span>
                 </td>
-                <td style="padding: 0.5vw 0.8vw;">
-                  <div class="flex items-center" style="gap: 0.4vw;">
-                    <Icon name="mdi:file-pdf-box" class="text-red-500" style="font-size: 1.4vw;" />
-                    <span style="font-size: 0.7vw;">{{ poa.titulo }}</span>
+                <td class="px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2">
+                  <div class="flex items-center gap-[1.2vw] sm:gap-2">
+                    <Icon name="mdi:file-pdf-box" class="text-red-500 text-[4.2vw] sm:text-xl" />
+                    <span class="text-[2.1vw] sm:text-sm">{{ poa.titulo }}</span>
                   </div>
                 </td>
-                <td style="padding: 0.5vw 0.8vw; font-size: 0.7vw; color: #6b7280;">{{ poa.fecha }}</td>
-                <td style="padding: 0.5vw 0.8vw;">
+                <td class="px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2 text-[2.1vw] sm:text-sm text-gray-500">{{ poa.fecha }}</td>
+                <td class="px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2">
                   <span 
-                    class="rounded-full font-medium"
+                    class="rounded-full font-medium px-[1.8vw] sm:px-2 py-[0.3vw] sm:py-0.5 text-[1.8vw] sm:text-xs"
                     :class="{
                       'bg-green-100 text-green-700': poa.estado === 'Publicado',
                       'bg-yellow-100 text-yellow-700': poa.estado === 'En Revisión',
                       'bg-gray-100 text-gray-700': poa.estado === 'Borrador'
                     }"
-                    style="padding: 0.1vw 0.6vw; font-size: 0.6vw;"
                   >
                     {{ poa.estado }}
                   </span>
                 </td>
-                <td style="padding: 0.5vw 0.8vw;">
-                  <div class="flex items-center justify-center" style="gap: 0.6vw;">
+                <td class="px-[2.4vw] sm:px-3 py-[1.5vw] sm:py-2">
+                  <div class="flex items-center justify-center gap-[1.8vw] sm:gap-3">
                     <button 
                       @click="verPDF(poa)"
                       class="text-senado-primary hover:text-senado-primary-dark transition-colors" 
                       title="Ver"
                     >
-                      <Icon name="mdi:eye" style="font-size: 1.3vw;" />
+                      <Icon name="mdi:eye" class="text-[3.9vw] sm:text-lg" />
                     </button>
                     <a 
                       v-if="poa.pdfUrl"
@@ -152,9 +149,9 @@
                       class="text-gray-400 hover:text-gray-600 transition-colors" 
                       title="Descargar"
                     >
-                      <Icon name="mdi:download" style="font-size: 1.3vw;" />
+                      <Icon name="mdi:download" class="text-[3.9vw] sm:text-lg" />
                     </a>
-                    <span v-else class="text-gray-300 text-xs" style="font-size: 0.6vw;">Sin PDF</span>
+                    <span v-else class="text-gray-300 text-[1.8vw] sm:text-xs">Sin PDF</span>
                   </div>
                 </td>
               </tr>
@@ -164,75 +161,74 @@
       </div>
 
       <!-- Información Adicional -->
-      <div class="grid grid-cols-1 md:grid-cols-2" style="gap: 1vw; margin-top: 1.5vw;">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-[3vw] sm:gap-6 mt-[4.5vw] sm:mt-6">
         <!-- Proceso -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100" style="padding: 1vw;">
-          <h3 class="font-bold text-senado-primary flex items-center" style="font-size: 0.9vw; gap: 0.4vw; margin-bottom: 0.6vw;">
-            <Icon name="mdi:timeline" style="font-size: 1.2vw;" />
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-[3vw] sm:px-6 py-[3vw] sm:py-6">
+          <h3 class="font-bold text-senado-primary flex items-center gap-[1.2vw] sm:gap-2 text-[2.7vw] sm:text-base mb-[1.8vw] sm:mb-3">
+            <Icon name="mdi:timeline" class="text-[3.6vw] sm:text-xl" />
             Proceso de Elaboración
           </h3>
-          <div style="gap: 0.4vw; display: flex; flex-direction: column;">
-            <div class="flex items-start" style="gap: 0.6vw;">
-              <div class="bg-blue-100 text-blue-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">1</div>
+          <div class="flex flex-col gap-[1.2vw] sm:gap-2">
+            <div class="flex items-start gap-[1.8vw] sm:gap-3">
+              <div class="bg-blue-100 text-blue-600 font-bold rounded-full flex items-center justify-center flex-shrink-0 w-[4.8vw] sm:w-8 h-[4.8vw] sm:h-8 text-[2.1vw] sm:text-sm">1</div>
               <div>
-                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Planificación</h4>
-                <p class="text-gray-500" style="font-size: 0.6vw;">Definición de objetivos, actividades y metas</p>
+                <h4 class="font-semibold text-gray-800 text-[2.25vw] sm:text-sm">Planificación</h4>
+                <p class="text-gray-500 text-[1.8vw] sm:text-xs">Definición de objetivos, actividades y metas</p>
               </div>
             </div>
-            <div class="flex items-start" style="gap: 0.6vw;">
-              <div class="bg-yellow-100 text-yellow-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">2</div>
+            <div class="flex items-start gap-[1.8vw] sm:gap-3">
+              <div class="bg-yellow-100 text-yellow-600 font-bold rounded-full flex items-center justify-center flex-shrink-0 w-[4.8vw] sm:w-8 h-[4.8vw] sm:h-8 text-[2.1vw] sm:text-sm">2</div>
               <div>
-                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Revisión y Validación</h4>
-                <p class="text-gray-500" style="font-size: 0.6vw;">Revisión por la UAI y validación institucional</p>
+                <h4 class="font-semibold text-gray-800 text-[2.25vw] sm:text-sm">Revisión y Validación</h4>
+                <p class="text-gray-500 text-[1.8vw] sm:text-xs">Revisión por la UAI y validación institucional</p>
               </div>
             </div>
-            <div class="flex items-start" style="gap: 0.6vw;">
-              <div class="bg-green-100 text-green-600 font-bold rounded-full flex items-center justify-center flex-shrink-0" style="width: 1.6vw; height: 1.6vw; font-size: 0.7vw;">3</div>
+            <div class="flex items-start gap-[1.8vw] sm:gap-3">
+              <div class="bg-green-100 text-green-600 font-bold rounded-full flex items-center justify-center flex-shrink-0 w-[4.8vw] sm:w-8 h-[4.8vw] sm:h-8 text-[2.1vw] sm:text-sm">3</div>
               <div>
-                <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Publicación</h4>
-                <p class="text-gray-500" style="font-size: 0.6vw;">Publicación del POA aprobado</p>
+                <h4 class="font-semibold text-gray-800 text-[2.25vw] sm:text-sm">Publicación</h4>
+                <p class="text-gray-500 text-[1.8vw] sm:text-xs">Publicación del POA aprobado</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Marco Legal -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100" style="padding: 1vw;">
-          <h3 class="font-bold text-senado-primary flex items-center" style="font-size: 0.9vw; gap: 0.4vw; margin-bottom: 0.6vw;">
-            <Icon name="mdi:scale-balance" style="font-size: 1.2vw;" />
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-[3vw] sm:px-6 py-[3vw] sm:py-6">
+          <h3 class="font-bold text-senado-primary flex items-center gap-[1.2vw] sm:gap-2 text-[2.7vw] sm:text-base mb-[1.8vw] sm:mb-3">
+            <Icon name="mdi:scale-balance" class="text-[3.6vw] sm:text-xl" />
             Marco Legal
           </h3>
-          <div style="gap: 0.6vw; display: flex; flex-direction: column;">
-            <div class="border-l-2 border-senado-gold" style="padding-left: 0.6vw;">
-              <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">Ley N° 1178</h4>
-              <p class="text-gray-500" style="font-size: 0.6vw;">Ley SAFCO - Administración y Control Gubernamentales</p>
+          <div class="flex flex-col gap-[1.8vw] sm:gap-3">
+            <div class="border-l-2 border-senado-gold pl-[1.8vw] sm:pl-3">
+              <h4 class="font-semibold text-gray-800 text-[2.25vw] sm:text-sm">Ley N° 1178</h4>
+              <p class="text-gray-500 text-[1.8vw] sm:text-xs">Ley SAFCO - Administración y Control Gubernamentales</p>
             </div>
-            <div class="border-l-2 border-senado-gold" style="padding-left: 0.6vw;">
-              <h4 class="font-semibold text-gray-800" style="font-size: 0.75vw;">DS N° 23318-A</h4>
-              <p class="text-gray-500" style="font-size: 0.6vw;">Reglamento - Normas Básicas de Auditoría</p>
+            <div class="border-l-2 border-senado-gold pl-[1.8vw] sm:pl-3">
+              <h4 class="font-semibold text-gray-800 text-[2.25vw] sm:text-sm">DS N° 23318-A</h4>
+              <p class="text-gray-500 text-[1.8vw] sm:text-xs">Reglamento - Normas Básicas de Auditoría</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Contacto -->
-      <div class="bg-gray-50 rounded-xl border border-gray-200" style="padding: 1vw; margin-top: 1.5vw;">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between" style="gap: 0.8vw;">
-          <div class="flex items-center" style="gap: 0.8vw;">
-            <div class="bg-senado-primary rounded-full flex items-center justify-center flex-shrink-0" style="width: 2.2vw; height: 2.2vw;">
-              <Icon name="mdi:email" class="text-white" style="font-size: 1.2vw;" />
+      <div class="bg-gray-50 rounded-xl border border-gray-200 px-[3vw] sm:px-6 py-[3vw] sm:py-6 mt-[4.5vw] sm:mt-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[2.4vw] sm:gap-4">
+          <div class="flex items-center gap-[2.4vw] sm:gap-4">
+            <div class="bg-senado-primary rounded-full flex items-center justify-center flex-shrink-0 w-[6.6vw] sm:w-12 h-[6.6vw] sm:h-12">
+              <Icon name="mdi:email" class="text-white text-[3.6vw] sm:text-xl" />
             </div>
             <div>
-              <h4 class="font-semibold text-gray-800" style="font-size: 0.85vw;">¿Necesitas más información?</h4>
-              <p class="text-gray-500" style="font-size: 0.65vw;">Contacta a la Unidad de Auditoría Interna</p>
+              <h4 class="font-semibold text-gray-800 text-[2.55vw] sm:text-sm">¿Necesitas más información?</h4>
+              <p class="text-gray-500 text-[1.95vw] sm:text-xs">Contacta a la Unidad de Auditoría Interna</p>
             </div>
           </div>
           <a 
             href="mailto:auditoria@senado.gob.bo" 
-            class="text-senado-primary hover:text-senado-primary-dark font-medium inline-flex items-center" 
-            style="font-size: 0.8vw; gap: 0.3vw;"
+            class="text-senado-primary hover:text-senado-primary-dark font-medium inline-flex items-center gap-[0.9vw] sm:gap-2 text-[2.4vw] sm:text-sm"
           >
-            <Icon name="mdi:email" style="font-size: 1vw;" />
+            <Icon name="mdi:email" class="text-[3vw] sm:text-base" />
             auditoria@senado.gob.bo
           </a>
         </div>
@@ -267,44 +263,30 @@ export default {
     }
   },
   computed: {
-    // 🔥 Año actual desde los datos
     añoActual() {
       const hoy = new Date()
       return hoy.getFullYear()
     },
-    
-    // 🔥 Total de POAs
     totalPoas() {
       return this.poas.length
     },
-    
-    // 🔥 POAs vigentes (activo = true)
     totalVigentes() {
       return this.poas.filter(p => p.activo === true).length
     },
-    
-    // 🔥 POAs publicados
     totalPublicados() {
       return this.poas.filter(p => p.estado === 'Publicado').length
     },
-    
-    // 🔥 POAs en revisión
     totalEnRevision() {
       return this.poas.filter(p => p.estado === 'En Revisión').length
     },
-    
-    // 🔥 POA actual (el vigente)
     poaActual() {
       return this.poas.find(p => p.activo === true) || null
     },
-    
-    // 🔥 POAs ordenados por año (más reciente primero)
     poasOrdenados() {
       return [...this.poas].sort((a, b) => b.anio - a.anio)
     }
   },
   methods: {
-    // 🔥 Ver PDF (si no tiene URL, mostrar mensaje)
     verPDF(poa) {
       if (poa.pdfUrl) {
         window.open(poa.pdfUrl, '_blank')
@@ -319,18 +301,7 @@ export default {
 <style scoped>
 .container {
   max-width: 1200px;
-}
-
-/* Transiciones suaves */
-.hover\:bg-gray-50\/50:hover {
-  background-color: rgba(249, 250, 251, 0.5);
-}
-
-/* Accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
