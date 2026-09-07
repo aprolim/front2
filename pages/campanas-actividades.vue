@@ -1,49 +1,48 @@
-<!-- pages/campanas.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50" style="font-size: 1vw;">
+  <div class="min-h-screen bg-gray-50">
     <!-- Contenedor -->
-    <div class="container mx-auto px-4" style="max-width: 75vw; padding: 3vw 0;">
+    <div class="container mx-auto px-4 max-w-[90vw] sm:max-w-[75vw] py-[8vw] sm:py-12">
       
       <!-- ========================================== -->
       <!-- ENCABEZADO                                -->
       <!-- ========================================== -->
-      <div class="text-center mb-10">
-        <div class="inline-block bg-gradient-to-r from-senado-gold-light to-senado-gold px-6 py-1.5 rounded-full mb-3">
-          <span class="text-[0.8vw] font-bold text-senado-primary uppercase tracking-wider flex items-center gap-2">
-            <Icon name="mdi:bullhorn" class="text-[1.2vw] hidden sm:inline-block" />
+      <div class="text-center mb-[6vw] sm:mb-10">
+        <div class="inline-block bg-gradient-to-r from-senado-gold-light to-senado-gold px-[4vw] sm:px-6 py-[1.2vw] sm:py-1.5 rounded-full mb-[2vw] sm:mb-3">
+          <span class="text-[2.4vw] sm:text-[0.8vw] font-bold text-senado-primary uppercase tracking-wider flex items-center gap-[1.5vw] sm:gap-2">
+            <Icon name="mdi:bullhorn" class="text-[3.6vw] sm:text-[1.2vw]" />
             Campañas Institucionales
           </span>
         </div>
-        <h1 class="text-[4.5vw] font-bold text-senado-primary mb-2 tracking-tight">
+        <h1 class="text-[10vw] sm:text-[4.5vw] font-bold text-senado-primary mb-[1.5vw] sm:mb-2 tracking-tight">
           Campañas y Programas
         </h1>
-        <p class="text-gray-600 text-[1.2vw] max-w-3xl mx-auto leading-relaxed">
+        <p class="text-gray-600 text-[3.6vw] sm:text-[1.2vw] max-w-3xl mx-auto leading-relaxed">
           Conoce las campañas y programas impulsados por la Cámara de Senadores
         </p>
-        <div class="w-[8vw] h-[0.25vw] bg-gradient-to-r from-transparent via-senado-gold to-transparent mx-auto mt-4 rounded-full"></div>
+        <div class="w-[16vw] sm:w-[8vw] h-[0.5vw] sm:h-[0.25vw] bg-gradient-to-r from-transparent via-senado-gold to-transparent mx-auto mt-[3vw] sm:mt-4 rounded-full"></div>
       </div>
 
       <!-- ========================================== -->
       <!-- BUSCADOR Y FILTROS                        -->
       <!-- ========================================== -->
-      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-5 mb-8">
-        <div class="flex flex-col md:flex-row items-center gap-4">
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-[4vw] sm:p-5 mb-[6vw] sm:mb-8">
+        <div class="flex flex-col sm:flex-row items-center gap-[3vw] sm:gap-4">
           <div class="relative flex-1 w-full">
-            <Icon name="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[1.4vw]" />
+            <Icon name="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[4.2vw] sm:text-[1.4vw]" />
             <input 
               v-model="busqueda"
               type="text" 
               placeholder="Buscar campaña..."
-              class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl text-[0.9vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent transition bg-gray-50/50"
+              class="w-full pl-[12vw] sm:pl-12 pr-4 py-[2.5vw] sm:py-3 border-2 border-gray-200 rounded-xl text-[2.7vw] sm:text-[0.9vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent transition bg-gray-50/50"
             />
           </div>
           
-          <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center gap-[1.5vw] sm:gap-2 flex-wrap justify-center">
             <button
               v-for="estado in ['Todas', 'Activa', 'Próximamente', 'Finalizada']"
               :key="estado"
               @click="filtro = estado"
-              class="px-5 py-2 rounded-full text-[0.8vw] font-semibold transition-all duration-300"
+              class="px-[3vw] sm:px-5 py-[1.5vw] sm:py-2 rounded-full text-[2.4vw] sm:text-[0.8vw] font-semibold transition-all duration-300"
               :class="filtro === estado 
                 ? 'bg-senado-primary text-white shadow-lg shadow-senado-primary/30' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
@@ -53,12 +52,12 @@
           </div>
         </div>
         
-        <div class="flex items-center gap-5 mt-3 text-[0.75vw] text-gray-500 border-t border-gray-100 pt-3">
-          <span class="flex items-center gap-2">
-            <span class="bg-senado-primary text-white text-[0.65vw] font-bold px-3 py-0.5 rounded-full">{{ campanas.length }}</span>
+        <div class="flex items-center gap-[3vw] sm:gap-5 mt-[2vw] sm:mt-3 text-[2.25vw] sm:text-[0.75vw] text-gray-500 border-t border-gray-100 pt-[2vw] sm:pt-3">
+          <span class="flex items-center gap-[1.5vw] sm:gap-2">
+            <span class="bg-senado-primary text-white text-[2vw] sm:text-[0.65vw] font-bold px-[2vw] sm:px-3 py-[0.3vw] sm:py-0.5 rounded-full">{{ campanas.length }}</span>
             campañas disponibles
           </span>
-          <span class="w-px h-5 bg-gray-200"></span>
+          <span class="w-px h-[4vw] sm:h-5 bg-gray-200"></span>
           <span>Mostrando {{ inicio }} - {{ fin }} de {{ filtrados.length }}</span>
         </div>
       </div>
@@ -66,7 +65,7 @@
       <!-- ========================================== -->
       <!-- GRID DE CAMPAÑAS                          -->
       <!-- ========================================== -->
-      <div v-if="paginados.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-if="paginados.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[4vw] sm:gap-6">
         <div 
           v-for="campana in paginados" 
           :key="campana.id"
@@ -77,8 +76,8 @@
           }"
         >
           <!-- Badge destacado -->
-          <div v-if="campana.destacado" class="absolute top-4 left-4 z-20 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white text-[0.7vw] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
-            <Icon name="mdi:star" class="text-[1vw]" />
+          <div v-if="campana.destacado" class="absolute top-4 left-4 z-20 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white text-[2.1vw] sm:text-[0.7vw] font-bold px-[2.5vw] sm:px-3 py-[1vw] sm:py-1.5 rounded-full shadow-lg flex items-center gap-[1vw] sm:gap-1.5">
+            <Icon name="mdi:star" class="text-[3vw] sm:text-[1vw]" />
             DESTACADO
           </div>
 
@@ -95,13 +94,13 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
             
             <!-- Info sobre imagen -->
-            <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-              <h3 class="text-[1.4vw] font-bold leading-tight mb-2 drop-shadow-lg line-clamp-2">
+            <div class="absolute bottom-0 left-0 right-0 p-[4vw] sm:p-5 text-white">
+              <h3 class="text-[4.2vw] sm:text-[1.4vw] font-bold leading-tight mb-[1.5vw] sm:mb-2 drop-shadow-lg line-clamp-2">
                 {{ campana.titulo }}
               </h3>
               
-              <div class="flex items-center gap-2 text-[0.85vw] text-white/90 drop-shadow-lg">
-                <Icon name="mdi:calendar-range" class="text-[0.9vw]" />
+              <div class="flex items-center gap-[1.5vw] sm:gap-2 text-[2.55vw] sm:text-[0.85vw] text-white/90 drop-shadow-lg">
+                <Icon name="mdi:calendar-range" class="text-[2.7vw] sm:text-[0.9vw]" />
                 <span>{{ campana.periodo }}</span>
               </div>
             </div>
@@ -109,34 +108,34 @@
             <!-- Badge de estado -->
             <div class="absolute top-4 right-4 z-10">
               <span 
-                class="text-[0.9vw] font-bold px-5 py-2 rounded-full backdrop-blur-sm shadow-lg flex items-center gap-2"
+                class="text-[2.7vw] sm:text-[0.9vw] font-bold px-[4vw] sm:px-5 py-[1.5vw] sm:py-2 rounded-full backdrop-blur-sm shadow-lg flex items-center gap-[1.5vw] sm:gap-2"
                 :class="{
                   'bg-green-500/95 text-white': campana.estado === 'Activa',
                   'bg-blue-500/95 text-white': campana.estado === 'Próximamente',
                   'bg-gray-600/95 text-white': campana.estado === 'Finalizada'
                 }"
               >
-                <span v-if="campana.estado === 'Activa'" class="inline-block w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
-                <Icon v-else-if="campana.estado === 'Próximamente'" name="mdi:clock-outline" class="text-[1.1vw]" />
-                <Icon v-else name="mdi:check" class="text-[1.1vw]" />
+                <span v-if="campana.estado === 'Activa'" class="inline-block w-[2vw] sm:w-2.5 h-[2vw] sm:h-2.5 bg-white rounded-full animate-pulse"></span>
+                <Icon v-else-if="campana.estado === 'Próximamente'" name="mdi:clock-outline" class="text-[3.3vw] sm:text-[1.1vw]" />
+                <Icon v-else name="mdi:check" class="text-[3.3vw] sm:text-[1.1vw]" />
                 {{ campana.estado }}
               </span>
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="p-4 bg-white border-t border-gray-100 flex-shrink-0">
+          <div class="p-[3vw] sm:p-4 bg-white border-t border-gray-100 flex-shrink-0">
             <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <Icon name="mdi:calendar" class="text-[0.8vw] text-gray-400" />
-                <span class="text-[0.6vw] text-gray-400">{{ campana.periodo }}</span>
+              <div class="flex items-center gap-[1.5vw] sm:gap-2">
+                <Icon name="mdi:calendar" class="text-[2.4vw] sm:text-[0.8vw] text-gray-400" />
+                <span class="text-[1.8vw] sm:text-[0.6vw] text-gray-400">{{ campana.periodo }}</span>
               </div>
               <button 
                 @click="verDetalle(campana)"
-                class="text-[0.7vw] font-semibold text-senado-primary hover:text-senado-primary-dark flex items-center gap-2 group-hover:gap-3 transition-all duration-300 bg-senado-gold-lightest px-4 py-1.5 rounded-full hover:bg-senado-gold"
+                class="text-[2.1vw] sm:text-[0.7vw] font-semibold text-senado-primary hover:text-senado-primary-dark flex items-center gap-[1.5vw] sm:gap-2 group-hover:gap-3 transition-all duration-300 bg-senado-gold-lightest px-[3vw] sm:px-4 py-[1vw] sm:py-1.5 rounded-full hover:bg-senado-gold"
               >
                 Ver más
-                <Icon name="mdi:arrow-right" class="text-[0.8vw]" />
+                <Icon name="mdi:arrow-right" class="text-[2.4vw] sm:text-[0.8vw]" />
               </button>
             </div>
           </div>
@@ -146,21 +145,21 @@
       <!-- ========================================== -->
       <!-- PAGINACIÓN                                -->
       <!-- ========================================== -->
-      <div v-if="totalPaginas > 1" class="flex flex-wrap items-center justify-center gap-2 mt-8">
+      <div v-if="totalPaginas > 1" class="flex flex-wrap items-center justify-center gap-[1.5vw] sm:gap-2 mt-[6vw] sm:mt-8">
         <button 
           @click="pagina--" 
           :disabled="pagina === 1"
-          class="px-5 py-2.5 rounded-xl transition-all duration-300 text-[0.8vw] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-[4vw] sm:px-5 py-[2vw] sm:py-2.5 rounded-xl transition-all duration-300 text-[2.4vw] sm:text-[0.8vw] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           :class="pagina === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-senado-primary hover:text-white'"
         >
-          <Icon name="mdi:chevron-left" class="text-[1vw]" /> Anterior
+          <Icon name="mdi:chevron-left" class="text-[3vw] sm:text-[1vw]" /> Anterior
         </button>
 
         <button 
           v-for="p in totalPaginas" 
           :key="p"
           @click="pagina = p"
-          class="w-10 h-10 rounded-xl transition-all duration-300 text-[0.8vw] font-semibold"
+          class="w-[8vw] sm:w-10 h-[8vw] sm:h-10 rounded-xl transition-all duration-300 text-[2.4vw] sm:text-[0.8vw] font-semibold"
           :class="p === pagina 
             ? 'bg-senado-primary text-white shadow-md shadow-senado-primary/30' 
             : 'bg-white border-2 border-gray-200 text-gray-600 hover:bg-gray-50'"
@@ -171,19 +170,19 @@
         <button 
           @click="pagina++" 
           :disabled="pagina === totalPaginas"
-          class="px-5 py-2.5 rounded-xl transition-all duration-300 text-[0.8vw] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+          class="px-[4vw] sm:px-5 py-[2vw] sm:py-2.5 rounded-xl transition-all duration-300 text-[2.4vw] sm:text-[0.8vw] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           :class="pagina === totalPaginas ? 'bg-gray-100 text-gray-400' : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-senado-primary hover:text-white'"
         >
-          Siguiente <Icon name="mdi:chevron-right" class="text-[1vw]" />
+          Siguiente <Icon name="mdi:chevron-right" class="text-[3vw] sm:text-[1vw]" />
         </button>
       </div>
 
       <!-- Sin resultados -->
-      <div v-else-if="filtrados.length === 0" class="text-center py-20 bg-white rounded-2xl shadow-lg border border-gray-100">
-        <Icon name="mdi:file-search" class="text-[4vw] text-gray-300" />
-        <h3 class="text-[2.5vw] font-bold text-gray-700 mb-2">No se encontraron campañas</h3>
-        <p class="text-[1.1vw] text-gray-500">Intenta con otros términos de búsqueda</p>
-        <button @click="busqueda = ''; filtro = 'Todas'" class="mt-5 text-senado-primary hover:underline text-[1vw] font-semibold">
+      <div v-else-if="filtrados.length === 0" class="text-center py-[12vw] sm:py-20 bg-white rounded-2xl shadow-lg border border-gray-100">
+        <Icon name="mdi:file-search" class="text-[12vw] sm:text-[4vw] text-gray-300" />
+        <h3 class="text-[7vw] sm:text-[2.5vw] font-bold text-gray-700 mb-[1.5vw] sm:mb-2">No se encontraron campañas</h3>
+        <p class="text-[3.3vw] sm:text-[1.1vw] text-gray-500">Intenta con otros términos de búsqueda</p>
+        <button @click="busqueda = ''; filtro = 'Todas'" class="mt-[3vw] sm:mt-5 text-senado-primary hover:underline text-[3vw] sm:text-[1vw] font-semibold">
           Limpiar búsqueda
         </button>
       </div>
@@ -200,14 +199,14 @@
       >
         <div 
           class="relative flex flex-col items-center justify-center select-none bg-black/40 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden"
-          style="width: 65vw; height: 92vh;"
+          style="width: 85vw; height: 92vh; max-width: 65vw;"
           @click.self="cerrarImagen"
         >
-          <button @click="cerrarImagen" class="absolute top-2 right-2 z-20 text-white/70 hover:text-white transition-colors bg-black/50 hover:bg-black/70 rounded-full p-2.5">
-            <Icon name="mdi:close" class="text-[1.8vw]" />
+          <button @click="cerrarImagen" class="absolute top-2 right-2 z-20 text-white/70 hover:text-white transition-colors bg-black/50 hover:bg-black/70 rounded-full p-[1.5vw] sm:p-2.5">
+            <Icon name="mdi:close" class="text-[5.4vw] sm:text-[1.8vw]" />
           </button>
 
-          <div class="absolute top-2 left-2 z-20 text-white/80 text-[1vw] font-medium max-w-[60vw] truncate bg-black/50 px-3 py-1.5 rounded-lg">
+          <div class="absolute top-2 left-2 z-20 text-white/80 text-[3vw] sm:text-[1vw] font-medium max-w-[60vw] truncate bg-black/50 px-[2vw] sm:px-3 py-[1vw] sm:py-1.5 rounded-lg">
             {{ imagenTitulo }}
           </div>
 
@@ -235,27 +234,27 @@
             />
           </div>
 
-          <div class="absolute bottom-[1.2vw] left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/15">
-            <button @click="zoomOut" class="text-white hover:text-senado-gold transition-colors p-1.5 rounded-full hover:bg-white/10">
-              <Icon name="mdi:minus" class="text-[1.2vw]" />
+          <div class="absolute bottom-[2vw] sm:bottom-[1.2vw] left-1/2 -translate-x-1/2 z-20 flex items-center gap-[1.5vw] sm:gap-2 bg-black/80 backdrop-blur-sm px-[2.5vw] sm:px-3 py-[1vw] sm:py-1.5 rounded-full border border-white/15">
+            <button @click="zoomOut" class="text-white hover:text-senado-gold transition-colors p-[1vw] sm:p-1.5 rounded-full hover:bg-white/10">
+              <Icon name="mdi:minus" class="text-[3.6vw] sm:text-[1.2vw]" />
             </button>
-            <span class="text-white text-[0.7vw] font-mono min-w-[3.5vw] text-center">{{ Math.round(zoom * 100) }}%</span>
-            <button @click="zoomIn" class="text-white hover:text-senado-gold transition-colors p-1.5 rounded-full hover:bg-white/10">
-              <Icon name="mdi:plus" class="text-[1.2vw]" />
+            <span class="text-white text-[2.1vw] sm:text-[0.7vw] font-mono min-w-[6vw] sm:min-w-[3.5vw] text-center">{{ Math.round(zoom * 100) }}%</span>
+            <button @click="zoomIn" class="text-white hover:text-senado-gold transition-colors p-[1vw] sm:p-1.5 rounded-full hover:bg-white/10">
+              <Icon name="mdi:plus" class="text-[3.6vw] sm:text-[1.2vw]" />
             </button>
-            <div class="w-px h-4 bg-white/20"></div>
-            <button @click="resetZoom" class="text-white/70 hover:text-white transition-colors text-[0.6vw] px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20">
+            <div class="w-px h-[3vw] sm:h-4 bg-white/20"></div>
+            <button @click="resetZoom" class="text-white/70 hover:text-white transition-colors text-[1.8vw] sm:text-[0.6vw] px-[2vw] sm:px-2.5 py-[0.8vw] sm:py-1 rounded-full bg-white/10 hover:bg-white/20">
               Reset
             </button>
-            <div class="w-px h-4 bg-white/20"></div>
-            <button @click="cerrarImagen" class="text-white/70 hover:text-white transition-colors text-[0.6vw] px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 flex items-center gap-1">
-              <Icon name="mdi:close" class="text-[0.8vw]" />
+            <div class="w-px h-[3vw] sm:h-4 bg-white/20"></div>
+            <button @click="cerrarImagen" class="text-white/70 hover:text-white transition-colors text-[1.8vw] sm:text-[0.6vw] px-[2vw] sm:px-2.5 py-[0.8vw] sm:py-1 rounded-full bg-white/10 hover:bg-white/20 flex items-center gap-[1vw] sm:gap-1">
+              <Icon name="mdi:close" class="text-[2.4vw] sm:text-[0.8vw]" />
               Cerrar
             </button>
           </div>
 
-          <div v-if="zoom > 1" class="absolute bottom-16 left-1/2 -translate-x-1/2 text-white/15 text-[0.5vw] pointer-events-none flex items-center gap-1.5 bg-black/30 px-2.5 py-0.5 rounded-full">
-            <Icon name="mdi:cursor-move" class="text-[0.6vw]" />
+          <div v-if="zoom > 1" class="absolute bottom-[10vw] sm:bottom-16 left-1/2 -translate-x-1/2 text-white/15 text-[1.5vw] sm:text-[0.5vw] pointer-events-none flex items-center gap-[1vw] sm:gap-1.5 bg-black/30 px-[2vw] sm:px-2.5 py-[0.8vw] sm:py-0.5 rounded-full">
+            <Icon name="mdi:cursor-move" class="text-[1.8vw] sm:text-[0.6vw]" />
             Arrastra para mover
           </div>
         </div>
@@ -268,54 +267,54 @@
     <Teleport to="body">
       <div 
         v-if="modal"
-        class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+        class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-[3vw] sm:p-4"
         @click.self="modal = false"
       >
         <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col">
           
           <!-- Header -->
-          <div class="flex-shrink-0 bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white p-5">
+          <div class="flex-shrink-0 bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white p-[4vw] sm:p-5">
             <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <Icon name="mdi:bullhorn" class="text-[1.8vw]" />
-                <h2 class="text-[1.8vw] font-bold">{{ campanaActual?.titulo }}</h2>
+              <div class="flex items-center gap-[2vw] sm:gap-3">
+                <Icon name="mdi:bullhorn" class="text-[5.4vw] sm:text-[1.8vw]" />
+                <h2 class="text-[4.5vw] sm:text-[1.8vw] font-bold">{{ campanaActual?.titulo }}</h2>
               </div>
-              <button @click="modal = false" class="hover:bg-white/20 rounded-lg p-2 transition-colors">
-                <Icon name="mdi:close" class="text-[1.8vw]" />
+              <button @click="modal = false" class="hover:bg-white/20 rounded-lg p-[1.5vw] sm:p-2 transition-colors">
+                <Icon name="mdi:close" class="text-[5.4vw] sm:text-[1.8vw]" />
               </button>
             </div>
           </div>
           
           <!-- Body -->
-          <div class="flex-1 overflow-y-auto p-6 space-y-5">
+          <div class="flex-1 overflow-y-auto p-[4vw] sm:p-6 space-y-[3vw] sm:space-y-5">
             
             <!-- Descripción -->
             <div>
-              <h3 class="text-[1.2vw] font-bold text-senado-primary mb-3 flex items-center gap-2">
-                <Icon name="mdi:information-outline" class="text-[1.4vw]" />
+              <h3 class="text-[3.6vw] sm:text-[1.2vw] font-bold text-senado-primary mb-[2vw] sm:mb-3 flex items-center gap-[1.5vw] sm:gap-2">
+                <Icon name="mdi:information-outline" class="text-[4.2vw] sm:text-[1.4vw]" />
                 Descripción
               </h3>
-              <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-                <p class="text-[0.95vw] text-gray-700 leading-relaxed text-justify">
+              <div class="bg-gray-50 rounded-xl p-[3.5vw] sm:p-5 border border-gray-100">
+                <p class="text-[2.85vw] sm:text-[0.95vw] text-gray-700 leading-relaxed text-justify">
                   {{ campanaActual?.descripcion }}
                 </p>
               </div>
             </div>
 
             <!-- Información -->
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                <div class="flex items-center gap-2 text-[0.7vw] text-gray-500 mb-1">
-                  <Icon name="mdi:calendar" class="text-[0.9vw]" /> Período
+            <div class="grid grid-cols-2 gap-[2.5vw] sm:gap-4">
+              <div class="bg-gray-50 rounded-xl p-[2.5vw] sm:p-4 border border-gray-100">
+                <div class="flex items-center gap-[1.5vw] sm:gap-2 text-[2.1vw] sm:text-[0.7vw] text-gray-500 mb-[0.5vw] sm:mb-1">
+                  <Icon name="mdi:calendar" class="text-[2.7vw] sm:text-[0.9vw]" /> Período
                 </div>
-                <p class="text-[0.95vw] font-semibold text-gray-800">{{ campanaActual?.periodo }}</p>
+                <p class="text-[2.85vw] sm:text-[0.95vw] font-semibold text-gray-800">{{ campanaActual?.periodo }}</p>
               </div>
               
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                <div class="flex items-center gap-2 text-[0.7vw] text-gray-500 mb-1">
-                  <Icon name="mdi:information" class="text-[0.9vw]" /> Estado
+              <div class="bg-gray-50 rounded-xl p-[2.5vw] sm:p-4 border border-gray-100">
+                <div class="flex items-center gap-[1.5vw] sm:gap-2 text-[2.1vw] sm:text-[0.7vw] text-gray-500 mb-[0.5vw] sm:mb-1">
+                  <Icon name="mdi:information" class="text-[2.7vw] sm:text-[0.9vw]" /> Estado
                 </div>
-                <span class="px-3 py-1 rounded-full text-[0.8vw] font-semibold inline-block"
+                <span class="px-[2.5vw] sm:px-3 py-[0.8vw] sm:py-1 rounded-full text-[2.4vw] sm:text-[0.8vw] font-semibold inline-block"
                   :class="{
                     'bg-green-500/20 text-green-700': campanaActual?.estado === 'Activa',
                     'bg-blue-500/20 text-blue-700': campanaActual?.estado === 'Próximamente',
@@ -328,17 +327,17 @@
             </div>
 
             <!-- Contacto -->
-            <div class="border-t border-gray-200 pt-4 mt-2">
-              <div class="flex items-center gap-3 text-[0.85vw] text-gray-500">
-                <Icon name="mdi:phone" class="text-[1vw] text-senado-primary" />
+            <div class="border-t border-gray-200 pt-[2.5vw] sm:pt-4 mt-[1.5vw] sm:mt-2">
+              <div class="flex items-center gap-[2vw] sm:gap-3 text-[2.55vw] sm:text-[0.85vw] text-gray-500">
+                <Icon name="mdi:phone" class="text-[3vw] sm:text-[1vw] text-senado-primary" />
                 <span>Más información: <strong class="text-gray-700">73088068</strong></span>
               </div>
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="flex-shrink-0 border-t border-gray-200 p-4 flex justify-end">
-            <button @click="modal = false" class="px-6 py-2 rounded-lg bg-senado-primary text-white hover:bg-senado-primary-dark transition-colors font-medium text-[0.9vw]">
+          <div class="flex-shrink-0 border-t border-gray-200 p-[3vw] sm:p-4 flex justify-end">
+            <button @click="modal = false" class="px-[5vw] sm:px-6 py-[1.5vw] sm:py-2 rounded-lg bg-senado-primary text-white hover:bg-senado-primary-dark transition-colors font-medium text-[2.7vw] sm:text-[0.9vw]">
               Cerrar
             </button>
           </div>

@@ -1,37 +1,35 @@
 <template>
   <div class="min-h-screen">
-    <!-- Fondo fijo -->
-    
     <div class="container-vw">
 
       <!-- Título -->
-      <div class="text-center pb-[3vw] pt-[3vw]">
-        <h1 class="text-[5vw] font-bolddrop-shadow-lg tracking-wide">
+      <div class="text-center pb-[6vw] sm:pb-12 pt-[6vw] sm:pt-12">
+        <h1 class="text-[10vw] sm:text-[5vw] font-bold drop-shadow-lg tracking-wide">
           Todas las <span class="text-senado-primary-light">Noticias</span>
         </h1>
-        <div class="w-[6vw] h-[0.2vw] bg-senado-primary-light mx-auto mt-[1vw]"></div>
-        <p class="text-senado-primary drop-shadow-md mt-[1.5vw] text-[1.5vw] font-[500] tracking-wide">
+        <div class="w-[12vw] sm:w-[6vw] h-[0.4vw] sm:h-[0.2vw] bg-senado-primary-light mx-auto mt-[2vw] sm:mt-4"></div>
+        <p class="text-senado-primary drop-shadow-md mt-[3vw] sm:mt-6 text-[3.6vw] sm:text-[1.5vw] font-[500] tracking-wide">
           Explora todas las noticias del Senado de Bolivia
         </p>
       </div>
 
       <!-- Estado de carga -->
-      <div v-if="loading" class="flex justify-center items-center py-[10vw]">
-        <div class="inline-block w-[3vw] h-[3vw] border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
-        <p class="ml-[1vw] text-white drop-shadow-md text-[1vw]">Cargando noticias...</p>
+      <div v-if="loading" class="flex justify-center items-center py-[12vw] sm:py-20">
+        <div class="inline-block w-[6vw] sm:w-12 h-[6vw] sm:h-12 border-[0.6vw] sm:border-[0.3vw] border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-[2vw] sm:ml-4 text-gray-600 drop-shadow-md text-[2.4vw] sm:text-[1vw]">Cargando noticias...</p>
       </div>
 
       <!-- Estado de error -->
-      <div v-else-if="error" class="text-center py-[10vw]">
-        <p class="text-red-500 mb-[2vw] text-[1vw]">{{ error }}</p>
-        <button @click="recargar" class="bg-[#611717] text-white px-[2vw] py-[0.8vw] rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+      <div v-else-if="error" class="text-center py-[12vw] sm:py-20">
+        <p class="text-red-500 mb-[3vw] sm:mb-8 text-[2.4vw] sm:text-[1vw]">{{ error }}</p>
+        <button @click="recargar" class="bg-[#611717] text-white px-[5vw] sm:px-8 py-[2vw] sm:py-3 rounded-lg hover:bg-[#3a060d] transition text-[2.4vw] sm:text-[0.9vw]">
           Reintentar
         </button>
       </div>
 
       <!-- Grid de noticias -->
       <div v-else-if="todasLasNoticias.length > 0" class="w-[90%] mx-auto">
-        <div class="grid grid-cols-4 gap-[1.5vw]">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.5vw] sm:gap-6">
           <div 
             v-for="noticia in noticiasPaginadas" 
             :key="noticia._id || noticia.id"
@@ -48,19 +46,19 @@
               
               <div class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-[#611717]/90 via-[#611717]/70 to-transparent"></div>
               
-              <div class="absolute bottom-0 left-0 right-0 p-[1.2vw] flex flex-col justify-end h-[45%]">
-                <p class="text-white/90 text-[0.7em] mb-[0.3em] text-shadow-sm font-[600]">
+              <div class="absolute bottom-0 left-0 right-0 p-[2.5vw] sm:p-5 flex flex-col justify-end h-[45%]">
+                <p class="text-white/90 text-[2vw] sm:text-[0.7em] mb-[0.3em] text-shadow-sm font-[600]">
                   {{ formatearFecha(noticia.publishedAt || noticia.fecha || noticia.createdAt) }}
                 </p>
                 
-                <h3 class="font-bold text-white text-[0.9em] leading-tight line-clamp-2">
+                <h3 class="font-bold text-white text-[2.8vw] sm:text-[0.9em] leading-tight line-clamp-2">
                   {{ limpiarAsteriscos(noticia.titulo || noticia.title) }}
                 </h3>
                 
                 <div class="mt-[0.8em] flex justify-end">
-                  <span class="text-white text-[0.75em] font-semibold flex items-center gap-[0.5em] group-hover:gap-[0.8em] transition-all italic">
+                  <span class="text-white text-[2.2vw] sm:text-[0.75em] font-semibold flex items-center gap-[0.8em] group-hover:gap-[1.2em] transition-all italic">
                     Leer más
-                    <svg class="w-[0.9em] h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-[2.5vw] sm:w-[0.9em] h-[2.5vw] sm:h-[0.9em]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                   </span>
@@ -72,41 +70,43 @@
       </div>
 
       <!-- Sin resultados -->
-      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[10vw]">
-        <p class="text-white drop-shadow-md text-[1vw]">No hay noticias disponibles</p>
-        <button @click="recargar" class="mt-[2vw] inline-flex items-center gap-[0.8vw] px-[2vw] py-[0.8vw] bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[0.9vw]">
+      <div v-else-if="!loading && todasLasNoticias.length === 0" class="text-center py-[12vw] sm:py-20">
+        <p class="text-gray-600 drop-shadow-md text-[2.4vw] sm:text-[1vw]">No hay noticias disponibles</p>
+        <button @click="recargar" class="mt-[4vw] sm:mt-8 inline-flex items-center gap-[1.5vw] sm:gap-3 px-[5vw] sm:px-8 py-[2vw] sm:py-3 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-[2.4vw] sm:text-[0.9vw]">
           Reintentar
         </button>
       </div>
 
-      <!-- 🔥 PAGINACIÓN CON COLORES SÓLIDOS -->
-      <div v-if="totalPaginas > 1 && !loading" class="flex justify-center items-center gap-[0.8vw] mt-[4vw] pb-[4vw]">
+      <!-- PAGINACIÓN CON COLORES SÓLIDOS -->
+      <div v-if="totalPaginas > 1 && !loading" class="flex flex-wrap justify-center items-center gap-[2vw] sm:gap-3 mt-[6vw] sm:mt-16 pb-[6vw] sm:pb-16">
         <button 
           @click="cambiarPagina(paginaActual - 1)" 
           :disabled="paginaActual === 1" 
-          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+          class="px-[4vw] sm:px-6 py-[1.5vw] sm:py-3 rounded-lg text-[2.4vw] sm:text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
         >
           Anterior
         </button>
         
-        <button 
-          v-for="p in paginasMostradas" 
-          :key="p" 
-          @click="cambiarPagina(p)" 
-          :class="[
-            'w-[3vw] h-[3vw] rounded-lg transition-all duration-300 text-[1.1vw] font-bold shadow-md',
-            paginaActual === p 
-              ? 'bg-[#8f1522] text-white hover:bg-[#6b111b] border-2 border-[#611717]' 
-              : 'bg-white text-[#611717] hover:bg-[#611717] hover:text-white'
-          ]"
-        >
-          {{ p }}
-        </button>
+        <div class="flex gap-[1.5vw] sm:gap-2 flex-wrap justify-center">
+          <button 
+            v-for="p in paginasMostradas" 
+            :key="p" 
+            @click="cambiarPagina(p)" 
+            :class="[
+              'w-[6vw] sm:w-12 h-[6vw] sm:h-12 rounded-lg transition-all duration-300 text-[2.4vw] sm:text-[1.1vw] font-bold shadow-md flex items-center justify-center',
+              paginaActual === p 
+                ? 'bg-[#8f1522] text-white hover:bg-[#6b111b] border-2 border-[#611717]' 
+                : 'bg-white text-[#611717] hover:bg-[#611717] hover:text-white'
+            ]"
+          >
+            {{ p }}
+          </button>
+        </div>
         
         <button 
           @click="cambiarPagina(paginaActual + 1)" 
           :disabled="paginaActual === totalPaginas" 
-          class="px-[1.5vw] py-[0.8vw] rounded-lg text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
+          class="px-[4vw] sm:px-6 py-[1.5vw] sm:py-3 rounded-lg text-[2.4vw] sm:text-[1vw] font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed bg-[#611717] text-white hover:bg-[#4a1111] shadow-md"
         >
           Siguiente
         </button>
@@ -255,18 +255,22 @@ onMounted(async () => {
   z-index: 10;
 }
 
-
-
-
 .min-h-screen {
   background: rgba(250, 250, 250, 1);
   min-height: 100vh;
 }
 
-.grid-cols-4 {
+.grid-cols-2 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5vw;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5vw;
+}
+
+@media (min-width: 640px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5vw;
+  }
 }
 
 .line-clamp-2 {
@@ -295,8 +299,6 @@ html, body {
 #__nuxt > div {
   background: transparent !important;
 }
-
-
 
 footer {
   position: relative;

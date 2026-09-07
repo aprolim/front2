@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen bg-white py-[2vw]">
-    <div class="mx-auto w-[85%] max-w-[90vw]">
+  <div class="min-h-screen bg-white py-[6vw] sm:py-8">
+    <div class="mx-auto w-[90%] sm:w-[85%] max-w-[90vw]">
       
       <!-- ========================================== -->
       <!-- TÍTULO                                    -->
       <!-- ========================================== -->
-      <div class="mb-[3vw] text-center">
-        <h1 class="text-[4vw] md:text-[4.5vw] font-bold text-senado-primary">
+      <div class="mb-[6vw] sm:mb-12 text-center">
+        <h1 class="text-[10vw] sm:text-4xl md:text-5xl font-bold text-senado-primary">
           Visitas <span class="text-[#8f1522]">Guiadas</span>
         </h1>
-        <div class="w-[6vw] h-[0.3vw] bg-[#611717] mx-auto mt-[1vw] rounded-full"></div>
-        <p class="text-[1.2vw] text-gray-600 mt-[1.5vw] max-w-[60vw] mx-auto">
+        <div class="w-[15vw] sm:w-[6vw] h-[0.8vw] sm:h-[0.3vw] bg-[#611717] mx-auto mt-[3vw] sm:mt-4 rounded-full"></div>
+        <p class="text-[4vw] sm:text-[1.2vw] text-gray-600 mt-[4vw] sm:mt-6 max-w-[80vw] sm:max-w-[60vw] mx-auto">
           Conoce el Palacio Legislativo y la historia del Senado de Bolivia.
           Reserva tu visita guiada gratuita a través de nuestra plataforma digital.
         </p>
@@ -19,8 +19,8 @@
       <!-- ========================================== -->
       <!-- DESCRIPCIÓN GENERAL                        -->
       <!-- ========================================== -->
-      <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw] mb-[2vw] max-w-[80vw] mx-auto">
-        <p class="text-[1vw] text-gray-700 leading-relaxed text-center">
+      <div class="bg-[#f8f6f0] rounded-[3vw] sm:rounded-[1vw] p-[5vw] sm:p-[1.8vw] mb-[6vw] sm:mb-8 max-w-[90vw] sm:max-w-[80vw] mx-auto">
+        <p class="text-[3.6vw] sm:text-[1vw] text-gray-700 leading-relaxed text-center">
           Las visitas guiadas al edificio legislativo tienen por objetivo generar un espacio de acercamiento al 
           <strong>Poder Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
           representantes del pueblo en la confección de las leyes que nos permiten ampliar nuestros derechos 
@@ -31,54 +31,54 @@
       <!-- ========================================== -->
       <!-- CONTENIDO PRINCIPAL - UNA COLUMNA         -->
       <!-- ========================================== -->
-      <div class="max-w-[70vw] mx-auto space-y-[2vw]">
+      <div class="max-w-[90vw] sm:max-w-[70vw] mx-auto space-y-[6vw] sm:space-y-8">
         
         <!-- ========================================== -->
         <!-- REQUISITOS Y HORARIOS (2 columnas internas) -->
         <!-- ========================================== -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-[2vw]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-[4vw] sm:gap-8">
           <!-- Requisitos -->
-          <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw]">
-            <h3 class="text-[1.2vw] font-bold text-senado-primary mb-[1vw] flex items-center gap-[0.5vw]">
-              <svg class="w-[1.5vw] h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-[#f8f6f0] rounded-[3vw] sm:rounded-[1vw] p-[5vw] sm:p-[1.8vw]">
+            <h3 class="text-[4vw] sm:text-[1.2vw] font-bold text-senado-primary mb-[3vw] sm:mb-4 flex items-center gap-[2vw] sm:gap-2">
+              <svg class="w-[5vw] sm:w-[1.5vw] h-[5vw] sm:h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               REQUISITOS PARA EL INGRESO
             </h3>
-            <ul class="space-y-[0.6vw] text-[1vw] text-gray-700">
-              <li class="flex items-start gap-[0.8vw]">
-                <span class="text-senado-primary font-bold">•</span>
+            <ul class="space-y-[2.5vw] sm:space-y-[0.6vw] text-[3.6vw] sm:text-[1vw] text-gray-700">
+              <li class="flex items-start gap-[2.5vw] sm:gap-3">
+                <span class="text-senado-primary font-bold text-[4vw] sm:text-[1.2vw]">•</span>
                 <span>Completar la <strong>solicitud en la plataforma digital</strong></span>
               </li>
-              <li class="flex items-start gap-[0.8vw]">
-                <span class="text-senado-primary font-bold">•</span>
+              <li class="flex items-start gap-[2.5vw] sm:gap-3">
+                <span class="text-senado-primary font-bold text-[4vw] sm:text-[1.2vw]">•</span>
                 <span>Presentar <strong>cédula de identidad</strong> el día de la visita</span>
               </li>
-              <li class="flex items-start gap-[0.8vw]">
-                <span class="text-senado-primary font-bold">•</span>
+              <li class="flex items-start gap-[2.5vw] sm:gap-3">
+                <span class="text-senado-primary font-bold text-[4vw] sm:text-[1.2vw]">•</span>
                 <span>Respetar las <strong>normas de conducta</strong> del Reglamento del Senado</span>
               </li>
-              <li class="flex items-start gap-[0.8vw]">
-                <span class="text-senado-primary font-bold">•</span>
+              <li class="flex items-start gap-[2.5vw] sm:gap-3">
+                <span class="text-senado-primary font-bold text-[4vw] sm:text-[1.2vw]">•</span>
                 <span>Uso obligatorio de <strong>tapabocas</strong> y medidas de bioseguridad</span>
               </li>
             </ul>
           </div>
 
           <!-- Horarios -->
-          <div class="bg-[#f8f6f0] rounded-[1vw] p-[1.8vw]">
-            <h3 class="text-[1.2vw] font-bold text-senado-primary mb-[1vw] flex items-center gap-[0.5vw]">
-              <svg class="w-[1.5vw] h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-[#f8f6f0] rounded-[3vw] sm:rounded-[1vw] p-[5vw] sm:p-[1.8vw]">
+            <h3 class="text-[4vw] sm:text-[1.2vw] font-bold text-senado-primary mb-[3vw] sm:mb-4 flex items-center gap-[2vw] sm:gap-2">
+              <svg class="w-[5vw] sm:w-[1.5vw] h-[5vw] sm:h-[1.5vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Horarios de Visita
             </h3>
-            <div class="space-y-[0.5vw] text-[1vw] text-gray-700">
-              <div class="flex justify-between py-[0.5vw] border-b border-gray-200">
+            <div class="space-y-[2vw] sm:space-y-[0.5vw] text-[3.6vw] sm:text-[1vw] text-gray-700">
+              <div class="flex justify-between py-[1.5vw] sm:py-[0.5vw] border-b border-gray-200">
                 <span class="font-medium">Lunes a Viernes</span>
                 <span>08:30 - 16:30</span>
               </div>
-              <div class="flex justify-between py-[0.5vw]">
+              <div class="flex justify-between py-[1.5vw] sm:py-[0.5vw]">
                 <span class="font-medium">Sábados y Domingos</span>
                 <span class="text-gray-400">Cerrado</span>
               </div>
@@ -89,9 +89,9 @@
         <!-- ========================================== -->
         <!-- ADVERTENCIA COVID                         -->
         <!-- ========================================== -->
-        <div class="p-[1.2vw] bg-yellow-50 border border-yellow-200 rounded-[0.8vw]">
-          <p class="text-[0.9vw] text-yellow-800 flex items-center gap-[0.5vw] justify-center">
-            <span class="text-[1.2vw]">⚠️</span>
+        <div class="p-[4vw] sm:p-[1.2vw] bg-yellow-50 border border-yellow-200 rounded-[2.5vw] sm:rounded-[0.8vw]">
+          <p class="text-[3vw] sm:text-[0.9vw] text-yellow-800 flex items-center gap-[2vw] sm:gap-2 justify-center">
+            <span class="text-[5vw] sm:text-[1.2vw]">⚠️</span>
             Para la asistencia se deberá cumplir con todas las medidas de prevención del Covid-19: 
             uso correcto del tapabocas, mantener la distancia, uso de alcohol en gel, respeto de las indicaciones.
           </p>
@@ -100,49 +100,47 @@
         <!-- ========================================== -->
         <!-- TÍTULO DEL PROCESO                         -->
         <!-- ========================================== -->
-        <div class="text-center mt-[2vw]">
-          <h2 class="text-[2.5vw] font-bold text-senado-primary">
+        <div class="text-center mt-[6vw] sm:mt-8">
+          <h2 class="text-[7vw] sm:text-[2.5vw] font-bold text-senado-primary">
             Proceso de Solicitud
           </h2>
-          <p class="text-[1vw] text-gray-500 mt-[0.5vw]">
+          <p class="text-[3.6vw] sm:text-[1vw] text-gray-500 mt-[2vw] sm:mt-2">
             Sigue estos pasos para solicitar tu visita guiada a través de la Plataforma Digital
           </p>
-          <div class="w-[4vw] h-[0.2vw] bg-[#611717] mx-auto mt-[0.8vw] rounded-full"></div>
+          <div class="w-[12vw] sm:w-[4vw] h-[0.5vw] sm:h-[0.2vw] bg-[#611717] mx-auto mt-[2vw] sm:mt-3 rounded-full"></div>
         </div>
 
         <!-- ========================================== -->
         <!-- PASOS DEL PROCESO - UNA COLUMNA           -->
         <!-- ========================================== -->
-        <div class="space-y-[3vw]">
+        <div class="space-y-[6vw] sm:space-y-12">
           <!-- Paso 1 -->
-          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
-            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
-              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">1</div>
-              <h3 class="text-[1.5vw] font-bold text-senado-primary">Ingresa a la Plataforma Digital</h3>
+          <div class="bg-white rounded-[3vw] sm:rounded-[1vw] shadow-lg border border-gray-200 p-[5vw] sm:p-[2vw]">
+            <div class="flex items-center gap-[4vw] sm:gap-6 mb-[3vw] sm:mb-4">
+              <div class="flex-shrink-0 w-[9vw] sm:w-[3vw] h-[9vw] sm:h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[4vw] sm:text-[1.2vw]">1</div>
+              <h3 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-senado-primary">Ingresa a la Plataforma Digital</h3>
             </div>
-            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+            <p class="text-[3.6vw] sm:text-[1vw] text-gray-600 mb-[4vw] sm:mb-6 ml-[13vw] sm:ml-[4.5vw]">
               Accede al sistema a través del siguiente enlace. Si no tienes cuenta, deberás registrarte.
             </p>
-            <div class="ml-[4.5vw]">
+            <div class="ml-[13vw] sm:ml-[4.5vw]">
               <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso1.webp', 'Paso 1: Ingresar a la plataforma digital')">
                 <img 
                   src="/images/visitas/paso1.webp" 
                   alt="Paso 1: Ingresar a la plataforma digital"
-                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  class="w-full rounded-[2vw] sm:rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
                   loading="lazy"
                 />
-                <!-- Overlay de zoom -->
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
-                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
-                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[2vw] sm:rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[3vw] sm:text-[0.9vw] px-[4vw] sm:px-[1.5vw] py-[2vw] sm:py-[0.6vw] rounded-[1.5vw] sm:rounded-[0.4vw] flex items-center gap-[2vw] sm:gap-2">
+                    <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                     </svg>
                     <span>Click para ampliar</span>
                   </div>
                 </div>
-                <!-- Badge de zoom siempre visible -->
-                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
-                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-[1.5vw] sm:bottom-[0.5vw] right-[1.5vw] sm:right-[0.5vw] bg-black/60 text-white text-[2.5vw] sm:text-[0.7vw] px-[2.5vw] sm:px-[0.8vw] py-[1vw] sm:py-[0.3vw] rounded-[1vw] sm:rounded-[0.3vw] flex items-center gap-[1vw] sm:gap-1 pointer-events-none">
+                  <svg class="w-[2.5vw] sm:w-[0.8vw] h-[2.5vw] sm:h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                   </svg>
                   <span>Ampliar</span>
@@ -151,10 +149,10 @@
               <a 
                 href="https://systemdemo.es/auth/login-external" 
                 target="_blank"
-                class="inline-flex items-center gap-[0.5vw] mt-[1vw] text-senado-primary hover:underline font-medium text-[1vw]"
+                class="inline-flex items-center gap-[2vw] sm:gap-2 mt-[3vw] sm:mt-4 text-senado-primary hover:underline font-medium text-[3.6vw] sm:text-[1vw]"
               >
                 <span>Ir a la Plataforma</span>
-                <svg class="w-[1vw] h-[1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-[3vw] sm:w-[1vw] h-[3vw] sm:h-[1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </a>
@@ -162,32 +160,32 @@
           </div>
 
           <!-- Paso 2 -->
-          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
-            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
-              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">2</div>
-              <h3 class="text-[1.5vw] font-bold text-senado-primary">Redacta una carta dirigida al Oficial Mayor</h3>
+          <div class="bg-white rounded-[3vw] sm:rounded-[1vw] shadow-lg border border-gray-200 p-[5vw] sm:p-[2vw]">
+            <div class="flex items-center gap-[4vw] sm:gap-6 mb-[3vw] sm:mb-4">
+              <div class="flex-shrink-0 w-[9vw] sm:w-[3vw] h-[9vw] sm:h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[4vw] sm:text-[1.2vw]">2</div>
+              <h3 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-senado-primary">Redacta una carta dirigida al Oficial Mayor</h3>
             </div>
-            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+            <p class="text-[3.6vw] sm:text-[1vw] text-gray-600 mb-[4vw] sm:mb-6 ml-[13vw] sm:ml-[4.5vw]">
               Explica el motivo de tu visita guiada. Incluye la fecha deseada, número de visitantes y el nombre de la institución o grupo.
             </p>
-            <div class="ml-[4.5vw]">
+            <div class="ml-[13vw] sm:ml-[4.5vw]">
               <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso2.webp', 'Paso 2: Redactar carta al Oficial Mayor')">
                 <img 
                   src="/images/visitas/paso2.webp" 
                   alt="Paso 2: Redactar carta al Oficial Mayor"
-                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  class="w-full rounded-[2vw] sm:rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
                   loading="lazy"
                 />
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
-                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
-                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[2vw] sm:rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[3vw] sm:text-[0.9vw] px-[4vw] sm:px-[1.5vw] py-[2vw] sm:py-[0.6vw] rounded-[1.5vw] sm:rounded-[0.4vw] flex items-center gap-[2vw] sm:gap-2">
+                    <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                     </svg>
                     <span>Click para ampliar</span>
                   </div>
                 </div>
-                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
-                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-[1.5vw] sm:bottom-[0.5vw] right-[1.5vw] sm:right-[0.5vw] bg-black/60 text-white text-[2.5vw] sm:text-[0.7vw] px-[2.5vw] sm:px-[0.8vw] py-[1vw] sm:py-[0.3vw] rounded-[1vw] sm:rounded-[0.3vw] flex items-center gap-[1vw] sm:gap-1 pointer-events-none">
+                  <svg class="w-[2.5vw] sm:w-[0.8vw] h-[2.5vw] sm:h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                   </svg>
                   <span>Ampliar</span>
@@ -197,32 +195,32 @@
           </div>
 
           <!-- Paso 3 -->
-          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
-            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
-              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">3</div>
-              <h3 class="text-[1.5vw] font-bold text-senado-primary">Adjunta documentos anexos (opcional)</h3>
+          <div class="bg-white rounded-[3vw] sm:rounded-[1vw] shadow-lg border border-gray-200 p-[5vw] sm:p-[2vw]">
+            <div class="flex items-center gap-[4vw] sm:gap-6 mb-[3vw] sm:mb-4">
+              <div class="flex-shrink-0 w-[9vw] sm:w-[3vw] h-[9vw] sm:h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[4vw] sm:text-[1.2vw]">3</div>
+              <h3 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-senado-primary">Adjunta documentos anexos (opcional)</h3>
             </div>
-            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+            <p class="text-[3.6vw] sm:text-[1vw] text-gray-600 mb-[4vw] sm:mb-6 ml-[13vw] sm:ml-[4.5vw]">
               Si tienes documentos adicionales que respalden tu solicitud, puedes adjuntarlos en la plataforma.
             </p>
-            <div class="ml-[4.5vw]">
+            <div class="ml-[13vw] sm:ml-[4.5vw]">
               <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso3.webp', 'Paso 3: Adjuntar documentos anexos')">
                 <img 
                   src="/images/visitas/paso3.webp" 
                   alt="Paso 3: Adjuntar documentos anexos"
-                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  class="w-full rounded-[2vw] sm:rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
                   loading="lazy"
                 />
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
-                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
-                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[2vw] sm:rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[3vw] sm:text-[0.9vw] px-[4vw] sm:px-[1.5vw] py-[2vw] sm:py-[0.6vw] rounded-[1.5vw] sm:rounded-[0.4vw] flex items-center gap-[2vw] sm:gap-2">
+                    <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                     </svg>
                     <span>Click para ampliar</span>
                   </div>
                 </div>
-                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
-                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-[1.5vw] sm:bottom-[0.5vw] right-[1.5vw] sm:right-[0.5vw] bg-black/60 text-white text-[2.5vw] sm:text-[0.7vw] px-[2.5vw] sm:px-[0.8vw] py-[1vw] sm:py-[0.3vw] rounded-[1vw] sm:rounded-[0.3vw] flex items-center gap-[1vw] sm:gap-1 pointer-events-none">
+                  <svg class="w-[2.5vw] sm:w-[0.8vw] h-[2.5vw] sm:h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                   </svg>
                   <span>Ampliar</span>
@@ -232,32 +230,32 @@
           </div>
 
           <!-- Paso 4 -->
-          <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw]">
-            <div class="flex items-center gap-[1.5vw] mb-[1vw]">
-              <div class="flex-shrink-0 w-[3vw] h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[1.2vw]">4</div>
-              <h3 class="text-[1.5vw] font-bold text-senado-primary">Haz seguimiento a tu solicitud</h3>
+          <div class="bg-white rounded-[3vw] sm:rounded-[1vw] shadow-lg border border-gray-200 p-[5vw] sm:p-[2vw]">
+            <div class="flex items-center gap-[4vw] sm:gap-6 mb-[3vw] sm:mb-4">
+              <div class="flex-shrink-0 w-[9vw] sm:w-[3vw] h-[9vw] sm:h-[3vw] bg-senado-primary text-white rounded-full flex items-center justify-center font-bold text-[4vw] sm:text-[1.2vw]">4</div>
+              <h3 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-senado-primary">Haz seguimiento a tu solicitud</h3>
             </div>
-            <p class="text-[1vw] text-gray-600 mb-[1.5vw] ml-[4.5vw]">
+            <p class="text-[3.6vw] sm:text-[1vw] text-gray-600 mb-[4vw] sm:mb-6 ml-[13vw] sm:ml-[4.5vw]">
               A través de la misma plataforma, podrás dar seguimiento a tu carta y recibir la respuesta del Oficial Mayor.
             </p>
-            <div class="ml-[4.5vw]">
+            <div class="ml-[13vw] sm:ml-[4.5vw]">
               <div class="relative cursor-pointer group" @click="abrirLightbox('/images/visitas/paso4.webp', 'Paso 4: Seguimiento de la solicitud')">
                 <img 
                   src="/images/visitas/paso4.webp" 
                   alt="Paso 4: Seguimiento de la solicitud"
-                  class="w-full rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
+                  class="w-full rounded-[2vw] sm:rounded-[0.6vw] border border-gray-200 shadow-sm group-hover:shadow-xl transition-all duration-300"
                   loading="lazy"
                 />
-                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
-                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.9vw] px-[1.5vw] py-[0.6vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
-                    <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 rounded-[2vw] sm:rounded-[0.6vw] transition-all duration-300 flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[3vw] sm:text-[0.9vw] px-[4vw] sm:px-[1.5vw] py-[2vw] sm:py-[0.6vw] rounded-[1.5vw] sm:rounded-[0.4vw] flex items-center gap-[2vw] sm:gap-2">
+                    <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                     </svg>
                     <span>Click para ampliar</span>
                   </div>
                 </div>
-                <div class="absolute bottom-[0.5vw] right-[0.5vw] bg-black/60 text-white text-[0.7vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] flex items-center gap-[0.3vw] pointer-events-none">
-                  <svg class="w-[0.8vw] h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-[1.5vw] sm:bottom-[0.5vw] right-[1.5vw] sm:right-[0.5vw] bg-black/60 text-white text-[2.5vw] sm:text-[0.7vw] px-[2.5vw] sm:px-[0.8vw] py-[1vw] sm:py-[0.3vw] rounded-[1vw] sm:rounded-[0.3vw] flex items-center gap-[1vw] sm:gap-1 pointer-events-none">
+                  <svg class="w-[2.5vw] sm:w-[0.8vw] h-[2.5vw] sm:h-[0.8vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                   </svg>
                   <span>Ampliar</span>
@@ -270,27 +268,27 @@
         <!-- ========================================== -->
         <!-- BOTÓN PRINCIPAL Y NOTA                     -->
         <!-- ========================================== -->
-        <div class="bg-white rounded-[1vw] shadow-lg border border-gray-200 p-[2vw] mt-[2vw] text-center">
+        <div class="bg-white rounded-[3vw] sm:rounded-[1vw] shadow-lg border border-gray-200 p-[5vw] sm:p-[2vw] mt-[6vw] sm:mt-8 text-center">
           <a 
             href="https://systemdemo.es/auth/login-external" 
             target="_blank"
-            class="inline-flex items-center justify-center gap-[0.8vw] py-[0.8vw] px-[4vw] bg-[#611717] text-white rounded-[0.6vw] font-semibold hover:bg-[#3a060d] transition text-[1.2vw]"
+            class="inline-flex items-center justify-center gap-[2.5vw] sm:gap-3 py-[2.5vw] sm:py-[0.8vw] px-[10vw] sm:px-[4vw] bg-[#611717] text-white rounded-[2vw] sm:rounded-[0.6vw] font-semibold hover:bg-[#3a060d] transition text-[4vw] sm:text-[1.2vw]"
           >
             <span>Iniciar Solicitud en la Plataforma</span>
-            <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
-          <p class="text-[0.8vw] text-gray-400 mt-[0.8vw]">
+          <p class="text-[2.5vw] sm:text-[0.8vw] text-gray-400 mt-[2.5vw] sm:mt-3">
             La solicitud debe realizarse con al menos 15 días de anticipación.
           </p>
-          <div class="mt-[1.5vw] p-[1.2vw] bg-blue-50 border border-blue-200 rounded-[0.8vw]">
-            <div class="flex items-start gap-[0.8vw] justify-center">
-              <svg class="w-[1.2vw] h-[1.2vw] text-blue-500 flex-shrink-0 mt-[0.1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="mt-[4vw] sm:mt-6 p-[4vw] sm:p-[1.2vw] bg-blue-50 border border-blue-200 rounded-[2.5vw] sm:rounded-[0.8vw]">
+            <div class="flex items-start gap-[2.5vw] sm:gap-3 justify-center">
+              <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw] text-blue-500 flex-shrink-0 mt-[0.5vw] sm:mt-[0.1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <p class="text-[0.9vw] text-blue-700">
+                <p class="text-[3vw] sm:text-[0.9vw] text-blue-700">
                   <strong>Importante:</strong> Una vez enviada tu solicitud, recibirás una respuesta a través de la misma plataforma. 
                   El Oficial Mayor te confirmará la fecha y hora de tu visita.
                 </p>
@@ -303,12 +301,12 @@
       <!-- ========================================== -->
       <!-- BOTÓN VOLVER                              -->
       <!-- ========================================== -->
-      <div class="text-center mt-[3vw]">
+      <div class="text-center mt-[8vw] sm:mt-12">
         <NuxtLink 
           to="/" 
-          class="inline-flex items-center gap-[0.5vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+          class="inline-flex items-center gap-[1.5vw] sm:gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[3.6vw] sm:text-[1.1vw] font-medium"
         >
-          <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Volver al inicio
@@ -330,17 +328,16 @@
       >
         <div 
           v-if="lightboxVisible"
-          class="fixed inset-0 z-[999999] bg-black/90 flex items-center justify-center p-[2vw]"
+          class="fixed inset-0 z-[999999] bg-black/90 flex items-center justify-center p-[4vw] sm:p-[2vw]"
           @click="cerrarLightbox"
         >
-          <div class="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center" @click.stop>
-            <!-- Contenedor de la imagen con zoom -->
-            <div class="relative overflow-hidden rounded-[0.5vw]">
+          <div class="relative max-w-[95vw] sm:max-w-[90vw] max-h-[90vh] flex items-center justify-center" @click.stop>
+            <div class="relative overflow-hidden rounded-[1.5vw] sm:rounded-[0.5vw]">
               <img 
                 ref="lightboxImgRef"
                 :src="lightboxImage" 
                 :alt="lightboxAlt"
-                class="max-w-[85vw] max-h-[80vh] object-contain transition-transform duration-300 ease-out"
+                class="max-w-[90vw] sm:max-w-[85vw] max-h-[75vh] sm:max-h-[80vh] object-contain transition-transform duration-300 ease-out"
                 :style="{ transform: `scale(${zoomLevel})`, cursor: zoomLevel > 1 ? 'grab' : 'default' }"
                 @wheel="manejarZoom"
                 @mousedown="iniciarArrastre"
@@ -350,53 +347,46 @@
               />
             </div>
             
-            <!-- Controles -->
-            <div class="absolute bottom-[1vw] left-1/2 -translate-x-1/2 flex items-center gap-[1vw] bg-black/60 rounded-full px-[1.5vw] py-[0.6vw]">
-              <!-- Título -->
-              <span class="text-white text-[0.9vw] font-medium max-w-[30vw] truncate">{{ lightboxAlt }}</span>
+            <div class="absolute bottom-[2vw] sm:bottom-[1vw] left-1/2 -translate-x-1/2 flex items-center gap-[2vw] sm:gap-4 bg-black/60 rounded-full px-[4vw] sm:px-[1.5vw] py-[1.5vw] sm:py-[0.6vw]">
+              <span class="text-white text-[2.5vw] sm:text-[0.9vw] font-medium max-w-[40vw] sm:max-w-[30vw] truncate">{{ lightboxAlt }}</span>
               
-              <div class="w-[0.1vw] h-[1.5vw] bg-white/30"></div>
+              <div class="w-[0.2vw] sm:w-[0.1vw] h-[3vw] sm:h-[1.5vw] bg-white/30"></div>
               
-              <!-- Botón Zoom Out -->
               <button 
                 @click="zoomOut"
-                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                class="text-white hover:text-gray-300 transition-colors text-[4vw] sm:text-[1.2vw] w-[5vw] sm:w-[2vw] h-[5vw] sm:h-[2vw] flex items-center justify-center"
                 title="Alejar"
               >
-                <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
                 </svg>
               </button>
               
-              <!-- Nivel de zoom -->
-              <span class="text-white text-[0.8vw] font-mono min-w-[3vw] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
+              <span class="text-white text-[2.5vw] sm:text-[0.8vw] font-mono min-w-[6vw] sm:min-w-[3vw] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
               
-              <!-- Botón Zoom In -->
               <button 
                 @click="zoomIn"
-                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                class="text-white hover:text-gray-300 transition-colors text-[4vw] sm:text-[1.2vw] w-[5vw] sm:w-[2vw] h-[5vw] sm:h-[2vw] flex items-center justify-center"
                 title="Acercar"
               >
-                <svg class="w-[1.2vw] h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m-3-3h6" />
                 </svg>
               </button>
               
-              <div class="w-[0.1vw] h-[1.5vw] bg-white/30"></div>
+              <div class="w-[0.2vw] sm:w-[0.1vw] h-[3vw] sm:h-[1.5vw] bg-white/30"></div>
               
-              <!-- Botón Restablecer -->
               <button 
                 @click="resetearZoom"
-                class="text-white/60 hover:text-white transition-colors text-[0.8vw] px-[0.8vw] py-[0.3vw] rounded-[0.3vw] hover:bg-white/10"
+                class="text-white/60 hover:text-white transition-colors text-[2.5vw] sm:text-[0.8vw] px-[2vw] sm:px-[0.8vw] py-[1vw] sm:py-[0.3vw] rounded-[1vw] sm:rounded-[0.3vw] hover:bg-white/10"
                 title="Restablecer zoom"
               >
                 Reset
               </button>
               
-              <!-- Botón Cerrar -->
               <button 
                 @click="cerrarLightbox"
-                class="text-white hover:text-gray-300 transition-colors text-[1.2vw] w-[2vw] h-[2vw] flex items-center justify-center"
+                class="text-white hover:text-gray-300 transition-colors text-[4vw] sm:text-[1.2vw] w-[5vw] sm:w-[2vw] h-[5vw] sm:h-[2vw] flex items-center justify-center"
                 title="Cerrar (ESC)"
               >
                 ✕
@@ -421,7 +411,6 @@ const lightboxAlt = ref('')
 const zoomLevel = ref(1)
 const lightboxImgRef = ref(null)
 
-// Variables para arrastre
 const isDragging = ref(false)
 const dragStartX = ref(0)
 const dragStartY = ref(0)
@@ -485,7 +474,7 @@ const actualizarTransformacion = () => {
 }
 
 // ============================================
-// ARRASTRE (para imágenes con zoom)
+// ARRASTRE
 // ============================================
 const iniciarArrastre = (event) => {
   if (zoomLevel.value <= 1) return
@@ -501,12 +490,9 @@ const moverArrastre = (event) => {
   if (!isDragging.value || zoomLevel.value <= 1) return
   dragOffsetX.value = event.clientX - dragStartX.value
   dragOffsetY.value = event.clientY - dragStartY.value
-  
-  // Limitar el arrastre
   const maxOffset = 200 * zoomLevel.value
   currentTranslateX.value = Math.min(Math.max(dragOffsetX.value, -maxOffset), maxOffset)
   currentTranslateY.value = Math.min(Math.max(dragOffsetY.value, -maxOffset), maxOffset)
-  
   actualizarTransformacion()
 }
 

@@ -1,32 +1,31 @@
-<!-- pages/comisiones.vue -->
 <template>
-  <div class="min-h-screen bg-white py-[2vw]">
-    <div class="mx-auto w-[85%]">
+  <div class="min-h-screen bg-white py-[6vw] sm:py-8">
+    <div class="mx-auto w-[90%] sm:w-[85%]">
       <!-- Título -->
-      <div class="mb-[3vw]">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-[0.9vw] font-bold px-[1.2vw] py-[0.4vw] rounded-full mb-[0.8vw]">
+      <div class="mb-[6vw] sm:mb-12">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-[2.7vw] sm:text-[0.9vw] font-bold px-[3.6vw] sm:px-5 py-[1.2vw] sm:py-1.5 rounded-full mb-[2.4vw] sm:mb-3">
           📋 Comisiones y Comités
         </div>
-        <h1 class="text-[4.5vw] font-bold text-senado-primary leading-tight">
+        <h1 class="text-[10vw] sm:text-[4.5vw] font-bold text-senado-primary leading-tight">
           Comisiones y Comités
         </h1>
-        <p class="text-gray-600 text-[1.5vw] mt-[0.8vw] max-w-3xl">
+        <p class="text-gray-600 text-[4.2vw] sm:text-[1.5vw] mt-[2.4vw] sm:mt-3 max-w-3xl">
           Conoce las comisiones y comités de la Cámara de Senadores y los senadores que las integran.
-          <span class="block text-gray-400 text-[1.1vw] mt-[0.3vw]">Haz clic en una comisión para ver sus miembros.</span>
+          <span class="block text-gray-400 text-[3.3vw] sm:text-[1.1vw] mt-[1vw] sm:mt-1">Haz clic en una comisión para ver sus miembros.</span>
         </p>
-        <div class="w-[6vw] h-[0.2vw] bg-senado-gold-dark mt-[1vw] rounded-full"></div>
+        <div class="w-[15vw] sm:w-[6vw] h-[0.5vw] sm:h-[0.2vw] bg-senado-gold-dark mt-[2.5vw] sm:mt-4 rounded-full"></div>
       </div>
 
       <!-- Estado de carga -->
-      <div v-if="loading" class="flex justify-center items-center py-[4vw]">
-        <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
-        <p class="ml-4 text-gray-500 text-[1.2vw]">Cargando comisiones...</p>
+      <div v-if="loading" class="flex justify-center items-center py-[10vw] sm:py-16">
+        <div class="inline-block w-[8vw] sm:w-12 h-[8vw] sm:h-12 border-[0.6vw] sm:border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-[3vw] sm:ml-4 text-gray-500 text-[3.6vw] sm:text-[1.2vw]">Cargando comisiones...</p>
       </div>
 
       <!-- Error -->
-      <div v-else-if="error" class="text-center py-[4vw] bg-red-50 rounded-xl border border-red-200">
-        <div class="text-4xl mb-3">⚠️</div>
-        <p class="text-red-600 font-medium text-[1.2vw]">{{ error }}</p>
+      <div v-else-if="error" class="text-center py-[10vw] sm:py-16 bg-red-50 rounded-xl border border-red-200">
+        <div class="text-[10vw] sm:text-4xl mb-3">⚠️</div>
+        <p class="text-red-600 font-medium text-[3.6vw] sm:text-[1.2vw]">{{ error }}</p>
         <button @click="fetchComisiones" class="mt-4 px-6 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] transition text-sm">
           Reintentar
         </button>
@@ -35,30 +34,30 @@
       <!-- Contenido -->
       <template v-else>
         <!-- Buscador -->
-        <div class="max-w-3xl mx-auto mb-[2vw]">
+        <div class="max-w-3xl mx-auto mb-[5vw] sm:mb-8">
           <div class="relative">
             <input
               v-model="busqueda"
               type="text"
               placeholder="🔎︎ Buscar comisión o comité..."
-              class="w-full px-[1.8vw] py-[1vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
+              class="w-full px-[5vw] sm:px-7 py-[3vw] sm:py-4 border border-gray-300 rounded-full text-[3.3vw] sm:text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
               @input="filtrarComisiones"
             />
             <button
               v-if="busqueda"
               @click="limpiarBusqueda"
-              class="absolute right-[1.8vw] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[1.5vw]"
+              class="absolute right-[4.5vw] sm:right-7 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[4.5vw] sm:text-[1.5vw]"
             >
               ✕
             </button>
           </div>
-          <div v-if="busqueda" class="text-[1vw] text-gray-500 mt-[0.5vw] text-center">
+          <div v-if="busqueda" class="text-[3vw] sm:text-[1vw] text-gray-500 mt-[1.5vw] sm:mt-2 text-center">
             {{ resultadosCount }} resultado{{ resultadosCount !== 1 ? 's' : '' }} encontrado{{ resultadosCount !== 1 ? 's' : '' }}
           </div>
         </div>
 
         <!-- Lista de Comisiones -->
-        <div class="max-w-6xl mx-auto space-y-[0.8vw]">
+        <div class="max-w-6xl mx-auto space-y-[2.5vw] sm:space-y-3">
           <div
             v-for="comision in comisionesFiltradas"
             :key="comision.nombre"
@@ -68,31 +67,31 @@
             <!-- Cabecera -->
             <div
               @click="toggleItem(comision.nombre)"
-              class="flex items-center justify-between px-[2vw] py-[0.7vw] cursor-pointer hover:bg-gray-50 transition-colors"
+              class="flex items-center justify-between px-[4.5vw] sm:px-8 py-[2vw] sm:py-3 cursor-pointer hover:bg-gray-50 transition-colors"
               :class="isOpen(comision.nombre) ? 'bg-senado-gold-lightest' : ''"
             >
-              <div class="flex items-center gap-[1vw] flex-wrap">
-                <div class="flex items-center gap-[0.6vw]">
+              <div class="flex items-center gap-[2.5vw] sm:gap-4 flex-wrap">
+                <div class="flex items-center gap-[1.8vw] sm:gap-2.5">
                   <span
-                    class="text-[1.3vw] font-bold"
+                    class="text-[3.9vw] sm:text-[1.3vw] font-bold"
                     :class="isOpen(comision.nombre) ? 'text-senado-primary' : 'text-gray-500'"
                   >
                     {{ isOpen(comision.nombre) ? '▾' : '▸' }}
                   </span>
-                  <h2 class="text-[1.3vw] font-bold text-senado-primary" v-html="resaltarTexto(comision.nombre)">
+                  <h2 class="text-[3.9vw] sm:text-[1.3vw] font-bold text-senado-primary" v-html="resaltarTexto(comision.nombre)">
                   </h2>
                 </div>
-                <span class="text-[0.7vw] font-semibold px-[0.7vw] py-[0.15vw] rounded-full bg-blue-100 text-blue-700">
+                <span class="text-[2.1vw] sm:text-[0.7vw] font-semibold px-[2vw] sm:px-3 py-[0.5vw] sm:py-0.5 rounded-full bg-blue-100 text-blue-700">
                   Comisión
                 </span>
-                <span class="text-[0.7vw] text-gray-400">
+                <span class="text-[2.1vw] sm:text-[0.7vw] text-gray-400">
                   {{ (comision.comites || []).length }} comités
                 </span>
-                <span v-if="comision.destacado" class="text-[0.6vw] font-semibold px-[0.5vw] py-[0.1vw] rounded-full bg-yellow-100 text-yellow-700">
+                <span v-if="comision.destacado" class="text-[1.8vw] sm:text-[0.6vw] font-semibold px-[1.5vw] sm:px-2 py-[0.3vw] sm:py-0.5 rounded-full bg-yellow-100 text-yellow-700">
                   ✦ Coincidencia
                 </span>
               </div>
-              <div class="text-gray-400 text-[0.8vw]">
+              <div class="text-gray-400 text-[2.4vw] sm:text-[0.8vw]">
                 {{ isOpen(comision.nombre) ? 'Cerrar ▲' : 'Abrir ▼' }}
               </div>
             </div>
@@ -107,13 +106,13 @@
               leave-to-class="max-h-0 opacity-0"
             >
               <div v-if="isOpen(comision.nombre)" class="overflow-hidden">
-                <div class="px-[1.8vw] pb-[1.8vw] pt-[0.5vw]">
+                <div class="px-[4.5vw] sm:px-7 pb-[4.5vw] sm:pb-7 pt-[1.5vw] sm:pt-2">
                   <!-- Presidente + Suplente -->
-                  <div v-if="comision.presidente" class="mb-[1vw]">
-                    <div class="flex flex-wrap gap-[0.8vw]">
+                  <div v-if="comision.presidente" class="mb-[3vw] sm:mb-4">
+                    <div class="flex flex-col sm:flex-row gap-[2.5vw] sm:gap-3">
                       <!-- Titular (Presidente) -->
-                      <div class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
-                        <div class="flex items-center gap-[1.2vw]">
+                      <div class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[2.5vw] sm:p-3 border border-gray-100">
+                        <div class="flex items-center gap-[3vw] sm:gap-5">
                           <NuxtLink
                             :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
                             class="flex-shrink-0"
@@ -121,22 +120,22 @@
                             <img
                               :src="getImageUrl(comision.presidente.foto)"
                               :alt="comision.presidente.nombreCompleto"
-                              class="foto-titular mx-[1vw]"
+                              class="foto-titular"
                               :style="{ borderColor: comision.presidente.color || '#ccc' }"
                               @error="(e) => e.target.src = defaultAvatar"
                             />
                           </NuxtLink>
                           <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                               <NuxtLink
                                 :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
-                                class="text-[1.1vw] font-bold text-senado-primary hover:underline truncate"
+                                class="text-[3.3vw] sm:text-[1.1vw] font-bold text-senado-primary hover:underline truncate"
                               >
                                 {{ comision.presidente.nombreCompleto }}
                               </NuxtLink>
                               <span class="badge-titular">Titular</span>
                             </div>
-                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                               <span
                                 class="badge-partido"
                                 :style="{
@@ -146,7 +145,7 @@
                               >
                                 {{ comision.presidente.partido }}
                               </span>
-                              <span class="text-[0.7vw] text-gray-500 font-medium">
+                              <span class="text-[2.1vw] sm:text-[0.7vw] text-gray-500 font-medium">
                                 {{ comision.presidente.cargo || 'Senador' }}
                               </span>
                             </div>
@@ -155,8 +154,8 @@
                       </div>
 
                       <!-- Suplente del Presidente -->
-                      <div v-if="comision.presidente.suplente && comision.presidente.suplenteNombre" class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100">
-                        <div class="flex items-center gap-[1.2vw]">
+                      <div v-if="comision.presidente.suplente && comision.presidente.suplenteNombre" class="flex-1 min-w-[40%] bg-gray-50 rounded-lg p-[2.5vw] sm:p-3 border border-gray-100">
+                        <div class="flex items-center gap-[3vw] sm:gap-5">
                           <NuxtLink
                             :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
                             class="flex-shrink-0"
@@ -164,22 +163,22 @@
                             <img
                               :src="getImageUrl(comision.presidente.fotoSuplente) || defaultAvatar"
                               :alt="comision.presidente.suplenteNombre"
-                              class="foto-suplente mx-[1vw]"
+                              class="foto-suplente"
                               :style="{ borderColor: comision.presidente.color || '#ccc' }"
                               @error="(e) => e.target.src = defaultAvatar"
                             />
                           </NuxtLink>
                           <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                               <NuxtLink
                                 :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
-                                class="text-[0.95vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                                class="text-[2.85vw] sm:text-[0.95vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
                               >
                                 {{ comision.presidente.suplenteNombre }}
                               </NuxtLink>
                               <span class="badge-suplente">Suplente</span>
                             </div>
-                            <div class="flex items-center gap-[0.2vw] flex-wrap">
+                            <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                               <span
                                 class="badge-partido"
                                 :style="{
@@ -189,7 +188,7 @@
                               >
                                 {{ comision.presidente.partido }}
                               </span>
-                              <span class="text-[0.7vw] text-gray-500 font-medium">
+                              <span class="text-[2.1vw] sm:text-[0.7vw] text-gray-500 font-medium">
                                 {{ comision.presidente.cargoSuplente || 'Senador Suplente' }}
                               </span>
                             </div>
@@ -200,30 +199,30 @@
                   </div>
 
                   <!-- Comités -->
-                  <div v-if="comision.comites && comision.comites.length > 0" class="border-t border-gray-100 pt-[0.8vw]">
-                    <div class="space-y-[0.6vw]">
+                  <div v-if="comision.comites && comision.comites.length > 0" class="border-t border-gray-100 pt-[2.5vw] sm:pt-3">
+                    <div class="space-y-[2vw] sm:space-y-2.5">
                       <div
                         v-for="comite in comision.comites"
                         :key="comite.nombre"
-                        class="bg-gray-50 rounded-lg p-[0.8vw] border border-gray-100"
+                        class="bg-gray-50 rounded-lg p-[2.5vw] sm:p-3 border border-gray-100"
                         :class="comite.destacado ? 'border-senado-primary border-2 bg-senado-gold-lightest' : ''"
                       >
-                        <div class="flex items-center gap-[0.4vw] flex-wrap mb-[0.4vw]">
-                          <h4 class="font-semibold text-gray-800 text-[1vw]" v-html="resaltarTexto(comite.nombre)">
+                        <div class="flex items-center gap-[1.2vw] sm:gap-1.5 flex-wrap mb-[1.2vw] sm:mb-1.5">
+                          <h4 class="font-semibold text-gray-800 text-[3vw] sm:text-[1vw]" v-html="resaltarTexto(comite.nombre)">
                           </h4>
-                          <span class="text-[0.55vw] font-semibold px-[0.4vw] py-[0.08vw] rounded-full bg-green-100 text-green-700">
+                          <span class="text-[1.65vw] sm:text-[0.55vw] font-semibold px-[1.2vw] sm:px-1.5 py-[0.3vw] sm:py-0.5 rounded-full bg-green-100 text-green-700">
                             Comité
                           </span>
-                          <span v-if="comite.destacado" class="text-[0.5vw] font-semibold px-[0.35vw] py-[0.08vw] rounded-full bg-yellow-100 text-yellow-700">
+                          <span v-if="comite.destacado" class="text-[1.5vw] sm:text-[0.5vw] font-semibold px-[1vw] sm:px-1.5 py-[0.3vw] sm:py-0.5 rounded-full bg-yellow-100 text-yellow-700">
                             ✦ Coincidencia
                           </span>
                         </div>
 
                         <!-- Secretario + Suplente -->
-                        <div v-if="comite.secretario" class="flex flex-wrap gap-[0.8vw]">
+                        <div v-if="comite.secretario" class="flex flex-col sm:flex-row gap-[2.5vw] sm:gap-3">
                           <!-- Secretario (Titular) -->
-                          <div class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
-                            <div class="flex items-center gap-[1vw]">
+                          <div class="flex-1 min-w-[40%] bg-white rounded-lg p-[1.8vw] sm:p-2.5 border border-gray-100">
+                            <div class="flex items-center gap-[3vw] sm:gap-4">
                               <NuxtLink
                                 :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
                                 class="flex-shrink-0"
@@ -231,22 +230,22 @@
                                 <img
                                   :src="getImageUrl(comite.secretario.foto)"
                                   :alt="comite.secretario.nombreCompleto"
-                                  class="foto-secretario mx-[1vw]"
+                                  class="foto-secretario"
                                   :style="{ borderColor: comite.secretario.color || '#ccc' }"
                                   @error="(e) => e.target.src = defaultAvatar"
                                 />
                               </NuxtLink>
                               <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                                   <NuxtLink
                                     :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
-                                    class="text-[0.95vw] font-bold text-senado-primary hover:underline truncate"
+                                    class="text-[2.85vw] sm:text-[0.95vw] font-bold text-senado-primary hover:underline truncate"
                                   >
                                     {{ comite.secretario.nombreCompleto }}
                                   </NuxtLink>
                                   <span class="badge-titular-sm">Titular</span>
                                 </div>
-                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                                   <span
                                     class="badge-partido-sm"
                                     :style="{
@@ -256,7 +255,7 @@
                                   >
                                     {{ comite.secretario.partido }}
                                   </span>
-                                  <span class="text-[0.6vw] text-gray-500 font-medium">
+                                  <span class="text-[1.8vw] sm:text-[0.6vw] text-gray-500 font-medium">
                                     {{ comite.secretario.cargo || 'Senador' }}
                                   </span>
                                 </div>
@@ -265,8 +264,8 @@
                           </div>
 
                           <!-- Suplente del Secretario -->
-                          <div v-if="comite.secretario.suplente && comite.secretario.suplenteNombre" class="flex-1 min-w-[40%] bg-white rounded-lg p-[0.6vw] border border-gray-100">
-                            <div class="flex items-center gap-[1vw]">
+                          <div v-if="comite.secretario.suplente && comite.secretario.suplenteNombre" class="flex-1 min-w-[40%] bg-white rounded-lg p-[1.8vw] sm:p-2.5 border border-gray-100">
+                            <div class="flex items-center gap-[3vw] sm:gap-4">
                               <NuxtLink
                                 :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
                                 class="flex-shrink-0"
@@ -274,22 +273,22 @@
                                 <img
                                   :src="getImageUrl(comite.secretario.fotoSuplente) || defaultAvatar"
                                   :alt="comite.secretario.suplenteNombre"
-                                  class="foto-suplente-sm mx-[1vw]"
+                                  class="foto-suplente-sm"
                                   :style="{ borderColor: comite.secretario.color || '#ccc' }"
                                   @error="(e) => e.target.src = defaultAvatar"
                                 />
                               </NuxtLink>
                               <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                                   <NuxtLink
                                     :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
-                                    class="text-[0.85vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
+                                    class="text-[2.55vw] sm:text-[0.85vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
                                   >
                                     {{ comite.secretario.suplenteNombre }}
                                   </NuxtLink>
                                   <span class="badge-suplente-sm">Suplente</span>
                                 </div>
-                                <div class="flex items-center gap-[0.2vw] flex-wrap">
+                                <div class="flex items-center gap-[0.6vw] sm:gap-1 flex-wrap">
                                   <span
                                     class="badge-partido-sm"
                                     :style="{
@@ -299,7 +298,7 @@
                                   >
                                     {{ comite.secretario.partido }}
                                   </span>
-                                  <span class="text-[0.6vw] text-gray-500 font-medium">
+                                  <span class="text-[1.8vw] sm:text-[0.6vw] text-gray-500 font-medium">
                                     {{ comite.secretario.cargoSuplente || 'Senador Suplente' }}
                                   </span>
                                 </div>
@@ -317,28 +316,28 @@
         </div>
 
         <!-- Sin resultados -->
-        <div v-if="comisionesFiltradas.length === 0" class="text-center py-[4vw]">
-          <div class="text-[4vw] mb-[1vw]">🔍</div>
-          <h3 class="text-[2.2vw] font-bold text-gray-700 mb-[0.5vw]">No se encontraron resultados</h3>
-          <p class="text-gray-500 text-[1.2vw]">No hay comisiones o comités que coincidan con "<strong>{{ busqueda }}</strong>"</p>
+        <div v-if="comisionesFiltradas.length === 0" class="text-center py-[10vw] sm:py-16">
+          <div class="text-[10vw] sm:text-4xl mb-[2.5vw] sm:mb-4">🔍</div>
+          <h3 class="text-[5vw] sm:text-[2.2vw] font-bold text-gray-700 mb-[1.5vw] sm:mb-2">No se encontraron resultados</h3>
+          <p class="text-gray-500 text-[3.6vw] sm:text-[1.2vw]">No hay comisiones o comités que coincidan con "<strong>{{ busqueda }}</strong>"</p>
           <button
             @click="limpiarBusqueda"
-            class="mt-[1.5vw] text-senado-primary hover:underline text-[1.1vw] font-medium"
+            class="mt-[4vw] sm:mt-6 text-senado-primary hover:underline text-[3.3vw] sm:text-[1.1vw] font-medium"
           >
             Limpiar búsqueda
           </button>
         </div>
 
         <!-- Botón volver -->
-        <div class="mt-[3vw] text-center">
+        <div class="mt-[8vw] sm:mt-12 text-center">
           <NuxtLink
             to="/"
-            class="inline-flex items-center gap-[0.5vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
+            class="inline-flex items-center gap-[1.5vw] sm:gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[3.3vw] sm:text-[1.1vw] font-medium"
           >
             <ClientOnly>
-              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.5vw]" />
+              <Icon name="material-symbols:arrow-back-rounded" class="text-[4.5vw] sm:text-[1.5vw]" />
               <template #fallback>
-                <span class="text-[1.5vw]">←</span>
+                <span class="text-[4.5vw] sm:text-[1.5vw]">←</span>
               </template>
             </ClientOnly>
             Volver al inicio
@@ -515,121 +514,213 @@ onMounted(() => {
 
 <style scoped>
 /* ========================================== */
-/* TAMAÑOS DE FOTOS */
+/* TAMAÑOS DE FOTOS - MÓVIL Y DESKTOP        */
 /* ========================================== */
 .foto-titular {
-  width: 12vw !important;
-  height: 12vw !important;
-  min-width: 12vw !important;
-  min-height: 12vw !important;
-  max-width: 12vw !important;
-  max-height: 12vw !important;
+  width: 22vw !important;
+  height: 22vw !important;
+  min-width: 22vw !important;
+  min-height: 22vw !important;
+  max-width: 22vw !important;
+  max-height: 22vw !important;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ccc;
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .foto-titular {
+    width: 12vw !important;
+    height: 12vw !important;
+    min-width: 12vw !important;
+    min-height: 12vw !important;
+    max-width: 12vw !important;
+    max-height: 12vw !important;
+  }
 }
 
 .foto-suplente {
-  width: 10.8vw !important;
-  height: 10.8vw !important;
-  min-width: 10.8vw !important;
-  min-height: 10.8vw !important;
-  max-width: 10.8vw !important;
-  max-height: 10.8vw !important;
+  width: 19vw !important;
+  height: 19vw !important;
+  min-width: 19vw !important;
+  min-height: 19vw !important;
+  max-width: 19vw !important;
+  max-height: 19vw !important;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ccc;
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .foto-suplente {
+    width: 10.8vw !important;
+    height: 10.8vw !important;
+    min-width: 10.8vw !important;
+    min-height: 10.8vw !important;
+    max-width: 10.8vw !important;
+    max-height: 10.8vw !important;
+  }
 }
 
 .foto-secretario {
-  width: 10.8vw !important;
-  height: 10.8vw !important;
-  min-width: 10.8vw !important;
-  min-height: 10.8vw !important;
-  max-width: 10.8vw !important;
-  max-height: 10.8vw !important;
+  width: 19vw !important;
+  height: 19vw !important;
+  min-width: 19vw !important;
+  min-height: 19vw !important;
+  max-width: 19vw !important;
+  max-height: 19vw !important;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ccc;
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .foto-secretario {
+    width: 10.8vw !important;
+    height: 10.8vw !important;
+    min-width: 10.8vw !important;
+    min-height: 10.8vw !important;
+    max-width: 10.8vw !important;
+    max-height: 10.8vw !important;
+  }
 }
 
 .foto-suplente-sm {
-  width: 9.6vw !important;
-  height: 9.6vw !important;
-  min-width: 9.6vw !important;
-  min-height: 9.6vw !important;
-  max-width: 9.6vw !important;
-  max-height: 9.6vw !important;
+  width: 17vw !important;
+  height: 17vw !important;
+  min-width: 17vw !important;
+  min-height: 17vw !important;
+  max-width: 17vw !important;
+  max-height: 17vw !important;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ccc;
   flex-shrink: 0;
 }
 
+@media (min-width: 640px) {
+  .foto-suplente-sm {
+    width: 9.6vw !important;
+    height: 9.6vw !important;
+    min-width: 9.6vw !important;
+    min-height: 9.6vw !important;
+    max-width: 9.6vw !important;
+    max-height: 9.6vw !important;
+  }
+}
+
 /* ========================================== */
-/* BADGES */
+/* BADGES                                     */
 /* ========================================== */
 .badge-titular {
-  font-size: 0.75vw;
+  font-size: 2.2vw;
   color: #16a34a;
   font-weight: 600;
   background: #dcfce7;
-  padding: 0.08vw 0.5vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1.2vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .badge-titular {
+    font-size: 0.75vw;
+    padding: 0.08vw 0.5vw;
+    border-radius: 0.3vw;
+  }
 }
 
 .badge-suplente {
-  font-size: 0.75vw;
+  font-size: 2.2vw;
   color: #ea580c;
   font-weight: 600;
   background: #ffedd5;
-  padding: 0.08vw 0.5vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1.2vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .badge-suplente {
+    font-size: 0.75vw;
+    padding: 0.08vw 0.5vw;
+    border-radius: 0.3vw;
+  }
 }
 
 .badge-titular-sm {
-  font-size: 0.65vw;
+  font-size: 2vw;
   color: #16a34a;
   font-weight: 600;
   background: #dcfce7;
-  padding: 0.06vw 0.4vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .badge-titular-sm {
+    font-size: 0.65vw;
+    padding: 0.06vw 0.4vw;
+    border-radius: 0.3vw;
+  }
 }
 
 .badge-suplente-sm {
-  font-size: 0.65vw;
+  font-size: 2vw;
   color: #ea580c;
   font-weight: 600;
   background: #ffedd5;
-  padding: 0.06vw 0.4vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .badge-suplente-sm {
+    font-size: 0.65vw;
+    padding: 0.06vw 0.4vw;
+    border-radius: 0.3vw;
+  }
 }
 
 .badge-partido {
-  font-size: 0.75vw;
+  font-size: 2vw;
   font-weight: 500;
-  padding: 0.08vw 0.5vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1.2vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .badge-partido {
+    font-size: 0.75vw;
+    padding: 0.08vw 0.5vw;
+    border-radius: 0.3vw;
+  }
 }
 
 .badge-partido-sm {
-  font-size: 0.65vw;
+  font-size: 1.8vw;
   font-weight: 500;
-  padding: 0.06vw 0.4vw;
-  border-radius: 0.3vw;
+  padding: 0.2vw 1vw;
+  border-radius: 0.8vw;
   white-space: nowrap;
 }
 
+@media (min-width: 640px) {
+  .badge-partido-sm {
+    font-size: 0.65vw;
+    padding: 0.06vw 0.4vw;
+    border-radius: 0.3vw;
+  }
+}
+
 /* ========================================== */
-/* TRANSICIONES */
+/* TRANSICIONES                               */
 /* ========================================== */
 .max-h-0 {
   max-height: 0;
@@ -654,55 +745,5 @@ onMounted(() => {
 }
 .opacity-100 {
   opacity: 1;
-}
-
-/* ========================================== */
-/* RESPONSIVE - MÓVIL */
-/* ========================================== */
-@media (max-width: 768px) {
-  .foto-titular {
-    width: 25vw !important;
-    height: 25vw !important;
-    min-width: 25vw !important;
-    min-height: 25vw !important;
-    max-width: 25vw !important;
-    max-height: 25vw !important;
-  }
-  .foto-suplente {
-    width: 22vw !important;
-    height: 22vw !important;
-    min-width: 22vw !important;
-    min-height: 22vw !important;
-    max-width: 22vw !important;
-    max-height: 22vw !important;
-  }
-  .foto-secretario {
-    width: 22vw !important;
-    height: 22vw !important;
-    min-width: 22vw !important;
-    min-height: 22vw !important;
-    max-width: 22vw !important;
-    max-height: 22vw !important;
-  }
-  .foto-suplente-sm {
-    width: 19vw !important;
-    height: 19vw !important;
-    min-width: 19vw !important;
-    min-height: 19vw !important;
-    max-width: 19vw !important;
-    max-height: 19vw !important;
-  }
-  .badge-titular,
-  .badge-suplente {
-    font-size: 2.5vw;
-  }
-  .badge-titular-sm,
-  .badge-suplente-sm {
-    font-size: 2.2vw;
-  }
-  .badge-partido,
-  .badge-partido-sm {
-    font-size: 2.2vw;
-  }
 }
 </style>
