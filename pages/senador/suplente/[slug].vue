@@ -56,20 +56,19 @@
               </p>
             </div>
 
-            <!-- Columna 3: Partido -->
+            <!-- Columna 3: Partido - CORREGIDA -->
             <div class="sm:col-span-3 flex flex-col items-center justify-center pb-[3vw] sm:pb-0">
               <div class="relative inline-block group">
                 <img 
                   :src="getLogoPartido(suplente.partyShort)" 
                   :alt="suplente.partyShort"
-                  class="h-[16vw] sm:h-[8vw] w-auto object-contain transition-opacity duration-300"
-                  :class="{'group-hover:opacity-0': getLogoPartidoHover(suplente.partyShort)}"
+                  class="h-[16vw] sm:h-[8vw] w-auto object-contain transition-opacity duration-300 logo-normal"
                   @error="(e) => e.target.src = ''"
                 />
                 <img 
                   :src="getLogoPartidoHover(suplente.partyShort)" 
                   :alt="suplente.partyShort + ' hover'"
-                  class="h-[16vw] sm:h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  class="h-[16vw] sm:h-[8vw] w-auto object-contain absolute top-0 left-0 transition-opacity duration-300 logo-hover"
                   @error="(e) => e.target.style.display = 'none'"
                 />
               </div>
@@ -356,4 +355,30 @@ const getAsientoHemiciclo = (seatNumber) => {
 </script>
 
 <style scoped>
+/* Efecto hover en desktop: el logo normal se oculta, el hover se muestra */
+@media (min-width: 768px) {
+  .logo-normal {
+    opacity: 1;
+  }
+  .logo-hover {
+    opacity: 0;
+  }
+  .group:hover .logo-normal {
+    opacity: 0;
+  }
+  .group:hover .logo-hover {
+    opacity: 1;
+  }
+}
+
+/* En móvil: mostrar siempre el logo hover (el que tiene color) */
+@media (max-width: 767px) {
+  .logo-normal {
+    display: none;
+  }
+  .logo-hover {
+    opacity: 1;
+    position: relative !important;
+  }
+}
 </style>
