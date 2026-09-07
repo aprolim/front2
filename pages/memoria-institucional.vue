@@ -143,7 +143,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MODAL DEL VISOR DE PDF (VERSIÓN COMPLETA)  -->
+    <!-- MODAL DEL VISOR DE PDF                     -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -186,7 +186,6 @@
 
               <!-- Centro: Controles -->
               <div class="flex items-center gap-1 md:gap-2 flex-wrap">
-                <!-- ===== ZOOM ===== -->
                 <div class="flex items-center gap-1 bg-white/10 rounded-lg px-1 py-1">
                   <button 
                     @click="zoomOut"
@@ -216,7 +215,6 @@
 
                 <div class="w-px h-6 bg-white/20 hidden sm:block"></div>
 
-                <!-- ===== PÁGINAS ===== -->
                 <div class="flex items-center gap-1 bg-white/10 rounded-lg px-1 py-1">
                   <button 
                     @click="paginaAnteriorPDF"
@@ -227,7 +225,6 @@
                     <Icon name="mdi:chevron-left" class="w-5 h-5" />
                   </button>
                   
-                  <!-- 🔥 INPUT DE PÁGINA CORREGIDO -->
                   <div class="flex items-center gap-1 px-1">
                     <input 
                       type="number" 
@@ -255,7 +252,6 @@
 
                 <div class="w-px h-6 bg-white/20 hidden sm:block"></div>
 
-                <!-- ===== ACCIONES ===== -->
                 <div class="flex items-center gap-1">
                   <button 
                     @click="toggleBusqueda"
@@ -398,20 +394,17 @@
                     maxWidth: '900px'
                   }"
                 >
-                  <!-- Sombras de libro -->
                   <div class="absolute -left-4 top-0 bottom-0 w-4 bg-gradient-to-r from-black/10 to-transparent pointer-events-none"></div>
                   <div class="absolute -right-4 top-0 bottom-0 w-4 bg-gradient-to-l from-black/10 to-transparent pointer-events-none"></div>
                   <div class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none"></div>
                   <div class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/5 to-transparent pointer-events-none"></div>
 
-                  <!-- Cargando -->
                   <div v-if="cargandoPDF" class="flex flex-col items-center justify-center py-20 bg-white rounded-lg shadow-2xl min-h-[400px]">
                     <div class="inline-block w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
                     <p class="mt-4 text-gray-600 font-medium">Cargando documento...</p>
                     <p class="text-sm text-gray-400">Por favor espere un momento</p>
                   </div>
 
-                  <!-- Canvas del PDF -->
                   <canvas 
                     v-show="!cargandoPDF"
                     ref="pdfCanvas"
@@ -419,7 +412,6 @@
                     style="height: auto;"
                   ></canvas>
 
-                  <!-- Número de página flotante -->
                   <div v-if="!cargandoPDF && !modoLectura" class="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
                     {{ paginaActualPDF }} / {{ totalPaginasPDF }}
                   </div>
@@ -431,7 +423,6 @@
             <!-- BARRA INFERIOR                             -->
             <!-- ========================================== -->
             <div v-if="!modoLectura" class="flex-shrink-0 bg-white border-t border-gray-200 p-2 flex items-center justify-between gap-4 flex-wrap">
-              <!-- Progreso -->
               <div class="flex items-center gap-3 flex-1 min-w-[150px]">
                 <Icon name="mdi:progress-check" class="w-4 h-4 text-gray-400" />
                 <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden min-w-[60px]">
@@ -445,7 +436,6 @@
                 </span>
               </div>
               
-              <!-- Estadísticas -->
               <div class="flex items-center gap-4 text-xs text-gray-500">
                 <div class="flex items-center gap-1.5">
                   <Icon name="mdi:file-pdf-box" class="w-4 h-4 text-red-500" />
@@ -572,7 +562,6 @@ const totalPaginasPDF = ref(0)
 const zoomLevel = ref(1)
 const paginaInput = ref(1)
 
-// 🔥 NUEVAS FUNCIONALIDADES
 const mostrarBusqueda = ref(false)
 const busquedaTexto = ref('')
 const buscando = ref(false)
@@ -585,9 +574,7 @@ const miniaturasContainer = ref(null)
 const miniaturasCache = ref({})
 
 const modoLectura = ref(false)
-
 const ultimaPaginaLeida = ref(0)
-
 const miniaturasVisibles = ref([])
 
 // ============================================ //
@@ -653,6 +640,9 @@ const cargarPDF = async () => {
   }
 }
 
+// ============================================ //
+// 🔥 FUNCIÓN RENDER PÁGINA CORREGIDA (CON DPR)
+// ============================================ //
 const renderPagina = async (numeroPagina) => {
   if (!pdfDocumento.value || !pdfCanvas.value) return
   
@@ -664,14 +654,23 @@ const renderPagina = async (numeroPagina) => {
     const container = canvas.parentElement
     const containerWidth = container?.clientWidth || 800
     
-    const viewport = page.getViewport({ scale: 1 })
-    const escala = Math.min((containerWidth - 40) / viewport.width, 2.5)
+    // 🔥 Obtener el DPR del dispositivo para calidad en móvil
+    const dpr = window.devicePixelRatio || 1
     
-    const escalaFinal = escala * zoomLevel.value
+    const viewport = page.getViewport({ scale: 1 })
+    const escalaBase = Math.min((containerWidth - 40) / viewport.width, 2.5)
+    
+    // 🔥 Aplicar zoom y DPR
+    const escalaFinal = escalaBase * zoomLevel.value * dpr
     const scaledViewport = page.getViewport({ scale: escalaFinal })
     
+    // 🔥 Canvas en alta resolución
     canvas.width = scaledViewport.width
     canvas.height = scaledViewport.height
+    
+    // 🔥 CSS en tamaño normal (dividido por dpr para que no se salga)
+    canvas.style.width = (scaledViewport.width / dpr) + 'px'
+    canvas.style.height = (scaledViewport.height / dpr) + 'px'
     
     await page.render({
       canvasContext: context,
@@ -685,8 +684,6 @@ const renderPagina = async (numeroPagina) => {
     localStorage.setItem(clave, numeroPagina.toString())
     ultimaPaginaLeida.value = numeroPagina
     
-    console.log(`✅ Página ${numeroPagina} renderizada`)
-    
     if (mostrarMiniaturas.value) {
       renderizarMiniaturas()
     }
@@ -696,7 +693,7 @@ const renderPagina = async (numeroPagina) => {
 }
 
 // ============================================ //
-// CONTROLES DE NAVEGACIÓN - CORREGIDOS
+// CONTROLES DE NAVEGACIÓN
 // ============================================ //
 
 const paginaAnteriorPDF = () => {
@@ -720,19 +717,14 @@ const irAPagina = () => {
   }
 }
 
-// 🔥 NUEVO: Manejar teclas en el input
 const handleInputKeydown = (event) => {
-  // Prevenir que el 0 se use como reset zoom cuando estamos en el input
   event.stopPropagation()
-  
-  // Si es Enter, ir a la página
   if (event.key === 'Enter') {
     event.preventDefault()
     irAPagina()
   }
 }
 
-// 🔥 NUEVO: Validar al perder el foco
 const validarInputPagina = () => {
   const num = parseInt(paginaInput.value)
   if (isNaN(num) || num < 1) {
@@ -887,10 +879,6 @@ const toggleModoLectura = () => {
   modoLectura.value = !modoLectura.value
 }
 
-// ============================================ //
-// HANDLE SCROLL
-// ============================================ //
-
 const handleScroll = () => {}
 
 // ============================================ //
@@ -909,16 +897,14 @@ const toggleFullscreen = () => {
 }
 
 // ============================================ //
-// KEYBOARD SHORTCUTS - CORREGIDO
+// KEYBOARD SHORTCUTS
 // ============================================ //
 
 const handleKeydown = (event) => {
   if (!visorAbierto.value) return
   
-  // 🔥 IMPORTANTE: Si el foco está en un input, no ejecutar atajos
   const target = event.target
   if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-    // Solo permitir Escape para salir del input
     if (event.key === 'Escape') {
       target.blur()
       if (mostrarBusqueda.value) {
@@ -928,14 +914,12 @@ const handleKeydown = (event) => {
     return
   }
   
-  // Ctrl+F para búsqueda
   if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
     event.preventDefault()
     toggleBusqueda()
     return
   }
   
-  // Escape para cerrar búsqueda
   if (event.key === 'Escape' && mostrarBusqueda.value) {
     mostrarBusqueda.value = false
     return
@@ -1041,9 +1025,6 @@ onUnmounted(() => {
   border-radius: 0.5rem;
 }
 
-/* ========================================== */
-/* TRANSICIONES                              */
-/* ========================================== */
 .transition-all {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1107,12 +1088,10 @@ onUnmounted(() => {
   background: #3a060d;
 }
 
-/* Fondo de libro */
 .bg-\[\#e8e0d5\] {
   background-color: #e8e0d5;
 }
 
-/* Input de número - ocultar flechas */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -1122,17 +1101,14 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* Shadow del libro */
 .shadow-2xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-/* Barra de progreso */
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, #611717, #8f1522);
 }
 
-/* Miniaturas */
 .aspect-\[3\/4\] {
   aspect-ratio: 3/4;
 }
