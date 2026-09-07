@@ -7,23 +7,23 @@
           @click="toggleMenu"
           @mouseenter="handleMenuHoverEnter"
           @mouseleave="handleMenuHoverLeave"
-          class="text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
+          class="text-[6vw] md:text-[2vw] text-senado-primary hover:bg-gray-100 p-[.5vw] rounded-lg transition-colors flex-shrink-0 flex items-center justify-center"
           ref="menuButton"
         >
           <ClientOnly>
             <Icon 
               name="material-symbols:menu-rounded" 
-              class="text-[4vw]" 
+              class="text-[12vw] md:text-[4vw]" 
               v-if="!menuAbierto" 
               style="font-variation-settings: 'wght' 900;"
             />
             <Icon 
               name="material-symbols:close-rounded" 
-              class="text-[3vw]" 
+              class="text-[9vw] md:text-[3vw]" 
               v-else 
             />
             <template #fallback>
-              <span class="text-[3vw]">☰</span>
+              <span class="text-[9vw] md:text-[3vw]">☰</span>
             </template>
           </ClientOnly>
         </button>
@@ -31,14 +31,14 @@
         <!-- Logo -->
         <div class="w-[1vw]"></div>
         <NuxtLink to="/" class="flex-shrink-0 spin-coin block">
-          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[7.5vw] w-auto" />
+          <img src="/images/LogoDorado.svg" alt="Senado" class="h-[22.5vw] md:h-[7.5vw] w-auto" />
         </NuxtLink>
 
         <!-- Título -->
         <div class="hidden md:block flex-shrink-0 text-left">
-          <h1 class="text-[2.5vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
+          <h1 class="text-[9vw] md:text-[3vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
             Cámara de<br />
-            <span class="font-montserrat-bold">Senadores</span>
+            <span class="font-montserrat-bold text-[10.5vw] md:text-[3.5vw]">Senadores</span>
           </h1>
         </div>
         <div class="flex-shrink-0 w-[13vw]"></div>
@@ -52,7 +52,7 @@
           <div class="relative flex items-center">
             <button 
               ref="redesButton"
-              class="text-gray-600 hover:text-senado-primary transition-colors font-medium text-[1.2vw]"
+              class="text-gray-600 hover:text-senado-primary transition-colors font-medium text-[3.6vw] md:text-[1.2vw]"
             >
               Redes Sociales
             </button>
@@ -73,41 +73,41 @@
               >
                 <a href="https://www.facebook.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
                   <ClientOnly>
-                    <Icon name="mdi:facebook" class="text-[2vw] text-blue-600" />
+                    <Icon name="mdi:facebook" class="text-[6vw] md:text-[2vw] text-blue-600" />
                     <template #fallback>
-                      <span class="text-2xl">f</span>
+                      <span class="text-[6vw] md:text-[2vw]">f</span>
                     </template>
                   </ClientOnly>
                 </a>
                 <a href="https://x.com/SenadoBolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
                   <ClientOnly>
-                    <Icon name="ri:twitter-x-line" class="text-[2vw] text-[#222222]" />
+                    <Icon name="ri:twitter-x-line" class="text-[6vw] md:text-[2vw] text-[#222222]" />
                     <template #fallback>
-                      <span class="text-2xl">𝕏</span>
+                      <span class="text-[6vw] md:text-[2vw]">𝕏</span>
                     </template>
                   </ClientOnly>
                 </a>
                 <a href="https://www.youtube.com/@senadobolivia2026" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
                   <ClientOnly>
-                    <Icon name="mdi:youtube" class="text-[2vw] text-red-600" />
+                    <Icon name="mdi:youtube" class="text-[6vw] md:text-[2vw] text-red-600" />
                     <template #fallback>
-                      <span class="text-2xl">▶️</span>
+                      <span class="text-[6vw] md:text-[2vw]">▶️</span>
                     </template>
                   </ClientOnly>
                 </a>
                 <a href="https://www.instagram.com/camarasenadores" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
                   <ClientOnly>
-                    <Icon name="mdi:instagram" class="text-[2vw] text-pink-600" />
+                    <Icon name="mdi:instagram" class="text-[6vw] md:text-[2vw] text-pink-600" />
                     <template #fallback>
-                      <span class="text-2xl">📷</span>
+                      <span class="text-[6vw] md:text-[2vw]">📷</span>
                     </template>
                   </ClientOnly>
                 </a>
                 <a href="https://www.tiktok.com/@senadobolivia" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
                   <ClientOnly>
-                    <Icon name="ri:tiktok-line" class="text-[2vw] text-black" />
+                    <Icon name="ri:tiktok-line" class="text-[6vw] md:text-[2vw] text-black" />
                     <template #fallback>
-                      <span class="text-2xl">♪</span>
+                      <span class="text-[6vw] md:text-[2vw]">♪</span>
                     </template>
                   </ClientOnly>
                 </a>
@@ -118,37 +118,12 @@
         <div class="hidden lg:block flex-grow max-w-[2vw] z-[1000]"></div>
       </div>
 
-      <!-- Mobile -->
+      <!-- Mobile: Título sin buscador -->
       <div class="md:hidden flex flex-col items-center gap-2 mt-2">
-        <h1 class="text-xl font-bold text-senado-primary leading-tight text-center">
+        <h1 class="text-[9vw] font-bold text-senado-primary leading-tight text-center">
           Cámara de<br />
-          <span class="text-2xl">Senadores</span>
+          <span class="text-[10.5vw]">Senadores</span>
         </h1>
-        <p class="text-xs text-gray-500 font-medium tracking-wider">
-          ENCUENTRA TU SENADOR
-        </p>
-        <div class="w-full max-w-xs relative">
-          <div class="relative">
-            <input 
-              ref="searchInputMobile"
-              type="text" 
-              placeholder="Buscar senador..." 
-              class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent"
-              v-model="searchQuery"
-              @input="handleSearch"
-              @focus="handleFocus"
-              @blur="handleBlur"
-            />
-            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-senado-primary">
-              <ClientOnly>
-                <Icon name="material-symbols:search-rounded" class="text-xl" />
-                <template #fallback>
-                  <span class="text-xl">🔍</span>
-                </template>
-              </ClientOnly>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -178,8 +153,8 @@
         <!-- Contenido del menú -->
         <div class="relative z-10">
           <div class="bg-senado-primary text-white p-4 flex items-center justify-center sticky top-0 z-10 relative">
-            <span class="font-bold text-lg">Menú</span>
-            <button @click="toggleMenu" class="text-2xl hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors absolute right-4">
+            <span class="font-bold text-[4.5vw] md:text-[1.5vw]">Menú</span>
+            <button @click="toggleMenu" class="text-[6vw] md:text-[2vw] hover:bg-white hover:bg-opacity-20 p-1 rounded transition-colors absolute right-4">
               ✕
             </button>
           </div>
@@ -193,10 +168,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('institucional')"
+                @click="toggleSubmenu('institucional', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Institucional</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.institucional ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,7 +181,7 @@
                 </div>
               </div>
               <div 
-                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
+                class="ml-4 mt-2 space-y-0 text-[3.3vw] md:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
@@ -216,10 +191,10 @@
                 <!-- Funciones del Senado -->
                 <div class="">
                   <div 
-                    @click="toggleSubmenu('funciones')"
+                    @click="toggleSubmenu('funciones', 'institucional')"
                     class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Funciones del Senado</span>
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] md:text-[1.1vw]">• Funciones del Senado</span>
                     <span class="transition-transform duration-300 inline-flex" :class="submenus.funciones ? 'rotate-90' : ''">
                       <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -227,7 +202,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-black/5 ml-6 space-y-0 text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
+                    class="bg-black/5 ml-6 space-y-0 text-[3vw] md:text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
                     :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Atribuciones del Senado</NuxtLink>
@@ -238,10 +213,10 @@
                 <!-- Auditoría -->
                 <div class="">
                   <div 
-                    @click="toggleSubmenu('auditoriaInstitucional')"
+                    @click="toggleSubmenu('auditoriaInstitucional', 'institucional')"
                     class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Auditoría</span>
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] md:text-[1.1vw]">• Auditoría</span>
                     <span class="transition-transform duration-300 inline-flex" :class="submenus.auditoriaInstitucional ? 'rotate-90' : ''">
                       <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -249,7 +224,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-black/5 ml-6 space-y-0 text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    class="bg-black/5 ml-6 space-y-0 text-[3vw] md:text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.auditoriaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• POA-UAI</NuxtLink>
@@ -262,10 +237,10 @@
                 <!-- Transparencia -->
                 <div class="">
                   <div 
-                    @click="toggleSubmenu('transparenciaInstitucional')"
+                    @click="toggleSubmenu('transparenciaInstitucional', 'institucional')"
                     class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Transparencia y Lucha contra la Corrupción</span>
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] md:text-[1.1vw]">• Transparencia y Lucha contra la Corrupción</span>
                     <span class="transition-transform duration-300 inline-flex" :class="submenus.transparenciaInstitucional ? 'rotate-90' : ''">
                       <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -273,7 +248,7 @@
                     </span>
                   </div>
                   <div 
-                    class="bg-black/5 ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
+                    class="bg-black/5 ml-6 space-y-0 text-[3vw] md:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</a>
@@ -296,10 +271,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('tramites')"
+                @click="toggleSubmenu('tramites', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[400] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[400] text-black hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Trámites y Servicios</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.tramites ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -309,7 +284,7 @@
                 </div>
               </div>
               <div 
-                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] md:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.tramites ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Consulta tu trámite</a>
@@ -329,10 +304,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('comunicacion')"
+                @click="toggleSubmenu('comunicacion', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Comunicación</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.comunicacion ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -342,7 +317,7 @@
                 </div>
               </div>
               <div 
-                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] md:text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
@@ -361,10 +336,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('legislativa')"
+                @click="toggleSubmenu('legislativa', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Facultades Legislativas</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.legislativa ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -383,10 +358,10 @@
                 <!-- Fiscalización -->
                 <div class="bg-transparent">
                   <div 
-                    @click="toggleSubmenu('fiscalizacion')"
+                    @click="toggleSubmenu('fiscalizacion', 'legislativa')"
                     class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Fiscalización</span>
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] md:text-[1.1vw]">• Fiscalización</span>
                     <span class="transition-transform duration-300 inline-flex" :class="submenus.fiscalizacion ? 'rotate-90' : ''">
                       <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -394,7 +369,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
+                    class="ml-6 space-y-0 text-[3vw] md:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
                     :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Escrito</NuxtLink>
@@ -405,10 +380,10 @@
                 <!-- Gestión -->
                 <div class="bg-transparent">
                   <div 
-                    @click="toggleSubmenu('gestion')"
+                    @click="toggleSubmenu('gestion', 'legislativa')"
                     class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[1.1vw]">• Gestión</span>
+                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] md:text-[1.1vw]">• Gestión</span>
                     <span class="transition-transform duration-300 inline-flex" :class="submenus.gestion ? 'rotate-90' : ''">
                       <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -416,7 +391,7 @@
                     </span>
                   </div>
                   <div 
-                    class="ml-6 space-y-0 text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
+                    class="ml-6 space-y-0 text-[3vw] md:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
                     :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
                   >
                     <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Resoluciones Camarales</NuxtLink>
@@ -436,10 +411,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('senadores')"
+                @click="toggleSubmenu('senadores', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Tus Senadores</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.senadores ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -449,7 +424,7 @@
                 </div>
               </div>
               <div 
-                class="bg-black/10 ml-4 mt-2 space-y-0 text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] md:text-[1.1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500] rounded-lg overflow-hidden"
                 :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• ¿Quién me representa?</NuxtLink>
@@ -467,10 +442,10 @@
               class="menu-item-wrapper"
             >
               <div 
-                @click="toggleSubmenu('recursosHumanos')"
+                @click="toggleSubmenu('recursosHumanos', null)"
                 class="cursor-pointer menu-item"
               >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[1.1vw] transition-colors hover:bg-white/60">
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] md:text-[1.1vw] transition-colors hover:bg-white/60">
                   <span>&nbsp;&nbsp;&nbsp; Recursos Humanos</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.recursosHumanos ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -480,7 +455,7 @@
                 </div>
               </div>
               <div 
-                class="ml-4 mt-2 space-y-0 text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
+                class="ml-4 mt-2 space-y-0 text-[3.3vw] md:text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.recursosHumanos ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <div class="">
@@ -519,7 +494,7 @@
             <div class="space-y-3 mt-2">
               <NuxtLink 
                 to="/" 
-                class="flex items-center gap-3 bg-senado-gold-lightest/90 text-black hover:bg-[#611717]/10 hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[500] text-[1.2vw] shadow-sm hover:shadow-md"
+                class="flex items-center gap-3 bg-senado-gold-lightest/90 text-black hover:bg-[#611717]/10 hover:text-senado-primary-dark transition-all duration-300 py-3.5 px-4 rounded-lg font-[500] text-[3.6vw] md:text-[1.2vw] shadow-sm hover:shadow-md"
                 @click="closeMenu"
               >
                 <span>Inicio</span>
@@ -527,7 +502,7 @@
               
               <NuxtLink 
                 to="/contacto" 
-                class="flex items-center gap-3 text-black hover:bg-[#611717]/10 hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[500] text-[1.2vw]"
+                class="flex items-center gap-3 text-black hover:bg-[#611717]/10 hover:border-senado-gold transition-all duration-300 py-3 px-4 rounded-lg font-[500] text-[3.6vw] md:text-[1.2vw]"
                 @click="closeMenu"
               >
                 <span>Contacto</span>
@@ -539,7 +514,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- RESULTADOS DE BÚSQUEDA - Solo para mobile -->
+    <!-- RESULTADOS DE BÚSQUEDA - Solo para desktop -->
     <!-- ========================================== -->
     <Teleport to="body">
       <transition
@@ -551,7 +526,7 @@
         leave-to-class="opacity-0"
       >
         <div 
-          v-if="showResults && searchResults.length > 0 && isMobile"
+          v-if="showResults && searchResults.length > 0 && !isMobile"
           class="fixed bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-[99999999]"
           :style="searchResultsStyle"
         >
@@ -569,23 +544,23 @@
                 @error="(e) => e.target.src = defaultAvatar"
               />
               <div class="flex-1 min-w-0">
-                <div class="text-base font-semibold text-gray-800 truncate">{{ result.name }}</div>
-                <div class="text-sm text-gray-500 flex items-center gap-2 flex-wrap">
+                <div class="text-[4.5vw] md:text-[1.5vw] font-semibold text-gray-800 truncate">{{ result.name }}</div>
+                <div class="text-[3.6vw] md:text-[1.2vw] text-gray-500 flex items-center gap-2 flex-wrap">
                   <span>{{ result.department || 'Sin departamento' }}</span>
                   <span class="w-1 h-1 bg-gray-300 rounded-full flex-shrink-0"></span>
                   <span 
-                    class="px-2 py-0.5 rounded text-[11px] font-medium"
+                    class="px-2 py-0.5 rounded text-[3vw] md:text-[1vw] font-medium"
                     :style="{ backgroundColor: result.partyColor + '20', color: result.partyColor || '#666' }"
                   >
                     {{ result.partyShort || result.party || 'Sin partido' }}
                   </span>
-                  <span v-if="result.esSuplente" class="text-[11px] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
+                  <span v-if="result.esSuplente" class="text-[3vw] md:text-[1vw] text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded flex-shrink-0">Suplente</span>
                 </div>
               </div>
               <ClientOnly>
-                <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-2xl flex-shrink-0" />
+                <Icon name="material-symbols:chevron-right-rounded" class="text-gray-400 text-[6vw] md:text-[2vw] flex-shrink-0" />
                 <template #fallback>
-                  <span class="text-gray-400 text-2xl">›</span>
+                  <span class="text-gray-400 text-[6vw] md:text-[2vw]">›</span>
                 </template>
               </ClientOnly>
             </div>
@@ -594,7 +569,7 @@
       </transition>
     </Teleport>
 
-    <!-- Sin resultados - Solo para mobile -->
+    <!-- Sin resultados - Solo para desktop -->
     <Teleport to="body">
       <transition
         enter-active-class="transition-opacity duration-500 ease-out"
@@ -605,13 +580,13 @@
         leave-to-class="opacity-0"
       >
         <div 
-          v-if="showResults && searchQuery && searchResults.length === 0 && isMobile"
+          v-if="showResults && searchQuery && searchResults.length === 0 && !isMobile"
           class="fixed bg-white rounded-lg shadow-xl border border-gray-200 p-6 text-center z-[99999999]"
           :style="searchResultsStyle"
         >
-          <div class="text-5xl mb-3">🔍</div>
-          <p class="text-base text-gray-600 font-medium">No se encontraron senadores</p>
-          <p class="text-sm text-gray-400 mt-1">Intenta con otro término de búsqueda</p>
+          <div class="text-[15vw] md:text-[5vw] mb-3">🔍</div>
+          <p class="text-[4.5vw] md:text-[1.5vw] text-gray-600 font-medium">No se encontraron senadores</p>
+          <p class="text-[3.6vw] md:text-[1.2vw] text-gray-400 mt-1">Intenta con otro término de búsqueda</p>
         </div>
       </transition>
     </Teleport>
@@ -737,9 +712,76 @@ export default {
         this.closeMenuTimer = null
       }
     },
-    toggleSubmenu(key) {
+    toggleSubmenu(key, parentKey) {
       this.clearSubmenuTimer(key)
-      this.submenus[key] = !this.submenus[key]
+      
+      // Si el submenú ya está abierto, lo cerramos
+      if (this.submenus[key]) {
+        this.submenus[key] = false
+        return
+      }
+      
+      // Menús principales
+      const mainMenuKeys = [
+        'institucional', 
+        'tramites', 
+        'comunicacion', 
+        'legislativa', 
+        'senadores', 
+        'recursosHumanos'
+      ]
+      
+      // SOLO si es un menú PRINCIPAL, cerramos los demás principales
+      if (mainMenuKeys.includes(key)) {
+        mainMenuKeys.forEach(mainKey => {
+          if (mainKey !== key) {
+            this.submenus[mainKey] = false
+            // Cerramos también los submenús hijos
+            const childKeys = this.getChildKeys(mainKey)
+            childKeys.forEach(childKey => {
+              this.submenus[childKey] = false
+            })
+          }
+        })
+      }
+      
+      // Si tiene un padre, cerramos los submenús del mismo nivel (hermanos)
+      // PERO NO cerramos el padre (menú principal)
+      if (parentKey) {
+        const parentSubmenus = {
+          'institucional': ['funciones', 'auditoriaInstitucional', 'transparenciaInstitucional'],
+          'tramites': [],
+          'comunicacion': [],
+          'legislativa': ['fiscalizacion', 'gestion'],
+          'senadores': [],
+          'recursosHumanos': []
+        }
+        
+        if (parentSubmenus[parentKey]) {
+          parentSubmenus[parentKey].forEach(subKey => {
+            // ✅ SOLO cerramos los hermanos (otros submenús del mismo nivel)
+            // ❌ NO cerramos el padre (parentKey)
+            // ❌ NO cerramos el que estamos abriendo (key)
+            if (subKey !== key && subKey !== parentKey) {
+              this.submenus[subKey] = false
+            }
+          })
+        }
+      }
+      
+      // Abrimos el submenú actual
+      this.submenus[key] = true
+    },
+    getChildKeys(mainKey) {
+      const map = {
+        'institucional': ['funciones', 'auditoriaInstitucional', 'transparenciaInstitucional'],
+        'tramites': [],
+        'comunicacion': [],
+        'legislativa': ['fiscalizacion', 'gestion'],
+        'senadores': [],
+        'recursosHumanos': []
+      }
+      return map[mainKey] || []
     },
     clearAllTimers() {
       if (this.hoverOpenTimer) {

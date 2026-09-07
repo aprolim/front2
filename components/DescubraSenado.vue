@@ -8,7 +8,7 @@
         <div class="inline-flex rounded-md shadow-sm" role="group">
           <button
             @click="setTipoVisualizacion('titulares')"
-            class="px-4 py-2 text-sm font-medium rounded-l-lg transition-colors"
+            class="px-4 py-2 text-[2.6vw] sm:text-[1.6vw] font-medium rounded-l-lg transition-colors"
             :class="tipoVisualizacion === 'titulares' 
               ? 'bg-senado-primary text-white' 
               : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'"
@@ -17,7 +17,7 @@
           </button>
           <button
             @click="setTipoVisualizacion('suplentes')"
-            class="px-4 py-2 text-sm font-medium rounded-r-lg transition-colors"
+            class="px-4 py-2 text-[2.6vw] sm:text-[1.6vw] font-medium rounded-r-lg transition-colors"
             :class="tipoVisualizacion === 'suplentes' 
               ? 'bg-senado-primary text-white' 
               : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 border-l-0'"
@@ -37,7 +37,6 @@
 
       <div class="hemicycle-wrapper">
         <div class="hemicycle-container">
-          <!-- SVG del hemiciclo -->
           <svg 
             class="hemicycle-svg" 
             viewBox="250 200 700 400" 
@@ -46,12 +45,38 @@
             @mousemove="updateTooltipPosition"
             style="cursor: default;"
           >
-            <rect width="100%" height="100%" fill="#fff" rx="20" />
+            <!-- ========================================== -->
+            <!-- IMAGEN DE FONDO (marca de agua)            -->
+            <!-- ========================================== -->
+            <defs>
+              <pattern 
+                id="hemicicloBg" 
+                patternUnits="userSpaceOnUse" 
+                x="0" 
+                y="0" 
+                width="1200" 
+                height="800"
+              >
+                <image 
+                  href="/background/hemiciclo.jpeg" 
+                  x="0" 
+                  y="0" 
+                  width="1200" 
+                  height="800" 
+                  preserveAspectRatio="xMidYMid meet"
+                  opacity="0.15"
+                  filter="grayscale(1)"
+                />
+              </pattern>
+            </defs>
+            
+            <!-- Fondo con la imagen - cubriendo todo el viewBox -->
+            <rect x="0" y="0" width="1200" height="800" fill="url(#hemicicloBg)" />
 
+            <!-- ========================================== -->
+            <!-- DIRECTIVA (CENTRO) - SIEMPRE TITULARES     -->
+            <!-- ========================================== -->
             <g>
-              <!-- ========================================== -->
-              <!-- DIRECTIVA (CENTRO) - SIEMPRE TITULARES     -->
-              <!-- ========================================== -->
               <g>
                 <!-- 12 - 2da Vicepresidencia -->
                 <circle 
@@ -214,7 +239,6 @@
                 <div class="party-badge" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
                   {{ hoveredSeat.partyShort || 'Sin partido' }}
                 </div>
-                <!-- 🔥 MODO SUPLENTES: mostrar de quién es suplente -->
                 <div v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplenteDe && !hoveredSeat.esDirectiva" class="suplente-de">
                   Suplente de: {{ hoveredSeat.suplenteDe }}
                 </div>
@@ -224,27 +248,20 @@
               </div>
             </div>
             <div class="tooltip-body">
-              <!-- DEPARTAMENTO -->
               <div class="info-row">
                 <span class="label">Departamento:</span>
                 <span class="value">{{ hoveredSeat.department || '-' }}</span>
               </div>
-              
-              <!-- COMITÉ O COMISIÓN -->
               <div class="info-row" v-if="hoveredSeat.comite || hoveredSeat.comision">
                 <span class="label">Comité/Comisión:</span>
                 <span class="value">{{ hoveredSeat.comite || hoveredSeat.comision }}</span>
               </div>
-              
-              <!-- CARGO -->
               <div class="info-row" v-if="hoveredSeat.cargo">
                 <span class="label">Cargo:</span>
                 <span class="value cargo-value" :style="{ color: hoveredSeat.partyColor || '#611717' }">
                   {{ hoveredSeat.cargo }}
                 </span>
               </div>
-              
-              <!-- 🔥 ENLACE AL SUPLENTE (modo titulares) -->
               <div class="info-row link-row" v-if="tipoVisualizacion === 'titulares' && hoveredSeat.tipo === 'titular' && hoveredSeat.suplenteId">
                 <span class="label">Suplente:</span>
                 <NuxtLink 
@@ -254,8 +271,6 @@
                   {{ getSuplenteNombre(hoveredSeat.suplenteId) }}
                 </NuxtLink>
               </div>
-              
-              <!-- 🔥 ENLACE AL TITULAR (modo suplentes) -->
               <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.tipo === 'suplente' && hoveredSeat.titularId">
                 <span class="label">Titular:</span>
                 <NuxtLink 
@@ -265,7 +280,6 @@
                   {{ getTitularNombre(hoveredSeat.titularId) }}
                 </NuxtLink>
               </div>
-              
               <div class="hint">🖱️ Click para ver más detalles</div>
             </div>
           </div>
@@ -288,7 +302,7 @@
           {{ partido.cantidad }}
         </span>
         <div class="legend-color" :style="{ backgroundColor: partido.color }"></div>
-        <span class="legend-text" :style="{ color: filtroPartido === partido.nombreOriginal ? partido.color : '#333' }">
+        <span class="legend-text text-[2.1vw] sm:text-[1.8vw]" :style="{ color: filtroPartido === partido.nombreOriginal ? partido.color : '#333' }">
           {{ partido.nombre }}
         </span>
       </div>
@@ -308,7 +322,6 @@ const router = useRouter()
 // ============================================
 const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
 
-// IDs de la directiva (SIEMPRE muestran al TITULAR)
 const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
 
 // ============================================
@@ -342,12 +355,10 @@ const restaurarEstado = () => {
     if (tipoGuardado === 'titulares' || tipoGuardado === 'suplentes') {
       tipoVisualizacion.value = tipoGuardado
     }
-    
     const filtroGuardado = sessionStorage.getItem('filtroPartido')
     if (filtroGuardado) {
       filtroPartido.value = filtroGuardado
     }
-    
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
       setTimeout(() => {
@@ -386,30 +397,10 @@ const seatPositionsArco = [
 ]
 
 // ============================================
-// FUNCIÓN PARA VERIFICAR SI ES DIRECTIVA
+// FUNCIONES
 // ============================================
-const esDirectiva = (id) => {
-  return DIRECTIVA_IDS.includes(id)
-}
+const esDirectiva = (id) => DIRECTIVA_IDS.includes(id)
 
-// ============================================
-// FUNCIÓN PARA GENERAR SLUG
-// ============================================
-const generarSlug = (nombre) => {
-  if (!nombre) return ''
-  return nombre
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/ñ/g, 'n')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-}
-
-// ============================================
-// FUNCIONES PARA OBTENER DATOS DE TITULARES/SUPLENTES
-// ============================================
 const getSuplenteNombre = (suplenteId) => {
   if (!suplenteId) return null
   const s = senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')
@@ -434,9 +425,6 @@ const getTitularSlug = (titularId) => {
   return s?.slug || null
 }
 
-// ============================================
-// FUNCIÓN PARA OBTENER NOMBRE DE PARTIDO
-// ============================================
 const getNombrePartido = (nombreOriginal) => {
   const nombres = {
     'Partido Demócrata Cristiano': 'Partido Demócrata Cristiano',
@@ -447,9 +435,6 @@ const getNombrePartido = (nombreOriginal) => {
   return nombres[nombreOriginal] || nombreOriginal
 }
 
-// ============================================
-// FUNCIÓN PARA VERIFICAR SI UN ASIENTO ESTÁ FILTRADO
-// ============================================
 const getSeatFilteredOut = (id) => {
   if (!filtroPartido.value) return false
   const seat = allSeats.value.find(s => s.id === id)
@@ -461,37 +446,20 @@ const getSeatFilteredOut = (id) => {
 // COMPUTED - TODOS LOS ASIENTOS (36)
 // ============================================
 const allSeats = computed(() => {
-  // 🔥 LOG 1: Ver qué hay en senadores
-  console.log('🔍 [DEBUG] senadores.length:', senadores.length)
-  console.log('🔍 [DEBUG] Primeros 5 senadores:', senadores.slice(0, 5).map(s => ({ id: s.id, tipo: s.tipo, name: s.name, seatNumber: s.seatNumber })))
-  
-  // Obtener SOLO titulares para los asientos
   const titulares = senadores.filter(s => s.tipo === 'titular')
-  console.log('🔍 [DEBUG] Titulares encontrados:', titulares.length)
-  console.log('🔍 [DEBUG] Titulares:', titulares.map(s => ({ id: s.id, name: s.name, seatNumber: s.seatNumber, department: s.department })))
-  
   const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
-  console.log('🔍 [DEBUG] Titulares ordenados por seatNumber:')
-  titularesOrdenados.forEach((s, i) => {
-    console.log(`  Posición ${i}: ID=${s.id}, seatNumber=${s.seatNumber}, name=${s.name}`)
-  })
   
   return titularesOrdenados.map((senator, index) => {
     const pos = seatPositionsArco[index] || { x: 400, y: 300 }
     const isDirectiva = esDirectiva(senator.id)
-    
-    // Buscar el suplente relacionado
     const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
     
-    // ===== MODO SUPLENTES =====
     if (tipoVisualizacion.value === 'suplentes') {
       if (suplente) {
-        // Mostrar el suplente
         return {
           ...suplente,
-          id: senator.id, // Mantener el ID del asiento para consistencia
+          id: senator.id,
           seatNumber: senator.seatNumber,
-          // Datos para mostrar
           nombreActual: suplente.name,
           fotoActual: suplente.foto || defaultAvatar,
           slugSuplente: suplente.slug,
@@ -513,7 +481,6 @@ const allSeats = computed(() => {
           titularId: suplente.titularId
         }
       } else {
-        // 🔥 Sin suplente: muestra "Sin suplente" (asiento 16)
         return {
           ...senator,
           nombreActual: 'Sin suplente',
@@ -536,7 +503,6 @@ const allSeats = computed(() => {
       }
     }
     
-    // ===== MODO TITULARES =====
     return {
       ...senator,
       nombreActual: senator.name,
@@ -566,12 +532,10 @@ const filteredSeats = computed(() => {
   if (!filtroPartido.value) {
     return allSeats.value
   }
-  
   return allSeats.value.map(seat => {
     const seatParty = seat.party || ''
     const filterParty = filtroPartido.value || ''
     const matches = seatParty === filterParty
-    
     return { ...seat, filteredOut: !matches }
   })
 })
@@ -593,13 +557,10 @@ const getColorDirectiva = (id) => {
 const getSeatDirectiva = (id) => {
   const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
   if (!titular) return null
-  
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
-  
   const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === id)
   
-  // 🔥 DIRECTIVA SIEMPRE muestra al TITULAR
   return {
     ...titular,
     nombreActual: titular.name,
@@ -618,21 +579,19 @@ const getSeatDirectiva = (id) => {
 }
 
 // ============================================
-// PARTIDOS (para la leyenda) - ORDENADOS
+// PARTIDOS (para la leyenda)
 // ============================================
 const partidosOrdenados = computed(() => {
   const conteo = {}
   let baseSenadores
   
   if (tipoVisualizacion.value === 'suplentes') {
-    // 🔥 En modo suplentes, contar los suplentes que existen
     baseSenadores = senadores.filter(s => {
       if (s.tipo !== 'suplente') return false
-      if (esDirectiva(s.titularId)) return false // Excluir directiva
+      if (esDirectiva(s.titularId)) return false
       return true
     })
   } else {
-    // 🔥 En modo titulares, contar los titulares
     baseSenadores = senadores.filter(s => s.tipo === 'titular')
   }
   
@@ -670,7 +629,6 @@ const partidosOrdenados = computed(() => {
   }))
   
   partidosArray.sort((a, b) => a.ordenIndex - b.ordenIndex)
-  
   return partidosArray
 })
 
@@ -690,19 +648,6 @@ const toggleFiltro = (nombrePartido) => {
     filtroPartido.value = nombrePartido
   }
   guardarEstado()
-}
-
-const getColorById = (id) => {
-  const senador = allSeats.value.find(s => s.id === id)
-  return senador?.partyColor || '#cccccc'
-}
-
-const getSeatById = (id) => {
-  if (esDirectiva(id)) {
-    return getSeatDirectiva(id)
-  }
-  const found = allSeats.value.find(s => s.id === id)
-  return found || null
 }
 
 const handleMouseEnter = (seat, event) => {
@@ -739,9 +684,6 @@ const updateTooltipPosition = (event) => {
   }
 }
 
-// ============================================
-// goToSenator - CORREGIDO PARA NUEVA ESTRUCTURA
-// ============================================
 const goToSenator = (id) => {
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return
@@ -749,11 +691,9 @@ const goToSenator = (id) => {
   if (seat.filteredOut) return
   
   guardarEstado()
-  
   isNavigating.value = true
   hoveredSeat.value = null
   
-  // 🔥 Si es DIRECTIVA, SIEMPRE va al TITULAR
   if (esDirectiva(id)) {
     const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
     if (titular && titular.slug) {
@@ -762,20 +702,18 @@ const goToSenator = (id) => {
     }
   }
   
-  // 🔥 Si es modo suplentes Y el asiento tiene suplente
   if (tipoVisualizacion.value === 'suplentes' && seat.tipo === 'suplente' && seat.slug) {
     router.push(`/senador/suplente/${seat.slug}`)
     return
   }
   
-  // Para modo titulares
   if (seat.tipo === 'titular' && seat.slug) {
     router.push(`/senador/${seat.slug}`)
   }
 }
 
 // ============================================
-// TOOLTIP STYLE CON POSICIÓN INTELIGENTE
+// TOOLTIP STYLE
 // ============================================
 const tooltipStyle = computed(() => {
   const isMobile = window.innerWidth < 768
@@ -806,80 +744,6 @@ const tooltipStyle = computed(() => {
 // ============================================
 onMounted(() => {
   restaurarEstado()
-  
-  // ============================================
-  // 🔥 LOGS DETALLADOS DE DEBUG
-  // ============================================
-  console.log('========================================')
-  console.log('🔍 [DEBUG] SenateChamber - INFORMACIÓN COMPLETA')
-  console.log('========================================')
-  
-  // 1. Total de senadores
-  console.log('📊 Total senadores:', senadores.length)
-  
-  // 2. Tipos
-  const titulares = senadores.filter(s => s.tipo === 'titular')
-  const suplentes = senadores.filter(s => s.tipo === 'suplente')
-  console.log('📊 Titulares:', titulares.length)
-  console.log('📊 Suplentes:', suplentes.length)
-  
-  // 3. Verificar IDs duplicados
-  const ids = senadores.map(s => s.id)
-  const idsUnicos = new Set(ids)
-  console.log('📊 IDs únicos:', idsUnicos.size)
-  if (ids.length !== idsUnicos.size) {
-    console.warn('⚠️ HAY IDs DUPLICADOS!')
-    const duplicados = ids.filter((id, index) => ids.indexOf(id) !== index)
-    console.warn('Duplicados:', duplicados)
-  }
-  
-  // 4. Verificar que haya 36 titulares
-  if (titulares.length !== 36) {
-    console.warn(`⚠️ Se esperaban 36 titulares, pero hay ${titulares.length}`)
-  }
-  
-  // 5. Verificar que haya 35 suplentes (o 34 si Teresa Alarcón no tiene)
-  if (suplentes.length !== 35 && suplentes.length !== 34) {
-    console.warn(`⚠️ Se esperaban 35 suplentes, pero hay ${suplentes.length}`)
-  }
-  
-  // 6. Mostrar todos los titulares con su seatNumber
-  console.log('📊 TITULARES ordenados por seatNumber:')
-  const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
-  titularesOrdenados.forEach((s, index) => {
-    console.log(`  ${index+1}. ID:${s.id} | seatNumber:${s.seatNumber} | ${s.name} | ${s.department}`)
-  })
-  
-  // 7. Verificar que los seatNumber sean 1-36
-  const seatNumbers = titulares.map(s => s.seatNumber).sort((a, b) => a - b)
-  console.log('📊 SeatNumbers de titulares:', seatNumbers.join(', '))
-  
-  const expectedSeats = Array.from({ length: 36 }, (_, i) => i + 1)
-  const missingSeats = expectedSeats.filter(s => !seatNumbers.includes(s))
-  if (missingSeats.length > 0) {
-    console.warn(`⚠️ Faltan los asientos: ${missingSeats.join(', ')}`)
-  }
-  
-  // 8. Mostrar suplentes
-  console.log('📊 SUPLENTES:')
-  suplentes.forEach((s, index) => {
-    console.log(`  ${index+1}. ID:${s.id} | seatNumber:${s.seatNumber} | ${s.name} | titularId:${s.titularId} | ${s.department}`)
-  })
-  
-  // 9. Verificar relaciones titular-suplente
-  console.log('📊 RELACIONES TITULAR-SUPLENTE:')
-  titulares.forEach(t => {
-    const suplente = suplentes.find(s => s.titularId === t.id)
-    if (suplente) {
-      console.log(`  ✅ Asiento ${t.seatNumber}: ${t.name} → ${suplente.name}`)
-    } else {
-      console.log(`  ⚠️ Asiento ${t.seatNumber}: ${t.name} → SIN SUPLENTE`)
-    }
-  })
-  
-  console.log('========================================')
-  console.log('✅ SenateChamber montado')
-  console.log('========================================')
 })
 </script>
 
@@ -893,7 +757,6 @@ onMounted(() => {
 
 .background-container {
   background: rgba(255,255,255,0.2);
-  padding: 1rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -901,10 +764,9 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* BOTONES CON INDICADOR DE FILTRO           */
+/* BOTONES                                    */
 /* ========================================== */
 .botones-padre {
-  font-size: 1vw;
   margin-bottom: 0.5em;
   display: flex;
   align-items: center;
@@ -913,13 +775,8 @@ onMounted(() => {
   justify-content: center;
 }
 
-.botones-padre .inline-flex {
-  font-size: 1em;
-}
-
 .botones-padre button {
   padding: 0.4em 0.75em;
-  font-size: 0.9em;
   border-radius: 0.375em;
 }
 
@@ -988,6 +845,17 @@ onMounted(() => {
   aspect-ratio: 700 / 400;
 }
 
+/* 🔥 MÓVIL: SVG OCUPA MÁS ANCHO */
+@media (max-width: 1023px) {
+  .hemicycle-container {
+    width: 150%;
+  }
+  
+  .hemicycle-svg {
+    width: 150%;
+  }
+}
+
 .senator-circle {
   transition: all 0.2s ease;
   cursor: pointer;
@@ -1034,7 +902,7 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* PADRE 2: TOOLTIP                          */
+/* TOOLTIP                                    */
 /* ========================================== */
 .tooltip-padre {
   font-size: 1.15vw;
@@ -1144,7 +1012,7 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* PADRE 3: LEYENDA                          */
+/* LEYENDA                                    */
 /* ========================================== */
 .leyenda-padre {
   font-size: 2vw;
@@ -1203,7 +1071,6 @@ onMounted(() => {
 }
 
 .leyenda-padre .legend-text {
-  font-size: 0.55em;
   font-weight: 500;
   color: #333;
   text-align: center;

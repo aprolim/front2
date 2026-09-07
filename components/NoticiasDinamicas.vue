@@ -1,12 +1,11 @@
-<!-- components/NoticiasDinamicas.vue -->
 <template>
-  <div class="flex flex-col md:flex-row gap-[1vw]">
+  <div class="flex flex-col md:flex-row gap-[3vw] md:gap-[1vw]">
     <!-- COLUMNA IZQUIERDA - 70% -->
     <div class="md:w-[70%]">
       <!-- Estado de carga -->
       <div v-if="loading" class="w-full">
         <div class="w-full bg-gray-200 animate-pulse rounded-t-lg aspect-[16/9]"></div>
-        <div class="w-full h-[1vw] bg-gray-300"></div>
+        <div class="w-full h-[3vw] md:h-[1vw] bg-gray-300"></div>
         <div class="mt-4">
           <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
           <div class="h-4 bg-gray-200 rounded w-1/4"></div>
@@ -29,21 +28,21 @@
             <!-- Fallback -->
             <div 
               v-if="imagenError"
-              class="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500 text-sm"
+              class="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500 text-[3vw] md:text-sm"
             >
               Imagen no disponible
             </div>
           </div>
-          <div class="w-full h-[1vw] bg-senado-gold-dark"></div>
+          <div class="w-full h-[3vw] md:h-[1vw] bg-senado-gold-dark"></div>
         </div>
         
-        <div class="mt-[2vw]">
+        <div class="mt-[6vw] md:mt-[2vw]">
           <!-- Título con resaltado de asteriscos -->
           <h2 
-            class="text-[1.5vw] font-bold group-hover:text-senado-primary transition-colors"
+            class="text-[4.5vw] md:text-[1.5vw] font-bold group-hover:text-senado-primary transition-colors"
             v-html="tituloResaltado(noticiaPrincipal.titulo)"
           ></h2>
-          <p class="text-[0.8vw] text-gray-500 mt-1">
+          <p class="text-[2.4vw] md:text-[0.8vw] text-gray-500 mt-1">
             {{ formatearFecha(noticiaPrincipal.publishedAt || noticiaPrincipal.fecha) }}
           </p>
         </div>
@@ -51,19 +50,19 @@
 
       <!-- Sin noticias -->
       <div v-else class="w-full text-center py-12 bg-gray-50 rounded-lg">
-        <p class="text-gray-600">No hay noticias disponibles</p>
-        <button @click="recargarDatos" class="mt-4 px-4 py-2 bg-[#E03636] text-white rounded-lg hover:bg-[#C12F2F] transition">
+        <p class="text-[3.6vw] md:text-[1.2vw] text-gray-600">No hay noticias disponibles</p>
+        <button @click="recargarDatos" class="mt-4 px-4 py-2 bg-[#E03636] text-white rounded-lg hover:bg-[#C12F2F] transition text-[3vw] md:text-[1vw]">
           Reintentar
         </button>
       </div>
     </div>
 
     <!-- COLUMNA DERECHA - 30% -->
-    <div class="md:w-[30%] flex flex-col gap-[1vw]">
+    <div class="md:w-[30%] flex flex-col gap-[3vw] md:gap-[1vw]">
       <!-- Estado de carga -->
       <div v-if="loading" class="flex flex-col gap-4">
         <div v-for="i in 3" :key="i" class="bg-white shadow rounded-b-lg overflow-hidden">
-          <div class="h-[0.6vw] bg-gray-300"></div>
+          <div class="h-[1.8vw] md:h-[0.6vw] bg-gray-300"></div>
           <div class="p-4">
             <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
             <div class="h-3 bg-gray-200 rounded w-1/2"></div>
@@ -79,13 +78,13 @@
           class="bg-white hover:shadow-lg transition-shadow overflow-hidden cursor-pointer group"
           @click="irANoticia(noticia)"
         >
-          <div class="h-[0.6vw] bg-senado-gold-dark"></div>
-          <div class="p-[1vw]">
+          <div class="h-[1.8vw] md:h-[0.6vw] bg-senado-gold-dark"></div>
+          <div class="p-[3vw] md:p-[1vw]">
             <p 
-              class="text-[1.0vw] font-semibold group-hover:text-senado-primary transition-colors line-clamp-3"
+              class="text-[3.6vw] md:text-[1.0vw] font-semibold group-hover:text-senado-primary transition-colors line-clamp-3"
               v-html="tituloResaltado(noticia.titulo, 'text-gray-800')"
             ></p>
-            <p class="text-[.8vw] text-gray-500 mt-2">
+            <p class="text-[2.4vw] md:text-[.8vw] text-gray-500 mt-2">
               {{ formatearFecha(noticia.publishedAt || noticia.fecha) }}
             </p>
           </div>
@@ -94,14 +93,14 @@
 
       <!-- Sin noticias secundarias -->
       <div v-else-if="!loading" class="text-center py-8 bg-gray-50 rounded-lg">
-        <p class="text-gray-500 text-sm">No hay noticias secundarias</p>
+        <p class="text-gray-500 text-[3vw] md:text-sm">No hay noticias secundarias</p>
       </div>
 
       <!-- Botón -->
       <div class="mt-2">
         <NuxtLink 
           to="/noticias" 
-          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-[1vw] flex items-center justify-center gap-2 shadow-sm"
+          class="bg-senado-gold-lightest text-black w-full py-2 rounded-full hover:bg-senado-gold transition-colors font-thin text-[3vw] md:text-[1vw] flex items-center justify-center gap-2 shadow-sm"
         >
           Ir a todas las noticias
         </NuxtLink>

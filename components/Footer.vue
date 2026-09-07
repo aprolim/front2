@@ -1,14 +1,14 @@
 <template>
-  <footer class="bg-senado-gold-light text-senado-dark py-8 mt-10 border-t border-black">
+  <footer class="bg-senado-gold-light text-senado-dark py-[8vw] md:py-8 mt-[10vw] md:mt-10 border-t border-black">
     <div class="mx-auto w-[90%]">
       <!-- Contenedor al 80% máximo y centrado -->
       <div class="max-w-[80%] mx-auto">
         <!-- Grid de 3 columnas con líneas verticales -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-[4vw] md:gap-0 text-center">
           <!-- Columna 1: Redes Sociales -->
           <div class="flex flex-col items-center px-4 py-2">
-            <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Nuestras Redes Sociales:</h4>
-            <div class="flex justify-center gap-3">
+            <h4 class="font-bold mb-[3vw] md:mb-3 text-senado-dark text-[4.5vw] md:text-[.9vw]">Nuestras Redes Sociales:</h4>
+            <div class="flex justify-center gap-[3vw] md:gap-3">
               <!-- Facebook -->
               <a 
                 href="https://www.facebook.com/SenadoBolivia" 
@@ -18,9 +18,9 @@
                 style="color: #1877F2;"
               >
                 <ClientOnly>
-                  <Icon name="mdi:facebook" class="text-[1.9vw]" />
+                  <Icon name="mdi:facebook" class="text-[9.5vw] md:text-[1.9vw]" />
                   <template #fallback>
-                    <span class="text-[1.9vw]">f</span>
+                    <span class="text-[9.5vw] md:text-[1.9vw]">f</span>
                   </template>
                 </ClientOnly>
               </a>
@@ -34,9 +34,9 @@
                 style="color: #000000;"
               >
                 <ClientOnly>
-                  <Icon name="ri:twitter-x-line" class="text-[1.9vw]" />
+                  <Icon name="ri:twitter-x-line" class="text-[9.5vw] md:text-[1.9vw]" />
                   <template #fallback>
-                    <span class="text-[1.9vw]">𝕏</span>
+                    <span class="text-[9.5vw] md:text-[1.9vw]">𝕏</span>
                   </template>
                 </ClientOnly>
               </a>
@@ -50,9 +50,9 @@
                 style="color: #FF0000;"
               >
                 <ClientOnly>
-                  <Icon name="mdi:youtube" class="text-[1.9vw]" />
+                  <Icon name="mdi:youtube" class="text-[9.5vw] md:text-[1.9vw]" />
                   <template #fallback>
-                    <span class="text-[1.9vw]">▶️</span>
+                    <span class="text-[9.5vw] md:text-[1.9vw]">▶️</span>
                   </template>
                 </ClientOnly>
               </a>
@@ -66,9 +66,9 @@
                 style="color: #E4405F;"
               >
                 <ClientOnly>
-                  <Icon name="mdi:instagram" class="text-[1.9vw]" />
+                  <Icon name="mdi:instagram" class="text-[9.5vw] md:text-[1.9vw]" />
                   <template #fallback>
-                    <span class="text-[1.9vw]">📷</span>
+                    <span class="text-[9.5vw] md:text-[1.9vw]">📷</span>
                   </template>
                 </ClientOnly>
               </a>
@@ -82,9 +82,9 @@
                 style="color: #000000;"
               >
                 <ClientOnly>
-                  <Icon name="ri:tiktok-line" class="text-[1.9vw]" />
+                  <Icon name="ri:tiktok-line" class="text-[9.5vw] md:text-[1.9vw]" />
                   <template #fallback>
-                    <span class="text-[1.9vw]">♪</span>
+                    <span class="text-[9.5vw] md:text-[1.9vw]">♪</span>
                   </template>
                 </ClientOnly>
               </a>
@@ -92,31 +92,36 @@
           </div>
 
           <!-- Columna 2: Contacto -->
-          <div class="flex flex-col items-center px-[.2vw] py-[1.vw] border-x border-gray-200">
-            <div class="flex-shrink-0 mb-2">
-              <img src="/images/LogoBordo.svg" alt="Senado" class="h-[6vw] w-[6vw] object-contain brightness-0 " />
+          <div class="flex flex-col items-center px-[.2vw] py-[1vw] md:py-0 border-x-0 md:border-x border-gray-200">
+            <div class="flex-shrink-0 mb-[2vw] md:mb-2">
+              <img src="/images/LogoBordo.svg" alt="Senado" class="h-[18vw] w-[18vw] md:h-[6vw] md:w-[6vw] object-contain brightness-0" />
             </div>
-            <p class="text-[.8vw] text-senado-dark">Calle Comercio esquina Colón</p>
-            <p class="text-[.8vw] text-senado-dark">Telf.: 22143400</p>
-            <p class="text-[.8vw] text-senado-dark">La Paz - Bolivia</p>
+            <p class="text-[4vw] md:text-[.8vw] text-senado-dark">Calle Comercio esquina Colón</p>
+            <p class="text-[4vw] md:text-[.8vw] text-senado-dark">Telf.: 22143400</p>
+            <p class="text-[4vw] md:text-[.8vw] text-senado-dark">La Paz - Bolivia</p>
           </div>
 
           <!-- Columna 3: Sitios de Interés -->
           <div class="flex flex-col items-center px-4 py-2">
-            <h4 class="font-bold mb-3 text-senado-dark text-[.9vw]">Sitios de interés</h4>
-            <ul class="text-[.8vw] space-y-1">
+            <h4 class="font-bold mb-[3vw] md:mb-3 text-senado-dark text-[4.5vw] md:text-[.9vw]">Sitios de interés</h4>
+            <ul class="text-[4vw] md:text-[.8vw] space-y-[1.5vw] md:space-y-1">
               <li>
-                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
-                  Portal del Estado
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <a 
+                  href="https://diputados.bo/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="text-senado-dark hover:text-senado-dark-light transition-colors"
+                >
                   Cámara de Diputados
                 </a>
               </li>
               <li>
-                <a href="#" class="text-senado-dark hover:text-senado-dark-light transition-colors">
+                <a 
+                  href="https://www.organojudicial.gob.bo/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="text-senado-dark hover:text-senado-dark-light transition-colors"
+                >
                   Órgano Judicial
                 </a>
               </li>
@@ -127,3 +132,7 @@
     </div>
   </footer>
 </template>
+
+<style scoped>
+/* No se necesita CSS adicional, todo está en Tailwind */
+</style>
