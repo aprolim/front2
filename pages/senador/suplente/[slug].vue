@@ -1,10 +1,10 @@
 <template>
-  <div class="py-[2vw]">
-    <div v-if="suplente" class="w-[80%] mx-auto">
+  <div class="py-[6vw] sm:py-8">
+    <div v-if="suplente" class="w-[92%] sm:w-[80%] mx-auto">
       <!-- Botón volver -->
       <button 
         @click="volver"
-        class="inline-flex items-center text-senado-primary hover:underline mb-[1vw] text-[1.1vw] cursor-pointer"
+        class="inline-flex items-center text-senado-primary hover:underline mb-[3vw] sm:mb-4 text-[3.3vw] sm:text-[1.1vw] cursor-pointer"
       >
         ← Volver atras
       </button>
@@ -13,10 +13,9 @@
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- PRIMERA FILA: 3 columnas -->
         <div class="bg-[#EDEEED]">
-          <div class="grid grid-cols-1 md:grid-cols-12 border-b border-gray-200 w-[80%] mx-auto">
+          <div class="grid grid-cols-1 sm:grid-cols-12 border-b border-gray-200 w-[92%] sm:w-[80%] mx-auto gap-[2vw] sm:gap-0">
             <!-- Columna 1: Foto del suplente -->
-            <div class="md:col-span-3 p-[1.2vw] flex flex-col items-center justify-center">
-              <!-- Foto con cursor pointer para abrir modal -->
+            <div class="sm:col-span-3 p-[3vw] sm:p-[1.2vw] flex flex-col items-center justify-center">
               <div 
                 class="cursor-pointer group relative"
                 @click="abrirModal"
@@ -24,14 +23,13 @@
                 <img 
                   :src="suplente.foto || '/images/default-avatar.png'" 
                   :alt="suplente.name"
-                  class="w-[12vw] h-[12vw] rounded-full object-cover border-[.2vw] shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  class="w-[25vw] sm:w-[12vw] h-[25vw] sm:h-[12vw] rounded-full object-cover border-[0.5vw] sm:border-[0.2vw] shadow-lg transition-transform duration-300 group-hover:scale-105"
                   :style="{ borderColor: suplente.partyColor }"
                   @error="(e) => e.target.src = '/images/default-avatar.png'"
                 />
-                <!-- Overlay de ampliar -->
                 <div class="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[0.8vw] px-[1vw] py-[0.5vw] rounded-[0.4vw] flex items-center gap-[0.5vw]">
-                    <svg class="w-[1vw] h-[1vw]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/70 text-white text-[2.4vw] sm:text-[0.8vw] px-[3vw] sm:px-4 py-[1.5vw] sm:py-2 rounded-[1.2vw] sm:rounded-[0.4vw] flex items-center gap-[1.5vw] sm:gap-2">
+                    <svg class="w-[3vw] sm:w-4 h-[3vw] sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 4l-5-5" />
                     </svg>
                     <span>Ampliar</span>
@@ -41,42 +39,42 @@
             </div>
 
             <!-- Columna 2: Nombre y cargo -->
-            <div class="md:col-span-6 py-[1.2vw] ml-[-1vw] flex flex-col justify-center">
-              <h1 class="text-[1.8vw] font-bold text-senado-primary">{{ suplente.name }}</h1>
-              <p class="text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
-              <p class="text-[0.9vw] text-gray-500">
+            <div class="sm:col-span-6 py-[3vw] sm:py-[1.2vw] sm:ml-[-1vw] flex flex-col justify-center text-center sm:text-left">
+              <h1 class="text-[5.4vw] sm:text-[1.8vw] font-bold text-senado-primary">{{ suplente.name }}</h1>
+              <p class="text-[3.3vw] sm:text-[1.1vw] text-black">Senador Suplente por {{ suplente.department }}</p>
+              <p class="text-[2.7vw] sm:text-[0.9vw] text-gray-500">
                 Senador Titular: 
                 <NuxtLink 
                   :to="`/senador/${suplente.titularSlug}`" 
-                  class="text-senado-primary hover:underline font-medium"
+                  class="text-senado-primary hover:underline font-medium text-[2.7vw] sm:text-[0.9vw]"
                 >
                   {{ suplente.titularNombre }}
                 </NuxtLink>
               </p>
-              <p v-if="suplente.cargo && suplente.cargo !== 'No disponible'" class="font-semibold text-[1.0vw] leading-tight">
+              <p v-if="suplente.cargo && suplente.cargo !== 'No disponible'" class="font-semibold text-[3vw] sm:text-[1.0vw] leading-tight">
                 {{ suplente.cargo }}
               </p>
             </div>
 
             <!-- Columna 3: Partido -->
-            <div class="md:col-span-3 flex flex-col items-center justify-center">
+            <div class="sm:col-span-3 flex flex-col items-center justify-center pb-[3vw] sm:pb-0">
               <div class="relative inline-block group">
                 <img 
                   :src="getLogoPartido(suplente.partyShort)" 
                   :alt="suplente.partyShort"
-                  class="h-[8vw] w-auto object-contain transition-opacity duration-300"
+                  class="h-[16vw] sm:h-[8vw] w-auto object-contain transition-opacity duration-300"
                   :class="{'group-hover:opacity-0': getLogoPartidoHover(suplente.partyShort)}"
                   @error="(e) => e.target.src = ''"
                 />
                 <img 
                   :src="getLogoPartidoHover(suplente.partyShort)" 
                   :alt="suplente.partyShort + ' hover'"
-                  class="h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  class="h-[16vw] sm:h-[8vw] w-auto object-contain absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   @error="(e) => e.target.style.display = 'none'"
                 />
               </div>
               <span 
-                class="px-[.8vw] py-[.2vw] w-[10.8vw] rounded-full text-black text-[0.8vw] mt-[0.8vw] text-center"
+                class="px-[2.4vw] sm:px-3 py-[0.6vw] sm:py-1 w-[22vw] sm:w-[10.8vw] rounded-full text-black text-[2.4vw] sm:text-[0.8vw] mt-[2vw] sm:mt-3 text-center"
               >
                 {{ suplente.party?.toUpperCase() }}
               </span>
@@ -85,10 +83,10 @@
         </div>
 
         <!-- SEGUNDA FILA: 3 columnas iguales -->
-        <div class="grid grid-cols-1 md:grid-cols-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3">
           <!-- Columna 1: Datos personales del suplente -->
-          <div class="p-[1.2vw] border-r border-gray-200">
-            <div class="space-y-[1.4vw] text-[0.9vw]">
+          <div class="p-[3vw] sm:p-[1.2vw] border-b sm:border-r border-gray-200">
+            <div class="space-y-[3vw] sm:space-y-[1.4vw] text-[2.7vw] sm:text-[0.9vw]">
               <!-- Fila 1: Fecha de Nacimiento -->
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
@@ -112,21 +110,21 @@
               <!-- Fila 5: Contacto -->
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Contacto:</span>
-                <div class="flex gap-[.2vw] flex-wrap">
-                  <a v-if="suplente.facebook" :href="suplente.facebook" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <div class="flex gap-[1.5vw] sm:gap-1 flex-wrap">
+                  <a v-if="suplente.facebook" :href="suplente.facebook" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.5em] h-[3.5em] sm:h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[2.5em] sm:w-[1.8em] h-[2.5em] sm:h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   </a>
-                  <a v-if="suplente.twitter" :href="suplente.twitter" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  <a v-if="suplente.twitter" :href="suplente.twitter" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.5em] h-[3.5em] sm:h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[2.5em] sm:w-[1.8em] h-[2.5em] sm:h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   </a>
-                  <a v-if="suplente.instagram" :href="suplente.instagram" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  <a v-if="suplente.instagram" :href="suplente.instagram" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.5em] h-[3.5em] sm:h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[2.5em] sm:w-[1.8em] h-[2.5em] sm:h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                   </a>
-                  <a v-if="suplente.youtube" :href="suplente.youtube" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg class="w-[1.8em] h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  <a v-if="suplente.youtube" :href="suplente.youtube" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.5em] h-[3.5em] sm:h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg class="w-[2.5em] sm:w-[1.8em] h-[2.5em] sm:h-[1.8em] text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                   </a>
-                  <a v-if="suplente.tiktok" :href="suplente.tiktok" target="_blank" rel="noopener noreferrer" class="w-[2.5em] h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[1.7em] h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
+                  <a v-if="suplente.tiktok" :href="suplente.tiktok" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.5em] h-[3.5em] sm:h-[2.5em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-[2.3em] sm:w-[1.7em] h-[2.3em] sm:h-[1.7em] text-white"><path d="M19.321 5.562a5.124 5.124 0 0 1-3.16-1.09A5.145 5.145 0 0 1 14.374 1h-3.09v13.195a2.49 2.49 0 1 1-2.49-2.49c.264 0 .518.043.756.12V8.68a5.583 5.583 0 0 0-.756-.05A5.58 5.58 0 1 0 14.374 14V7.545a8.186 8.186 0 0 0 4.947 1.66V5.562z"/></svg>
                   </a>
                 </div>
               </div>
@@ -135,7 +133,7 @@
                 <span class="font-semibold text-gray-600">Senador Titular:</span>
                 <NuxtLink 
                   :to="`/senador/${suplente.titularSlug}`" 
-                  class="text-senado-primary hover:underline font-medium"
+                  class="text-senado-primary hover:underline font-medium text-[2.7vw] sm:text-[0.9vw]"
                 >
                   {{ suplente.titularNombre }}
                 </NuxtLink>
@@ -144,27 +142,27 @@
           </div>
 
           <!-- Columna 2: Mapa -->
-          <div class="p-[1.2vw] border-r border-gray-200 flex flex-col items-center justify-start">
-            <h3 class="text-[1vw] font-semibold text-gray-600 mb-[0.8vw] text-left w-full">DISTRITO ELECTORAL</h3>
+          <div class="p-[3vw] sm:p-[1.2vw] border-b sm:border-r border-gray-200 flex flex-col items-center justify-start">
+            <h3 class="text-[3vw] sm:text-[1vw] font-semibold text-gray-600 mb-[2vw] sm:mb-3 text-left w-full">DISTRITO ELECTORAL</h3>
             <img 
               :src="getMapaDepartamento(suplente.department)" 
               :alt="'Mapa de ' + suplente.department"
-              class="h-[12vw] w-auto object-contain"
+              class="h-[30vw] sm:h-[12vw] w-auto object-contain"
               @error="(e) => e.target.src = '/images/mapa-default.svg'"
             />
           </div>
 
           <!-- Columna 3: Asiento en el Hemiciclo -->
-          <div class="p-[1.2vw] flex flex-col justify-center">
-            <h3 class="text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+          <div class="p-[3vw] sm:p-[1.2vw] flex flex-col justify-center">
+            <h3 class="text-[3vw] sm:text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
             <div class="flex flex-col items-center">
               <img 
                 :src="getAsientoHemiciclo(suplente.seatNumber)" 
                 :alt="'Asiento ' + suplente.seatNumber"
-                class="h-[15vw] w-[15vw] object-contain"
+                class="h-[35vw] sm:h-[15vw] w-[35vw] sm:w-[15vw] object-contain"
                 @error="(e) => e.target.src = ''"
               />
-              <span class="text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-2vw]">Asiento {{ suplente.seatNumber }}</span>
+              <span class="text-[3vw] sm:text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-4vw] sm:translate-y-[-2vw]">Asiento {{ suplente.seatNumber }}</span>
             </div>
           </div>
         </div>
@@ -178,9 +176,9 @@
       />
     </div>
 
-    <div v-else class="text-center py-[5vw]">
-      <h2 class="text-[2vw] font-bold text-gray-600">Suplente no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[1vw] inline-block text-[1.2vw]">
+    <div v-else class="text-center py-[10vw] sm:py-20">
+      <h2 class="text-[5vw] sm:text-[2vw] font-bold text-gray-600">Suplente no encontrado</h2>
+      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[3vw] sm:mt-4 inline-block text-[3.6vw] sm:text-[1.2vw]">
         Volver al inicio
       </NuxtLink>
     </div>
@@ -199,32 +197,29 @@
       >
         <div 
           v-if="modalAbierto"
-          class="fixed inset-0 z-[999999] bg-black/80 flex items-center justify-center p-[4vw]"
+          class="fixed inset-0 z-[999999] bg-black/80 flex items-center justify-center p-[6vw] sm:p-16"
           @click="cerrarModal"
         >
-          <div class="relative max-w-[80vw] max-h-[85vh] flex items-center justify-center" @click.stop>
-            <!-- Foto ampliada -->
+          <div class="relative max-w-[90vw] sm:max-w-[80vw] max-h-[85vh] flex items-center justify-center" @click.stop>
             <div class="relative">
               <img 
                 :src="suplente?.foto || '/images/default-avatar.png'" 
                 :alt="suplente?.name"
-                class="max-w-[70vw] max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                class="max-w-[85vw] sm:max-w-[70vw] max-h-[75vh] object-contain rounded-lg shadow-2xl"
                 @error="(e) => e.target.src = '/images/default-avatar.png'"
               />
             </div>
             
-            <!-- Botón cerrar -->
             <button 
               @click="cerrarModal"
-              class="absolute top-[-2vw] right-[-2vw] text-white hover:text-gray-300 transition-colors text-[2vw] bg-black/50 hover:bg-black/70 rounded-full w-[3vw] h-[3vw] flex items-center justify-center"
+              class="absolute top-[-4vw] sm:top-[-2vw] right-[-4vw] sm:right-[-2vw] text-white hover:text-gray-300 transition-colors text-[6vw] sm:text-[2vw] bg-black/50 hover:bg-black/70 rounded-full w-[8vw] sm:w-[3vw] h-[8vw] sm:h-[3vw] flex items-center justify-center"
             >
               ✕
             </button>
             
-            <!-- Información del suplente -->
-            <div class="absolute bottom-[-4vw] left-1/2 -translate-x-1/2 bg-black/70 text-white text-[1vw] px-[2vw] py-[0.8vw] rounded-[0.5vw] text-center backdrop-blur-sm whitespace-nowrap">
+            <div class="absolute bottom-[-8vw] sm:bottom-[-4vw] left-1/2 -translate-x-1/2 bg-black/70 text-white text-[2.4vw] sm:text-[1vw] px-[4vw] sm:px-8 py-[1.5vw] sm:py-3 rounded-[1.5vw] sm:rounded-[0.5vw] text-center backdrop-blur-sm whitespace-nowrap max-w-[80vw] sm:max-w-none">
               <span class="font-bold">{{ suplente?.name }}</span>
-              <span class="mx-[0.8vw] text-gray-400">|</span>
+              <span class="mx-[1.5vw] sm:mx-3 text-gray-400">|</span>
               <span>Senador Suplente por {{ suplente?.department }}</span>
             </div>
           </div>
@@ -257,7 +252,6 @@ const volver = () => {
   }
 }
 
-// Funciones del modal
 const abrirModal = () => {
   modalAbierto.value = true
   document.body.style.overflow = 'hidden'
@@ -268,14 +262,12 @@ const cerrarModal = () => {
   document.body.style.overflow = 'auto'
 }
 
-// Cerrar con tecla ESC
 const handleKeydown = (e) => {
   if (e.key === 'Escape' && modalAbierto.value) {
     cerrarModal()
   }
 }
 
-// Registrar y limpiar evento
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
 })
