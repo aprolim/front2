@@ -29,11 +29,16 @@
         </button>
 
         <!-- Logo -->
-        <div class="w-[1vw]"></div>
+        <div class=" sm:w-[1vw]"></div>
         <NuxtLink to="/" class="flex-shrink-0 spin-coin block">
           <img src="/images/LogoDorado.svg" alt="Senado" class="h-[22.5vw] md:h-[7.5vw] w-auto" />
         </NuxtLink>
-
+        <div class="md:hidden flex flex-col items-center gap-2 mt-2">
+          <h1 class="text-[6vw] font-[400] text-senado-primary leading-tight text-left">Cámara de<br />
+            <span class="text-[10.5vw] font-[600] text-[6.2vw]">Senadores </span>
+          </h1>
+        </div>
+        
         <!-- Título -->
         <div class="hidden md:block flex-shrink-0 text-left">
           <h1 class="text-[9vw] md:text-[3vw] font-bold text-senado-primary leading-tight font-montserrat-light" style="line-height: 0.9;">
@@ -118,13 +123,7 @@
         <div class="hidden lg:block flex-grow max-w-[2vw] z-[1000]"></div>
       </div>
 
-      <!-- Mobile: Título sin buscador -->
-      <div class="md:hidden flex flex-col items-center gap-2 mt-2">
-        <h1 class="text-[9vw] font-bold text-senado-primary leading-tight text-center">
-          Cámara de<br />
-          <span class="text-[10.5vw]">Senadores</span>
-        </h1>
-      </div>
+
     </div>
 
     <!-- ========================================== -->

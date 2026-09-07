@@ -641,7 +641,7 @@ const cargarPDF = async () => {
 }
 
 // ============================================ //
-// 🔥 FUNCIÓN RENDER PÁGINA CORREGIDA (CON DPR)
+// 🔥 FUNCIÓN RENDER PÁGINA - CALIDAD MEJORADA
 // ============================================ //
 const renderPagina = async (numeroPagina) => {
   if (!pdfDocumento.value || !pdfCanvas.value) return
@@ -651,27 +651,41 @@ const renderPagina = async (numeroPagina) => {
     const canvas = pdfCanvas.value
     const context = canvas.getContext('2d')
     
-    const container = canvas.parentElement
-    const containerWidth = container?.clientWidth || 800
+    // 🔥 Obtener el ancho real del contenedor padre
+    const parentEl = canvas.parentElement
+    const parentWidth = parentEl?.clientWidth || 800
+    const padding = 32 // padding del contenedor
+    const containerWidth = parentWidth - padding
     
-    // 🔥 Obtener el DPR del dispositivo para calidad en móvil
+    // 🔥 DPR del dispositivo
     const dpr = window.devicePixelRatio || 1
     
+    // 🔥 Calcular viewport base
     const viewport = page.getViewport({ scale: 1 })
-    const escalaBase = Math.min((containerWidth - 40) / viewport.width, 2.5)
+    const viewportWidth = viewport.width
+    const viewportHeight = viewport.height
     
-    // 🔥 Aplicar zoom y DPR
+    // 🔥 Escala para que quepa en el contenedor
+    const escalaBase = containerWidth / viewportWidth
+    
+    // 🔥 Escala final con zoom y DPR para alta resolución
     const escalaFinal = escalaBase * zoomLevel.value * dpr
     const scaledViewport = page.getViewport({ scale: escalaFinal })
     
-    // 🔥 Canvas en alta resolución
+    // 🔥 Tamaño CSS del canvas (sin DPR, para que se vea del tamaño correcto)
+    const cssWidth = containerWidth * zoomLevel.value
+    const cssHeight = (viewportHeight / viewportWidth) * cssWidth
+    
+    // 🔥 Canvas en alta resolución (con DPR)
     canvas.width = scaledViewport.width
     canvas.height = scaledViewport.height
     
-    // 🔥 CSS en tamaño normal (dividido por dpr para que no se salga)
-    canvas.style.width = (scaledViewport.width / dpr) + 'px'
-    canvas.style.height = (scaledViewport.height / dpr) + 'px'
+    // 🔥 CSS: el canvas se ve del tamaño correcto
+    canvas.style.width = cssWidth + 'px'
+    canvas.style.height = cssHeight + 'px'
     
+    // 🔥 Limpiar y renderizar
+    context.clearRect(0, 0, canvas.width, canvas.height)
     await page.render({
       canvasContext: context,
       viewport: scaledViewport
@@ -852,9 +866,12 @@ const renderizarMiniatura = async (num) => {
     const page = await pdfDocumento.value.getPage(num)
     const context = canvas.getContext('2d')
     
-    const viewport = page.getViewport({ scale: 0.3 })
+    const dpr = window.devicePixelRatio || 1
+    const viewport = page.getViewport({ scale: 0.3 * dpr })
     canvas.width = viewport.width
     canvas.height = viewport.height
+    canvas.style.width = (viewport.width / dpr) + 'px'
+    canvas.style.height = (viewport.height / dpr) + 'px'
     
     await page.render({
       canvasContext: context,
