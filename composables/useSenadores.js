@@ -120,6 +120,61 @@ export const useSenadores = () => {
     return getSuplentes()
   }
 
+  // NUEVA FUNCIÓN: Obtener proyectos de ley de un senador por ID
+  const getProyectosLeyBySenadorId = (id) => {
+    const senador = senadores.find(s => s.id === id)
+    if (!senador) return null
+    return senador.proyectosLey || { cantidad: 0, lista: [] }
+  }
+
+  // NUEVA FUNCIÓN: Obtener proyectos de ley de un senador por slug
+  const getProyectosLeyBySlug = (slug) => {
+    const senador = getSenadorBySlug(slug)
+    if (!senador) return null
+    return senador.proyectosLey || { cantidad: 0, lista: [] }
+  }
+
+  // NUEVA FUNCIÓN: Obtener resumen de proyectos por departamento
+  const getResumenProyectosPorDepartamento = () => {
+    const titulares = getTitulares()
+    const resumen = {}
+    
+    titulares.forEach(s => {
+      if (!resumen[s.department]) {
+        resumen[s.department] = {
+          totalProyectos: 0,
+          senadores: []
+        }
+      }
+      resumen[s.department].totalProyectos += s.proyectosLey?.cantidad || 0
+      resumen[s.department].senadores.push({
+        nombre: s.name,
+        cantidad: s.proyectosLey?.cantidad || 0,
+        proyectos: s.proyectosLey?.lista || []
+      })
+    })
+    
+    return resumen
+  }
+
+  // NUEVA FUNCIÓN: Obtener ranking de senadores por cantidad de proyectos
+  const getRankingSenadoresPorProyectos = (limite = 10) => {
+    const titulares = getTitulares()
+    return titulares
+      .filter(s => (s.proyectosLey?.cantidad || 0) > 0)
+      .sort((a, b) => (b.proyectosLey?.cantidad || 0) - (a.proyectosLey?.cantidad || 0))
+      .slice(0, limite)
+      .map(s => ({
+        id: s.id,
+        nombre: s.name,
+        department: s.department,
+        party: s.party,
+        partyColor: s.partyColor,
+        cantidad: s.proyectosLey?.cantidad || 0,
+        proyectos: s.proyectosLey?.lista || []
+      }))
+  }
+
   return {
     // Funciones principales (mantienen compatibilidad)
     getSenadorBySlug,
@@ -133,6 +188,12 @@ export const useSenadores = () => {
     getTitularById,
     getSuplenteById,
     getSuplenteByTitularId,
-    getTitularBySuplenteId
+    getTitularBySuplenteId,
+    
+    // NUEVAS FUNCIONES PARA PROYECTOS DE LEY
+    getProyectosLeyBySenadorId,
+    getProyectosLeyBySlug,
+    getResumenProyectosPorDepartamento,
+    getRankingSenadoresPorProyectos
   }
 }

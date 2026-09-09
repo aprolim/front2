@@ -1,8 +1,7 @@
-// data/senadores.js - VERSIÓN FUSIONADA FINAL (71 ELEMENTOS)
+// data/senadores.js - VERSIÓN FUSIONADA FINAL CON PROYECTOS DE LEY (71 ELEMENTOS)
 // ✅ 36 TITULARES (id: 1-36) + 35 SUPLENTES (id: 37-71)
-// ✅ CONTIENE TODOS LOS DATOS DEL ARCHIVO AGRUPADO
+// ✅ CONTIENE TODOS LOS DATOS DEL ARCHIVO AGRUPADO + PROYECTOS DE LEY DEL EXCEL
 // ✅ COMPATIBLE CON SenateChamber.vue, useSenadores.js, y todas las páginas
-// ✅ VERIFICADO CON LOGS - FUNCIONA PERFECTAMENTE
 
 const generarSlug = (nombre) => {
   if (!nombre) return ''
@@ -43,7 +42,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 37
+    suplenteId: 37,
+    proyectosLey: {
+      cantidad: 10,
+      lista: [
+        "1. DE INTERPELACIONES Y CENSURA A MINISTRAS Y MINISTROS DEL ESTADO PLURINACIONAL DE BOLIVIA",
+        "2. DE RESPONSABILIDAD ELECTORAL ANTE EL INCUMPLIMIENTO DE PROGRAMAS DE GOBIERNO Y COMPROMISOS ELECTORALES",
+        "3. DE MODIFICACIÓN AL RÉGIMEN DEL SEGURO OBLIGATORIO CONTRA ACCIDENTES DE TRÁNSITO"
+      ]
+    }
   },
 
   // ASIENTO 2 - Judith Rosario García Coca (Cochabamba)
@@ -68,7 +75,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: "https://www.tiktok.com/@rosario030814?_r=1&_t=ZS-98rNU3gInVV",
-    suplenteId: 38
+    suplenteId: 38,
+    proyectosLey: {
+      cantidad: 10,
+      lista: [
+        "1. PROYECTO DE LEY DE SEGURIDAD Y DEFENSA INTEGRAL DEL ESTADO",
+        "2. PROYECTO DE LEY DEL SISTEMA DE INTELIGENCIA DEL ESTADO PLURINACIONAL",
+        "3. LEY MARCO DEL SISTEMA NACIONAL DE INFORMACIÓN GEOESPACIAL Y DE LA CARTOGRAFÍA OFICIAL DEL ESTADO"
+      ]
+    }
   },
 
   // ASIENTO 3 - Claudia Mallón Vargas (Cochabamba)
@@ -93,7 +108,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 39
+    suplenteId: 39,
+    proyectosLey: {
+      cantidad: 17,
+      lista: [
+        "1. LEY JOKY DE PROTECCIÓN INTEGRAL Y BIENESTAR ANIMAL",
+        "2. PROYECTO DE LEY DE ECONOMÍA CREATIVA E INDUSTRIAS CULTURALES CREATIVAS",
+        "3. LEY DE LIBERTAD DE INVERSIONES Y SEGURIDAD JURÍDICA"
+      ]
+    }
   },
 
   // ASIENTO 4 - Wanda Ximena Medrano Hervas (Cochabamba)
@@ -118,7 +141,15 @@ export const senadores = [
     instagram: "https://www.instagram.com/wandamedrano.oficial/",
     youtube: null,
     tiktok: "https://www.tiktok.com/@wandamedranosenadora",
-    suplenteId: 40
+    suplenteId: 40,
+    proyectosLey: {
+      cantidad: 7,
+      lista: [
+        "1. PROYECTO DE LEY INTEGRAL PARA LA SEGURIDAD Y DEFENSA NACIONAL",
+        "2. PROYECTO DE LEY DE DEVOLUCIÓN TOTAL Y VOLUNTARIA DE APORTES AL SISTEMA INTEGRAL DE PENSIONES",
+        "3. DE PROTECCIÓN INTEGRAL DE INTERNOS ROTATORIOS Y MÉDICOS RESIDENTES DEL ESTADO PLURINACIONAL DE BOLIVIA"
+      ]
+    }
   },
 
   // ASIENTO 5 - José Manuel Ormachea Mendieta (La Paz)
@@ -143,7 +174,15 @@ export const senadores = [
     instagram: "https://www.instagram.com/josemormachea?igsh=NXJwdGFvMWx3YzRz",
     youtube: null,
     tiktok: "https://www.tiktok.com/@josemormachea?_r=1&_t=ZS-98sep4W50rc",
-    suplenteId: 41
+    suplenteId: 41,
+    proyectosLey: {
+      cantidad: 4,
+      lista: [
+        "1. QUE DECLARA AL PATO ZAMBULLIDOR DEL LAGO TITICACA PATRIMONIO CULTURAL DEL ESTADO PLURINACIONAL DE BOLIVIA",
+        "2. DE ALIVIO TRIBUTARIO, REACTIVACIÓN Y FORMALIZACIÓN PARA ECONOMÍA NARANJA",
+        "3. DEL EJERCICIO PROFESIONAL DEL POLITÓLOGO"
+      ]
+    }
   },
 
   // ASIENTO 6 - Carmen Soledad Chapeton Tancara (La Paz)
@@ -168,7 +207,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 42
+    suplenteId: 42,
+    proyectosLey: {
+      cantidad: 10,
+      lista: [
+        "1. DE INCREMENTO DE LA RENTA UNIVERSAL DE VEJEZ (RENTA DIGNIDAD)",
+        "2. ZONA ECONÓMICA ESPECIAL DE EL ALTO \"ZEE-EA\"",
+        "3. MI SALUD MENTAL"
+      ]
+    }
   },
 
   // ASIENTO 7 - Nicanor Gonzalo Cochi Condorí (La Paz)
@@ -193,7 +240,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 43
+    suplenteId: 43,
+    proyectosLey: {
+      cantidad: 6,
+      lista: [
+        "1. ABROGACIÓN DEL PRINCIPIO DE INFORMALIDAD DE LA LEY 348",
+        "2. LEY DE CONSOLIDACIÓN DE CREACIÓN Y FINANCIAMIENTO DE LAS TRES (3) UNIVERSIDADES INDÍGENAS BOLIVIANAS, COMUNITARIAS, INTERCULTURALES, PRODUCTIVAS-UNIBOL",
+        "3. QUE ELEVA A RANGO DE LEY EL DECRETO SUPREMO N° 5600 Y FORTALECE LA TRANSPARENCIA, PUBLICIDAD Y CONTROL DE LAS CONTRATACIONES DIRECTAS DEL ESTADO"
+      ]
+    }
   },
 
   // ASIENTO 8 - Tomasa Yarhui Jacome (Chuquisaca)
@@ -218,7 +273,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 44
+    suplenteId: 44,
+    proyectosLey: {
+      cantidad: 9,
+      lista: [
+        "1. LEY DE CIELOS ABIERTOS PARA LA LIBRE COMPETENCIA AÉREA EN BOLIVIA",
+        "2. LEY DE ABROGACIÓN DEL PAQUETE DE LEYES INCENDIARIAS",
+        "3. LEY DE PROMOCIÓN ECONÓMICA Y DESARROLLO PRODUCTIVO DE LA CIUDAD DE SUCRE, CAPITAL DEL ESTADO PLUINACIONAL DE BOLIVIA"
+      ]
+    }
   },
 
   // ASIENTO 9 - Abdon Porcel Arancibia (Chuquisaca)
@@ -243,7 +306,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 45
+    suplenteId: 45,
+    proyectosLey: {
+      cantidad: 8,
+      lista: [
+        "1. PROYECTO DE LEY NACIONAL DE LA BICICLETA",
+        "2. DIA NACIONAL DEL MOTOCICLISTA BOLIVIANO",
+        "3. DE ABROGACIÓN DE LA LEY N° 767 DE PROMOCIÓN PARA LA INVERSIÓN EN EXPLORACIÓN Y EXPLOTACIÓN HIDROCARBURÍFERA"
+      ]
+    }
   },
 
   // ASIENTO 10 - Bertha Cartagena Sánchez (Chuquisaca)
@@ -268,7 +339,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 46
+    suplenteId: 46,
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DECLARAR AL DEPARTAMENTO DE CHUQUISACA PILOTO DE INDUSTRIALIZACIÓN"
+      ]
+    }
   },
 
   // ASIENTO 11 - Branko Goran Marinković Jovicevic (Santa Cruz)
@@ -293,7 +370,14 @@ export const senadores = [
     instagram: "https://www.instagram.com/brankoscz/",
     youtube: null,
     tiktok: "https://www.tiktok.com/@brankoscz",
-    suplenteId: 47
+    suplenteId: 47,
+    proyectosLey: {
+      cantidad: 4,
+      lista: [
+        "1. LEY QUE AUTORIZA LA TITULACIÓN INDIVIDUAL A MIEMBROS DE PREDIOS DE TITULACIÓN COLECTIVA",
+        "2. DE LIBERTAD DE IMPORTACIÓN, ALMACENAJE, TRANSPORTE Y COMERCIALIZACIÓN DE COMBUSTIBLES LÍQUIDOS"
+      ]
+    }
   },
 
   // ASIENTO 12 - Kathia Lizbeth Quiroga Fernández (Santa Cruz)
@@ -318,7 +402,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 48
+    suplenteId: 48,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. DE LIBERTAD DE IMPORTACIÓN, ALMACENAJE, TRANSPORTE Y COMERCIALIZACIÓN DE COMBUSTIBLES LÍQUIDOS"
+      ]
+    }
   },
 
   // ASIENTO 13 - Rosa Tatiana Áñez Carrasco (Santa Cruz)
@@ -343,7 +433,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 49
+    suplenteId: 49,
+    proyectosLey: {
+      cantidad: 7,
+      lista: [
+        "1. ENAJENACIÓN A TÍTULO GRATUITO DE UNA FRACCIÓN DE TERRENO A FAVOR DE 12 PERSONAS CON ALTO GRADO DE VULNERABILIDAD DEL MUNICIPIO DE COTOCA, CON DESTINO EXCLUSIVO A LA CONSTRUCCIÓN DE VIVIENDAS SOCIALES FINANCIADAS POR LA AGENCIA ESTATAL DE VIVIENDA Y EL FONDO NACIONAL DE SOLIDARIDAD Y EQUIDAD, EN EL MUNICIPIO DE COTOCA",
+        "2. ENAJENACIÓN A TÍTULO GRATUITO EN CALIDAD DE DONACIÓN DE UN LOTE DE TERRENO DE PROPIEDAD DEL GOBIERNO AUTÓNOMO MUNICIPAL DE COTOCA A FAVOR DE LA FUNDACIÓN REDIMIDOS CON LA SIGLA \"FUNDARED\" CON USO EXCLUSIVO PARA LA CONSTRUCCIÓN DE LA FASE 2 DE CAPACITACIÓN DEL CENTRO DE FORMACIÓN FUNDARED CENTRO, SEGÚN LEY AUTONÓMICA MUNICIPAL N° 015/2025",
+        "3. ENAJENACIÓN A TÍTULO GRATUITO DE DOS LOTES DE TERRENO A FAVOR DE 70 PERSONAS CON ALTO GRADO DE VULNERABILIDAD DEL MUNICIPIO DE COTOCA, CON DESTINO EXCLUSIVO A LA CONSTRUCCIÓN DE VIVIENDAS SOCIALES, FINANCIADAS POR LA AGENCIA ESTATAL DE VIVIENDA Y EL FONDO NACIONAL DE SOLIDARIDAD Y EQUIDAD, EN EL MUNICIPIO DE COTOCA"
+      ]
+    }
   },
 
   // ASIENTO 14 - Paola Limbania López Zeballos (Santa Cruz)
@@ -368,7 +466,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 50
+    suplenteId: 50,
+    proyectosLey: {
+      cantidad: 7,
+      lista: [
+        "1. LEY DE CREACIÓN Y ESTRUCTURA INSTITUCIONAL DE LA ESCUELA MARÍTIMA",
+        "2. LEY GENERAL DEL SISTEMA PORTUARIO NACIONAL",
+        "3. LEY DE AERONAVES DEL ESTADO"
+      ]
+    }
   },
 
   // ASIENTO 15 - Betty Canaviri Villanueva (Potosí)
@@ -393,7 +499,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 51
+    suplenteId: 51,
+    proyectosLey: {
+      cantidad: 5,
+      lista: [
+        "1. DECLARA CAPITAL DEL TURISMO AL MUNICIPIO DE UYUNI, DEPARTAMENTO DE POTOSÍ DEL ESTADO PLURINACIONAL DE BOLIVIA",
+        "2. DECLARATORIA DE LA CHOLA POTOSINA COMO PATRIMONIO CULTURAL, HISTÓRICO E IDENTITARIO DE BOLIVIA",
+        "3. DE DECLARATORIA DE LA QUINUA GRANO DE ORO POTOSINO, COMO REFERENTE HISTÓRICO E IDENTITARIO DEL DEPARTAMENTO DE POTOSÍ-BOLIVIA"
+      ]
+    }
   },
 
   // ASIENTO 16 - Teresa Alarcón Arana (Potosí) - NO TIENE SUPLENTE
@@ -418,7 +532,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: "https://www.tiktok.com/@techi.arana?_r=1&_t=ZS-98rE54uuhvO",
-    suplenteId: null
+    suplenteId: null,
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. LEY DE MODIFICACIONES AL \"CÓDIGO DE LAS FAMILIAS Y DEL PROCESO FAMILIAR\""
+      ]
+    }
   },
 
   // ASIENTO 17 - Marcelino Flores Ordoñez (Potosí)
@@ -443,7 +563,13 @@ export const senadores = [
     instagram: "https://www.instagram.com/senador_marcelino_flores/",
     youtube: null,
     tiktok: "https://www.tiktok.com/@marcelino.flores.senador",
-    suplenteId: 52
+    suplenteId: 52,
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DE SEGURIDAD Y RESILIENCIA ENERGÉTICA"
+      ]
+    }
   },
 
   // ASIENTO 18 - Bertha Nurmy Gutiérrez Meneses (Potosí)
@@ -468,7 +594,14 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: "tiktok.com/@gutierrez.10877",
-    suplenteId: 53
+    suplenteId: 53,
+    proyectosLey: {
+      cantidad: 5,
+      lista: [
+        "1. DECLARA PATRIMONIO CULTURAL, MATERIAL, ARQUITECTÓNICO, MONUMENTAL E HISTÓRICO DEL ESTADO PLURINACIONAL DE BOLIVIA AL SANTUARIO DE SURUMI DEL MUNICIPIO DE COLQUECHACA, DEPARTAMENTO DE POTOSÍ",
+        "2. SE DECLARA PATRIMONIO CULTURAL, MATERIAL, ARQUITECTÓNICO, MONUMENTAL E HISTÓRICO DEL ESTADO PLURINACIONAL DE BOLIVIA AL TELMPLO DE NUESTRA SEÑORA DEL ROSARIO DE BELÉN, DEL MUNICIPIO DE PUNA, PROVINCIA JOSE MARÍA LINARES, DEPARTAMENTO DE POTOSÍ"
+      ]
+    }
   },
 
   // ASIENTO 19 - Erick Nelson Soruco Alpire (Beni)
@@ -493,7 +626,13 @@ export const senadores = [
     instagram: "https://www.instagram.com/senadorericksoruco/",
     youtube: null,
     tiktok: "https://www.tiktok.com/@senador.erick.soruco",
-    suplenteId: 54
+    suplenteId: 54,
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DE PROTECCIÓN ESTRATÉGICA E INDUSTRIALIZACIÓN DE LA CASTAÑA AMAZÓNICA"
+      ]
+    }
   },
 
   // ASIENTO 20 - José Roca Haensel (Beni)
@@ -518,7 +657,11 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 55
+    suplenteId: 55,
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // ASIENTO 21 - Ana Karina Velasco Añez (Beni)
@@ -543,7 +686,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 56
+    suplenteId: 56,
+    proyectosLey: {
+      cantidad: 7,
+      lista: [
+        "1. LEY DEL EJERCICIO PROFESIONAL DEL COMUNICADOR SOCIAL EN BOLIVIA",
+        "2. DÍA DEL INMIGRANTE ITALIANO",
+        "3. DE REGULARIZACIÓN DE DERECHO PROPIETARIO Y SALVAGUARDA DE PREDIOS DE LAS FUERZAS ARMADAS"
+      ]
+    }
   },
 
   // ASIENTO 22 - Ernesto Suarez Sattori (Beni)
@@ -568,7 +719,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 57
+    suplenteId: 57,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. DE LIBERTAD DE IMPORTACIÓN, ALMACENAJE, TRANSPORTE Y COMERCIALIZACIÓN DE COMBUSTIBLES LÍQUIDOS"
+      ]
+    }
   },
 
   // ASIENTO 23 - Ana María Crispin Choque (La Paz)
@@ -593,7 +750,15 @@ export const senadores = [
     instagram: "https://www.instagram.com/anitacrispinoficial?igsh=b3hqaGt2Y3FxcmZ3&igsi=b3hqaGt2Y3FxcmZ3",
     youtube: null,
     tiktok: "https://www.tiktok.com/@anita_crispin.oficial?_r=1&_t=ZS-98rLSuZ7QoM",
-    suplenteId: 58
+    suplenteId: 58,
+    proyectosLey: {
+      cantidad: 9,
+      lista: [
+        "1. LEY DE RESPONSABILIDAD FISCAL Y USO SOSTENIBLE DEL FINANCIAMIENTO EXTERNO",
+        "2. DE ESTABILIDAD TRIBUTARIA, UNIFICACIÓN DEL IMPUESTO AL TABACO, MEDIDAS DE CONTROL AL CONSUMO Y FORTALECIMIENTO DEL CONTROL DEL MERCADO FORMAL",
+        "3. PROYECTO DE LEY MARCO DE ACUERDOS PÚBLICO-PRIVADOS"
+      ]
+    }
   },
 
   // ASIENTO 24 - Julio Diego Romaña Galindo (Pando)
@@ -618,7 +783,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 59
+    suplenteId: 59,
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. LEY DE PROTECCIÓN INTEGRAL DE LOS ANIMALES \"DIDA\""
+      ]
+    }
   },
 
   // ASIENTO 25 - Carol Carlo Durán (Pando)
@@ -643,7 +814,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 60
+    suplenteId: 60,
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. DE INCORPORACIÓN A LA RED VIAL FUNDAMENTAL DEL TRAMO: DESDE CR.RT.F13 (VILLA BUSCH) HASTA MUKDEN EN LA PROVINCIA NICOLÁS SUÁREZ DEL DEPARTAMENTO DE PANDO"
+      ]
+    }
   },
 
   // ASIENTO 26 - Cintia Monica Puerta Campos (Pando)
@@ -668,7 +845,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 61
+    suplenteId: 61,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE PRIORIDAD NACIONAL PARA LA CONCLUSIÓN Y EJECUCIÓN DE LA CARRETERA PORVENIR-EL CHORO DE LA RED VIAL FUNDAMENTAL N° 13 DEL DEPARTAMENTO DE PANDO"
+      ]
+    }
   },
 
   // ASIENTO 27 - Eliana Rina Acosta Quispe (Pando)
@@ -693,7 +876,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: "https://www.tiktok.com/@eliana.acosta.bol?_r=1&_t=ZS-92dfZ7y1V6C",
-    suplenteId: 62
+    suplenteId: 62,
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. LEY DE FORTALECIMIENTO, TRANSPARENCIA Y FORMALIZACIÓN DE LAS OPERACIONES CAMBIARIAS Y DE LAS CASAS DE CAMBIO"
+      ]
+    }
   },
 
   // ASIENTO 28 - Daniel Antonio Ortiz Velásquez (Chuquisaca)
@@ -718,7 +907,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 63
+    suplenteId: 63,
+    proyectosLey: {
+      cantidad: 10,
+      lista: [
+        "1. QUE DECLARA Y REGULA COMO ZONA ECONÓMICA ESPECIAL AL DEPARTAMENTO DE CHUQUISACA",
+        "2. LEY ESPECIAL DEL PROCEDIMIENTO DE LA JURISDICCIÓN AGROAMBIENTAL",
+        "3. LEY PARA SUPRIMIR JUECES CIUDADANOS DEL TRIBUNAL DISCIPLINARIO Y MODIFICAR TODA LA NORMATIVA REFERIDA AL TRÁMITE DE LAS FALTAS GRAVÍSIMAS Y SANCIONES PREVISTAS EN LA LEY 025"
+      ]
+    }
   },
 
   // ASIENTO 29 - Maria Isabel Moreno Cortez (Tarija)
@@ -743,7 +940,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 64
+    suplenteId: 64,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE PROTECCIÓN A LA IDENTIDAD Y DIGNIDAD CIVIL"
+      ]
+    }
   },
 
   // ASIENTO 30 - César Mentasti Padilla (Tarija)
@@ -768,7 +971,13 @@ export const senadores = [
     instagram: "https://www.instagram.com/mentasticesar/?hl=es",
     youtube: null,
     tiktok: "https://www.tiktok.com/@cesarmentasti?_r=1&_t=ZS-98suqHFWDXI",
-    suplenteId: 65
+    suplenteId: 65,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE ADECUACIÓN DEL FINANCIAMIENTO DE OBLIGACIONES PÚBLICAS"
+      ]
+    }
   },
 
   // ASIENTO 31 - Leonor Rosalva Romero Gutiérrez (Tarija)
@@ -793,7 +1002,15 @@ export const senadores = [
     instagram: "https://www.instagram.com/rosalvaromero3",
     youtube: null,
     tiktok: "https://www.tiktok.com/@rosalvaromero",
-    suplenteId: 66
+    suplenteId: 66,
+    proyectosLey: {
+      cantidad: 16,
+      lista: [
+        "1. DE PROHIBICIÓN DE JUICIOS EN REBELDÍA Y DE PROTECCIÓN AL DEBIDO PROCESO",
+        "2. DECLARA PATRIMONIO CULTURAL, MATERIAL A TODAS LAS INFRAESTRUCTURAS Y VESTIGIOS HISTÓRICOS DE LA GUERRA DEL CHACO, EN EL MUNICIPIO DE VILLA MONTES, REGIÓN AUTÓNOMA DEL GRAN CHACO, DEPARTAMENTO DE TARIJA",
+        "3. LEY DE CREACIÓN DE LA ZONA ECONÓMICA ESPECIAL DE LA REGIÓN AUTÓNOMA DEL GRAN CHACO"
+      ]
+    }
   },
 
   // ASIENTO 32 - Diego Esteban Mateo Ávila Navajas (Tarija)
@@ -818,7 +1035,15 @@ export const senadores = [
     instagram: "https://www.instagram.com/senadordiegoavila/?hl=es",
     youtube: null,
     tiktok: "https://www.tiktok.com/@diegoavilabo?is_from_webapp=1&sender_device=pc",
-    suplenteId: 67
+    suplenteId: 67,
+    proyectosLey: {
+      cantidad: 5,
+      lista: [
+        "1. LEY EXCEPCIONAL Y TRANSITORIA DE FUNCIONAMIENTO TRANSITORIO DEL TRIBUNAL CONSTITUCIONAL PLURINACIONAL",
+        "2. LEY DE INCORPORACIÓN DE RUTAS DEPARTAMENTALES DE TARIJA A LA RED VIAL FUNDAMENTAL. (RUTA 1: CRUCE RUTA F11 (IBIBOBO)-ESMERALDA",
+        "3. QUE ABROGA LA LEY N° 1341, DE 23 DE JULIO DE 2020, ESTADOS DE EXCEPCIÓN"
+      ]
+    }
   },
 
   // ASIENTO 33 - Yasmín Estivariz Villarroel (Oruro)
@@ -843,7 +1068,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 68
+    suplenteId: 68,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY EXCEPCIONAL Y TRANSITORIA DE FUNCIONAMIENTO TRANSITORIO DEL TRIBUNAL CONSTITUCIONAL PLURINACIONAL"
+      ]
+    }
   },
 
   // ASIENTO 34 - Freddy Castillo Chávez (Oruro)
@@ -857,7 +1088,7 @@ export const senadores = [
     partyShort: "PDC",
     partyColor: "#2E7078",
     department: "Oruro",
-    comision: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional.",
+    comision: "Comité de Constitución, Legislación e Interpretación Legislativa y Constitucional",
     cargo: "Secretario de Comite",
     foto: "/senadores/titulares/g2/FREDDY CASTILLO CHAVEZ.png",
     fechaNacimiento: "22 de mayo, 1977",
@@ -868,7 +1099,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 69
+    suplenteId: 69,
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. SISTEMA PRODUCTIVO DE CAMÉLIDOS SUDAMERICANOS DOMÉSTICOS"
+      ]
+    }
   },
 
   // ASIENTO 35 - Maria Antonieta Alcón Sánchez (Oruro)
@@ -893,7 +1130,13 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 70
+    suplenteId: 70,
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE ADECUACIÓN DEL FINANCIAMIENTO DE OBLIGACIONES PÚBLICAS"
+      ]
+    }
   },
 
   // ASIENTO 36 - José Sánchez Aguilar (Oruro)
@@ -918,7 +1161,15 @@ export const senadores = [
     instagram: null,
     youtube: null,
     tiktok: null,
-    suplenteId: 71
+    suplenteId: 71,
+    proyectosLey: {
+      cantidad: 14,
+      lista: [
+        "1. LEY ESPECIAL PARA LA REGULACIÓN TÉCNICA DEL USO DE EXPLOSIVOS PARA EL DESARROLLO SOSTENIBLE Y CRECIMIENTO ECONÓMICO",
+        "2. LEY DE INCENTIVO AL DEPORTE",
+        "3. DE FOMENTO AL DESARROLLO PRODUCTIVO E INDUSTRIAL DE ORURO"
+      ]
+    }
   },
 
   // ==========================================
@@ -949,7 +1200,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 1,
-    suplenteDe: "Wilder Véliz Armas"
+    suplenteDe: "Wilder Véliz Armas",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 38 (Asiento 2) - Royer Ivan Mamani Garcia (Cochabamba)
@@ -976,7 +1231,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 2,
-    suplenteDe: "Judith Rosario García Coca"
+    suplenteDe: "Judith Rosario García Coca",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 39 (Asiento 3) - Apolinar Rivera Muñoz (Cochabamba)
@@ -1003,7 +1262,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 3,
-    suplenteDe: "Claudia Mallón Vargas"
+    suplenteDe: "Claudia Mallón Vargas",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. QUE DECLARA DÍA NACIONAL DEL CARRETILLERO Y ESTIBADOR EN CENTROS DE ABASTO DE BOLIVIA"
+      ]
+    }
   },
 
   // SUPLENTE 40 (Asiento 4) - Aldo Sergio Villegas Mora (Cochabamba)
@@ -1030,7 +1295,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 4,
-    suplenteDe: "Wanda Ximena Medrano Hervas"
+    suplenteDe: "Wanda Ximena Medrano Hervas",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 41 (Asiento 5) - Maria Elena Pachacute Ticona (La Paz)
@@ -1057,7 +1326,15 @@ export const senadores = [
     youtube: null,
     tiktok: "https://www.tiktok.com/@elenapachacute?_r=1&_t=ZS-98rRgYCP1oz",
     titularId: 5,
-    suplenteDe: "José Manuel Ormachea Mendieta"
+    suplenteDe: "José Manuel Ormachea Mendieta",
+    proyectosLey: {
+      cantidad: 6,
+      lista: [
+        "1. LEY DEL RÉGIMEN TRIBUTARIO SIMPLIFICADO-RTS, PARA TRABAJADORES POR CUENTA PROPIA DEL ESTADO PLURINACIONAL DE BOLIVIA",
+        "2. DE INCORPORACIONES DE NUEVAS TIPIFICACIONES AL CÓDIGO PENAL",
+        "3. DE DEVOLUCIÓN DE APORTES DE LOS VENDEDORES DE LOTERÍA NACIONAL DE BENEFICENCIA Y SALUBRIDAD"
+      ]
+    }
   },
 
   // SUPLENTE 42 (Asiento 6) - Nilton Condori Alanoca (La Paz)
@@ -1084,7 +1361,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 6,
-    suplenteDe: "Carmen Soledad Chapeton Tancara"
+    suplenteDe: "Carmen Soledad Chapeton Tancara",
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. LEY DE BLINDAJE DE LA JERARQUÍA PROFESIONAL, JUBILACIÓN PLENA AL CIEN POR CIENTO (100%) Y SEGURIDAD SOCIAL DE CORTO PLAZO DEL MAGISTERIO"
+      ]
+    }
   },
 
   // SUPLENTE 43 (Asiento 7) - Roxana Mamani Colquehuanca (La Paz)
@@ -1111,7 +1394,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 7,
-    suplenteDe: "Nicanor Gonzalo Cochi Condorí"
+    suplenteDe: "Nicanor Gonzalo Cochi Condorí",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 44 (Asiento 8) - Hugo Marcelo Cortez Calvimontes (Chuquisaca)
@@ -1138,7 +1425,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 8,
-    suplenteDe: "Tomasa Yarhui Jacome"
+    suplenteDe: "Tomasa Yarhui Jacome",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE VERDAD HISTÓRICA, REPARACIÓN MORAL Y PROTECCIÓN DE LA IMAGEN DE LA CIUDAD DE SUCRE"
+      ]
+    }
   },
 
   // SUPLENTE 45 (Asiento 9) - Ilse Fatima Davila Arancibia (Chuquisaca)
@@ -1165,7 +1458,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 9,
-    suplenteDe: "Abdon Porcel Arancibia"
+    suplenteDe: "Abdon Porcel Arancibia",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. LEY DE EMERGENCIA, PROTECCIÓN Y REACTIVACIÓN ECONÓMICA DEL SECTOR TURÍSTICO BOLIVIANO"
+      ]
+    }
   },
 
   // SUPLENTE 46 (Asiento 10) - Manfred Leo Perez Hassenteufel (Chuquisaca)
@@ -1192,7 +1491,15 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 10,
-    suplenteDe: "Bertha Cartagena Sánchez"
+    suplenteDe: "Bertha Cartagena Sánchez",
+    proyectosLey: {
+      cantidad: 5,
+      lista: [
+        "1. DE CREACIÓN DEL FONDO FINANCIERO DE RESERVA DE ORO DEL DEPARTAMENTO DE CHUQUISACA",
+        "2. DE CREACIÓN DE BONOS DE CARBONO CON BENEFICIOS DE SEGURO JUBILATORIO PARA EL SECTOR AGROPECUARIO COMUNITARIO DE CHUQUISACA",
+        "3. LEY TRANSITORIA DE COMPLEMENTACIÓN DE MAGISTRADAS Y MAGISTRADOS DEL TRIBUNAL CONSTITUCIONAL PLURINACIONAL Y DEL TRIBUNAL SUPREMO DE JUSTICIA"
+      ]
+    }
   },
 
   // SUPLENTE 47 (Asiento 11) - Kathia Natalia Miserendino Romero (Santa Cruz)
@@ -1219,7 +1526,11 @@ export const senadores = [
     youtube: null,
     tiktok: "https://www.tiktok.com/@nataliamiserendino",
     titularId: 11,
-    suplenteDe: "Branko Goran Marinković Jovicevic"
+    suplenteDe: "Branko Goran Marinković Jovicevic",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 48 (Asiento 12) - Leonardo Roca Eguez (Santa Cruz)
@@ -1246,7 +1557,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 12,
-    suplenteDe: "Kathia Lizbeth Quiroga Fernández"
+    suplenteDe: "Kathia Lizbeth Quiroga Fernández",
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DE FORTALECIMIENTO DE PROTECCIÓN A LA PROPIEDAD PRIVADA"
+      ]
+    }
   },
 
   // SUPLENTE 49 (Asiento 13) - Lorgio Fernando Pareja Saucedo (Santa Cruz)
@@ -1273,7 +1590,15 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 13,
-    suplenteDe: "Rosa Tatiana Áñez Carrasco"
+    suplenteDe: "Rosa Tatiana Áñez Carrasco",
+    proyectosLey: {
+      cantidad: 7,
+      lista: [
+        "1. DE MODIFICACIÓN AL ARTÍCULO 350 PARÁGRAFO III E INCLUSIÓN DEL PARÁGRAFO V DEL CÓDIGO PENAL, MODIFICADO POR LA LEY 1102 DEL CONSEJO NACIONAL DE LUCHA CONTRA EL AVASALLAMIENTO Y EL ABIGEATO-CONALCABI DEL 25 DE SEPTIEMBRE DE 2018",
+        "2. DE PRESCRIPCIÓN Y CONSOLIDACIÓN DE DEPÓSITOS JUDICIALES",
+        "3. LEY DE APOYO PRESUPUESTARIO FINANCIERO EXCEPCIONAL A FAVOR DE LOS GOBIERNOS AÚTONOMOS DEPARTAMENTALES"
+      ]
+    }
   },
 
   // SUPLENTE 50 (Asiento 14) - Richard Espada Ugarte (Santa Cruz)
@@ -1300,7 +1625,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 14,
-    suplenteDe: "Paola Limbania López Zeballos"
+    suplenteDe: "Paola Limbania López Zeballos",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 51 (Asiento 15) - Roger Mamani Coronado (Potosí)
@@ -1327,7 +1656,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 15,
-    suplenteDe: "Betty Canaviri Villanueva"
+    suplenteDe: "Betty Canaviri Villanueva",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 52 (Asiento 17) - Susana Gabriela Ruiz Zuleta (Potosí)
@@ -1354,7 +1687,14 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 17,
-    suplenteDe: "Marcelino Flores Ordoñez"
+    suplenteDe: "Marcelino Flores Ordoñez",
+    proyectosLey: {
+      cantidad: 4,
+      lista: [
+        "1. QUE DECLARA DE INTERÉS DEL NIVEL CENTRAL DEL ESTADO LA CONSTRUCCIÓN DE TRANSPORTE POR CABLE (TELEFÉRICO) EN LA CIUDAD DE POTOSÍ",
+        "2. LEY DE IMPLEMENTACIÓN DE LA INTELIGENCIA ARTIFICIAL (IA) EN EL SISTEMA EDUCATIVO PLURINACIONAL DE BOLIVIA"
+      ]
+    }
   },
 
   // SUPLENTE 53 (Asiento 18) - Freddy Rioja Melgar (Potosí)
@@ -1381,7 +1721,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 18,
-    suplenteDe: "Bertha Nurmy Gutiérrez Meneses"
+    suplenteDe: "Bertha Nurmy Gutiérrez Meneses",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 54 (Asiento 19) - Cesia Roca Escalante (Beni)
@@ -1408,7 +1752,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 19,
-    suplenteDe: "Erick Nelson Soruco Alpire"
+    suplenteDe: "Erick Nelson Soruco Alpire",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 55 (Asiento 20) - Mabel Giordano Sonnenschein (Beni)
@@ -1435,7 +1783,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 20,
-    suplenteDe: "José Roca Haensel"
+    suplenteDe: "José Roca Haensel",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 56 (Asiento 21) - Marcelo Matias Cardona Ibañez (Beni)
@@ -1462,7 +1814,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 21,
-    suplenteDe: "Ana Karina Velasco Añez"
+    suplenteDe: "Ana Karina Velasco Añez",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 57 (Asiento 22) - Claudia Cardenas Velasquez (Beni)
@@ -1489,7 +1845,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 22,
-    suplenteDe: "Ernesto Suarez Sattori"
+    suplenteDe: "Ernesto Suarez Sattori",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 58 (Asiento 23) - Victor Severo Quispe Santander (La Paz)
@@ -1516,7 +1876,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 23,
-    suplenteDe: "Ana María Crispin Choque"
+    suplenteDe: "Ana María Crispin Choque",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. QUE DECLARA AL MUNICIPIO DE GUAQUI COMO \"CAPITAL FOLKLÓRICA DE LA MORENADA\", DEL ESTADO PLURINACIONAL DE BOLIVIA"
+      ]
+    }
   },
 
   // SUPLENTE 59 (Asiento 24) - Carolina Giese Urresti (Pando)
@@ -1543,7 +1909,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 24,
-    suplenteDe: "Julio Diego Romaña Galindo"
+    suplenteDe: "Julio Diego Romaña Galindo",
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. LEY DE PROTECCIÓN INTEGRAL DE LOS ANIMALES \"DIDA\""
+      ]
+    }
   },
 
   // SUPLENTE 60 (Asiento 25) - Jorge Antonio Quispe Flores (Pando)
@@ -1570,7 +1942,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 25,
-    suplenteDe: "Carol Carlo Durán"
+    suplenteDe: "Carol Carlo Durán",
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DE INCORPORACIÓN A LA RED VIAL FUNDAMENTAL DEL TRAMO: SANTA ELENA (MUNICIPIO DE BELLA FLOR, PROVINCIA NICOLÁS SUÁREZ)-SANTA ROSA (MUNICIPIO DE SANTA ROSA DE LA PROVINCIA ABUNÁ) DEL DEPARTAMENTO DE PANDO"
+      ]
+    }
   },
 
   // SUPLENTE 61 (Asiento 26) - Jesus Humberto Suarez Eguez (Pando)
@@ -1597,7 +1975,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 26,
-    suplenteDe: "Cintia Monica Puerta Campos"
+    suplenteDe: "Cintia Monica Puerta Campos",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 62 (Asiento 27) - Sichard Hans Soraide Castedo (Pando)
@@ -1624,7 +2006,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 27,
-    suplenteDe: "Eliana Rina Acosta Quispe"
+    suplenteDe: "Eliana Rina Acosta Quispe",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. DE INCORPORACIÓN A LA RED VIAL FUNDAMENTAL DEL TRAMO: SANTA ELENA (MUNICIPIO DE BELLA FLOR, PROVINCIA NICOLÁS SUÁREZ)-SANTA ROSA (MUNICIPIO DE SANTA ROSA DE LA PROVINCIA ABUNÁ) DEL DEPARTAMENTO DE PANDO"
+      ]
+    }
   },
 
   // SUPLENTE 63 (Asiento 28) - Reina Isabel Pallares Morales (Chuquisaca)
@@ -1651,7 +2039,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 28,
-    suplenteDe: "Daniel Antonio Ortiz Velásquez"
+    suplenteDe: "Daniel Antonio Ortiz Velásquez",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 64 (Asiento 29) - Rolando Vacaflor Gabriel Arana (Tarija)
@@ -1678,7 +2070,14 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 29,
-    suplenteDe: "Maria Isabel Moreno Cortez"
+    suplenteDe: "Maria Isabel Moreno Cortez",
+    proyectosLey: {
+      cantidad: 5,
+      lista: [
+        "1. DE PROTECCIÓN Y EJERCICIO DE DERECHOS FUNDAMENTALES Y GARANTÍAS CONSTITUCIONALES",
+        "2. DE DEROGACIÓN DE LA LEY N° 767 Y RESTITUCIÓN DE FONDOS DEL FPIEEH A ENTIDADES TERRITORIALES Y UNIVERSIDADES"
+      ]
+    }
   },
 
   // SUPLENTE 65 (Asiento 30) - Marcela Guerrero Vilca (Tarija)
@@ -1705,7 +2104,15 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 30,
-    suplenteDe: "César Mentasti Padilla"
+    suplenteDe: "César Mentasti Padilla",
+    proyectosLey: {
+      cantidad: 11,
+      lista: [
+        "1. LEY DE LUCHA CONTRA LA CORRUPCIÓN POR ENRRIQUECIMIENTO ILÍCITO DE DIRIGENTES",
+        "2. DE FORTALECIMIENTO PRODUCTIVO DE LA PEQUEÑA PROPIEDAD AGRARIA",
+        "3. LEY DE FINANCIAMIENTO PREFERENCIAL DESTINADO A LOS SECTORES PRODUCTIVOS AFECTADOS POR LOS CONFLICTOS SOCIALES, BLOQUEOS Y EVENTOS ADVERSOS"
+      ]
+    }
   },
 
   // SUPLENTE 66 (Asiento 31) - Marco Antonio Segovia Vargas (Tarija)
@@ -1732,7 +2139,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 31,
-    suplenteDe: "Leonor Rosalva Romero Gutiérrez"
+    suplenteDe: "Leonor Rosalva Romero Gutiérrez",
+    proyectosLey: {
+      cantidad: 3,
+      lista: [
+        "1. LEY DE CREACIÓN DE LA UNIDAD EJECUTORA CARRIZAL"
+      ]
+    }
   },
 
   // SUPLENTE 67 (Asiento 32) - Luzmaya Zelaya Vega (Tarija)
@@ -1759,7 +2172,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 32,
-    suplenteDe: "Diego Esteban Mateo Ávila Navajas"
+    suplenteDe: "Diego Esteban Mateo Ávila Navajas",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 68 (Asiento 33) - Ramiro Mamani Ramirez (Oruro)
@@ -1786,7 +2203,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 33,
-    suplenteDe: "Yasmín Estivariz Villarroel"
+    suplenteDe: "Yasmín Estivariz Villarroel",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 69 (Asiento 34) - Villma Colque Camacho (Oruro)
@@ -1813,7 +2234,11 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 34,
-    suplenteDe: "Freddy Castillo Chávez"
+    suplenteDe: "Freddy Castillo Chávez",
+    proyectosLey: {
+      cantidad: 0,
+      lista: []
+    }
   },
 
   // SUPLENTE 70 (Asiento 35) - Edwin Lopez Quiroga (Oruro)
@@ -1840,7 +2265,13 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 35,
-    suplenteDe: "Maria Antonieta Alcón Sánchez"
+    suplenteDe: "Maria Antonieta Alcón Sánchez",
+    proyectosLey: {
+      cantidad: 1,
+      lista: [
+        "1. QUE DECLARA DE INTERÉS Y PRIORIDAD NACIONAL LA INCORPORACIÓN A LA RED VIAL FUNDAMENTAL DE CARRETERAS EL TRAMO SANTUARIO DE QUILLACAS-SALINAS DE GARCI MENDOZA-LLICA-BELLA VISTA DE LOS DEPARTAMENTOS DE ORURO Y POTOSÍ"
+      ]
+    }
   },
 
   // SUPLENTE 71 (Asiento 36) - Cinthya Inga Gutierrez Guzman (Oruro)
@@ -1867,6 +2298,12 @@ export const senadores = [
     youtube: null,
     tiktok: null,
     titularId: 36,
-    suplenteDe: "José Sánchez Aguilar"
+    suplenteDe: "José Sánchez Aguilar",
+    proyectosLey: {
+      cantidad: 2,
+      lista: [
+        "1. DE ATENCIÓN PRE-HOSPITALARIA DEL ESTADO PLURINACIONAL DE BOLIVIA"
+      ]
+    }
   }
 ]
