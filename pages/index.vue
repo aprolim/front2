@@ -1,22 +1,27 @@
 <template>
   <div class="overflow-visible">
-    <!-- VIDEO CON ESTADÍSTICAS Y BARRA DE SESIÓN -->
-    <HeroVideo 
-      :live-video="liveVideo" 
-      :estadisticas="estadisticas" 
-    />
+    <!-- HERO CON VIDEO Y ESTADÍSTICAS - usa localStorage -->
+    <ClientOnly>
+      <HeroVideo />
+      <template #fallback>
+        <div class="hero-video-wrapper relative w-full overflow-hidden bg-black" />
+      </template>
+    </ClientOnly>
 
     <!-- CONTENIDO PRINCIPAL -->
     <div class="mx-auto w-[75%] py-[2vw]">
+      <!-- Estático: sin ClientOnly -->
       <FacultadesLegislativas />
 
-      <!-- CALENDARIO Y LÍNEA DE TIEMPO -->
-      <div class="mt-12">
-        <AgendaSesiones 
-          :fechas-sesiones="fechasSesiones"
-          :actividades-extra="actividadesExtra"
-        />
-      </div>
+      <!-- Dinámico: usa localStorage -->
+      <ClientOnly>
+        <div class="mt-12">
+          <AgendaSesiones />
+        </div>
+        <template #fallback>
+          <div class="mt-12 h-96" />
+        </template>
+      </ClientOnly>
 
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
@@ -25,9 +30,15 @@
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
-  
-      <NoticiasDinamicas />
-      
+
+      <!-- Dinámico: usa store de noticias -->
+      <ClientOnly>
+        <NoticiasDinamicas />
+        <template #fallback>
+          <div class="min-h-[400px]" />
+        </template>
+      </ClientOnly>
+
       <div class="flex items-center justify-center my-10">
         <div class="flex-1 h-px bg-[#000]"></div>
         <div class="flex-shrink-0">
@@ -36,24 +47,26 @@
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
 
+      <!-- Estático -->
       <DescubraSenado />
-      
+
       <div class="flex items-center justify-center gap-4 my-10">
         <div class="flex-1 h-px bg-[#75797B]"></div>
       </div>
 
+      <!-- Estático -->
       <MandatoFuncionesAntecedentes />
     </div>
 
     <!-- MODAL DE ORDEN DEL DÍA -->
-    <div 
-      v-if="showModal && hasValidData && modalData" 
+    <div
+      v-if="showModal && modalData"
       class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
       @click.self="closeModal"
     >
       <div class="relative bg-white rounded-2xl shadow-2xl max-w-[90vw] max-h-[90vh] overflow-y-auto p-8 md:p-10" style="width: 520px;">
         <button @click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors text-3xl font-light z-10">×</button>
-        
+
         <div class="text-center">
           <!-- BANDA TRICOLOR -->
           <div class="w-full h-[6px] flex rounded-full overflow-hidden mb-4">
@@ -61,32 +74,32 @@
             <div class="flex-1 bg-[#F9E300]"></div>
             <div class="flex-1 bg-[#007A36]"></div>
           </div>
-          
+
           <!-- ESCUDO -->
-          <img 
-            src="/logo/log2_colores.png" 
-            alt="Senado de Bolivia" 
+          <img
+            src="/logo/log2_colores.png"
+            alt="Senado de Bolivia"
             class="w-[90px] h-auto mx-auto mb-3"
           />
-          
+
           <!-- TÍTULO -->
           <h2 class="text-2xl font-bold text-[#1a2b4c] mb-2 tracking-wide">
             {{ modalData?.title || 'SESIÓN ORDINARIA' }}
           </h2>
-          
+
           <!-- LÍNEA DORADA -->
           <div class="w-[60px] h-[3px] bg-[#c9a84c] mx-auto mb-4 rounded-full"></div>
-          
+
           <!-- ORDEN DEL DÍA -->
           <h3 class="text-sm font-semibold text-[#1a2b4c] mb-4 tracking-wider">
             - ORDEN DEL DÍA -
           </h3>
-          
+
           <!-- ÍTEMS -->
           <div class="text-left max-w-[380px] mx-auto text-sm text-gray-700">
-            <div 
-              v-for="(item, index) in modalData?.agendaItems || []" 
-              :key="index" 
+            <div
+              v-for="(item, index) in modalData?.agendaItems || []"
+              :key="index"
               class="flex items-start gap-3 py-1.5 border-b border-gray-100 last:border-0"
             >
               <span class="font-bold text-[#c9a84c] min-w-[22px]">{{ index + 1 }}.</span>
@@ -124,7 +137,7 @@
 
           <!-- BOTÓN DESCARGAR PDF -->
           <div class="mt-4 pt-4 border-t border-gray-200">
-            <button 
+            <button
               @click="downloadPDF"
               class="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a2b4c] hover:bg-[#2a3b5c] text-white text-sm font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
@@ -141,87 +154,65 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import { useSessionData } from '~/composables/useSessionData'
+import { onMounted, onBeforeUnmount } from 'vue'
+import { storeToRefs } from 'pinia'
 
-// Componentes de la página index (carpeta específica)
-import DescubraSenado from '~/components/DescubraSenado.vue'
-import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
-import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
+// ==========================================
+// COMPONENTES
+// ==========================================
 import HeroVideo from '~/components/index/HeroVideo.vue'
 import FacultadesLegislativas from '~/components/index/FacultadesLegislativas.vue'
 import AgendaSesiones from '~/components/index/AgendaSesiones.vue'
+import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
+import DescubraSenado from '~/components/DescubraSenado.vue'
+import MandatoFuncionesAntecedentes from '~/components/MandatoFuncionesAntecedentes.vue'
 
-// ========================================== //
-// ESTADO DEL VIDEO EN VIVO
-// ========================================== //
-const liveVideo = ref(null)
-const liveLoading = ref(false)
+// ==========================================
+// STORES
+// ==========================================
+import { useSessionStore } from '~/stores/session'
+import { useStatsStore } from '~/stores/stats'
+import { useLiveStore } from '~/stores/live'
+import { usePeticionesStore } from '~/stores/peticiones'
+import { useNoticiasStore } from '~/stores/noticias'
 
-// ========================================== //
-// SESIÓN DE DATOS
-// ========================================== //
-const {
-  sessionData,
-  formattedDate,
-  isLoading,
-  errorMessage,
-  showModal,
-  modalData,
-  estadisticas,
-  hasValidData,
-  todasLasSesiones,
-  fetchSessionData,
-  fetchEstadisticas,
-  openModal,
-  closeModal,
-  handleKeydown,
-  downloadPDF
-} = useSessionData()
+const sessionStore = useSessionStore()
+const statsStore = useStatsStore()
+const liveStore = useLiveStore()
+const peticionesStore = usePeticionesStore()
+const noticiasStore = useNoticiasStore()
 
-const fechasSesiones = computed(() => todasLasSesiones.value)
-const actividadesExtra = computed(() => [])
+// ==========================================
+// STATE REACTIVO DEL STORE
+// ==========================================
+const { showModal, modalData } = storeToRefs(sessionStore)
 
-// ========================================== //
-// API PARA VIDEO EN VIVO
-// ========================================== //
-const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
-
-const cargarLive = async () => {
-  liveLoading.value = true
-  try {
-    const response = await fetch(`${API_BASE_URL}/sesiones/live`)
-    const result = await response.json()
-    
-    if (result.success && result.data) {
-      liveVideo.value = result.data
-      console.log('🔴 Video en vivo cargado:', liveVideo.value.title)
-    } else {
-      liveVideo.value = null
-      console.log('ℹ️ No hay transmisión en vivo activa')
-    }
-  } catch (error) {
-    console.error('❌ Error cargando LIVE:', error)
-    liveVideo.value = null
-  } finally {
-    liveLoading.value = false
-  }
+// ==========================================
+// MÉTODOS
+// ==========================================
+const closeModal = () => {
+  showModal.value = false
+  document.body.style.overflow = 'auto'
 }
 
-// ========================================== //
+const downloadPDF = () => {
+  sessionStore.downloadPDF?.()
+}
+
+// ==========================================
 // LIFECYCLE
-// ========================================== //
+// ==========================================
 onMounted(() => {
-  Promise.all([
-    fetchSessionData(),
-    fetchEstadisticas(),
-    cargarLive()
-  ]).then(() => {
-    console.log('✅ Todos los datos cargados correctamente')
-  }).catch((error) => {
-    console.error('❌ Error cargando datos:', error)
-  })
-  
+  // 🔥 Disparar todas las cargas en paralelo (idempotente)
+  // Cada store decide si usar caché o refetch
+  // Nada bloquea la UI porque no hay await
+  sessionStore.ensureLoaded()
+  statsStore.ensureLoaded()
+  liveStore.ensureLoaded()
+  peticionesStore.ensureLoaded()
+  noticiasStore.ensureLoaded()
+
+  // Restaurar scroll si había uno guardado
   if (process.client) {
     const scrollPos = sessionStorage.getItem('scrollPosicion')
     if (scrollPos) {
@@ -231,12 +222,18 @@ onMounted(() => {
       }, 400)
     }
   }
-  
-  document.addEventListener('keydown', handleKeydown)
-})
 
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleKeydown)
-  document.body.style.overflow = 'auto'
+  // Cerrar modal con ESC
+  const handleKeydown = (event) => {
+    if (event.key === 'Escape' && showModal.value) {
+      closeModal()
+    }
+  }
+  document.addEventListener('keydown', handleKeydown)
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeydown)
+    document.body.style.overflow = 'auto'
+  })
 })
 </script>

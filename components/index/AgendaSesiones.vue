@@ -4,8 +4,8 @@
       <Icon name="mdi:calendar-month" class="text-[7.5vw] md:text-[2.5vw] text-senado-primary" />
       Agenda de Sesiones
     </h2>
-    
-    <CalendarioActividades 
+
+    <CalendarioActividades
       :fechas-sesiones="fechasSesiones"
       :actividades="actividadesExtra"
     />
@@ -13,16 +13,18 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import CalendarioActividades from '~/components/CalendarioActividades.vue'
+import { useSessionStore } from '~/stores/session'
 
-defineProps({
-  fechasSesiones: {
-    type: Array,
-    default: () => []
-  },
-  actividadesExtra: {
-    type: Array,
-    default: () => []
-  }
-})
+// ==========================================
+// STORE
+// ==========================================
+const sessionStore = useSessionStore()
+const { todasLasSesiones } = storeToRefs(sessionStore)
+
+// Computed (por si quieres transformar algo)
+const fechasSesiones = computed(() => todasLasSesiones.value || [])
+const actividadesExtra = computed(() => [])
 </script>

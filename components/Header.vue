@@ -655,7 +655,8 @@ export default {
       isMenuHoverOpen: false,
       redesHoverTimer: null,
       closeMenuTimer: null,
-      scrollThreshold: 50
+      scrollThreshold: 10, // umbral bajo para evitar jitter
+      scrollRaf: null
     }
   },
   computed: {
@@ -714,12 +715,23 @@ export default {
       }
     },
     // ==========================================
-    // SCROLL
+    // SCROLL - CORREGIDO
     // ==========================================
     handleScroll() {
-      if (typeof window !== 'undefined') {
-        this.isScrolled = window.scrollY > this.scrollThreshold
-      }
+      if (typeof window === 'undefined') return
+      // Usar requestAnimationFrame para agrupar eventos de scroll
+      if (this.scrollRaf) return
+      this.scrollRaf = requestAnimationFrame(() => {
+        const y = window.scrollY || window.pageYOffset || 0
+        // Histéresis: se activa al pasar el umbral, se desactiva solo al volver casi al tope
+        // Esto evita el jitter cuando el scroll oscila cerca del umbral
+        if (!this.isScrolled && y > this.scrollThreshold) {
+          this.isScrolled = true
+        } else if (this.isScrolled && y <= Math.max(0, this.scrollThreshold / 2)) {
+          this.isScrolled = false
+        }
+        this.scrollRaf = null
+      })
     },
     // ==========================================
     // REDES SOCIALES - HOVER (funciona desde sm:)
@@ -1189,13 +1201,17 @@ export default {
     document.addEventListener('keydown', this.handleKeydown)
     this.checkScreenSize()
     window.addEventListener('resize', this.handleResize)
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('scroll', this.handleScroll, { passive: true })
     this.handleScroll()
   },
   beforeDestroy() {
     document.removeEventListener('keydown', this.handleKeydown)
     window.removeEventListener('resize', this.handleResize)
     window.removeEventListener('scroll', this.handleScroll)
+    if (this.scrollRaf) {
+      cancelAnimationFrame(this.scrollRaf)
+      this.scrollRaf = null
+    }
     this.clearAllTimers()
   }
 }

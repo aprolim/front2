@@ -229,11 +229,11 @@
       </div>
 
       <!-- NOTICIAS RELACIONADAS CON EL SENADOR -->
-      <NoticiasSenador 
+      <!-- <NoticiasSenador 
         :senador-id="senator.id" 
         :nombre-senador="senator.name"
         :limit="6"
-      />
+      /> -->
     </div>
 
     <div v-else class="text-center py-[10vw] sm:py-[5vw]">
@@ -297,7 +297,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useSenadores } from '~/composables/useSenadores'
-import NoticiasSenador from '~/components/NoticiasSenador.vue'
+// import NoticiasSenador from '~/components/NoticiasSenador.vue'
 
 const route = useRoute()
 const { getSenadorBySlug, getSuplenteByTitularId } = useSenadores()

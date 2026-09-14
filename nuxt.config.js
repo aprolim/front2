@@ -6,13 +6,13 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   // ✅ CORREGIDO: compatibilityDate
   icon: {
-    serverBundle: 'local', // 🔥 Cambiar a 'local'
+    serverBundle: 'local',
     clientBundle: 'auto'
   },
   compatibilityDate: '2026-08-02',
-  
+
   devtools: { enabled: true },
-  
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
@@ -20,7 +20,23 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@pinia/nuxt'
   ],
-  
+
+  // ==========================================
+  // 🔥 PINIA - CONFIGURACIÓN DE STORES
+  // ==========================================
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+
+  // ==========================================
+  // 🔥 RUNTIME CONFIG - API URL
+  // ==========================================
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'https://demoback.senado.gob.bo/api'
+    }
+  },
+
   // ==========================================
   // 🔥 CONFIGURACIÓN DE GOOGLE FONTS
   // ==========================================
@@ -38,14 +54,14 @@ export default defineNuxtConfig({
     base64: false,
     overwriting: true
   },
-  
+
   // ==========================================
   // 📦 CSS GLOBAL
   // ==========================================
   css: [
     '~/assets/main.css'
   ],
-  
+
   // ==========================================
   // 🔧 ALIAS DE RESOLUCIÓN
   // ==========================================
@@ -59,14 +75,14 @@ export default defineNuxtConfig({
     '~assets': join(currentDir, 'assets'),
     '~public': join(currentDir, 'public'),
   },
-  
+
   // ==========================================
   // ⚙️ OTRAS CONFIGURACIONES
   // ==========================================
   future: {
     compatibilityVersion: 4
   },
-  
+
   // ==========================================
   // 🚀 OPTIMIZACIONES
   // ==========================================
@@ -74,7 +90,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compressPublicAssets: true
   },
-  
+
   image: {
     format: ['webp', 'avif', 'jpg'],
     quality: 80,
@@ -87,7 +103,7 @@ export default defineNuxtConfig({
       xxl: 1536
     }
   },
-  
+
   app: {
     head: {
       meta: [
@@ -96,18 +112,18 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' }
       ],
       link: [
-        { 
-          rel: 'preconnect', 
-          href: 'https://fonts.googleapis.com' 
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.googleapis.com'
         },
-        { 
-          rel: 'preconnect', 
-          href: 'https://fonts.gstatic.com', 
-          crossorigin: '' 
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: ''
         },
-        { 
-          rel: 'stylesheet', 
-          href: 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap' 
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap'
         }
       ]
     }

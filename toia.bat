@@ -28,7 +28,7 @@ echo. >> "%ARCHIVO_ACTUAL%"
 set "LINEAS_ACT=2"
 
 :: Procesar archivos recursivamente pero excluir node_modules, .git y package-lock.json
-for /f "delims=" %%F in ('dir /s /b /a-d * ^| findstr /v /i "\\node_modules\\ \\.output\\ \\.git\\ \\dist\\ \\.nuxt\\ package-lock\.json"') do (
+for /f "delims=" %%F in ('dir /s /b /a-d * ^| findstr /v /i "\\node_modules\\ \\.output\\ \\.git\\ \\dist\\ \\public\\ \\.nuxt\\ package-lock\.json"') do (
     if not "%%F"=="%~f0" (
         if not "%%F"=="%CD%\compilado*.txt" (
             

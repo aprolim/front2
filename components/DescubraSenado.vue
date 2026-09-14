@@ -89,7 +89,7 @@
                     'filtered-out': getSeatFilteredOut(12)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(12)"
+                  @click="goToSenator(12, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -106,7 +106,7 @@
                     'filtered-out': getSeatFilteredOut(6)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(6)"
+                  @click="goToSenator(6, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -123,7 +123,7 @@
                     'filtered-out': getSeatFilteredOut(32)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(32)"
+                  @click="goToSenator(32, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -140,7 +140,7 @@
                     'filtered-out': getSeatFilteredOut(33)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(33)"
+                  @click="goToSenator(33, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -157,7 +157,7 @@
                     'filtered-out': getSeatFilteredOut(24)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(24)"
+                  @click="goToSenator(24, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -174,7 +174,7 @@
                     'filtered-out': getSeatFilteredOut(13)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(13)"
+                  @click="goToSenator(13, true)"
                   @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -197,7 +197,7 @@
                     'filtered-out': seat.filteredOut
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(seat.id)"
+                  @click="goToSenator(seat.id, false)"
                   @mouseenter="handleMouseEnter(seat, $event)"
                   @mouseleave="handleMouseLeave"
                 />
@@ -541,7 +541,7 @@ const filteredSeats = computed(() => {
 })
 
 // ============================================
-// FUNCIONES PARA LA DIRECTIVA
+// FUNCIONES PARA LA DIRECTIVA (SIEMPRE TITULARES)
 // ============================================
 const getColorDirectiva = (id) => {
   const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
@@ -684,7 +684,8 @@ const updateTooltipPosition = (event) => {
   }
 }
 
-const goToSenator = (id) => {
+// 🔥 CORREGIDO: `fromDirectiva` indica si el click viene del centro (true) o del arco (false)
+const goToSenator = (id, fromDirectiva = false) => {
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return
   if (seat.isEmpty) return
@@ -694,19 +695,31 @@ const goToSenator = (id) => {
   isNavigating.value = true
   hoveredSeat.value = null
   
-  if (esDirectiva(id)) {
+  // ==========================================
+  // CENTRO (DIRECTIVA): SIEMPRE NAVEGA AL TITULAR
+  // ==========================================
+  if (fromDirectiva) {
     const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
     if (titular && titular.slug) {
       router.push(`/senador/${titular.slug}`)
-      return
     }
-  }
-  
-  if (tipoVisualizacion.value === 'suplentes' && seat.tipo === 'suplente' && seat.slug) {
-    router.push(`/senador/suplente/${seat.slug}`)
     return
   }
   
+  // ==========================================
+  // ARCO - MODO SUPLENTES
+  // ==========================================
+  if (tipoVisualizacion.value === 'suplentes') {
+    if (seat.tipo === 'suplente' && seat.slugSuplente) {
+      router.push(`/senador/suplente/${seat.slugSuplente}`)
+      return
+    }
+    return
+  }
+  
+  // ==========================================
+  // ARCO - MODO TITULARES
+  // ==========================================
   if (seat.tipo === 'titular' && seat.slug) {
     router.push(`/senador/${seat.slug}`)
   }
