@@ -207,31 +207,9 @@
                 :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
-                <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
                 <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
+                <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
                 
-                <!-- Funciones del Senado -->
-                <div class="">
-                  <div 
-                    @click="toggleSubmenu('funciones', 'institucional')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
-                  >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw]">• Funciones del Senado</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.funciones ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div 
-                    class="bg-black/5 ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1.0vw] overflow-hidden transition-all duration-300 ease-in-out"
-                    :class="submenus.funciones ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/funciones-del-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Atribuciones del Senado</NuxtLink>
-                    <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
-                  </div>
-                </div>
-
                 <!-- Auditoría -->
                 <div class="">
                   <div 
@@ -281,6 +259,7 @@
                 
                 <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Marco Normativo</NuxtLink>
                 <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Galeria de Imagenes</NuxtLink>
+                <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
               </div>
             </div>
 

@@ -45,11 +45,7 @@
                   </div>
                 </div>
               </div>
-              <div 
-                class="w-[22vw] sm:w-[10vw] rounded-full text-black text-[2.4vw] sm:text-[0.8vw] mt-[2vw] sm:mt-[1vw] text-center"
-              >
-                {{ senator.party?.toUpperCase() }}
-              </div>
+
             </div>
 
             <!-- Columna 2: Nombre y cargo -->
@@ -89,7 +85,7 @@
         <!-- SEGUNDA FILA: 3 columnas iguales -->
         <div class="grid grid-cols-1 sm:grid-cols-3">
           <!-- Columna 1: Datos personales -->
-          <div class="p-[3vw] sm:p-[1.2vw] border-b sm:border-r border-gray-200">
+          <div class="flex flex-col justify-center p-[3vw] sm:p-[1.2vw] border-b sm:border-r border-gray-200">
             <div class="space-y-[3vw] sm:space-y-[1vw] text-[2.7vw] sm:text-[0.9vw]">
               <!-- Fila 1: Fecha de Nacimiento -->
               <div class="grid grid-cols-[40%_60%]">
@@ -101,18 +97,13 @@
                 <span class="font-semibold text-gray-600">Nacido en:</span>
                 <span class="text-gray-800">{{ senator.nacidoEn || senator.department }}</span>
               </div>
-              <!-- Fila 3: Ocupación -->
-              <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Ocupación:</span>
-                <span class="text-gray-800">{{ senator.ocupacion || 'No disponible' }}</span>
-              </div>
               <!-- Fila 4: Comité -->
               <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Comité:</span>
+                <span class="font-semibold text-gray-600">Comision/Comité:</span>
                 <span class="text-gray-800">{{ senator.comite || senator.comision || 'No disponible' }}</span>
               </div>
               <!-- Fila 5: Contacto -->
-              <div class="grid grid-cols-[40%_60%]">
+              <div v-if="senator.facebook || senator.twitter || senator.instagram || senator.youtube || senator.tiktok" class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Contacto:</span>
                 <div class="flex gap-[1.5vw] sm:gap-[0.5vw] flex-wrap">
                   <a v-if="senator.facebook" :href="senator.facebook" target="_blank" rel="noopener noreferrer" class="w-[3.5em] sm:w-[2.2em] h-[3.5em] sm:h-[2.2em] rounded-full bg-black flex items-center justify-center hover:bg-gray-800 transition-colors">
@@ -134,7 +125,7 @@
               </div>
               <!-- Fila 6: Senador Suplente -->
               <div class="grid grid-cols-[40%_60%]">
-                <span class="font-semibold text-gray-600">Senador Suplente:</span>
+                <span class="font-semibold text-gray-600">Senador(a) Suplente:</span>
                 <NuxtLink 
                   v-if="suplenteData" 
                   :to="`/senador/suplente/${suplenteData.slug}`" 
@@ -153,22 +144,22 @@
             <img 
               :src="getMapaDepartamento(senator.department)" 
               :alt="'Mapa de ' + senator.department"
-              class="h-[30vw] sm:h-[12vw] w-auto object-contain"
+              class="h-[30vw] sm:h-[14vw] w-auto object-contain"
               @error="(e) => e.target.src = '/images/mapa-default.svg'"
             />
           </div>
 
           <!-- Columna 3: Asiento en el Hemiciclo -->
           <div class="p-[3vw] sm:p-[1.2vw] flex flex-col justify-center">
-            <h3 class="text-[3vw] sm:text-[1vw] font-semibold text-gray-600 text-left w-full">ASIENTO EN EL HEMICICLO</h3>
+            <h3 class="text-[3vw] sm:text-[1vw] font-semibold text-gray-600 text-left w-full">CURUL EN EL HEMICICLO</h3>
             <div class="flex flex-col items-center">
               <img 
                 :src="getAsientoHemiciclo(senator.seatNumber)" 
-                :alt="'Asiento ' + senator.seatNumber"
-                class="h-[35vw] sm:h-[14vw] w-[35vw] sm:w-[14vw] object-contain"
+                :alt="'Curul ' + senator.seatNumber"
+                class="h-[35vw] sm:h-[14vw] w-[42vw] sm:w-[17vw] object-contain"
                 @error="(e) => e.target.src = ''"
               />
-              <span class="text-[3vw] sm:text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-4vw] sm:translate-y-[-1.5vw]">Asiento {{ senator.seatNumber }}</span>
+              <span class="text-[3vw] sm:text-[1vw] font-bold text-senado-primary text-right w-full translate-y-[-4vw] sm:translate-y-[-1.5vw]">Curul {{ senator.seatNumber }}</span>
             </div>
           </div>
         </div>
