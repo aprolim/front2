@@ -7,7 +7,7 @@
           👥 Tus Senadores
         </div>
         <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          ¿Quién me representa?
+          ¿Quién te representa en tu Brigada Parlamentaria?
         </h1>
         <p class="text-gray-600 text-lg mt-4 max-w-3xl">
           Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.

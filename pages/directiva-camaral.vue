@@ -3,7 +3,7 @@
   <div class="min-h-screen bg-white py-12 relative overflow-hidden">
     <!-- Fondo de marca de agua -->
     <div 
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
       style="background-image: url('/background/fondo3.png');"
     ></div>
     <div class="absolute inset-0 bg-white/70"></div>
@@ -42,8 +42,8 @@
         <!-- Presidente -->
         <div class="max-w-4xl mx-auto mb-16" v-if="directiva.presidente">
           <div class="text-center mb-8">
-            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Presidente</span>
-            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+            <span class="text-sm font-bold text-senado-primary uppercase tracking-wider">Presidente</span>
+            <div class="w-16 h-0.5 bg-senado-primary mx-auto mt-2"></div>
           </div>
           <div
             class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
@@ -93,8 +93,8 @@
         <!-- Vicepresidencias -->
         <div class="max-w-5xl mx-auto mb-16" v-if="directiva.vicepresidencias && directiva.vicepresidencias.length > 0">
           <div class="text-center mb-8">
-            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Vicepresidencias</span>
-            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+            <span class="text-sm font-bold text-senado-primary uppercase tracking-wider">Vicepresidencias</span>
+            <div class="w-16 h-0.5 bg-senado-primary mx-auto mt-2"></div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div
@@ -146,8 +146,8 @@
         <!-- Secretarías -->
         <div class="max-w-5xl mx-auto mb-16" v-if="directiva.secretarias && directiva.secretarias.length > 0">
           <div class="text-center mb-8">
-            <span class="text-sm font-bold text-senado-gold-dark uppercase tracking-wider">Secretarías</span>
-            <div class="w-16 h-0.5 bg-senado-gold-dark mx-auto mt-2"></div>
+            <span class="text-sm font-bold text-senado-primary uppercase tracking-wider">Secretarías</span>
+            <div class="w-16 h-0.5 bg-senado-primary mx-auto mt-2"></div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div
