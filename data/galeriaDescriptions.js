@@ -144,7 +144,7 @@ export const getAllImages = () => {
       description: getDescription(i)
     })
   }
-  return images
+  return images.reverse() // Invertimos el orden para mostrar la imagen 128 primero
 }
 
 export default galeriaDescriptions

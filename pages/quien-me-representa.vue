@@ -7,7 +7,7 @@
           👥 Tus Senadores
         </div>
         <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
-          ¿Quién te representa en tu Brigada Parlamentaria?
+          ¿Quién me representa?
         </h1>
         <p class="text-gray-600 text-lg mt-4 max-w-3xl">
           Selecciona tu departamento para conocer a los senadores titulares y suplentes que te representan en la Cámara de Senadores.
@@ -49,7 +49,7 @@
             />
             <div>
               <h2 class="text-2xl font-bold text-senado-primary">
-                {{ departamentoSeleccionado }}
+                {{ departamentoSeleccionado }} (Brigada Parlamentaria)
               </h2>
               <p class="text-gray-600">
                 {{ senadoresPorDepartamento.length }} senadores representan a este departamento
