@@ -87,22 +87,18 @@
           <!-- Columna 1: Datos personales del suplente -->
           <div class="flex flex-col justify-center p-[3vw] sm:p-[1.2vw] border-b sm:border-r border-gray-200">
             <div class="space-y-[3vw] sm:space-y-[1vw] text-[2.7vw] sm:text-[0.9vw]">
-              <!-- Fila 1: Fecha de Nacimiento -->
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Fecha de Nacimiento:</span>
                 <span class="text-gray-800">{{ suplente.fechaNacimiento || 'No disponible' }}</span>
               </div>
-              <!-- Fila 2: Nacido en -->
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Nacido en:</span>
                 <span class="text-gray-800">{{ suplente.nacidoEn || suplente.department }}</span>
               </div>
-              <!-- Fila 4: Comité -->
               <div v-if="suplente.comite || suplente.comision" class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Comision/Comité:</span>
                 <span class="text-gray-800">{{ suplente.comite || suplente.comision || 'No disponible' }}</span>
               </div>
-              <!-- Fila 5: Contacto -->
               <div v-if="suplente.facebook || suplente.twitter || suplente.instagram || suplente.youtube || suplente.tiktok" class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Contacto:</span>
                 <div class="flex gap-[1.5vw] sm:gap-[0.5vw] flex-wrap">
@@ -123,7 +119,6 @@
                   </a>
                 </div>
               </div>
-              <!-- Fila 6: Senador Titular -->
               <div class="grid grid-cols-[40%_60%]">
                 <span class="font-semibold text-gray-600">Senador Titular:</span>
                 <NuxtLink 
@@ -163,17 +158,12 @@
         </div>
       </div>
 
-      <!-- ============================================ -->
-      <!-- SECCIÓN DE PROYECTOS DE LEY DESTACADOS       -->
-      <!-- ============================================ -->
-      
-      <!-- Cuando tiene proyectos destacados -->
+      <!-- PROYECTOS DE LEY DESTACADOS -->
       <div v-if="suplente.proyectosLey && suplente.proyectosLey.lista && suplente.proyectosLey.lista.length > 0" 
            class="bg-white rounded-[2vw] sm:rounded-[1.2vw] shadow-lg overflow-hidden mt-[3vw] sm:mt-[1.5vw]">
         <div class="bg-[#EDEEED] border-b border-gray-200 px-[3vw] sm:px-[1.5vw] py-[2vw] sm:py-[1vw]">
           <div class="flex flex-wrap items-center justify-between gap-[2vw] sm:gap-[1vw]">
             <h2 class="text-[4vw] sm:text-[1.5vw] font-bold text-senado-primary flex items-center gap-[2vw] sm:gap-[1vw]">
-              <!-- MDI: Star - Color oficial del Senado -->
               <Icon name="mdi:star" class="w-[5vw] sm:w-[1.5vw] h-[5vw] sm:h-[1.5vw] text-senado-primary" />
               <span>Proyectos de Ley Destacados</span>
             </h2>
@@ -191,22 +181,18 @@
         </div>
         
         <div class="p-[3vw] sm:p-[1.5vw]">
-          <!-- Mostrar todos los proyectos (si son 3 o menos) o solo los 3 destacados -->
           <ul class="space-y-[1.5vw] sm:space-y-[0.6vw]">
             <li v-for="(proyecto, index) in proyectosDestacados" 
                 :key="index"
                 class="text-[2.7vw] sm:text-[0.9vw] text-gray-700 flex items-start gap-[2vw] sm:gap-[0.8vw]">
-              <!-- MDI: Check Circle - Color oficial del Senado -->
               <Icon name="mdi:check-circle" class="w-[2.5vw] sm:w-[1vw] h-[2.5vw] sm:h-[1vw] text-senado-primary flex-shrink-0 mt-[0.2vw] sm:mt-[0.1vw]" />
               <span>{{ proyecto }}</span>
             </li>
           </ul>
 
-          <!-- Mensaje cuando hay más proyectos de los que se muestran -->
           <div v-if="suplente.proyectosLey.lista.length > 3" 
                class="mt-[2.5vw] sm:mt-[1vw] pt-[2vw] sm:pt-[0.8vw] border-t border-gray-200">
             <div class="flex items-center gap-[2vw] sm:gap-[0.8vw] text-[2.4vw] sm:text-[0.8vw] text-gray-500">
-              <!-- MDI: Information - Color oficial del Senado -->
               <Icon name="mdi:information" class="w-[4vw] sm:w-[1.2vw] h-[4vw] sm:h-[1.2vw] text-senado-primary flex-shrink-0" />
               <span>
                 Se muestran los <strong>3 proyectos más destacados</strong> de un total de 
@@ -217,7 +203,7 @@
         </div>
       </div>
 
-      <!-- NOTICIAS RELACIONADAS CON EL SUPLENTE -->
+      <!-- 🔥 NOTICIAS RELACIONADAS CON EL SUPLENTE -->
       <NoticiasSenador 
         :senador-id="suplente.id" 
         :nombre-senador="suplente.name"
@@ -232,9 +218,7 @@
       </NuxtLink>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL PARA VER FOTO EN PANTALLA COMPLETA  -->
-    <!-- ========================================== -->
+    <!-- MODAL PARA VER FOTO EN PANTALLA COMPLETA -->
     <Teleport to="body">
       <transition
         enter-active-class="transition-opacity duration-300 ease-out"
@@ -293,11 +277,8 @@ const suplente = computed(() => {
   return getSuplenteBySlug(slug.value)
 })
 
-// Computed para obtener los proyectos destacados (máximo 3)
 const proyectosDestacados = computed(() => {
   if (!suplente.value?.proyectosLey?.lista) return []
-  // Si tiene 3 o menos, mostrar todos
-  // Si tiene más de 3, mostrar solo los primeros 3 (los más relevantes)
   return suplente.value.proyectosLey.lista.slice(0, 3)
 })
 
@@ -413,27 +394,15 @@ const getAsientoHemiciclo = (seatNumber) => {
 </script>
 
 <style scoped>
-/* Efecto hover en desktop: el logo normal se oculta, el hover se muestra */
 @media (min-width: 768px) {
-  .logo-normal {
-    opacity: 1;
-  }
-  .logo-hover {
-    opacity: 0;
-  }
-  .group:hover .logo-normal {
-    opacity: 0;
-  }
-  .group:hover .logo-hover {
-    opacity: 1;
-  }
+  .logo-normal { opacity: 1; }
+  .logo-hover { opacity: 0; }
+  .group:hover .logo-normal { opacity: 0; }
+  .group:hover .logo-hover { opacity: 1; }
 }
 
-/* En móvil: mostrar siempre el logo hover (el que tiene color) */
 @media (max-width: 767px) {
-  .logo-normal {
-    display: none;
-  }
+  .logo-normal { display: none; }
   .logo-hover {
     opacity: 1;
     position: relative !important;

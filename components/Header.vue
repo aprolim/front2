@@ -506,7 +506,7 @@
                     class="bg-black/5 ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
                     :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
                   >
-                    <a href="https://sitpreco.s2plus.transparencia.gob.bo/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</a>
+                    <NuxtLink to="/gestion-de-denuncia" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</NuxtLink>
                     <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Solicitud de Información</NuxtLink>
                     <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
                   </div>

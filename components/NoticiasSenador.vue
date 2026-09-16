@@ -1,16 +1,16 @@
 <template>
-  <div v-if="noticias.length > 0" class="mt-12">
+  <div class="mt-12">
     <!-- Título de la sección -->
-    <div class="flex items-center gap-4 mb-6">
+    <div v-if="loading || noticias.length > 0" class="flex items-center gap-4 mb-6">
       <div class="w-1 h-8 bg-[#611717] rounded-full"></div>
       <h2 class="text-2xl font-bold text-[#611717]">
         Noticias relacionadas con <span class="text-[#8f1522]">{{ nombreSenador }}</span>
       </h2>
     </div>
-    <div class="border-b border-gray-200 mb-6"></div>
+    <div v-if="loading || noticias.length > 0" class="border-b border-gray-200 mb-6"></div>
 
     <!-- Grid de noticias -->
-    <div v-if="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div v-if="!loading && noticias.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="noticia in noticiasMostradas"
         :key="noticia.id"
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Estado de carga -->
-    <div v-else class="flex justify-center py-8">
+    <div v-if="loading" class="flex justify-center py-8">
       <div class="inline-block w-8 h-8 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
       <p class="ml-3 text-gray-500">Cargando noticias relacionadas...</p>
     </div>
@@ -71,8 +71,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useNoticias } from '~/composables/useNoticias'
 
 const props = defineProps({
   senadorId: {
@@ -93,7 +94,6 @@ const router = useRouter()
 const noticias = ref([])
 const loading = ref(false)
 
-// Funciones de utilidad
 const limpiarAsteriscos = (texto) => {
   if (!texto) return ''
   return texto.replace(/\*/g, '')
@@ -127,20 +127,22 @@ const cargarNoticias = async () => {
   if (!props.senadorId) return
   
   loading.value = true
+  noticias.value = []
+  
   try {
     const { fetchNoticiasPorSenador } = useNoticias()
     const resultados = await fetchNoticiasPorSenador(props.senadorId)
-    noticias.value = resultados
+    noticias.value = Array.isArray(resultados) ? resultados : []
+    console.log(`📰 [NoticiasSenador] ${noticias.value.length} noticias para senador ${props.senadorId}`)
   } catch (error) {
     console.error('Error cargando noticias del senador:', error)
+    noticias.value = []
   } finally {
     loading.value = false
   }
 }
 
-// Cargar cuando cambia el senador
 watch(() => props.senadorId, () => {
-  noticias.value = []
   cargarNoticias()
 }, { immediate: true })
 </script>

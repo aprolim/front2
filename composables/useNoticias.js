@@ -5,10 +5,10 @@ const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
 const transformarNoticia = (item) => {
   if (!item) return null
-  
+
   const textoPlano = item.content?.replace(/<[^>]*>/g, '') || ''
   const esImportante = item.category === 'importante'
-  
+
   return {
     id: item._id || item.id,
     titulo: item.title || 'Sin título',
@@ -34,16 +34,16 @@ const transformarNoticia = (item) => {
 
 export const fetchNoticiasImportantes = async () => {
   console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
     const data = await response.json()
-    
+
     if (data.success && data.data?.contents) {
       const noticias = data.data.contents
         .map(transformarNoticia)
         .filter(Boolean)
-      
+
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
       return noticias
     }
@@ -56,16 +56,16 @@ export const fetchNoticiasImportantes = async () => {
 
 export const fetchNoticiasUltimas = async () => {
   console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
     const data = await response.json()
-    
+
     if (data.success && data.data?.contents) {
       const noticias = data.data.contents
         .map(transformarNoticia)
         .filter(Boolean)
-      
+
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
       return noticias
     }
@@ -87,16 +87,16 @@ const ordenarPorFecha = (noticias) => {
 
 export const fetchNoticias = async () => {
   console.log(`📡 [useNoticias] Cargando todas las noticias...`)
-  
+
   const [noticiasImportantes, ultimasNoticias] = await Promise.all([
     fetchNoticiasImportantes(),
     fetchNoticiasUltimas()
   ])
-  
+
   const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
-  
+
   console.log(`📊 [useNoticias] Total combinado: ${todasLasNoticias.length} noticias`)
-  
+
   return {
     noticiasImportantes: noticiasImportantes.slice(0, 4),
     ultimasNoticias: ultimasNoticias.slice(0, 4),
@@ -105,22 +105,35 @@ export const fetchNoticias = async () => {
   }
 }
 
-// 🔥 NUEVO: OBTENER NOTICIAS POR SENADOR
+// 🔥 NOTICIAS POR SENADOR
 export const fetchNoticiasPorSenador = async (senadorId) => {
   console.log(`📡 [useNoticias] Buscando noticias del senador ID: ${senadorId}...`)
-  
+
+  if (!senadorId) {
+    console.warn('⚠️ [useNoticias] senadorId vacío')
+    return []
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/content/senador/${senadorId}?limit=10`)
+
+    if (!response.ok) {
+      console.warn(`⚠️ [useNoticias] HTTP ${response.status} para senador ${senadorId}`)
+      return []
+    }
+
     const data = await response.json()
-    
-    if (data.success && data.data?.contents) {
+
+    if (data.success && data.data?.contents && Array.isArray(data.data.contents)) {
       const noticias = data.data.contents
         .map(transformarNoticia)
         .filter(Boolean)
-      
+
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias para el senador ${senadorId}`)
       return noticias
     }
+
+    console.log(`ℹ️ [useNoticias] Sin noticias para el senador ${senadorId}`)
     return []
   } catch (err) {
     console.error(`❌ Error cargando noticias del senador ${senadorId}:`, err)
@@ -135,34 +148,34 @@ export const useNoticias = () => {
   const loading = ref(true)
   const error = ref(null)
   const loaded = ref(false)
-  
+
   const cargarDatos = async () => {
     if (loaded.value) {
       console.log('📦 [useNoticias] Datos ya cargados, omitiendo...')
       return
     }
-    
+
     console.log('🔄 [useNoticias] cargarDatos() ejecutándose...')
-    
+
     loading.value = true
     const result = await fetchNoticias()
-    
+
     noticiasImportantes.value = result.noticiasImportantes
     ultimasNoticias.value = result.ultimasNoticias
     todasLasNoticias.value = result.todasLasNoticias
     error.value = result.error
     loading.value = false
     loaded.value = true
-    
+
     return result
   }
-  
+
   const recargarDatos = async () => {
     console.log('🔄 [useNoticias] Recargando datos...')
     loaded.value = false
     await cargarDatos()
   }
-  
+
   return {
     noticiasImportantes: computed(() => noticiasImportantes.value),
     ultimasNoticias: computed(() => ultimasNoticias.value),
@@ -172,6 +185,6 @@ export const useNoticias = () => {
     loaded: computed(() => loaded.value),
     cargarDatos,
     recargarDatos,
-    fetchNoticiasPorSenador // 🔥 NUEVO
+    fetchNoticiasPorSenador
   }
 }
