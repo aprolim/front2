@@ -8,7 +8,7 @@ echo Compilando archivos...
 echo.
 
 set "ARCHIVO_SALIDA=compilado.txt"
-set "MAX_LINEAS=3000"
+set "MAX_LINEAS=12000"
 set "PARTE=1"
 set "ARCHIVO_ACTUAL=compilado%PARTE%.txt"
 set "LINEAS_ACT=0"

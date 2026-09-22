@@ -65,7 +65,7 @@
 
         <!-- 🔥 CASO 2: Sin sesión -->
         <template v-else>
-          <span class="text-white/90 font-medium">
+          <!-- <span class="text-white/90 font-medium">
             Bienvenido al portal del Senado de Bolivia
           </span>
           <span class="text-senado-gold-dark">|</span>
@@ -74,7 +74,7 @@
             class="text-white/90 hover:text-white font-medium flex items-center gap-1 underline transition-colors text-[3.6vw] md:text-[1.2vw]"
           >
             Ver sesiones en vivo
-          </NuxtLink>
+          </NuxtLink> -->
         </template>
 
       </div>

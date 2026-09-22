@@ -21,17 +21,13 @@ import ModalComunicado from '~/components/comunicados/ModalComunicado.vue'
 // ==========================================
 const cargarAri = () => {
   const CONFIG = {
-    src: 'http://186.121.212.187/static/chat-embed.js',
-    'api-url': 'http://186.121.212.187/api/chat',
-    'tracking-api-url': 'http://186.121.212.187/api/tramite',
-    'avatar-base-url': 'http://186.121.212.187/static/cara2',
-    avatar: 'http://186.121.212.187/static/cara2/2.png',
+    src: 'https://agente.senado.gob.bo/static/chat-embed.js',
     title: 'Ari',
-    subtitle: 'Asistente Legislativo',
+    subtitle: 'Asistente Institucional',
     
-    // 🎨 COLORES DE LA PALETA SENADO (100% Guindos / Dorados):
-    'primary-color': '#611717', // Mapeado a --senado-primary-light (reemplaza al azul #1a237e)
-    'accent-color': '#e3d194',  // Mapeado a --senado-gold-dark
+    // 🎨 COLORES DE LA PALETA SENADO (Guindos / Dorados):
+    'primary-color': '#681F3A', // Guindo institucional
+    'accent-color': '#D2A83A',  // Dorado institucional
     
     'request-timeout': '45000'
   }
