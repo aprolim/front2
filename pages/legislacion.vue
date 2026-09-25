@@ -1,33 +1,22 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Hero / Banner -->
+    <!-- Hero -->
     <section class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white">
-      <div class="container mx-auto px-4 max-w-[90vw] py-[5vw] sm:py-10">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[3vw] sm:gap-6">
-          <div>
-            <div class="inline-flex items-center bg-white/10 rounded-full gap-[1.2vw] sm:gap-1.5 px-[2.4vw] sm:px-3 py-[0.6vw] sm:py-1 mb-[1.5vw] sm:mb-2">
-              <Icon name="mdi:scale-balance" class="text-senado-gold text-[3.6vw] sm:text-[1.2vw]" />
-              <span class="text-white/80 tracking-wider font-medium text-[2.1vw] sm:text-[0.7vw]">LEGISLACIÓN</span>
-            </div>
-            
-            <h1 class="font-bold leading-tight text-[10vw] sm:text-[3.5vw]">
-              Normativa <span class="text-senado-gold">Ciudadana</span>
-            </h1>
-            
-            <p class="text-white/60 tracking-widest font-light text-[2.7vw] sm:text-[0.9vw]">
-              Consulta pública de leyes, proyectos y normativa del Senado
-            </p>
-          </div>
-          
-          <div class="flex gap-4">
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg text-center px-[3vw] sm:px-4 py-[1.8vw] sm:py-2 min-w-[12vw] sm:min-w-[6vw]">
-              <span class="font-bold text-senado-gold text-[5.4vw] sm:text-[1.8vw]">{{ totalDocumentos }}</span>
-              <p class="text-white/60 text-[1.8vw] sm:text-[0.6vw]">DOCUMENTOS</p>
-            </div>
-          </div>
+      <div class="container mx-auto px-4 max-w-[90vw] py-[6vw] sm:py-10">
+        <div class="inline-flex items-center bg-white/10 rounded-full gap-2 px-3 py-1 mb-3">
+          <Icon name="mdi:landmark" class="text-senado-gold text-lg" />
+          <span class="text-white/80 tracking-wider font-medium text-xs uppercase">Módulo Legislativo</span>
         </div>
+
+        <h1 class="font-bold leading-tight text-[8vw] sm:text-4xl md:text-5xl">
+          Producción <span class="text-senado-gold">Legislativa</span>
+        </h1>
+
+        <p class="text-white/70 mt-3 max-w-2xl text-[2.7vw] sm:text-base">
+          Consulta las leyes aprobadas y los documentos de fiscalización de la Cámara de Senadores.
+        </p>
       </div>
-      
+
       <div class="absolute bottom-0 left-0 right-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full">
           <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
@@ -36,205 +25,225 @@
     </section>
 
     <div class="container mx-auto px-4 max-w-[90vw] py-[6vw] sm:py-8">
-      <!-- BUSCADOR PRINCIPAL -->
-      <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-[4vw] sm:p-6 mb-[4vw] sm:mb-6">
-        <div class="flex flex-col sm:flex-row items-center gap-[3vw] sm:gap-4">
-          <label class="font-bold text-senado-primary text-[3.6vw] sm:text-[1.2vw] whitespace-nowrap flex items-center gap-[1.5vw] sm:gap-2">
-            <Icon name="mdi:magnify" class="text-[4.5vw] sm:text-[1.5vw]" />
-            Buscar:
-          </label>
-          <input 
-            v-model="terminoBusqueda"
-            @keyup.enter="realizarBusqueda"
-            type="text" 
-            placeholder="Ej: ley 1651, agua potable, derechos..."
-            class="flex-1 w-full px-[3.5vw] sm:px-4 py-[2.5vw] sm:py-3 border-2 border-gray-200 rounded-xl text-[3vw] sm:text-[1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent transition"
-          />
-          <button 
-            @click="realizarBusqueda"
-            :disabled="cargando"
-            class="bg-senado-primary text-white px-[5vw] sm:px-6 py-[2.5vw] sm:py-3 rounded-xl font-bold text-[3vw] sm:text-[1vw] hover:bg-senado-primary-dark transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-[1.5vw] sm:gap-2 whitespace-nowrap"
-          >
-            <Icon v-if="!cargando" name="mdi:search" class="text-[3.6vw] sm:text-[1.2vw]" />
-            <span v-else class="inline-block w-[3.5vw] sm:w-4 h-[3.5vw] sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-            {{ cargando ? 'Buscando...' : 'Consultar' }}
-          </button>
-        </div>
-        
-        <div class="mt-[2vw] sm:mt-3 flex flex-wrap items-center gap-[1.5vw] sm:gap-2 text-[2.4vw] sm:text-[0.8vw] text-gray-500">
-          <span>💡 Escribe lo que buscas ·</span>
-          <button @click="buscarEjemplo('ley 1651')" class="bg-senado-gold-lightest px-[2.5vw] sm:px-3 py-[0.8vw] sm:py-1 rounded-full text-senado-primary font-semibold hover:bg-senado-gold transition text-[2.1vw] sm:text-[0.7vw]">ley 1651</button>
-          <button @click="buscarEjemplo('agua potable')" class="bg-senado-gold-lightest px-[2.5vw] sm:px-3 py-[0.8vw] sm:py-1 rounded-full text-senado-primary font-semibold hover:bg-senado-gold transition text-[2.1vw] sm:text-[0.7vw]">agua potable</button>
-          <button @click="buscarEjemplo('derechos')" class="bg-senado-gold-lightest px-[2.5vw] sm:px-3 py-[0.8vw] sm:py-1 rounded-full text-senado-primary font-semibold hover:bg-senado-gold transition text-[2.1vw] sm:text-[0.7vw]">derechos</button>
-          <button @click="buscarEjemplo('educación')" class="bg-senado-gold-lightest px-[2.5vw] sm:px-3 py-[0.8vw] sm:py-1 rounded-full text-senado-primary font-semibold hover:bg-senado-gold transition text-[2.1vw] sm:text-[0.7vw]">educación</button>
-        </div>
+      <!-- Estado de carga -->
+      <div v-if="loading" class="flex justify-center items-center py-[12vw] sm:py-20">
+        <div class="inline-block w-[8vw] sm:w-12 h-[8vw] sm:h-12 border-4 border-senado-primary border-t-transparent rounded-full animate-spin"></div>
+        <p class="ml-4 text-gray-500 text-[3vw] sm:text-sm">Cargando documentos...</p>
       </div>
 
-      <!-- ESTADÍSTICAS - CARD TOTAL -->
-      <div v-if="estadisticas" class="bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white rounded-2xl p-[4vw] sm:p-6 mb-[3vw] sm:mb-4 flex items-center justify-between flex-wrap gap-[3vw] sm:gap-4">
-        <div>
-          <div class="text-[8vw] sm:text-[3.5vw] font-bold leading-none">{{ (estadisticas.total || 0).toLocaleString('es-BO') }}</div>
-          <div class="text-white/80 text-[2.7vw] sm:text-[0.9vw]">📄 Documentos en el repositorio</div>
-        </div>
-        <div class="text-right text-[2.4vw] sm:text-[0.8vw] text-white/60">
-          Última actualización<br>
-          <span class="font-medium">{{ formatearFecha(estadisticas.ultima_actualizacion) }}</span>
-        </div>
+      <!-- Estado de error -->
+      <div v-else-if="error" class="text-center py-[10vw] sm:py-16 bg-red-50 rounded-xl border border-red-200">
+        <div class="text-[10vw] sm:text-4xl mb-3">⚠️</div>
+        <p class="text-red-600 font-medium text-[3.6vw] sm:text-base">{{ error }}</p>
+        <p class="text-red-400 text-[2.1vw] sm:text-xs mt-2">
+          Verifica que el backend esté encendido y que CORS permita peticiones.
+        </p>
+        <button @click="recargar" class="mt-4 px-6 py-2 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition text-sm">
+          Reintentar
+        </button>
       </div>
 
-      <!-- GRILLA DE ESTADOS (secciones clickeables) -->
-      <div v-if="estadisticas?.estados" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[2vw] sm:gap-3 mb-[4vw] sm:mb-6">
-        <div 
-          v-for="estado in estadosFiltrados" 
-          :key="estado.slug"
-          @click="filtrarPorEstado(estado)"
-          class="bg-white rounded-xl p-[3vw] sm:p-4 border border-gray-200 cursor-pointer hover:shadow-lg hover:border-senado-primary transition-all hover:-translate-y-1"
-        >
-          <div class="text-[6vw] sm:text-[2.5vw] font-bold text-senado-primary">{{ estado.cantidad || 0 }}</div>
-          <div class="text-[1.8vw] sm:text-[0.6vw] text-gray-400">{{ estado.porcentaje || 0 }}% del total</div>
-          <h3 class="text-[2.25vw] sm:text-[0.75vw] font-semibold text-gray-700 mt-[0.5vw] sm:mt-1">{{ estado.label }}</h3>
-        </div>
-      </div>
-
-      <!-- RESULTADOS DE BÚSQUEDA -->
-      <div v-if="resultados.length > 0 || busquedaRealizada || terminoBusqueda" class="mt-[3vw] sm:mt-4">
-        <div class="flex items-center justify-between mb-[3vw] sm:mb-4 pb-[2vw] sm:pb-2 border-b-2 border-senado-gold-light">
-          <h2 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-senado-primary flex items-center gap-[1.5vw] sm:gap-2">
-            <Icon name="mdi:file-document" class="text-[5.4vw] sm:text-[1.8vw]" />
-            Resultados
-            <span class="bg-senado-primary text-white text-[2.4vw] sm:text-[0.8vw] px-[2.5vw] sm:px-3 py-[0.3vw] sm:py-0.5 rounded-full">{{ resultados.length }}</span>
-          </h2>
-          <button 
-            v-if="resultados.length > 0 || busquedaRealizada"
-            @click="limpiarBusqueda"
-            class="text-[2.4vw] sm:text-[0.8vw] text-gray-400 hover:text-senado-primary transition flex items-center gap-[0.5vw] sm:gap-1"
-          >
-            <Icon name="mdi:close" class="text-[3vw] sm:text-[1vw]" />
-            Limpiar
-          </button>
-        </div>
-
-        <!-- Estado de carga -->
-        <div v-if="cargando" class="flex justify-center items-center py-[8vw] sm:py-12">
-          <div class="inline-block w-[8vw] sm:w-10 h-[8vw] sm:h-10 border-4 border-senado-primary border-t-transparent rounded-full animate-spin"></div>
-          <p class="ml-[3vw] sm:ml-4 text-gray-500 text-[2.7vw] sm:text-[0.9vw]">Buscando documentos...</p>
-        </div>
-
-        <!-- Sin resultados -->
-        <div v-else-if="resultados.length === 0 && busquedaRealizada" class="text-center py-[8vw] sm:py-12 bg-white rounded-xl border border-gray-200">
-          <div class="text-[12vw] sm:text-5xl mb-[3vw] sm:mb-4">🔍</div>
-          <h3 class="text-[4.5vw] sm:text-[1.5vw] font-bold text-gray-700">No se encontraron resultados</h3>
-          <p class="text-[2.7vw] sm:text-[0.9vw] text-gray-500 mt-[1.5vw] sm:mt-2">Intenta con otros términos de búsqueda</p>
-          <button @click="limpiarBusqueda" class="mt-[3vw] sm:mt-4 text-senado-primary hover:underline text-[2.7vw] sm:text-[0.9vw] font-medium">
-            Limpiar búsqueda
-          </button>
-        </div>
-
-        <!-- Lista de resultados -->
-        <div v-else class="space-y-[2.5vw] sm:space-y-3">
-          <div 
-            v-for="item in resultados" 
-            :key="item.id"
-            @click="verDetalle(item)"
-            class="bg-white rounded-xl border border-gray-200 p-[3vw] sm:p-4 hover:shadow-lg hover:border-senado-primary transition-all cursor-pointer flex flex-col sm:flex-row justify-between items-start gap-[2vw] sm:gap-4"
-          >
-            <div class="flex-1 min-w-0">
-              <div class="text-[3vw] sm:text-[1vw] font-bold text-gray-800 flex items-center gap-[1.5vw] sm:gap-2 flex-wrap">
-                {{ getTitulo(item) }}
-                <span v-if="item.numero_ley" class="text-[2.4vw] sm:text-[0.8vw] text-gray-400 font-normal">· N° {{ item.numero_ley }}</span>
-              </div>
-              <p class="text-[2.55vw] sm:text-[0.85vw] text-gray-600 mt-[0.5vw] sm:mt-1 line-clamp-2">{{ getDescripcion(item) }}</p>
-              <div class="flex items-center gap-[2.5vw] sm:gap-4 mt-[1.5vw] sm:mt-2 text-[2.1vw] sm:text-[0.7vw] text-gray-400">
-                <span v-if="getFecha(item)" class="flex items-center gap-[0.5vw] sm:gap-1">
-                  <Icon name="mdi:calendar" class="text-[2.4vw] sm:text-[0.8vw]" />
-                  {{ formatearFecha(getFecha(item)) }}
-                </span>
-                <span class="bg-senado-gold-lightest text-senado-primary px-[2.5vw] sm:px-3 py-[0.3vw] sm:py-0.5 rounded-full font-semibold">{{ getEstado(item) }}</span>
-              </div>
-            </div>
-            <div class="flex flex-row sm:flex-col items-center sm:items-end gap-[1.5vw] sm:gap-1 flex-shrink-0 w-full sm:w-auto justify-between sm:justify-start">
-              <span class="bg-gray-100 text-gray-600 text-[1.8vw] sm:text-[0.6vw] px-[2.5vw] sm:px-3 py-[0.5vw] sm:py-1 rounded-full font-semibold">{{ getEstado(item) }}</span>
-              <span class="text-[1.8vw] sm:text-[0.6vw] text-gray-400 flex items-center gap-[0.5vw] sm:gap-1">
-                <Icon name="mdi:chevron-right" class="text-[2.4vw] sm:text-[0.8vw]" />
-                Detalle
-              </span>
-            </div>
+      <!-- Contenido -->
+      <template v-else>
+        <!-- Buscador global -->
+        <div class="max-w-3xl mx-auto mb-[5vw] sm:mb-8">
+          <div class="relative">
+            <input
+              v-model="terminoBusqueda"
+              type="text"
+              placeholder="Buscar por título, número o palabra clave..."
+              class="w-full px-[4vw] sm:px-4 py-[3vw] sm:py-3 pl-[10vw] sm:pl-11 pr-[10vw] sm:pr-11 border-2 border-senado-primary/30 rounded-xl text-[2.7vw] sm:text-base bg-white text-gray-700 focus:ring-2 focus:ring-senado-primary focus:border-senado-primary shadow-sm"
+              @keyup.enter="ejecutarBusqueda"
+            />
+            <Icon
+              name="mdi:magnify"
+              class="absolute left-[3vw] sm:left-4 top-1/2 -translate-y-1/2 text-senado-primary text-[5vw] sm:text-xl"
+            />
+            <button
+              v-if="terminoBusqueda"
+              @click="limpiarBusqueda"
+              class="absolute right-[3vw] sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[4vw] sm:text-lg"
+            >
+              ✕
+            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Mensaje inicial -->
-      <div v-else class="text-center py-[10vw] sm:py-16">
-        <div class="text-[15vw] sm:text-6xl mb-[3vw] sm:mb-4">📚</div>
-        <h3 class="text-[5.4vw] sm:text-[1.8vw] font-bold text-gray-700">Explora la Legislación</h3>
-        <p class="text-[2.7vw] sm:text-[0.9vw] text-gray-500 mt-[1.5vw] sm:mt-2">Usa el buscador o haz clic en una categoría para comenzar</p>
-      </div>
-    </div>
+        <!-- Modo búsqueda activa -->
+        <div v-if="modoBusqueda">
+          <div class="mb-[3vw] sm:mb-4 flex items-center justify-between">
+            <h2 class="font-bold text-senado-primary text-[4vw] sm:text-2xl">
+              <Icon name="mdi:magnify" class="inline mr-2" />
+              Resultados de búsqueda
+            </h2>
+            <button
+              @click="limpiarBusqueda"
+              class="text-[2.1vw] sm:text-sm text-senado-primary hover:text-senado-primary-dark font-medium"
+            >
+              ← Volver a las vitrinas
+            </button>
+          </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL DE DETALLE                          -->
-    <!-- ========================================== -->
-    <Teleport to="body">
-      <transition
-        enter-active-class="transition-all duration-300 ease-out"
-        enter-from-class="opacity-0 scale-95"
-        enter-to-class="opacity-100 scale-100"
-        leave-active-class="transition-all duration-200 ease-in"
-        leave-from-class="opacity-100 scale-100"
-        leave-to-class="opacity-0 scale-95"
-      >
-        <div 
-          v-if="modalAbierto"
-          class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-[3vw] sm:p-4"
-          @click.self="cerrarModal"
-        >
-          <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            <!-- Header del modal -->
-            <div class="flex-shrink-0 bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white p-[4vw] sm:p-5">
-              <div class="flex items-center justify-between">
-                <h2 class="text-[4.5vw] sm:text-[1.5vw] font-bold">{{ modalData?.titulo || 'Documento' }}</h2>
-                <button @click="cerrarModal" class="hover:bg-white/20 rounded-lg p-[1.5vw] sm:p-2 transition">
-                  <Icon name="mdi:close" class="w-[5vw] sm:w-6 h-[5vw] sm:h-6" />
-                </button>
+          <p class="text-gray-500 text-[2.4vw] sm:text-sm mb-[3vw] sm:mb-4">
+            {{ resultadosBusqueda.length }} resultado(s) para "<strong>{{ busquedaEjecutada }}</strong>"
+          </p>
+
+          <div v-if="resultadosBusqueda.length > 0" class="space-y-[2.4vw] sm:space-y-3">
+            <div
+              v-for="doc in resultadosBusqueda"
+              :key="doc.id"
+              class="bg-white rounded-xl border border-gray-200 p-[3.6vw] sm:p-4 flex justify-between items-center hover:shadow-md hover:border-senado-primary/30 cursor-pointer transition-all group"
+              @click="verDocumento(doc)"
+            >
+              <div class="flex-1 min-w-0 pr-[3vw] sm:pr-4">
+                <div class="flex items-center gap-[1.8vw] sm:gap-2 mb-[1.5vw] sm:mb-1 flex-wrap">
+                  <span
+                    v-if="doc.estado"
+                    class="text-[1.8vw] sm:text-xs px-2 py-0.5 rounded font-medium"
+                    :class="colorEstado(doc.estado)"
+                  >
+                    {{ doc.estado }}
+                  </span>
+                  <span v-if="doc.tipo_documento" class="bg-blue-100 text-blue-700 text-[1.8vw] sm:text-xs px-2 py-0.5 rounded font-medium">
+                    {{ doc.tipo_documento }}
+                  </span>
+                  <span v-if="doc.gestion" class="text-gray-500 text-[1.8vw] sm:text-xs">
+                    <Icon name="mdi:folder" class="inline mr-1" />{{ doc.gestion }}
+                  </span>
+                </div>
+                <h4 class="font-bold text-[3vw] sm:text-lg text-senado-primary-dark group-hover:text-senado-primary transition-colors leading-snug">
+                  {{ doc.titulo }}
+                </h4>
+                <p v-if="doc.descripcion" class="text-gray-500 text-[2.1vw] sm:text-sm mt-[0.9vw] sm:mt-1 line-clamp-2">
+                  {{ doc.descripcion }}
+                </p>
               </div>
-              <div class="text-[2.4vw] sm:text-[0.8vw] text-white/70 mt-[0.5vw] sm:mt-1 flex items-center gap-[2vw] sm:gap-3 flex-wrap">
-                <span v-if="modalData?.numero">N° {{ modalData.numero }}</span>
-                <span v-if="modalData?.estado">{{ modalData.estado }}</span>
-                <span v-if="modalData?.fecha" class="flex items-center gap-[0.5vw] sm:gap-1">
-                  <Icon name="mdi:calendar" class="text-[2.7vw] sm:text-[0.9vw]" />
-                  {{ formatearFecha(modalData.fecha) }}
-                </span>
+              <div class="flex-shrink-0">
+                <div class="bg-gray-100 group-hover:bg-senado-primary group-hover:text-white text-gray-500 rounded-full p-[2.4vw] sm:p-2 transition-colors">
+                  <Icon name="mdi:chevron-right" class="text-[3.6vw] sm:text-lg" />
+                </div>
               </div>
             </div>
-            
-            <!-- Cuerpo del modal -->
-            <div class="flex-1 overflow-y-auto p-[4vw] sm:p-6">
-              <pre class="whitespace-pre-wrap font-sans text-[2.7vw] sm:text-[0.9vw] text-gray-700 leading-relaxed">{{ modalData?.texto || 'No hay contenido disponible' }}</pre>
-            </div>
-            
-            <!-- Footer del modal -->
-            <div class="flex-shrink-0 border-t border-gray-200 p-[3vw] sm:p-4 flex justify-end">
-              <button 
-                @click="cerrarModal"
-                class="bg-senado-primary text-white px-[5vw] sm:px-6 py-[1.5vw] sm:py-2 rounded-lg hover:bg-senado-primary-dark transition font-medium text-[2.7vw] sm:text-[0.9vw]"
+          </div>
+
+          <div v-else class="text-center py-[10vw] sm:py-16 bg-white rounded-xl border border-gray-200">
+            <div class="text-[10vw] sm:text-4xl mb-3">🔍</div>
+            <p class="text-gray-600 font-medium text-[3vw] sm:text-base">
+              No se encontraron documentos para "{{ busquedaEjecutada }}"
+            </p>
+          </div>
+        </div>
+
+        <!-- Modo normal (vitrinas) -->
+        <template v-else>
+          <!-- Tabs -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-[4.5vw] sm:mb-6">
+            <div class="flex border-b border-gray-200 overflow-x-auto">
+              <button
+                v-for="tab in tabs"
+                :key="tab.key"
+                @click="tabActivo = tab.key"
+                class="px-[3.6vw] sm:px-6 py-[2.4vw] sm:py-3 font-semibold whitespace-nowrap transition-colors text-[2.55vw] sm:text-sm"
+                :class="tabActivo === tab.key
+                  ? 'bg-senado-gold-soft text-senado-primary border-b-2 border-senado-primary'
+                  : 'text-gray-600 hover:bg-gray-50'"
               >
-                Cerrar
+                <Icon :name="tab.icono" class="inline mr-2 text-[3.3vw] sm:text-base" />
+                {{ tab.nombre }}
+                <span
+                  class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold"
+                  :class="tabActivo === tab.key
+                    ? 'bg-senado-primary text-white'
+                    : 'bg-gray-100 text-gray-500'"
+                >
+                  {{ obtenerItems(tab.key).length }}
+                </span>
               </button>
             </div>
           </div>
-        </div>
-      </transition>
-    </Teleport>
 
-    <!-- Botón volver -->
-    <div class="text-center pb-[6vw] sm:pb-8">
-      <NuxtLink 
-        to="/" 
-        class="inline-flex items-center gap-[1.5vw] sm:gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[2.7vw] sm:text-[0.9vw] font-medium"
-      >
-        <Icon name="mdi:arrow-left" class="text-[3.6vw] sm:text-[1.2vw]" />
-        Volver al inicio
-      </NuxtLink>
+          <!-- Lista de documentos del tab activo -->
+          <div v-if="itemsActuales.length > 0" class="space-y-[2.4vw] sm:space-y-3">
+            <div
+              v-for="doc in itemsActuales"
+              :key="doc.id"
+              class="bg-white rounded-xl border border-gray-200 p-[3.6vw] sm:p-4 flex justify-between items-center hover:shadow-md hover:border-senado-primary/30 cursor-pointer transition-all group"
+              @click="verDocumento(doc)"
+            >
+              <div class="flex-1 min-w-0 pr-[3vw] sm:pr-4">
+                <!-- Badges -->
+                <div class="flex items-center gap-[1.8vw] sm:gap-2 mb-[1.5vw] sm:mb-1 flex-wrap">
+                  <span
+                    v-if="doc.estado"
+                    class="text-[1.8vw] sm:text-xs px-2 py-0.5 rounded font-medium"
+                    :class="colorEstado(doc.estado)"
+                  >
+                    {{ doc.estado }}
+                  </span>
+                  <span v-if="doc.tipo_documento" class="bg-blue-100 text-blue-700 text-[1.8vw] sm:text-xs px-2 py-0.5 rounded font-medium">
+                    {{ doc.tipo_documento }}
+                  </span>
+                  <span v-if="doc.peticionante" class="text-gray-500 text-[1.8vw] sm:text-xs">
+                    <Icon name="mdi:account" class="inline mr-1" />{{ doc.peticionante }}
+                  </span>
+                  <span v-if="doc.fecha" class="text-gray-500 text-[1.8vw] sm:text-xs">
+                    <Icon name="mdi:calendar" class="inline mr-1" />{{ formatearFecha(doc.fecha) }}
+                  </span>
+                </div>
+
+                <!-- Título -->
+                <h4 class="font-bold text-[3vw] sm:text-lg text-senado-primary-dark group-hover:text-senado-primary transition-colors leading-snug">
+                  {{ doc.titulo }}
+                </h4>
+
+                <!-- ID como referencia secundaria -->
+                <p class="text-gray-400 text-[1.8vw] sm:text-xs mt-[0.9vw] sm:mt-1 font-mono truncate">
+                  {{ doc.id }}
+                </p>
+              </div>
+
+              <div class="flex-shrink-0">
+                <div class="bg-gray-100 group-hover:bg-senado-primary group-hover:text-white text-gray-500 rounded-full p-[2.4vw] sm:p-2 transition-colors">
+                  <Icon name="mdi:chevron-right" class="text-[3.6vw] sm:text-lg" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sin datos -->
+          <div v-else class="text-center py-[10vw] sm:py-16 bg-white rounded-xl border border-gray-200">
+            <div class="text-[10vw] sm:text-4xl mb-3">📭</div>
+            <p class="text-gray-600 font-medium text-[3vw] sm:text-base">
+              No hay documentos disponibles en esta sección
+            </p>
+          </div>
+        </template>
+
+        <!-- Nota informativa -->
+        <div class="mt-[6vw] sm:mt-8 bg-blue-50 rounded-xl border border-blue-200 px-[3.6vw] sm:px-5 py-[3vw] sm:py-4">
+          <div class="flex items-start gap-[2.4vw] sm:gap-3">
+            <Icon name="mdi:information" class="text-blue-600 text-[5vw] sm:text-xl flex-shrink-0 mt-0.5" />
+            <div class="text-[2.1vw] sm:text-sm text-blue-800">
+              <p class="font-semibold mb-1">Sobre los documentos</p>
+              <p>
+                Esta sección muestra las leyes y documentos de fiscalización más recientes.
+                Algunos títulos aparecen como "Sin título" porque el PDF aún no ha sido procesado por OCR.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="mt-[8vw] sm:mt-10 text-center">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[2.7vw] sm:text-base font-medium"
+          >
+            <Icon name="mdi:arrow-left" />
+            Volver al inicio
+          </NuxtLink>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -242,182 +251,207 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// ========================================== //
+// ============================================
 // CONFIGURACIÓN
-// ========================================== //
-const API = 'https://asistente.senado.gob.bo/ciudadana-api/api/v1'
+// ============================================
+const API_BASE_URL = 'http://186.121.212.182:8005'
 
-// ========================================== //
+// ============================================
 // ESTADO
-// ========================================== //
+// ============================================
+const tabActivo = ref('leyes')
+const leyes = ref([])
+const fiscalizaciones = ref([])
+const loading = ref(false)
+const error = ref(null)
+
+// Búsqueda
 const terminoBusqueda = ref('')
-const busquedaRealizada = ref(false)
-const cargando = ref(false)
-const resultados = ref([])
-const estadisticas = ref(null)
-const estadoSeleccionado = ref(null)
-const modalAbierto = ref(false)
-const modalData = ref(null)
+const busquedaEjecutada = ref('')
+const resultadosBusqueda = ref([])
+const buscando = ref(false)
+const modoBusqueda = ref(false)
 
-// ========================================== //
-// COMPUTED
-// ========================================== //
-const totalDocumentos = computed(() => {
-  return estadisticas.value?.total || 0
+// ============================================
+// TABS
+// ============================================
+const tabs = [
+  { key: 'leyes',          nombre: 'Leyes Recientes',    icono: 'mdi:file-check' },
+  { key: 'fiscalizacion',  nombre: 'Fiscalización',      icono: 'mdi:file-search' }
+]
+
+const obtenerItems = (key) => {
+  if (key === 'leyes') return leyes.value
+  if (key === 'fiscalizacion') return fiscalizaciones.value
+  return []
+}
+
+const itemsActuales = computed(() => obtenerItems(tabActivo.value))
+
+// ============================================
+// CARGAR DASHBOARD
+// ============================================
+const cargarDashboard = async () => {
+  loading.value = true
+  error.value = null
+
+  const url = `${API_BASE_URL}/api/v1/dashboard`
+  console.log('🔵 [legislacion] Dashboard:', url)
+
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000)
+
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'Accept': 'application/json' }
+    })
+    clearTimeout(timeoutId)
+
+    console.log('🟢 [legislacion] Status:', res.status)
+
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`)
+
+    const data = await res.json()
+    console.log('🟢 [legislacion] Data:', data)
+
+    // El backend devuelve:
+    // { leyes_recientes: [...], fiscalizacion_reciente: [...] }
+    leyes.value = (data.leyes_recientes || []).map(normalizarDoc)
+    fiscalizaciones.value = (data.fiscalizacion_reciente || []).map(normalizarDoc)
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      error.value = 'La solicitud tardó demasiado. Intente nuevamente.'
+    } else {
+      error.value = err.message
+    }
+    console.error('🔴 [legislacion] Error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// ============================================
+// NORMALIZAR DOCUMENTO
+// ============================================
+const normalizarDoc = (d) => ({
+  id: d.id || '',
+  titulo: d.titulo || 'Sin título',
+  estado: d.estado || '',
+  fecha: d.fecha || '',
+  tipo_documento: d.tipo_documento || '',
+  peticionante: d.peticionante || '',
+  gestion: d.gestion || extraerGestionDeId(d.id) || '',
+  descripcion: d.descripcion || ''
 })
 
-const estadosFiltrados = computed(() => {
-  if (!estadisticas.value?.estados) return []
-  return estadisticas.value.estados.filter(e => e.slug !== 'sin-clasificar')
-})
+// Extrae la gestión del id si tiene un patrón como "06720242025"
+const extraerGestionDeId = (id) => {
+  if (!id) return ''
+  const match = id.match(/(\d{4})(\d{4})/)
+  if (match) return `${match[1]}-${match[2]}`
+  return ''
+}
 
-// ========================================== //
-// FUNCIONES
-// ========================================== //
+// ============================================
+// BÚSQUEDA
+// ============================================
+const ejecutarBusqueda = async () => {
+  const q = terminoBusqueda.value.trim()
+  if (!q) {
+    limpiarBusqueda()
+    return
+  }
+
+  buscando.value = true
+  modoBusqueda.value = true
+  busquedaEjecutada.value = q
+  resultadosBusqueda.value = []
+
+  // Probar varios nombres de parámetro hasta que uno funcione
+  const params = ['q', 'search', 'query', 'termino']
+  const urlBase = `${API_BASE_URL}/api/v1/buscar`
+
+  for (const param of params) {
+    const url = `${urlBase}?${param}=${encodeURIComponent(q)}`
+    console.log(`🔵 [legislacion] Buscando con ?${param}=:`, url)
+
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 8000)
+
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: { 'Accept': 'application/json' }
+      })
+      clearTimeout(timeoutId)
+
+      console.log(`🟢 [legislacion] ?${param}= status:`, res.status)
+
+      if (res.status === 404) continue // probar siguiente parámetro
+      if (!res.ok) continue
+
+      const data = await res.json()
+      console.log(`🟢 [legislacion] ?${param}= data:`, data)
+
+      const lista = Array.isArray(data)
+        ? data
+        : data.resultados || data.data || data.documentos || data.items || []
+
+      resultadosBusqueda.value = lista.map(normalizarDoc)
+      break // éxito, salir del bucle
+    } catch (err) {
+      console.warn(`⚠️ [legislacion] Falló con ?${param}=:`, err.message)
+      // continuar con el siguiente
+    }
+  }
+
+  buscando.value = false
+}
+
+const limpiarBusqueda = () => {
+  terminoBusqueda.value = ''
+  busquedaEjecutada.value = ''
+  resultadosBusqueda.value = []
+  modoBusqueda.value = false
+}
+
+// ============================================
+// MÉTODOS
+// ============================================
+const colorEstado = (estado) => {
+  const e = (estado || '').toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  if (e.includes('promulg')) return 'bg-green-100 text-green-700'
+  if (e.includes('tratamiento') || e.includes('tramit')) return 'bg-orange-100 text-orange-700'
+  if (e.includes('sancion')) return 'bg-purple-100 text-purple-700'
+  if (e.includes('aprob')) return 'bg-blue-100 text-blue-700'
+  if (e.includes('rechaz')) return 'bg-red-100 text-red-700'
+  return 'bg-gray-100 text-gray-600'
+}
+
 const formatearFecha = (fecha) => {
   if (!fecha) return ''
   try {
     const d = new Date(fecha)
-    return d.toLocaleDateString('es-BO', { day: '2-digit', month: 'short', year: 'numeric' })
+    if (isNaN(d.getTime())) return fecha
+    return d.toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric' })
   } catch {
     return fecha
   }
 }
 
-const getTitulo = (item) => {
-  if (item.numero_ley) return `Ley N° ${item.numero_ley}`
-  if (item.etiqueta && item.etiqueta !== item.id) return item.etiqueta
-  if (item.titulo) return item.titulo
-  return item.id || 'Documento sin título'
+const verDocumento = (doc) => {
+  navigateTo(`/documento/${encodeURIComponent(doc.id)}`)
 }
 
-const getEstado = (item) => {
-  return item.estado || 'Sin estado'
-}
+const recargar = () => cargarDashboard()
 
-const getFecha = (item) => {
-  return item.fecha_ley || item.fecha || ''
-}
-
-const getDescripcion = (item) => {
-  return item.descripcion || item.fragmento || item.texto || item.contenido || ''
-}
-
-// ========================================== //
-// FUNCIONES API
-// ========================================== //
-const apiCall = async (path) => {
-  try {
-    const url = API + path
-    const res = await fetch(url, {
-      headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(8000)
-    })
-    
-    if (!res.ok) {
-      let detalle = 'HTTP ' + res.status
-      try {
-        const j = await res.json()
-        if (j.detail) detalle = j.detail
-      } catch (e) {}
-      throw new Error(detalle)
-    }
-    
-    return await res.json()
-  } catch (error) {
-    console.warn('⚠️ Error en API:', error.message)
-    throw error
-  }
-}
-
-const cargarEstados = async () => {
-  try {
-    const data = await apiCall('/estados')
-    estadisticas.value = data
-    console.log('✅ Estados cargados:', data)
-  } catch (error) {
-    console.error('Error cargando estados:', error)
-  }
-}
-
-const realizarBusqueda = async () => {
-  const termino = terminoBusqueda.value.trim()
-  if (!termino) {
-    resultados.value = []
-    busquedaRealizada.value = false
-    return
-  }
-
-  cargando.value = true
-  busquedaRealizada.value = true
-  estadoSeleccionado.value = null
-
-  try {
-    const params = new URLSearchParams()
-    params.set('q', termino)
-    if (estadoSeleccionado.value) params.set('estado', estadoSeleccionado.value)
-    params.set('limite', '20')
-
-    const data = await apiCall('/buscar?' + params.toString())
-    resultados.value = data.resultados || []
-  } catch (error) {
-    console.error('Error en búsqueda:', error)
-    resultados.value = []
-  } finally {
-    cargando.value = false
-  }
-}
-
-const filtrarPorEstado = (estado) => {
-  terminoBusqueda.value = estado.label
-  estadoSeleccionado.value = estado.slug
-  realizarBusqueda()
-}
-
-const buscarEjemplo = (texto) => {
-  terminoBusqueda.value = texto
-  estadoSeleccionado.value = null
-  realizarBusqueda()
-}
-
-const limpiarBusqueda = () => {
-  terminoBusqueda.value = ''
-  resultados.value = []
-  busquedaRealizada.value = false
-  estadoSeleccionado.value = null
-}
-
-const verDetalle = async (item) => {
-  modalAbierto.value = true
-  modalData.value = {
-    titulo: getTitulo(item),
-    numero: item.numero_ley || '',
-    estado: getEstado(item),
-    fecha: getFecha(item),
-    texto: item.texto || item.contenido || item.descripcion || item.fragmento || JSON.stringify(item, null, 2)
-  }
-}
-
-const cerrarModal = () => {
-  modalAbierto.value = false
-  modalData.value = null
-}
-
-// ========================================== //
+// ============================================
 // LIFECYCLE
-// ========================================== //
+// ============================================
 onMounted(() => {
-  cargarEstados()
-})
-
-// SEO
-useHead({
-  title: 'Legislación - Senado de Bolivia',
-  meta: [
-    { name: 'description', content: 'Consulta pública de leyes, proyectos y normativa del Senado de Bolivia.' },
-    { property: 'og:title', content: 'Legislación - Senado de Bolivia' },
-    { property: 'og:description', content: 'Consulta pública de leyes, proyectos y normativa del Senado de Bolivia.' }
-  ]
+  cargarDashboard()
 })
 </script>
 
@@ -425,17 +459,7 @@ useHead({
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.fixed {
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 </style>

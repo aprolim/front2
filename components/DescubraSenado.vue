@@ -311,11 +311,20 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { senadores } from '~/data/senadores'
 
 const router = useRouter()
+
+const props = defineProps({
+  filtroDepartamentoExterno: {
+    type: String,
+    default: null
+  }
+})
+
+const emit = defineEmits(['update:stats', 'update:filtroPartido'])
 
 // ============================================
 // CONSTANTES
@@ -436,7 +445,6 @@ const getNombrePartido = (nombreOriginal) => {
 }
 
 const getSeatFilteredOut = (id) => {
-  if (!filtroPartido.value) return false
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return false
   return seat.filteredOut
@@ -526,17 +534,25 @@ const allSeats = computed(() => {
 })
 
 // ============================================
-// FILTRO POR PARTIDO
+// FILTRO POR PARTIDO + DEPARTAMENTO EXTERNO
 // ============================================
 const filteredSeats = computed(() => {
-  if (!filtroPartido.value) {
-    return allSeats.value
-  }
   return allSeats.value.map(seat => {
-    const seatParty = seat.party || ''
-    const filterParty = filtroPartido.value || ''
-    const matches = seatParty === filterParty
-    return { ...seat, filteredOut: !matches }
+    let filteredOut = false
+
+    // Filtro por partido
+    if (filtroPartido.value) {
+      const seatParty = seat.party || ''
+      if (seatParty !== filtroPartido.value) filteredOut = true
+    }
+
+    // Filtro por departamento (externo)
+    if (props.filtroDepartamentoExterno) {
+      const seatDepto = seat.department || ''
+      if (seatDepto !== props.filtroDepartamentoExterno) filteredOut = true
+    }
+
+    return { ...seat, filteredOut }
   })
 })
 
@@ -545,11 +561,9 @@ const filteredSeats = computed(() => {
 // ============================================
 const getColorDirectiva = (id) => {
   const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
-  if (filtroPartido.value) {
-    const seat = allSeats.value.find(s => s.id === id)
-    if (seat && seat.filteredOut) {
-      return '#e5e7eb'
-    }
+  const seat = allSeats.value.find(s => s.id === id)
+  if (seat && seat.filteredOut) {
+    return '#e5e7eb'
   }
   return titular?.partyColor || '#cccccc'
 }
@@ -586,11 +600,7 @@ const partidosOrdenados = computed(() => {
   let baseSenadores
   
   if (tipoVisualizacion.value === 'suplentes') {
-    baseSenadores = senadores.filter(s => {
-      if (s.tipo !== 'suplente') return false
-      if (esDirectiva(s.titularId)) return false
-      return true
-    })
+    baseSenadores = senadores.filter(s => s.tipo === 'suplente')
   } else {
     baseSenadores = senadores.filter(s => s.tipo === 'titular')
   }
@@ -684,7 +694,7 @@ const updateTooltipPosition = (event) => {
   }
 }
 
-// 🔥 CORREGIDO: `fromDirectiva` indica si el click viene del centro (true) o del arco (false)
+// 🔥 `fromDirectiva` indica si el click viene del centro (true) o del arco (false)
 const goToSenator = (id, fromDirectiva = false) => {
   const seat = allSeats.value.find(s => s.id === id)
   if (!seat) return
@@ -729,6 +739,7 @@ const goToSenator = (id, fromDirectiva = false) => {
 // TOOLTIP STYLE
 // ============================================
 const tooltipStyle = computed(() => {
+  if (!process.client) return {}
   const isMobile = window.innerWidth < 768
   const transform = isMobile 
     ? 'translate(-50%, -100%)' 
@@ -751,6 +762,37 @@ const tooltipStyle = computed(() => {
     animation: 'fadeIn 0.15s ease'
   }
 })
+
+// ============================================
+// WATCHERS: EMITIR CAMBIOS AL PADRE
+// ============================================
+watch(filtroPartido, (nuevo) => {
+  emit('update:filtroPartido', nuevo)
+})
+
+watch(filteredSeats, (nuevos) => {
+  const visibles = nuevos.filter(s => !s.filteredOut && !s.isEmpty)
+  
+  const porPartido = {}
+  visibles.forEach(s => {
+    const p = s.party || 'Sin partido'
+    porPartido[p] = (porPartido[p] || 0) + 1
+  })
+
+  const porDepartamento = {}
+  visibles.forEach(s => {
+    const d = s.department || 'Sin departamento'
+    porDepartamento[d] = (porDepartamento[d] || 0) + 1
+  })
+
+  emit('update:stats', {
+    totalVisibles: visibles.length,
+    totalGeneral: allSeats.value.filter(s => !s.isEmpty).length,
+    porPartido,
+    porDepartamento,
+    tipoVisualizacion: tipoVisualizacion.value
+  })
+}, { immediate: true, deep: true })
 
 // ============================================
 // MONTAJE

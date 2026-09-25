@@ -1,6 +1,6 @@
 <template>
   <header 
-    class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200 transition-all duration-300"
+    class="shadow-md sticky top-0 z-50 border-b transition-all duration-300 border-b border-black bg-senado-gold-light"
     :class="isScrolled ? 'py-[0.3vw]' : 'py-[0.5vw]'"
   >
     <div 
@@ -47,28 +47,31 @@
         </NuxtLink>
 
         <!-- Logo - Tablet/Desktop (se oculta en mobile) -->
-        <NuxtLink to="/" class="flex-shrink-0 spin-coin hidden sm:block transition-all duration-300">
-          <img 
-            src="/images/LogoDorado.svg" 
-            alt="Senado" 
-            class="w-auto transition-all duration-300"
-            :class="isScrolled ? 'sm:h-[5vw] lg:h-[4.5vw]' : 'sm:h-[7vw] lg:h-[6vw]'"
-          />
-        </NuxtLink>
+<NuxtLink to="/" class="flex items-center gap-2 sm:gap-3">
+  <!-- Logo -->
+  <div class="flex-shrink-0 spin-coin hidden sm:block transition-all duration-300">
+    <img
+      src="/images/LogoDorado.svg" 
+      alt="Senado" 
+      class="w-auto transition-all duration-300"
+      :class="isScrolled ? 'sm:h-[5vw] lg:h-[4.5vw]' : 'sm:h-[7vw] lg:h-[6vw]'"
+    />
+  </div>
 
-        <!-- Título - Mobile (Texto al lado del logo) -->
-        <div class="sm:hidden flex flex-col leading-tight transition-all duration-300">
-          <span class="font-montserrat-light text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.85vw]' : 'text-[6.5vw]'">Cámara de</span>
-          <span class="font-montserrat-bold text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.8vw]' : 'text-[6.4vw]'">Senadores</span>
-        </div>
+  <!-- Título - Mobile (Texto al lado del logo) -->
+  <div class="sm:hidden flex flex-col leading-tight transition-all duration-300">
+    <span class="font-montserrat-light text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.85vw]' : 'text-[6.5vw]'">Cámara de</span>
+    <span class="font-montserrat-bold text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.8vw]' : 'text-[6.4vw]'">Senadores</span>
+  </div>
 
-        <!-- Título - Tablet/Desktop -->
-        <div class="hidden sm:block flex-shrink-0 text-left transition-all duration-300">
-          <h1 class="font-bold text-senado-primary leading-tight font-montserrat-light transition-all duration-300" :class="isScrolled ? 'sm:text-[2vw] lg:text-[1.8vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'" style="line-height: 0.9;">
-            Cámara de<br />
-            <span class="font-montserrat-bold transition-all duration-300" :class="isScrolled ? 'sm:text-[2.4vw] lg:text-[2vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'">Senadores</span>
-          </h1>
-        </div>
+  <!-- Título - Tablet/Desktop -->
+  <div class="hidden sm:block flex-shrink-0 text-left transition-all duration-300">
+    <h1 class="font-bold text-senado-primary leading-tight font-montserrat-light transition-all duration-300" :class="isScrolled ? 'sm:text-[2vw] lg:text-[1.8vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'" style="line-height: 0.9;">
+      Cámara de<br />
+      <span class="font-montserrat-bold transition-all duration-300" :class="isScrolled ? 'sm:text-[2.4vw] lg:text-[2vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'">Senadores</span>
+    </h1>
+  </div>
+</NuxtLink>
 
         <div class="flex-shrink-0 w-[6vw] sm:w-[3vw] lg:w-[2vw]"></div>
 
@@ -247,37 +250,7 @@
               </div>
             </div>
 
-            <!-- ========================================== -->
-            <!-- COMUNICACIÓN                              -->
-            <!-- ========================================== -->
-            <div 
-              @mouseenter="handleSubmenuHoverEnter('comunicacion')"
-              @mouseleave="handleSubmenuHoverLeave('comunicacion')"
-              class="menu-item-wrapper"
-            >
-              <div 
-                @click="toggleSubmenu('comunicacion', null)"
-                class="cursor-pointer menu-item"
-              >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
-                  <span>&nbsp;&nbsp;&nbsp; Comunicación</span>
-                  <span class="transition-transform duration-300 inline-flex" :class="submenus.comunicacion ? 'rotate-90' : ''">
-                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <div 
-                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
-                :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
-              >
-                <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
-                <NuxtLink to="/noticias" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Notas de Prensa</NuxtLink>
-                <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Publicaciones</NuxtLink>
-                <NuxtLink to="/campanas-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Campañas y Actividades</NuxtLink>
-              </div>
-            </div>
+
 
             <!-- ========================================== -->
             <!-- FACULTADES LEGISLATIVAS                    -->
@@ -367,7 +340,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
-                  <span>&nbsp;&nbsp;&nbsp; Tus Senadores</span>
+                  <span>&nbsp;&nbsp;&nbsp; Estructura</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.senadores ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -380,8 +353,11 @@
                 :class="submenus.senadores ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• ¿Quién me representa?</NuxtLink>
+                <NuxtLink to="/pleno-camaral" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Pleno camaral</NuxtLink>
                 <NuxtLink to="/directiva-camaral" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Directiva Camaral</NuxtLink>
                 <NuxtLink to="/comisiones-comites" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comisiones y Comités</NuxtLink>
+                <NuxtLink to="/quien-me-representa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Brigadas</NuxtLink>
+                <NuxtLink to="/bancadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Bancadas</NuxtLink>
               </div>
             </div>
 
@@ -465,28 +441,14 @@
                 class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.auditoriaTransparencia ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
               >
-                <!-- Auditoría -->
                 <div class="">
-                  <div 
-                    @click="toggleSubmenu('auditoriaInstitucional', 'auditoriaTransparencia')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
+                  <NuxtLink 
+                    to="/auditoria/auditorias-ejecutadas" 
+                    class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" 
+                    @click="closeMenu"
                   >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw]">• Auditoría</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.auditoriaInstitucional ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div 
-                    class="bg-black/5 ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1vw] text-black overflow-hidden transition-all duration-300 ease-in-out font-[500]"
-                    :class="submenus.auditoriaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/auditoria/poa-uai" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• POA-UAI</NuxtLink>
-                    <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Auditorías Ejecutadas</NuxtLink>
-                    <NuxtLink to="/auditoria/informes-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Informes de Actividades</NuxtLink>
-                    <NuxtLink to="/auditoria/otras-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Otras Actividades</NuxtLink>
-                  </div>
+                    • Auditorías Ejecutadas
+                  </NuxtLink>
                 </div>
 
                 <!-- Transparencia -->
@@ -511,6 +473,37 @@
                     <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
                   </div>
                 </div>
+              </div>
+            </div>
+            <!-- ========================================== -->
+            <!-- COMUNICACIÓN                              -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('comunicacion')"
+              @mouseleave="handleSubmenuHoverLeave('comunicacion')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('comunicacion', null)"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Comunicación</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.comunicacion ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
+                <NuxtLink to="/noticias" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Notas de Prensa</NuxtLink>
+                <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Publicaciones</NuxtLink>
+                <NuxtLink to="/campanas-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Campañas y Actividades</NuxtLink>
               </div>
             </div>
 

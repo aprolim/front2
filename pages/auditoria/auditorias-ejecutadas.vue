@@ -272,12 +272,18 @@ const tabs = computed(() => {
   if (categorias.value.length === 0) {
     // Fallback mientras carga
     return [
+      { key: 'confiabilidad', nombre: 'Auditoría de Confiabilidad', icono: 'mdi:shield-check' },
       { key: 'cumplimiento',  nombre: 'Auditoría de Cumplimiento', icono: 'mdi:clipboard-check' },
       { key: 'operacionales', nombre: 'Auditoría de Operativa',    icono: 'mdi:cog' },
-      { key: 'confiabilidad', nombre: 'Auditoría de Confiabilidad', icono: 'mdi:shield-check' }
     ]
   }
-  return categorias.value
+  const lista = [...categorias.value]
+  const idx = lista.findIndex(c => c.key === 'confiabilidad')
+  if (idx > 0) {
+    const [confiabilidad] = lista.splice(idx, 1)
+    lista.unshift(confiabilidad)
+  }
+  return lista
 })
 
 const totalAuditorias = computed(() => documentos.value.length)
