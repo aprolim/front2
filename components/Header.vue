@@ -255,77 +255,15 @@
             <!-- ========================================== -->
             <!-- FACULTADES LEGISLATIVAS                    -->
             <!-- ========================================== -->
-            <div 
-              @mouseenter="handleSubmenuHoverEnter('legislativa')"
-              @mouseleave="handleSubmenuHoverLeave('legislativa')"
-              class="menu-item-wrapper"
+            <NuxtLink
+              to="/facultades-legislativas"
+              class="block menu-item hover:bg-white/60 transition-colors"
+              @click="closeMenu"
             >
-              <div 
-                @click="toggleSubmenu('legislativa', null)"
-                class="cursor-pointer menu-item"
-              >
-                <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
-                  <span>&nbsp;&nbsp;&nbsp; Facultades Legislativas</span>
-                  <span class="transition-transform duration-300 inline-flex" :class="submenus.legislativa ? 'rotate-90' : ''">
-                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                  </span>
-                </div>
+              <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors">
+                <span>&nbsp;&nbsp;&nbsp; Facultades Legislativas</span>
               </div>
-              
-              <div 
-                class="ml-4 mt-2 space-y-0 overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
-                :class="submenus.legislativa ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
-              >
-                <NuxtLink to="/legislacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Legislación</NuxtLink>
-
-                <!-- Fiscalización -->
-                <div class="bg-transparent">
-                  <div 
-                    @click="toggleSubmenu('fiscalizacion', 'legislativa')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
-                  >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw]">• Fiscalización</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.fiscalizacion ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div 
-                    class="ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
-                    :class="submenus.fiscalizacion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/peticiones-informe-escrito" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Escrito</NuxtLink>
-                    <NuxtLink to="/peticiones-informe-oral" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Peticiones de Informe Oral</NuxtLink>
-                  </div>
-                </div>
-
-                <!-- Gestión -->
-                <div class="bg-transparent">
-                  <div 
-                    @click="toggleSubmenu('gestion', 'legislativa')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
-                  >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw]">• Gestión</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.gestion ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div 
-                    class="ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out bg-black/5"
-                    :class="submenus.gestion ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/resoluciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Resoluciones Camarales</NuxtLink>
-                    <NuxtLink to="/declaraciones-camarales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Declaraciones Camarales</NuxtLink>
-                    <NuxtLink to="/minutas-comunicacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Minutas de Comunicación</NuxtLink>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </NuxtLink>
 
             <!-- ========================================== -->
             <!-- TUS SENADORES                              -->

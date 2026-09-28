@@ -12,7 +12,7 @@
         <div class="p-4">
           <ul class="mt-3 space-y-2 text-[3.6vw] md:text-[1.2vw]">
             <li v-for="item in legislacionItems" :key="item.label" class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
-              <NuxtLink to="/legislacion" class="flex items-center gap-2 hover:text-senado-primary w-full">
+              <NuxtLink to="/facultades-legislativas" class="flex items-center gap-2 hover:text-senado-primary w-full">
                 <span class="text-senado-gold-dark font-bold">></span>
                 <span>{{ item.label }}</span>
               </NuxtLink>
@@ -30,7 +30,7 @@
         <div class="p-4">
           <ul class="mt-3 space-y-2 text-[3.6vw] md:text-[1.2vw]">
             <li v-for="item in fiscalizacionItems" :key="item.link" class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
-              <NuxtLink :to="item.link" class="flex items-center gap-2 hover:text-senado-primary w-full">
+              <NuxtLink to="/facultades-legislativas" class="flex items-center gap-2 hover:text-senado-primary w-full">
                 <span class="text-senado-gold-dark font-bold">></span>
                 <span>{{ item.label }}</span>
               </NuxtLink>
@@ -48,7 +48,7 @@
         <div class="p-4">
           <ul class="mt-3 space-y-2 text-[3.6vw] md:text-[1.2vw]">
             <li v-for="item in gestionItems" :key="item.link" class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800">
-              <NuxtLink :to="item.link" class="flex items-center gap-2 hover:text-senado-primary w-full">
+              <NuxtLink to="/facultades-legislativas" class="flex items-center gap-2 hover:text-senado-primary w-full">
                 <span class="text-senado-gold-dark font-bold">></span>
                 <span>{{ item.label }}</span>
               </NuxtLink>
