@@ -383,7 +383,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_BASE_URL = 'http://186.121.212.182:8000'
+const API_BASE_URL = 'https://asistente.senado.gob.bo'
 
 // ============================================
 // ESTADO
