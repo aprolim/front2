@@ -161,7 +161,7 @@ import { storeToRefs } from 'pinia'
 // COMPONENTES
 // ==========================================
 import HeroVideo from '~/components/index/HeroVideo.vue'
-import FacultadesLegislativas from '~/components/index/FacultadesLegislativas.vue'
+import FacultadesLegislativas from '~/components/FacultadesLegislativas.vue'
 import AgendaSesiones from '~/components/index/AgendaSesiones.vue'
 import NoticiasDinamicas from '~/components/NoticiasDinamicas.vue'
 import DescubraSenado from '~/components/DescubraSenado.vue'

@@ -416,18 +416,6 @@ const getAsientoHemiciclo = (seatNumber) => {
 </script>
 
 <style scoped>
-@media (min-width: 768px) {
-  .logo-normal { opacity: 1; }
-  .logo-hover { opacity: 0; }
-  .group:hover .logo-normal { opacity: 0; }
-  .group:hover .logo-hover { opacity: 1; }
-}
-
-@media (max-width: 767px) {
-  .logo-normal { display: none; }
-  .logo-hover {
-    opacity: 1;
-    position: relative !important;
-  }
-}
+.logo-normal { opacity: 0; }
+.logo-hover  { opacity: 1; }
 </style>
