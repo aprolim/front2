@@ -56,11 +56,8 @@
                     </span>
                   </td>
                   <td class="px-6 py-4 text-sm">
-                    <a 
-                      :href="constitucion.url" 
-                      target="_blank"
-                      class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline"
-                    >
+                    <a :href="constitucion.url" target="_blank"
+                       class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
@@ -105,11 +102,8 @@
                     </span>
                   </td>
                   <td class="px-6 py-4 text-sm">
-                    <a 
-                      :href="doc.url" 
-                      target="_blank"
-                      class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline"
-                    >
+                    <a :href="doc.url" target="_blank"
+                       class="text-[#611717] hover:text-[#8f1522] font-medium flex items-center gap-1 hover:underline">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
@@ -125,10 +119,7 @@
 
       <!-- Botón volver -->
       <div class="text-center mt-12">
-        <NuxtLink 
-          to="/" 
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-        >
+        <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
@@ -155,6 +146,7 @@ const documentosData = [
     estado: 'Vigente',
     url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf'
   },
+
   // Norma General de Área Legislativa
   {
     id: 2,
@@ -196,6 +188,7 @@ const documentosData = [
     estado: 'Vigente',
     url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf'
   },
+
   // Norma General de Área Administrativa
   {
     id: 7,
@@ -285,6 +278,7 @@ const documentosData = [
     estado: 'Vigente',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf'
   },
+
   // Normativa Interna
   {
     id: 18,
@@ -428,7 +422,7 @@ const documentosData = [
     nombre: 'Procedimiento Específico para Altas y Bajas del Personal Permanente y Eventual Ante la CNS',
     gestion: '2020',
     estado: 'Vigente',
-    url: '/pdfs/Normativa Interna/Procedimiento Específico para Altas y Bajas del Personal Permanente y Eventual de la Cámára de Senadores Ante la Caja Nacional de Salud.pdf'
+    url: '/pdfs/Normativa Interna/Procedimiento Específico para Altas y Bajas del Personal Permanente y Eventual de la Cámara de Senadores Ante la Caja Nacional de Salud.pdf'
   },
   {
     id: 36,
@@ -461,7 +455,7 @@ const documentosData = [
     gestion: '2020',
     estado: 'Vigente',
     url: '/pdfs/Normativa Interna/Reglamento Específico Fondo Fijo Caja Chica.pdf'
-  }
+  },
 ]
 
 // ============================================
@@ -479,7 +473,11 @@ const constitucion = computed(() => {
 })
 
 const categoriasNormativas = computed(() => {
-  const categorias = ['Norma General de Área Legislativa', 'Norma General de Área Administrativa', 'Normativa Interna']
+  const categorias = [
+    'Norma General de Área Legislativa',
+    'Norma General de Área Administrativa',
+    'Normativa Interna',
+  ]
   
   return categorias.map(nombre => ({
     nombre,
@@ -495,7 +493,6 @@ const cargarDocumentos = () => {
   error.value = null
   
   try {
-    // Simular carga desde la carpeta public/pdfs
     documentos.value = documentosData
   } catch (err) {
     error.value = 'Error al cargar los documentos'
@@ -510,6 +507,13 @@ const cargarDocumentos = () => {
 // ============================================
 onMounted(() => {
   cargarDocumentos()
+})
+
+useHead({
+  title: 'Marco Normativo | Senado de Bolivia',
+  meta: [
+    { name: 'description', content: 'Consulta la normativa vigente del Senado de Bolivia: Constitución Política del Estado, Reglamentos, Manuales y Normativa Interna.' },
+  ],
 })
 </script>
 

@@ -1,7 +1,6 @@
-<!-- pages/contacto.vue -->
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Hero / Banner con ARIA -->
+    <!-- Hero / Banner -->
     <section 
       class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white"
       role="banner"
@@ -98,6 +97,56 @@
         </div>
       </div>
 
+      <!-- ============================================ -->
+      <!-- 🔥 NUEVA SECCIÓN: ENCARGADOS DE RECIBIR MENSAJES -->
+      <!-- Según lineamiento 16.1                        -->
+      <!-- ============================================ -->
+      <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-[#1a3a6c] to-[#0f2347] text-white px-4 py-3 md:px-6 md:py-4">
+          <h2 class="font-bold text-lg md:text-xl flex items-center gap-2">
+            <Icon name="mdi:account-tie" />
+            Encargados de recibir y contestar mensajes y llamadas
+          </h2>
+        </div>
+        <div class="p-4 md:p-6">
+          <p class="text-gray-600 text-sm md:text-base mb-4">
+            Conforme a los Lineamientos de Contenidos Mínimos de Portales y Páginas Web Institucionales
+            (R.M. 067/2025), la institución designa a los siguientes responsables para la atención
+            de consultas ciudadanas:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div 
+              v-for="(enc, i) in encargados" 
+              :key="i" 
+              class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            >
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-full bg-senado-primary/10 flex items-center justify-center flex-shrink-0">
+                  <Icon name="mdi:account-circle" class="text-2xl text-senado-primary" />
+                </div>
+                <div class="min-w-0">
+                  <h3 class="font-semibold text-gray-800 text-sm truncate">{{ enc.nombre }}</h3>
+                  <p class="text-xs text-gray-500 leading-tight">{{ enc.cargo }}</p>
+                </div>
+              </div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex items-center gap-2 text-gray-600">
+                  <Icon name="mdi:phone" class="text-senado-primary flex-shrink-0 text-sm" />
+                  <span>{{ enc.telefono }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-600">
+                  <Icon name="mdi:email" class="text-senado-primary flex-shrink-0 text-sm" />
+                  <a :href="`mailto:${enc.email}`" class="hover:text-senado-primary truncate">
+                    {{ enc.email }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Grid: Mapa + Dirección -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-8 md:mt-12">
         
@@ -186,6 +235,97 @@
         </section>
       </div>
 
+      <!-- ============================================ -->
+      <!-- 🔥 NUEVA SECCIÓN: REGISTRO DE RESPUESTAS ENVIADAS -->
+      <!-- Según lineamiento 16.2                        -->
+      <!-- ============================================ -->
+      <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-[#8f1522] to-[#611717] text-white px-4 py-3 md:px-6 md:py-4 flex items-center justify-between flex-wrap gap-2">
+          <h2 class="font-bold text-lg md:text-xl flex items-center gap-2">
+            <Icon name="mdi:clipboard-text-clock" />
+            Registro de respuestas enviadas
+          </h2>
+          <span class="text-xs md:text-sm bg-white/20 px-3 py-1 rounded-full">
+            Total: {{ respuestasFiltradas.length }}
+          </span>
+        </div>
+        <div class="p-4 md:p-6">
+          <p class="text-gray-600 text-sm md:text-base mb-4">
+            Registro público de las consultas recibidas y respuestas enviadas por la institución,
+            conforme al lineamiento 16.2 de la R.M. 067/2025.
+          </p>
+
+          <!-- Buscador -->
+          <div class="mb-4">
+            <div class="relative">
+              <input 
+                v-model="busquedaRespuestas" 
+                type="text" 
+                placeholder="Buscar por tipo de consulta o canal..."
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-senado-primary focus:border-transparent"
+              />
+              <Icon name="mdi:magnify" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+            </div>
+          </div>
+
+          <!-- Tabla -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Fecha</th>
+                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Tipo de Consulta</th>
+                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Canal</th>
+                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs hidden md:table-cell">Respuesta</th>
+                  <th class="text-center px-3 py-2 font-semibold text-gray-600 text-xs">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(r, i) in respuestasFiltradas" :key="i" class="border-b border-gray-100 hover:bg-gray-50">
+                  <td class="px-3 py-2 text-gray-600 text-xs whitespace-nowrap">{{ r.fecha }}</td>
+                  <td class="px-3 py-2 text-gray-800">{{ r.tipo }}</td>
+                  <td class="px-3 py-2 text-gray-600">
+                    <span class="inline-flex items-center gap-1">
+                      <Icon :name="r.icono" class="text-senado-primary text-sm" />
+                      {{ r.canal }}
+                    </span>
+                  </td>
+                  <td class="px-3 py-2 text-gray-600 text-xs hidden md:table-cell">{{ r.respuesta }}</td>
+                  <td class="px-3 py-2 text-center">
+                    <span 
+                      class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold"
+                      :class="{
+                        'bg-green-100 text-green-700': r.estado === 'Atendida',
+                        'bg-blue-100 text-blue-700': r.estado === 'Derivada',
+                        'bg-yellow-100 text-yellow-700': r.estado === 'En proceso'
+                      }"
+                    >
+                      {{ r.estado }}
+                    </span>
+                  </td>
+                </tr>
+                <tr v-if="respuestasFiltradas.length === 0">
+                  <td colspan="5" class="text-center py-8 text-gray-400 text-sm">
+                    No se encontraron registros
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Nota -->
+          <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 rounded-lg px-4 py-2">
+            <p class="text-blue-800 text-xs flex items-start gap-2">
+              <Icon name="mdi:information" class="text-blue-600 flex-shrink-0 mt-0.5" />
+              <span>
+                Este registro se actualiza trimestralmente. Los datos mostrados corresponden al trimestre en curso.
+                Para consultas sobre un registro específico, diríjase a la Unidad de Transparencia.
+              </span>
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- Enlaces de interés -->
       <div 
         class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12"
@@ -240,9 +380,11 @@
         <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo puedo visitar el Senado?</dt>
-            <NuxtLink to="/visita-senado" class="text-senado-primary hover:underline">
+            <dd class="text-gray-600 text-sm">
+              <NuxtLink to="/visita-senado" class="text-senado-primary hover:underline">
                 Agenda tu visita en nuestra página de visitas
               </NuxtLink>
+            </dd>
           </div>
           <div>
             <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo solicito información?</dt>
@@ -263,10 +405,121 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Contacto'
-}
+<script setup>
+import { ref, computed } from 'vue'
+
+// ============================================
+// ESTADO
+// ============================================
+const busquedaRespuestas = ref('')
+
+// ============================================
+// ENCARGADOS DE RECIBIR MENSAJES (16.1)
+// ============================================
+const encargados = [
+  {
+    nombre: 'Unidad de Transparencia',
+    cargo: 'Atención de consultas de acceso a la información',
+    telefono: '(591-2) 2143400 int. 101',
+    email: 'transparencia@senado.gob.bo'
+  },
+  {
+    nombre: 'Dirección de Comunicación',
+    cargo: 'Consulta de prensa y comunicación institucional',
+    telefono: '(591-2) 2143400 int. 202',
+    email: 'comunicacion@senado.gob.bo'
+  },
+  {
+    nombre: 'Atención al Ciudadano',
+    cargo: 'Consultas generales y orientación',
+    telefono: '(591-2) 2143400 int. 303',
+    email: 'ciudadano@senado.gob.bo'
+  },
+]
+
+// ============================================
+// REGISTRO DE RESPUESTAS ENVIADAS (16.2)
+// Datos de ejemplo - reemplazar con datos reales de la UTLCC
+// ============================================
+const respuestas = ref([
+  {
+    fecha: '15/10/2026',
+    tipo: 'Solicitud de información pública',
+    canal: 'Formulario web',
+    icono: 'mdi:web',
+    respuesta: 'Respuesta enviada por correo electrónico',
+    estado: 'Atendida'
+  },
+  {
+    fecha: '14/10/2026',
+    tipo: 'Consulta sobre trámite legislativo',
+    canal: 'Correo electrónico',
+    icono: 'mdi:email',
+    respuesta: 'Respuesta enviada por correo electrónico',
+    estado: 'Atendida'
+  },
+  {
+    fecha: '12/10/2026',
+    tipo: 'Denuncia por presunta corrupción',
+    canal: 'SITPRECO S2+',
+    icono: 'mdi:shield-alert',
+    respuesta: 'Derivada al sistema SITPRECO S2+',
+    estado: 'Derivada'
+  },
+  {
+    fecha: '10/10/2026',
+    tipo: 'Consulta sobre visita guiada',
+    canal: 'Teléfono',
+    icono: 'mdi:phone',
+    respuesta: 'Información brindada por teléfono',
+    estado: 'Atendida'
+  },
+  {
+    fecha: '08/10/2026',
+    tipo: 'Solicitud de información pública',
+    canal: 'Formulario web',
+    icono: 'mdi:web',
+    respuesta: 'Respuesta enviada por correo electrónico',
+    estado: 'Atendida'
+  },
+  {
+    fecha: '05/10/2026',
+    tipo: 'Consulta sobre POA y presupuesto',
+    canal: 'Correo electrónico',
+    icono: 'mdi:email',
+    respuesta: 'Respuesta enviada con enlace a la sección de Transparencia',
+    estado: 'Atendida'
+  },
+])
+
+// ============================================
+// COMPUTED
+// ============================================
+const respuestasFiltradas = computed(() => {
+  if (!busquedaRespuestas.value.trim()) return respuestas.value
+  const t = busquedaRespuestas.value.toLowerCase()
+  return respuestas.value.filter(r =>
+    r.tipo.toLowerCase().includes(t) ||
+    r.canal.toLowerCase().includes(t) ||
+    r.estado.toLowerCase().includes(t)
+  )
+})
+
+// ============================================
+// SEO
+// ============================================
+useHead({
+  title: 'Contacto | Senado de Bolivia',
+  meta: [
+    {
+      name: 'description',
+      content: 'Contáctate con la Cámara de Senadores de Bolivia. Dirección, teléfonos, correos electrónicos, encargados de atención y registro de respuestas conforme a los Lineamientos de Contenidos Mínimos.'
+    },
+    { property: 'og:title', content: 'Contacto | Senado de Bolivia' },
+    { property: 'og:description', content: 'Dirección, teléfonos, correos y encargados de atención al ciudadano.' },
+    { property: 'og:type', content: 'website' },
+  ],
+})
 </script>
 
 <style scoped>

@@ -3,6 +3,17 @@ import { ref, computed } from 'vue'
 
 const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
+// ============================================
+// 🔥 NUEVO: Normalizar URLs HTTP → HTTPS
+// ============================================
+const normalizarUrl = (url) => {
+  if (!url) return url
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://')
+  }
+  return url
+}
+
 const transformarNoticia = (item) => {
   if (!item) return null
 
@@ -19,8 +30,14 @@ const transformarNoticia = (item) => {
     descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
     fecha: item.publishedAt || item.createdAt,
     publishedAt: item.publishedAt || item.createdAt,
-    imagen: item.featuredImage?.url || item.imagen,
-    featuredImage: item.featuredImage,
+    // 🔥 APLICAR normalizarUrl
+    imagen: normalizarUrl(item.featuredImage?.url || item.imagen),
+    featuredImage: item.featuredImage
+      ? {
+          ...item.featuredImage,
+          url: normalizarUrl(item.featuredImage.url),
+        }
+      : null,
     categoria: item.category,
     importante: esImportante,
     tipo: item.type || 'noticia',
@@ -28,7 +45,7 @@ const transformarNoticia = (item) => {
     views: item.views || 0,
     participantes: item.participantes || [],
     createdAt: item.createdAt,
-    updatedAt: item.updatedAt
+    updatedAt: item.updatedAt,
   }
 }
 
@@ -36,13 +53,13 @@ export const fetchNoticiasImportantes = async () => {
   console.log(`📡 [useNoticias] Cargando noticias IMPORTANTES...`)
 
   try {
-    const response = await fetch(`${API_BASE_URL}/content?status=published&category=importante&limit=100`)
+    const response = await fetch(
+      `${API_BASE_URL}/content?status=published&category=importante&limit=100`
+    )
     const data = await response.json()
 
     if (data.success && data.data?.contents) {
-      const noticias = data.data.contents
-        .map(transformarNoticia)
-        .filter(Boolean)
+      const noticias = data.data.contents.map(transformarNoticia).filter(Boolean)
 
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias IMPORTANTES`)
       return noticias
@@ -58,13 +75,13 @@ export const fetchNoticiasUltimas = async () => {
   console.log(`📡 [useNoticias] Cargando NOTICIAS NO IMPORTANTES...`)
 
   try {
-    const response = await fetch(`${API_BASE_URL}/content?status=published&category=noticia&limit=100`)
+    const response = await fetch(
+      `${API_BASE_URL}/content?status=published&category=noticia&limit=100`
+    )
     const data = await response.json()
 
     if (data.success && data.data?.contents) {
-      const noticias = data.data.contents
-        .map(transformarNoticia)
-        .filter(Boolean)
+      const noticias = data.data.contents.map(transformarNoticia).filter(Boolean)
 
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias NO IMPORTANTES`)
       return noticias
@@ -90,7 +107,7 @@ export const fetchNoticias = async () => {
 
   const [noticiasImportantes, ultimasNoticias] = await Promise.all([
     fetchNoticiasImportantes(),
-    fetchNoticiasUltimas()
+    fetchNoticiasUltimas(),
   ])
 
   const todasLasNoticias = ordenarPorFecha([...noticiasImportantes, ...ultimasNoticias])
@@ -101,7 +118,7 @@ export const fetchNoticias = async () => {
     noticiasImportantes: noticiasImportantes.slice(0, 4),
     ultimasNoticias: ultimasNoticias.slice(0, 4),
     todasLasNoticias: todasLasNoticias,
-    error: null
+    error: null,
   }
 }
 
@@ -125,9 +142,7 @@ export const fetchNoticiasPorSenador = async (senadorId) => {
     const data = await response.json()
 
     if (data.success && data.data?.contents && Array.isArray(data.data.contents)) {
-      const noticias = data.data.contents
-        .map(transformarNoticia)
-        .filter(Boolean)
+      const noticias = data.data.contents.map(transformarNoticia).filter(Boolean)
 
       console.log(`✅ [useNoticias] Cargadas ${noticias.length} noticias para el senador ${senadorId}`)
       return noticias
@@ -185,6 +200,6 @@ export const useNoticias = () => {
     loaded: computed(() => loaded.value),
     cargarDatos,
     recargarDatos,
-    fetchNoticiasPorSenador
+    fetchNoticiasPorSenador,
   }
 }

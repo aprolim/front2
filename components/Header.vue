@@ -47,31 +47,31 @@
         </NuxtLink>
 
         <!-- Logo - Tablet/Desktop (se oculta en mobile) -->
-<NuxtLink to="/" class="flex items-center gap-2 sm:gap-3">
-  <!-- Logo -->
-  <div class="flex-shrink-0 spin-coin hidden sm:block transition-all duration-300">
-    <img
-      src="/images/LogoDorado.svg" 
-      alt="Senado" 
-      class="w-auto transition-all duration-300"
-      :class="isScrolled ? 'sm:h-[5vw] lg:h-[4.5vw]' : 'sm:h-[7vw] lg:h-[6vw]'"
-    />
-  </div>
+        <NuxtLink to="/" class="flex items-center gap-2 sm:gap-3">
+          <!-- Logo -->
+          <div class="flex-shrink-0 spin-coin hidden sm:block transition-all duration-300">
+            <img
+              src="/images/LogoDorado.svg" 
+              alt="Senado" 
+              class="w-auto transition-all duration-300"
+              :class="isScrolled ? 'sm:h-[5vw] lg:h-[4.5vw]' : 'sm:h-[7vw] lg:h-[6vw]'"
+            />
+          </div>
 
-  <!-- Título - Mobile (Texto al lado del logo) -->
-  <div class="sm:hidden flex flex-col leading-tight transition-all duration-300">
-    <span class="font-montserrat-light text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.85vw]' : 'text-[6.5vw]'">Cámara de</span>
-    <span class="font-montserrat-bold text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.8vw]' : 'text-[6.4vw]'">Senadores</span>
-  </div>
+          <!-- Título - Mobile (Texto al lado del logo) -->
+          <div class="sm:hidden flex flex-col leading-tight transition-all duration-300">
+            <span class="font-montserrat-light text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.85vw]' : 'text-[6.5vw]'">Cámara de</span>
+            <span class="font-montserrat-bold text-senado-primary transition-all duration-300" :class="isScrolled ? 'text-[3.8vw]' : 'text-[6.4vw]'">Senadores</span>
+          </div>
 
-  <!-- Título - Tablet/Desktop -->
-  <div class="hidden sm:block flex-shrink-0 text-left transition-all duration-300">
-    <h1 class="font-bold text-senado-primary leading-tight font-montserrat-light transition-all duration-300" :class="isScrolled ? 'sm:text-[2vw] lg:text-[1.8vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'" style="line-height: 0.9;">
-      Cámara de<br />
-      <span class="font-montserrat-bold transition-all duration-300" :class="isScrolled ? 'sm:text-[2.4vw] lg:text-[2vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'">Senadores</span>
-    </h1>
-  </div>
-</NuxtLink>
+          <!-- Título - Tablet/Desktop -->
+          <div class="hidden sm:block flex-shrink-0 text-left transition-all duration-300">
+            <h1 class="font-bold text-senado-primary leading-tight font-montserrat-light transition-all duration-300" :class="isScrolled ? 'sm:text-[2vw] lg:text-[1.8vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'" style="line-height: 0.9;">
+              Cámara de<br />
+              <span class="font-montserrat-bold transition-all duration-300" :class="isScrolled ? 'sm:text-[2.4vw] lg:text-[2vw]' : 'sm:text-[3.2vw] lg:text-[2.6vw]'">Senadores</span>
+            </h1>
+          </div>
+        </NuxtLink>
 
         <div class="flex-shrink-0 w-[6vw] sm:w-[3vw] lg:w-[2vw]"></div>
 
@@ -185,7 +185,7 @@
           </div>
           <nav class="p-4 space-y-6">
             <!-- ========================================== -->
-            <!-- INSTITUCIONAL                              -->
+            <!-- INSTITUCIONAL (Sección 8)                  -->
             <!-- ========================================== -->
             <div 
               @mouseenter="handleSubmenuHoverEnter('institucional')"
@@ -209,12 +209,45 @@
                 class="ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
               >
+                <NuxtLink to="/informacion-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Información de la Institución</NuxtLink>
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
+                <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
                 <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
+                <NuxtLink to="/objetivos-institucionales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Objetivos Institucionales</NuxtLink>
                 <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
                 <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Marco Normativo</NuxtLink>
                 <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Galeria de Imagenes</NuxtLink>
-                <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PLAN ESTRATÉGICO Y POA (Sección 9)         -->
+            <!-- ========================================== -->
+            <div 
+              @mouseenter="handleSubmenuHoverEnter('planEstrategico')"
+              @mouseleave="handleSubmenuHoverLeave('planEstrategico')"
+              class="menu-item-wrapper"
+            >
+              <div 
+                @click="toggleSubmenu('planEstrategico', null)"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Plan Estratégico y POA</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.planEstrategico ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div 
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.planEstrategico ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/plan-estrategico-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plan Estratégico y POA</NuxtLink>
+                <NuxtLink to="/seguimiento-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Seguimiento y Evaluación al POA</NuxtLink>
+                <NuxtLink to="/mapa-procesos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Flujos de Procesos (Mapa)</NuxtLink>
               </div>
             </div>
 
@@ -249,8 +282,6 @@
                 <NuxtLink to="/cursos-capacitacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Cursos y Capacitación</NuxtLink>
               </div>
             </div>
-
-
 
             <!-- ========================================== -->
             <!-- FACULTADES LEGISLATIVAS                    -->
@@ -377,7 +408,7 @@
               </div>
               <div 
                 class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
-                :class="submenus.auditoriaTransparencia ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
+                :class="submenus.auditoriaTransparencia ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <div class="">
                   <NuxtLink 
@@ -386,6 +417,16 @@
                     @click="closeMenu"
                   >
                     • Auditorías Ejecutadas
+                  </NuxtLink>
+                </div>
+
+                <div class="">
+                  <NuxtLink 
+                    to="/presupuesto" 
+                    class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" 
+                    @click="closeMenu"
+                  >
+                    • Presupuesto y Ejecución
                   </NuxtLink>
                 </div>
 
@@ -413,6 +454,7 @@
                 </div>
               </div>
             </div>
+
             <!-- ========================================== -->
             <!-- COMUNICACIÓN                              -->
             <!-- ========================================== -->
@@ -566,6 +608,7 @@ export default {
       defaultAvatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E',
       submenus: {
         institucional: false,
+        planEstrategico: false,
         tramites: false,
         comunicacion: false,
         legislativa: false,
@@ -591,7 +634,7 @@ export default {
       isMenuHoverOpen: false,
       redesHoverTimer: null,
       closeMenuTimer: null,
-      scrollThreshold: 10, // umbral bajo para evitar jitter
+      scrollThreshold: 10,
       scrollRaf: null
     }
   },
@@ -626,15 +669,12 @@ export default {
     }
   },
   methods: {
-    // ==========================================
-    // DETECTAR TAMAÑO DE PANTALLA
-    // ==========================================
     checkScreenSize() {
       if (process.client) {
         const wasTabletOrDesktop = this.isTabletOrDesktop
         
         this.isDesktop = window.innerWidth > 1024
-        this.isTabletOrDesktop = window.innerWidth >= 640 // sm: en adelante
+        this.isTabletOrDesktop = window.innerWidth >= 640
         this.isMobile = window.innerWidth < 640
         
         if (!this.isTabletOrDesktop && wasTabletOrDesktop) {
@@ -650,17 +690,11 @@ export default {
         }
       }
     },
-    // ==========================================
-    // SCROLL - CORREGIDO
-    // ==========================================
     handleScroll() {
       if (typeof window === 'undefined') return
-      // Usar requestAnimationFrame para agrupar eventos de scroll
       if (this.scrollRaf) return
       this.scrollRaf = requestAnimationFrame(() => {
         const y = window.scrollY || window.pageYOffset || 0
-        // Histéresis: se activa al pasar el umbral, se desactiva solo al volver casi al tope
-        // Esto evita el jitter cuando el scroll oscila cerca del umbral
         if (!this.isScrolled && y > this.scrollThreshold) {
           this.isScrolled = true
         } else if (this.isScrolled && y <= Math.max(0, this.scrollThreshold / 2)) {
@@ -669,9 +703,6 @@ export default {
         this.scrollRaf = null
       })
     },
-    // ==========================================
-    // REDES SOCIALES - HOVER (funciona desde sm:)
-    // ==========================================
     handleRedesHoverEnter() {
       if (!this.isTabletOrDesktop) return
       if (this.redesHoverTimer) {
@@ -687,9 +718,6 @@ export default {
         this.redesHoverTimer = null
       }, 300)
     },
-    // ==========================================
-    // MENÚ LATERAL - HOVER (solo desktop > 1024px)
-    // ==========================================
     toggleMenu() {
       console.log('🔄 toggleMenu - click en botón')
       this.clearAllTimers()
@@ -733,6 +761,7 @@ export default {
       
       const mainMenuKeys = [
         'institucional', 
+        'planEstrategico',
         'tramites', 
         'comunicacion', 
         'legislativa', 
@@ -756,6 +785,7 @@ export default {
       if (parentKey) {
         const parentSubmenus = {
           'institucional': ['funciones', 'auditoriaInstitucional', 'transparenciaInstitucional'],
+          'planEstrategico': [],
           'tramites': [],
           'comunicacion': [],
           'legislativa': ['fiscalizacion', 'gestion'],
@@ -778,6 +808,7 @@ export default {
     getChildKeys(mainKey) {
       const map = {
         'institucional': ['funciones', 'auditoriaInstitucional', 'transparenciaInstitucional'],
+        'planEstrategico': [],
         'tramites': [],
         'comunicacion': [],
         'legislativa': ['fiscalizacion', 'gestion'],
@@ -942,9 +973,6 @@ export default {
         }, 2000)
       }
     },
-    // ==========================================
-    // BÚSQUEDA
-    // ==========================================
     generarSlug(nombre) {
       if (!nombre) return ''
       return nombre

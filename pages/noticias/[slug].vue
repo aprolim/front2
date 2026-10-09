@@ -338,6 +338,18 @@ const router = useRouter()
 
 const API_BASE_URL = 'https://demoback.senado.gob.bo/api'
 
+// ============================================
+// 🔥 NUEVO: Normalizar URLs HTTP → HTTPS
+// Evita el warning de Mixed Content en producción
+// ============================================
+const normalizarUrl = (url) => {
+  if (!url) return url
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://')
+  }
+  return url
+}
+
 const windowLocation = ref('')
 const currentIndex = ref(0)
 const imagenesCarrusel = ref([])
@@ -377,7 +389,8 @@ const { data: noticiaData, pending, error, refresh } = await useAsyncData(
       
       if (noticia.featuredImage?.url) {
         imagenes.push({
-          url: noticia.featuredImage.url,
+          // 🔥 APLICAR normalizarUrl
+          url: normalizarUrl(noticia.featuredImage.url),
           alt: noticia.featuredImage.alt || noticia.title,
           caption: noticia.featuredImage.caption || noticia.featuredImage.name || noticia.title,
           orientation: 'horizontal'
@@ -387,7 +400,8 @@ const { data: noticiaData, pending, error, refresh } = await useAsyncData(
       if (noticia.gallery && Array.isArray(noticia.gallery)) {
         noticia.gallery.forEach((img, idx) => {
           imagenes.push({
-            url: img.url,
+            // 🔥 APLICAR normalizarUrl
+            url: normalizarUrl(img.url),
             alt: img.alt || noticia.title,
             caption: img.caption || img.name || `Imagen ${idx + 1}`,
             orientation: 'horizontal'
@@ -436,15 +450,18 @@ const noticiaValida = computed(() => {
 // ============================================
 const obtenerImagenOG = () => {
   if (imagenesCarrusel.value && imagenesCarrusel.value.length > 0) {
-    return imagenesCarrusel.value[0].url
+    // 🔥 APLICAR normalizarUrl (por seguridad, ya vienen normalizadas)
+    return normalizarUrl(imagenesCarrusel.value[0].url)
   }
   
   const noticia = noticiaData.value?.noticia
   if (noticia?.featuredImage?.url) {
-    return noticia.featuredImage.url
+    // 🔥 APLICAR normalizarUrl
+    return normalizarUrl(noticia.featuredImage.url)
   }
   if (noticia?.gallery && noticia.gallery.length > 0) {
-    return noticia.gallery[0].url
+    // 🔥 APLICAR normalizarUrl
+    return normalizarUrl(noticia.gallery[0].url)
   }
   
   return '/images/default-news.jpg'
@@ -507,7 +524,8 @@ useHead({
         '@type': 'NewsArticle',
         'headline': seoData.value.title,
         'description': seoData.value.description,
-        'image': seoData.value.image,
+        // 🔥 APLICAR normalizarUrl
+        'image': normalizarUrl(seoData.value.image),
         'url': seoData.value.url,
         'publisher': {
           '@type': 'Organization',

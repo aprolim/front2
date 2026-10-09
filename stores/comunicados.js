@@ -4,6 +4,41 @@ import { defineStore } from 'pinia'
 const CACHE_TTL = 60 * 1000
 const API_BASE = 'https://demoback.senado.gob.bo/api'
 
+// ============================================
+// 🔥 NUEVO: Normalizar URLs HTTP → HTTPS
+// ============================================
+const normalizarUrl = (url) => {
+  if (!url) return url
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://')
+  }
+  return url
+}
+
+// ============================================
+// 🔥 NUEVO: Normalizar comunicado completo
+// Aplica normalizarUrl a imagen y pdf
+// ============================================
+const normalizarComunicado = (comunicado) => {
+  if (!comunicado) return null
+
+  return {
+    ...comunicado,
+    imagen: comunicado.imagen
+      ? {
+          ...comunicado.imagen,
+          url: normalizarUrl(comunicado.imagen.url),
+        }
+      : null,
+    pdf: comunicado.pdf
+      ? {
+          ...comunicado.pdf,
+          url: normalizarUrl(comunicado.pdf.url),
+        }
+      : null,
+  }
+}
+
 export const useComunicadosStore = defineStore('comunicados', {
   state: () => ({
     comunicado: null,
@@ -45,7 +80,11 @@ export const useComunicadosStore = defineStore('comunicados', {
       }
       if (this._inFlight) return this._inFlight
       this._inFlight = this.load()
-      try { await this._inFlight } finally { this._inFlight = null }
+      try {
+        await this._inFlight
+      } finally {
+        this._inFlight = null
+      }
     },
 
     async load() {
@@ -69,7 +108,8 @@ export const useComunicadosStore = defineStore('comunicados', {
         if (!response.ok) throw new Error(`HTTP ${response.status}`)
 
         const result = await response.json()
-        this.comunicado = result.data || null
+        // 🔥 APLICAR normalizarComunicado
+        this.comunicado = result.data ? normalizarComunicado(result.data) : null
         this.lastFetch = Date.now()
         console.log('✅ [Comunicados] Actualizado')
       } catch (err) {

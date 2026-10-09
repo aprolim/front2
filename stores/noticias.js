@@ -5,6 +5,18 @@ const CACHE_TTL = 3 * 60 * 1000 // 3 minutos
 const API_BASE = 'https://demoback.senado.gob.bo/api'
 
 // ============================================
+// 🔥 NUEVO: Normalizar URLs HTTP → HTTPS
+// Evita el warning de Mixed Content en producción
+// ============================================
+const normalizarUrl = (url) => {
+  if (!url) return url
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://')
+  }
+  return url
+}
+
+// ============================================
 // Helper: transformar noticia de la API
 // ============================================
 const transformarNoticia = (item) => {
@@ -23,8 +35,14 @@ const transformarNoticia = (item) => {
     descripcion2: textoPlano.length > 200 ? textoPlano.substring(150, 350) : '',
     fecha: item.publishedAt || item.createdAt,
     publishedAt: item.publishedAt || item.createdAt,
-    imagen: item.featuredImage?.url || item.imagen,
-    featuredImage: item.featuredImage,
+    // 🔥 APLICAR normalizarUrl
+    imagen: normalizarUrl(item.featuredImage?.url || item.imagen),
+    featuredImage: item.featuredImage
+      ? {
+          ...item.featuredImage,
+          url: normalizarUrl(item.featuredImage.url),
+        }
+      : null,
     categoria: item.category,
     importante: esImportante,
     tipo: item.type || 'noticia',
@@ -111,11 +129,12 @@ export const useNoticiasStore = defineStore('noticias', {
 
       try {
         // 🔥 Cargar importantes y últimas en paralelo, cada una independiente
+        // 🔥 CAMBIO: limit=100 → limit=8 (menos datos, respuesta más rápida)
         const [importantesRes, ultimasRes] = await Promise.allSettled([
-          fetch(`${API_BASE}/content?status=published&category=importante&limit=100`, {
+          fetch(`${API_BASE}/content?status=published&category=importante&limit=8`, {
             headers: { 'Accept': 'application/json' },
           }),
-          fetch(`${API_BASE}/content?status=published&category=noticia&limit=100`, {
+          fetch(`${API_BASE}/content?status=published&category=noticia&limit=8`, {
             headers: { 'Accept': 'application/json' },
           }),
         ])

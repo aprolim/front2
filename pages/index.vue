@@ -4,7 +4,19 @@
     <ClientOnly>
       <HeroVideo />
       <template #fallback>
-        <div class="hero-video-wrapper relative w-full overflow-hidden bg-black" />
+        <!-- 🔥 FALLBACK: misma altura que el hero real para evitar layout shift -->
+        <div 
+          class="relative w-full overflow-hidden bg-black"
+          style="height: calc(100vh - 80px); min-height: 400px; max-height: 100vh;"
+        >
+          <div class="absolute inset-0 flex items-center justify-center">
+            <img 
+              src="/images/LogoDorado.svg" 
+              alt="Senado de Bolivia" 
+              class="h-[20vw] md:h-[8vw] w-auto opacity-30 animate-pulse"
+            />
+          </div>
+        </div>
       </template>
     </ClientOnly>
 
@@ -19,7 +31,18 @@
           <AgendaSesiones />
         </div>
         <template #fallback>
-          <div class="mt-12 h-96" />
+          <!-- 🔥 SKELETON: imita la estructura del calendario -->
+          <div class="mt-12 bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+            <div class="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <div v-for="i in 7" :key="i" class="h-12 bg-gray-200 rounded"></div>
+              </div>
+              <div class="space-y-3">
+                <div v-for="i in 4" :key="i" class="h-16 bg-gray-200 rounded-lg"></div>
+              </div>
+            </div>
+          </div>
         </template>
       </ClientOnly>
 
@@ -35,7 +58,29 @@
       <ClientOnly>
         <NoticiasDinamicas />
         <template #fallback>
-          <div class="min-h-[400px]" />
+          <!-- 🔥 SKELETON: imita la estructura de noticias -->
+          <div class="flex flex-col md:flex-row gap-6 animate-pulse">
+            <!-- Columna principal -->
+            <div class="md:w-[70%]">
+              <div class="w-full bg-gray-200 rounded-t-lg aspect-[16/9]"></div>
+              <div class="w-full h-4 bg-gray-300 mt-2"></div>
+              <div class="mt-4 space-y-2">
+                <div class="h-8 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+              </div>
+            </div>
+            <!-- Columna secundaria -->
+            <div class="md:w-[30%] space-y-4">
+              <div v-for="i in 3" :key="i" class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="h-2 bg-gray-300"></div>
+                <div class="p-4 space-y-2">
+                  <div class="h-4 bg-gray-200 rounded w-full"></div>
+                  <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div class="h-3 bg-gray-200 rounded w-1/3 mt-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </ClientOnly>
 
@@ -203,14 +248,30 @@ const downloadPDF = () => {
 // LIFECYCLE
 // ==========================================
 onMounted(() => {
-  // 🔥 Disparar todas las cargas en paralelo (idempotente)
-  // Cada store decide si usar caché o refetch
-  // Nada bloquea la UI porque no hay await
+  // ==========================================
+  // 🔥 CRÍTICO: lo que se ve en el primer viewport
+  // ==========================================
   sessionStore.ensureLoaded()
   statsStore.ensureLoaded()
   liveStore.ensureLoaded()
-  peticionesStore.ensureLoaded()
-  noticiasStore.ensureLoaded()
+
+  // ==========================================
+  // 🔥 SECUNDARIO: se ve al hacer scroll.
+  // Se difiere con requestIdleCallback para no
+  // competir con las peticiones críticas.
+  // ==========================================
+  const cargarSecundarios = () => {
+    peticionesStore.ensureLoaded()
+    noticiasStore.ensureLoaded()
+  }
+
+  if (typeof window !== 'undefined') {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(cargarSecundarios, { timeout: 2000 })
+    } else {
+      setTimeout(cargarSecundarios, 800)
+    }
+  }
 
   // Restaurar scroll si había uno guardado
   if (process.client) {

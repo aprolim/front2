@@ -13,6 +13,40 @@
       </div>
 
       <!-- ========================================== -->
+      <!-- 🔥 NUEVA SECCIÓN: RESEÑA INSTITUCIONAL     -->
+      <!-- (Párrafos del documento oficial)           -->
+      <!-- ========================================== -->
+      <div class="bg-senado-gold-lightest rounded-2xl p-8 md:p-10 mb-20 border-l-4 border-senado-primary">
+        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
+          📖 Reseña Institucional
+        </div>
+        <div class="prose prose-lg text-gray-700 leading-relaxed space-y-4 max-w-none">
+          <p>
+            La Cámara de Senadores forma parte de la trayectoria institucional del Estado boliviano
+            y tiene sus antecedentes en la organización política y legislativa surgida con la
+            independencia de Bolivia en <strong>1825</strong>. En <strong>1826</strong>, con la aprobación
+            de la primera Constitución Política del Estado, se establecieron las bases para la
+            organización y funcionamiento de las instituciones legislativas del nuevo Estado.
+          </p>
+          <p>
+            Con la Constitución Política del Estado de <strong>2009</strong>, se estableció la
+            <strong>Asamblea Legislativa Plurinacional</strong>, conformada por la Cámara de Diputados
+            y la Cámara de Senadores, consolidando un nuevo marco institucional para el ejercicio
+            de las funciones legislativa y fiscalizadora. En este marco, la Cámara de Senadores
+            ejerce la representación departamental y desarrolla sus atribuciones constitucionales
+            y legales en materia de legislación, fiscalización y gestión institucional.
+          </p>
+          <p>
+            En la actualidad, la Cámara de Senadores enfrenta el desafío de fortalecer la calidad
+            de la producción legislativa, la eficacia de la fiscalización y la gestión institucional,
+            promoviendo la innovación, la transformación digital, la transparencia, el acceso
+            oportuno y cercano a la información, gestión orientada a resultados y a la generación
+            de valor público.
+          </p>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
       <!-- SECCIÓN 1: RESEÑA HISTÓRICA               -->
       <!-- ========================================== -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mb-20">
