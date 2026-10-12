@@ -4,12 +4,7 @@
     <section class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white">
       <div class="container mx-auto px-4 max-w-[90vw] py-[5vw] sm:py-12">
         <div class="text-center">
-          <div class="inline-flex items-center bg-white/10 rounded-full gap-[1.5vw] sm:gap-2 px-[3vw] sm:px-4 py-[1vw] sm:py-1.5 mb-[2vw] sm:mb-3">
-            <Icon name="mdi:chart-timeline-variant" class="text-senado-gold text-[4.5vw] sm:text-xl" />
-            <span class="text-white/90 tracking-wider font-medium text-[2.4vw] sm:text-sm">
-              SECCIÓN 9
-            </span>
-          </div>
+
           <h1 class="font-bold leading-tight text-[9vw] sm:text-4xl md:text-5xl">
             Plan Estratégico y <span class="text-senado-gold">POA</span>
           </h1>
@@ -35,7 +30,7 @@
             <Icon name="mdi:map-marker-path" class="text-white text-[6vw] sm:text-2xl" />
           </div>
           <div>
-            <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Sección 9.1</span>
+
             <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Plan Estratégico Institucional</h2>
           </div>
         </div>
@@ -76,7 +71,7 @@
             <Icon name="mdi:clipboard-list" class="text-white text-[6vw] sm:text-2xl" />
           </div>
           <div>
-            <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Sección 9.2</span>
+
             <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Programación Operativo Anual (POA)</h2>
           </div>
         </div>
@@ -117,76 +112,20 @@
             </p>
           </div>
 
-          <!-- Botón de descarga del Excel -->
+          <!-- Botón de descarga del PDF -->
           <div class="pt-[3vw] sm:pt-4 border-t border-gray-200">
             <a 
-              href="/pdfs/planificacion/POA-2026.xlsx" 
+              href="/pdfs/planificacion/POA-2026.pdf" 
               download
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-[2vw] sm:gap-2 bg-[#1a3a6c] text-white rounded-lg hover:bg-[#0f2347] transition-colors px-[4vw] sm:px-5 py-[2.4vw] sm:py-2.5 text-[2.7vw] sm:text-sm font-semibold"
+              class="inline-flex items-center gap-[2vw] sm:gap-2 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors px-[4vw] sm:px-5 py-[2.4vw] sm:py-2.5 text-[2.7vw] sm:text-sm font-semibold"
             >
-              <Icon name="mdi:microsoft-excel" class="text-[4vw] sm:text-lg" />
-              Descargar POA 2026 (Excel)
+              <Icon name="mdi:file-pdf-box" class="text-[4vw] sm:text-lg" />
+              Descargar POA 2026 (PDF)
             </a>
           </div>
         </div>
-      </div>
-
-      <!-- 9.3 Seguimiento y Evaluación al POA -->
-      <div class="mb-[6vw] sm:mb-10">
-        <div class="flex items-center gap-[2vw] sm:gap-3 mb-[3vw] sm:mb-4">
-          <div class="w-[10vw] sm:w-12 h-[10vw] sm:h-12 rounded-xl bg-gradient-to-br from-[#8f1522] to-[#611717] flex items-center justify-center flex-shrink-0">
-            <Icon name="mdi:chart-line" class="text-white text-[6vw] sm:text-2xl" />
-          </div>
-          <div>
-            <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Sección 9.3</span>
-            <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Seguimiento y Evaluación al POA</h2>
-          </div>
-        </div>
-        <NuxtLink to="/seguimiento-poa" 
-                  class="block bg-white rounded-xl shadow-md border border-gray-100 p-[4vw] sm:p-6 hover:shadow-lg transition-shadow group">
-          <div class="flex items-center justify-between gap-[3vw] sm:gap-4">
-            <div class="flex-1">
-              <p class="text-gray-700 text-[2.7vw] sm:text-base leading-relaxed mb-[2vw] sm:mb-2">
-                Documento que contiene los parámetros de seguimiento y evaluación a las actividades planteadas en el POA. Incluye el avance físico y financiero por Acciones de Corto Plazo, con reportes trimestrales.
-              </p>
-              <span class="inline-flex items-center gap-[1.5vw] sm:gap-2 text-senado-primary font-semibold text-[2.7vw] sm:text-sm">
-                Ver seguimiento 1T y 2T 2026
-                <Icon name="mdi:arrow-right" class="text-[3.6vw] sm:text-base group-hover:translate-x-1 transition-transform" />
-              </span>
-            </div>
-            <Icon name="mdi:arrow-right-circle" class="text-senado-primary/30 text-[10vw] sm:text-5xl flex-shrink-0" />
-          </div>
-        </NuxtLink>
-      </div>
-
-      <!-- 9.4 Flujos de Procesos (Mapa de Procesos) -->
-      <div class="mb-[6vw] sm:mb-10">
-        <div class="flex items-center gap-[2vw] sm:gap-3 mb-[3vw] sm:mb-4">
-          <div class="w-[10vw] sm:w-12 h-[10vw] sm:h-12 rounded-xl bg-gradient-to-br from-[#4a4a4a] to-[#2a2a2a] flex items-center justify-center flex-shrink-0">
-            <Icon name="mdi:sitemap" class="text-white text-[6vw] sm:text-2xl" />
-          </div>
-          <div>
-            <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Sección 9.4</span>
-            <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Flujos de Procesos</h2>
-          </div>
-        </div>
-        <NuxtLink to="/mapa-procesos" 
-                  class="block bg-white rounded-xl shadow-md border border-gray-100 p-[4vw] sm:p-6 hover:shadow-lg transition-shadow group">
-          <div class="flex items-center justify-between gap-[3vw] sm:gap-4">
-            <div class="flex-1">
-              <p class="text-gray-700 text-[2.7vw] sm:text-base leading-relaxed mb-[2vw] sm:mb-2">
-                Representación gráfica de los principales procesos que desarrolla la Cámara de Senadores: procesos legislativos, resultados institucionales, beneficiarios, valor público y procesos administrativos.
-              </p>
-              <span class="inline-flex items-center gap-[1.5vw] sm:gap-2 text-senado-primary font-semibold text-[2.7vw] sm:text-sm">
-                Ver Mapa de Procesos
-                <Icon name="mdi:arrow-right" class="text-[3.6vw] sm:text-base group-hover:translate-x-1 transition-transform" />
-              </span>
-            </div>
-            <Icon name="mdi:arrow-right-circle" class="text-senado-primary/30 text-[10vw] sm:text-5xl flex-shrink-0" />
-          </div>
-        </NuxtLink>
       </div>
 
       <!-- Botón volver -->

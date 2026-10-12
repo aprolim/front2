@@ -56,13 +56,10 @@
               <div class="flex-1">
                 <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Objetivo Estratégico Institucional 1</span>
                 <h2 class="font-bold text-senado-primary text-[4vw] sm:text-xl mt-[1vw] sm:mt-1 mb-[2.5vw] sm:mb-3">
-                  Consolidar la arquitectura de nuestro nuevo Estado al 2025
-                </h2>
-                <p class="text-gray-700 text-[2.7vw] sm:text-base leading-relaxed text-justify">
-                  A través de la aprobación, sanción o rechazo del 100% de los proyectos de ley,
+                  Consolidar la arquitectura de nuestro nuevo Estado al 2025. A través de la aprobación, sanción o rechazo del 100% de los proyectos de ley,
                   instrumentos de gestión parlamentaria y fiscalizar de manera democrática y
                   participativa.
-                </p>
+                </h2>
               </div>
             </div>
           </div>
@@ -80,12 +77,9 @@
               <div class="flex-1">
                 <span class="text-senado-primary/60 text-[2.1vw] sm:text-xs font-bold tracking-wider uppercase">Objetivo Estratégico Institucional 2</span>
                 <h2 class="font-bold text-senado-primary text-[4vw] sm:text-xl mt-[1vw] sm:mt-1 mb-[2.5vw] sm:mb-3">
-                  Administrar la Cámara de Senadores de manera eficiente, eficaz y transparente
-                </h2>
-                <p class="text-gray-700 text-[2.7vw] sm:text-base leading-relaxed text-justify">
-                  A través de la implementación progresiva de herramientas TIC's y mejoramiento
+                  Administrar la Cámara de Senadores de manera eficiente, eficaz y transparente, a través de la implementación progresiva de herramientas TIC's y mejoramiento
                   operativo de sistemas de gestión Pública.
-                </p>
+                </h2>
               </div>
             </div>
           </div>

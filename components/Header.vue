@@ -209,7 +209,6 @@
                 class="ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden bg-black/10"
                 :class="submenus.institucional ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'"
               >
-                <NuxtLink to="/informacion-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Información de la Institución</NuxtLink>
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision, Valores y Principios</NuxtLink>
                 <NuxtLink to="/antecedentes-historicos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Reseña histórica</NuxtLink>
                 <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
