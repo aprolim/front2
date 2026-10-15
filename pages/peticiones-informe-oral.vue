@@ -1,11 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
-    <div class="w-[90%] max-w-7xl">
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="w-[95%] max-w-7xl mx-auto">
+
       <!-- Botón volver -->
       <div class="mb-6">
-        <NuxtLink 
-          to="/" 
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-[#611717] transition-colors text-sm"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -14,120 +15,149 @@
         </NuxtLink>
       </div>
 
-      <!-- ========================================== -->
-      <!-- TABLA DE PETICIONES DE INFORME ORAL       -->
-      <!-- ========================================== -->
-      <div class="management-container">
-        <!-- Header -->
-        <div class="management-header">
-          <div class="header-left">
-            <h2 class="management-title">
-              Peticiones de Informe Oral
-              <span v-if="!loading && !error" class="badge">{{ totalItems }} registros</span>
-            </h2>
-          </div>
-          
-          <div class="header-controls">
-            <div class="rows-per-page">
-              <span>Mostrar</span>
-              <select v-model.number="itemsPorPagina" @change="cambiarFilasPorPagina">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <span>filas</span>
-            </div>
+      <!-- Encabezado -->
+      <div class="mb-6">
+        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+          🔍 Fiscalización
+        </div>
+        <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">
+          Peticiones de Informe Oral
+        </h1>
+        <p class="text-gray-600 mt-1 text-sm">
+          Registro oficial de peticiones de informe oral de la Cámara de Senadores
+        </p>
+      </div>
 
-            <div class="search-box">
-              <input 
-                type="text" 
-                v-model="terminoBusquedaLocal"
-                @keyup.enter="aplicarBusquedaLocal"
-                placeholder="Buscar por título, resumen o destinatario..."
-                class="search-input"
-              >
-              <button @click="aplicarBusquedaLocal" class="search-button" :disabled="loading">
-                <span class="search-icon">🔍</span>
-              </button>
-              <button 
-                v-if="terminoBusquedaLocal" 
-                @click="limpiarBusquedaLocal" 
-                class="clear-button"
-                title="Limpiar búsqueda"
-              >
-                ✕
-              </button>
-            </div>
+      <!-- Filtros -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-wrap gap-3 items-center">
+        <div class="flex-1 min-w-[250px]">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              v-model="filters.search"
+              @input="onSearchInput"
+              type="text"
+              placeholder="Buscar por código, asunto, peticionario o destinatario..."
+              class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#611717] focus:border-transparent outline-none"
+            />
           </div>
         </div>
+        <select
+          v-model="filters.gestion"
+          @change="onFilterChange"
+          class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#611717] outline-none"
+        >
+          <option value="">Todas las gestiones</option>
+          <option v-for="year in aniosDisponibles" :key="year" :value="year">
+            {{ year }}
+          </option>
+        </select>
+        <button
+          @click="resetFilters"
+          class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+        >
+          Limpiar
+        </button>
+      </div>
 
-        <!-- Estado de carga -->
-        <div v-if="loading" class="loading-state">
-          <div class="spinner"></div>
-          <p>Cargando peticiones de informe...</p>
-        </div>
+      <!-- Contador -->
+      <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
+        Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong>
+        de <strong class="text-[#611717]">{{ total }}</strong>
+        peticione{{ total !== 1 ? 's' : '' }}
+        <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+      </div>
 
-        <!-- Estado de error -->
-        <div v-else-if="error" class="error-state">
-          <span class="error-icon">⚠️</span>
-          <p>{{ error }}</p>
-          <button @click="cargarDatosCompletos" class="retry-button">Reintentar</button>
-        </div>
+      <!-- Loading -->
+      <div v-if="loading" class="bg-white rounded-lg shadow-sm py-16 text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#611717] mx-auto"></div>
+        <p class="mt-4 text-gray-600 text-sm">Cargando peticiones...</p>
+      </div>
 
-        <!-- Tabla -->
-        <div v-else class="table-responsive">
-          <table class="management-table">
-            <thead>
+      <!-- Error -->
+      <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <p class="text-red-700 font-medium text-sm">{{ error }}</p>
+        <button
+          @click="cargarDocumentos"
+          class="mt-3 px-4 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] text-sm"
+        >
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Sin resultados -->
+      <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
+        <div class="text-5xl mb-3">📭</div>
+        <h3 class="text-lg font-medium text-gray-800 mb-1">
+          No hay peticiones
+        </h3>
+        <p class="text-gray-500 text-sm">
+          {{ tieneFiltros ? 'Prueba con otros filtros.' : 'Aún no hay peticiones registradas.' }}
+        </p>
+      </div>
+
+      <!-- Tabla -->
+      <div v-else class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-[#611717] text-white">
               <tr>
-                <th @click="ordenarPor('titulo')" class="sortable">
-                  Título / Número
-                  <span class="sort-icon">{{ getSortIcon('titulo') }}</span>
-                </th>
-                <th @click="ordenarPor('resumen')" class="sortable">
-                  Resumen / Asunto
-                  <span class="sort-icon">{{ getSortIcon('resumen') }}</span>
-                </th>
-                <th class="actions-column">Documento</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código o Nombre</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Ingreso</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Peticionario</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Asunto</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Destinatario</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Tipo de Destinatario</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Remisión al Destinatario</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Realización</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Reprogramación</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Realización (Final)</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Observaciones</th>
+                <th class="px-3 py-3 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Archivo</th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="item in itemsPaginados" :key="item.id" class="management-row">
-                <td class="title-cell">
-                  <div class="titulo-principal">{{ item.titulo }}</div>
-                  <div class="numero-ley">ID: {{ item.id }}</div>
-                  <div v-if="item.fecha_recepcion" class="fecha-info">
-                    <span class="fecha-label">Recibido:</span> {{ formatearFecha(item.fecha_recepcion) }}
+            <tbody class="bg-white divide-y divide-gray-100">
+              <tr v-for="doc in documentos" :key="doc._id" class="hover:bg-gray-50 transition-colors">
+                <td class="px-3 py-3 font-bold text-[#611717] whitespace-nowrap">{{ doc.numero }}</td>
+                <td class="px-3 py-3 font-mono text-xs text-gray-800 whitespace-nowrap">{{ doc.codigo }}</td>
+                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <td class="px-3 py-3 text-gray-700 min-w-[180px]">{{ doc.peticionario || '—' }}</td>
+                <td class="px-3 py-3 text-gray-700 min-w-[320px] max-w-md">
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">
+                    {{ doc.asunto }}
                   </div>
                 </td>
-                <td class="asunto-cell">
-                  <div class="asunto-texto">{{ truncarTexto(item.resumen, 80) }}</div>
-                  <div v-if="item.tipo_destinatario" class="destinatario-info">
-                    <span class="destinatario-label">Destinatario:</span> {{ item.tipo_destinatario }}
+                <td class="px-3 py-3 text-gray-700 min-w-[180px]">{{ doc.destinatario || '—' }}</td>
+                <td class="px-3 py-3 whitespace-nowrap">
+                  <span v-if="doc.tipoDestinatario" class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
+                    {{ doc.tipoDestinatario }}
+                  </span>
+                  <span v-else class="text-gray-300">—</span>
+                </td>
+                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">{{ formatearFecha(doc.fechaRemisionDestinatario) }}</td>
+                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">{{ formatearFecha(doc.fechaRealizacion) }}</td>
+                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">{{ formatearFecha(doc.fechaReprogramacion) }}</td>
+                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">{{ formatearFecha(doc.fechaRealizacionFinal) }}</td>
+                <td class="px-3 py-3 text-gray-700 min-w-[140px]">
+                  <div class="line-clamp-2 text-xs" :title="doc.observacion">
+                    {{ doc.observacion || '—' }}
                   </div>
                 </td>
-                <td class="actions-cell">
-                  <a 
-                    v-if="item.doc_archivo"
-                    :href="`https://apisi.senado.gob.bo/${item.doc_archivo}`" 
+                <td class="px-3 py-3 text-center whitespace-nowrap">
+                  <a
+                    v-if="doc.archivo && doc.archivo.url"
+                    :href="doc.archivo.url"
                     target="_blank"
-                    class="btn-documento"
-                    title="Ver documento PDF"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs font-medium transition-colors"
+                    title="Ver PDF"
                   >
-                    <span class="btn-icon">📄</span>
-                    <span class="btn-text">PDF</span>
+                    📄 Ver PDF
                   </a>
-                  <span v-else class="sin-documento">Sin documento</span>
-                </td>
-              </tr>
-              
-              <!-- Fila vacía -->
-              <tr v-if="itemsFiltrados.length === 0">
-                <td colspan="3" class="empty-state">
-                  <p>No se encontraron peticiones de informe</p>
+                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
                 </td>
               </tr>
             </tbody>
@@ -135,42 +165,25 @@
         </div>
 
         <!-- Paginación -->
-        <div v-if="itemsFiltrados.length > 0 && !loading" class="table-footer">
-          <div class="pagination-info">
-            Mostrando {{ (paginaActual - 1) * itemsPorPagina + 1 }} - 
-            {{ Math.min(paginaActual * itemsPorPagina, itemsFiltrados.length) }} de 
-            {{ itemsFiltrados.length }} peticiones
-          </div>
-          
-          <div class="pagination-controls">
-            <button 
-              class="pagination-btn" 
-              :disabled="paginaActual === 1"
-              @click="cambiarPagina(paginaActual - 1)"
-            >
-              ← Anterior
-            </button>
-            
-            <div class="pagination-numbers">
-              <button 
-                v-for="page in paginasMostradas" 
-                :key="page"
-                class="pagination-number"
-                :class="{ active: page === paginaActual }"
-                @click="cambiarPagina(page)"
-              >
-                {{ page }}
-              </button>
-            </div>
-            
-            <button 
-              class="pagination-btn" 
-              :disabled="paginaActual === totalPaginas"
-              @click="cambiarPagina(paginaActual + 1)"
-            >
-              Siguiente →
-            </button>
-          </div>
+        <div v-if="totalPages > 1" class="px-4 py-3 border-t border-gray-200 flex flex-wrap justify-between items-center gap-3 bg-gray-50">
+          <button
+            @click="prevPage"
+            :disabled="page === 1"
+            class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#611717] hover:text-white hover:border-[#611717] transition-colors"
+          >
+            ← Anterior
+          </button>
+          <span class="text-sm text-gray-600">
+            Página <strong class="text-[#611717]">{{ page }}</strong>
+            de <strong class="text-[#611717]">{{ totalPages }}</strong>
+          </span>
+          <button
+            @click="nextPage"
+            :disabled="page === totalPages"
+            class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#611717] hover:text-white hover:border-[#611717] transition-colors"
+          >
+            Siguiente →
+          </button>
         </div>
       </div>
     </div>
@@ -181,674 +194,173 @@
 import { ref, computed, onMounted } from 'vue'
 
 // ============================================
-// ESTADO
+// SEO
 // ============================================
-const todosLosDatos = ref([])
-const loading = ref(false)
-const error = ref(null)
-const paginaActual = ref(1)
-const itemsPorPagina = ref(10)
-const terminoBusquedaLocal = ref('')
-const busquedaLocalActiva = ref('')
-const orden = ref({
-  columna: 'titulo',
-  direccion: 'desc'
+useHead({
+  title: 'Peticiones de Informe Oral | Senado de Bolivia',
+  meta: [
+    {
+      name: 'description',
+      content: 'Registro oficial de peticiones de informe oral de la Cámara de Senadores de Bolivia.'
+    }
+  ]
 })
 
 // ============================================
-// CONFIGURACIÓN DEL ENDPOINT
+// API
 // ============================================
-const ENDPOINT = {
-  url: 'https://apisi.senado.gob.bo/page/peticion-informe-oral',
-  procesarRespuesta: (data) => {
-    if (data.data && data.data.data) {
-      return data.data.data
-    }
-    return []
-  },
-  obtenerTotalPaginas: (data) => {
-    return data.data?.last_page || 1
-  }
-}
+const config = useRuntimeConfig()
+const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
+
+// ============================================
+// ESTADO
+// ============================================
+const documentos = ref([])
+const loading = ref(false)
+const error = ref(null)
+const page = ref(1)
+const totalPages = ref(1)
+const total = ref(0)
+const itemsPorPagina = 20
+
+const filters = ref({
+  search: '',
+  gestion: ''
+})
+
+let searchTimeout = null
 
 // ============================================
 // COMPUTED
 // ============================================
-const itemsFiltrados = computed(() => {
-  let datos = [...todosLosDatos.value]
-  
-  if (busquedaLocalActiva.value && busquedaLocalActiva.value.trim() !== '') {
-    const termino = busquedaLocalActiva.value.toLowerCase().trim()
-    datos = datos.filter(item => 
-      (item.titulo && item.titulo.toLowerCase().includes(termino)) ||
-      (item.resumen && item.resumen.toLowerCase().includes(termino)) ||
-      (item.tipo_destinatario && item.tipo_destinatario.toLowerCase().includes(termino))
-    )
+const tieneFiltros = computed(() => !!(filters.value.search || filters.value.gestion))
+
+const aniosDisponibles = computed(() => {
+  const actual = new Date().getFullYear()
+  const anios = []
+  for (let y = actual + 1; y >= 2020; y--) {
+    anios.push(y)
   }
-  
-  return datos
-})
-
-const itemsOrdenados = computed(() => {
-  if (!itemsFiltrados.value.length) return []
-  
-  return [...itemsFiltrados.value].sort((a, b) => {
-    if (orden.value.columna === 'titulo') {
-      const textoA = a.titulo || ''
-      const textoB = b.titulo || ''
-      return orden.value.direccion === 'asc' 
-        ? textoA.localeCompare(textoB) 
-        : textoB.localeCompare(textoA)
-    } else if (orden.value.columna === 'resumen') {
-      const resumenA = a.resumen || ''
-      const resumenB = b.resumen || ''
-      return orden.value.direccion === 'asc' 
-        ? resumenA.localeCompare(resumenB) 
-        : resumenB.localeCompare(resumenA)
-    }
-    return 0
-  })
-})
-
-const itemsPaginados = computed(() => {
-  const inicio = (paginaActual.value - 1) * itemsPorPagina.value
-  const fin = inicio + itemsPorPagina.value
-  return itemsOrdenados.value.slice(inicio, fin)
-})
-
-const totalItems = computed(() => {
-  return todosLosDatos.value.length
-})
-
-const totalPaginas = computed(() => {
-  return Math.ceil(itemsFiltrados.value.length / itemsPorPagina.value)
-})
-
-const paginasMostradas = computed(() => {
-  const total = totalPaginas.value
-  const actual = paginaActual.value
-  const rango = 5
-  
-  let inicio = Math.max(1, actual - Math.floor(rango / 2))
-  let fin = Math.min(total, inicio + rango - 1)
-  
-  if (fin - inicio + 1 < rango) {
-    inicio = Math.max(1, fin - rango + 1)
-  }
-  
-  return Array.from({ length: fin - inicio + 1 }, (_, i) => inicio + i)
+  return anios
 })
 
 // ============================================
-// FUNCIONES
+// HELPERS
 // ============================================
 const formatearFecha = (fecha) => {
-  if (!fecha) return ''
-  return new Date(fecha).toLocaleDateString('es-BO')
-}
-
-const truncarTexto = (texto, longitud) => {
-  if (!texto) return ''
-  if (texto.length <= longitud) return texto
-  return texto.substring(0, longitud) + '...'
-}
-
-const obtenerPagina = async (page) => {
-  const url = `${ENDPOINT.url}?page=${page}`
-  
+  if (!fecha) return '—'
   try {
-    const response = await fetch(url)
-    const data = await response.json()
-    return data
-  } catch (err) {
-    console.error(`Error cargando página ${page}:`, err)
-    return null
+    const d = new Date(fecha)
+    if (isNaN(d.getTime())) return '—'
+    return d.toLocaleDateString('es-BO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'UTC'
+    })
+  } catch {
+    return '—'
   }
 }
 
-const cargarDatosCompletos = async () => {
+// ============================================
+// CARGA DE DATOS
+// ============================================
+const cargarDocumentos = async () => {
   loading.value = true
   error.value = null
-  
+
   try {
-    const primeraPagina = await obtenerPagina(1)
-    
-    if (!primeraPagina) {
-      throw new Error('No se pudo obtener la primera página')
+    const params = new URLSearchParams()
+    params.append('page', String(page.value))
+    params.append('limit', String(itemsPorPagina))
+    if (filters.value.search) params.append('search', filters.value.search)
+    if (filters.value.gestion) params.append('gestion', String(filters.value.gestion))
+
+    const url = `${API_BASE_URL}/legislativos/peticion-informe-oral?${params.toString()}`
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Error al cargar las peticiones')
     }
-    
-    const datosPrimeraPagina = ENDPOINT.procesarRespuesta(primeraPagina) || []
-    const todasLasPeticiones = [...datosPrimeraPagina]
-    
-    const totalPaginas = ENDPOINT.obtenerTotalPaginas(primeraPagina)
-    
-    if (totalPaginas > 1) {
-      const paginasRestantes = Array.from(
-        { length: totalPaginas - 1 }, 
-        (_, i) => i + 2
-      )
-      
-      const promesas = paginasRestantes.map(page => obtenerPagina(page))
-      const resultados = await Promise.all(promesas)
-      
-      resultados.forEach(res => {
-        if (res) {
-          const datosPagina = ENDPOINT.procesarRespuesta(res) || []
-          todasLasPeticiones.push(...datosPagina)
-        }
-      })
-    }
-    
-    todosLosDatos.value = todasLasPeticiones
-    paginaActual.value = 1
-    
-    console.log(`✅ Cargados ${todosLosDatos.value.length} registros`)
+
+    documentos.value = result.data?.documentos || []
+    total.value = result.data?.total || 0
+    totalPages.value = result.data?.pages || 1
   } catch (err) {
-    error.value = 'Error al cargar los datos: ' + err.message
-    console.error('Error:', err)
+    console.error('Error cargando PIO:', err)
+    error.value = err.message || 'Error al cargar las peticiones'
+    documentos.value = []
+    total.value = 0
+    totalPages.value = 1
   } finally {
     loading.value = false
   }
 }
 
-const aplicarBusquedaLocal = () => {
-  busquedaLocalActiva.value = terminoBusquedaLocal.value || ''
-  paginaActual.value = 1
+// ============================================
+// FILTROS Y PAGINACIÓN
+// ============================================
+const onSearchInput = () => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    page.value = 1
+    cargarDocumentos()
+  }, 500)
 }
 
-const limpiarBusquedaLocal = () => {
-  terminoBusquedaLocal.value = ''
-  busquedaLocalActiva.value = ''
-  paginaActual.value = 1
+const onFilterChange = () => {
+  page.value = 1
+  cargarDocumentos()
 }
 
-const cambiarPagina = (pagina) => {
-  if (pagina >= 1 && pagina <= totalPaginas.value) {
-    paginaActual.value = pagina
+const resetFilters = () => {
+  filters.value = { search: '', gestion: '' }
+  page.value = 1
+  cargarDocumentos()
+}
+
+const prevPage = () => {
+  if (page.value > 1) {
+    page.value--
+    cargarDocumentos()
+    if (process.client) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 }
 
-const cambiarFilasPorPagina = () => {
-  itemsPorPagina.value = Number(itemsPorPagina.value)
-  paginaActual.value = 1
-}
-
-const ordenarPor = (columna) => {
-  if (orden.value.columna === columna) {
-    orden.value.direccion = orden.value.direccion === 'asc' ? 'desc' : 'asc'
-  } else {
-    orden.value.columna = columna
-    orden.value.direccion = 'desc'
+const nextPage = () => {
+  if (page.value < totalPages.value) {
+    page.value++
+    cargarDocumentos()
+    if (process.client) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
-  paginaActual.value = 1
-}
-
-const getSortIcon = (columna) => {
-  if (orden.value.columna !== columna) return '↕️'
-  return orden.value.direccion === 'asc' ? '↑' : '↓'
 }
 
 // ============================================
-// CARGAR DATOS
+// LIFECYCLE
 // ============================================
 onMounted(() => {
-  cargarDatosCompletos()
+  cargarDocumentos()
 })
 </script>
 
 <style scoped>
-.management-container {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  width: 100%;
-  background: transparent;
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.management-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.management-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-}
-
-.badge {
-  background: linear-gradient(135deg, #E03636, #b82c2c);
-  color: white;
-  padding: 2px 8px;
-  border-radius: 16px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.header-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.rows-per-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  font-size: 0.85rem;
-  color: #475569;
-}
-
-.rows-per-page select {
-  border: 1px solid #e2e8f0;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: white;
-  color: #0f172a;
-  font-size: 0.85rem;
-  cursor: pointer;
-  outline: none;
-}
-
-.rows-per-page select:hover {
-  border-color: #E03636;
-}
-
-.search-box {
-  display: flex;
-  gap: 4px;
-  background: white;
-  padding: 3px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.search-input {
-  border: 1px solid #e2e8f0;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  width: 260px;
-  border-radius: 6px;
-  outline: none;
-  transition: all 0.2s;
-  padding-right: 65px;
-}
-
-.search-input:focus {
-  border-color: #E03636;
-  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
-}
-
-.search-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.85rem;
-  position: absolute;
-  right: 3px;
-  top: 3px;
-}
-
-.search-button:hover:not(:disabled) {
-  background: #b82c2c;
-}
-
-.search-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.clear-button {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0 6px;
-  position: absolute;
-  right: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  line-height: 1;
-}
-
-.clear-button:hover {
-  color: #E03636;
-}
-
-.table-responsive {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: auto;
-  margin-bottom: 16px;
-}
-
-.management-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.management-table th {
-  background: #f8fafc;
-  padding: 8px 12px;
-  text-align: left;
-  font-weight: 600;
-  color: #475569;
-  border-bottom: 2px solid #e2e8f0;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-.sortable:hover {
-  background: #f1f5f9;
-}
-
-.sort-icon {
-  margin-left: 4px;
-  font-size: 0.75rem;
-  opacity: 0.6;
-}
-
-.management-row td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #eef2f6;
-  color: #334155;
-  line-height: 1.3;
-}
-
-.management-row:hover td {
-  background-color: #f8fafc;
-}
-
-.title-cell {
-  min-width: 200px;
-}
-
-.titulo-principal {
-  font-weight: 500;
-  color: #0f172a;
-  margin-bottom: 2px;
-  font-size: 0.85rem;
-}
-
-.numero-ley {
-  font-size: 0.7rem;
-  color: #64748b;
-  background: #f1f5f9;
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 10px;
-}
-
-.fecha-info {
-  font-size: 0.65rem;
-  color: #94a3b8;
-  margin-top: 2px;
-}
-
-.fecha-label {
-  font-weight: 500;
-  color: #64748b;
-}
-
-.asunto-cell {
-  max-width: 400px;
-}
-
-.asunto-texto {
-  line-height: 1.3;
-  color: #475569;
-  font-size: 0.8rem;
-  margin-bottom: 4px;
-}
-
-.destinatario-info {
-  font-size: 0.7rem;
-  color: #E03636;
-  margin-top: 2px;
-}
-
-.destinatario-label {
-  font-weight: 500;
-  color: #64748b;
-}
-
-.actions-cell {
-  width: 70px;
-  text-align: center;
-}
-
-.btn-documento {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #E03636;
-  color: white;
-  text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 5px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-documento:hover {
-  background: #b82c2c;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
-}
-
-.sin-documento {
-  font-size: 0.7rem;
-  color: #94a3b8;
-}
-
-.table-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 0;
-  font-size: 0.85rem;
-}
-
-.pagination-info {
-  color: #64748b;
-}
-
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.pagination-btn:hover:not(:disabled) {
-  background: #E03636;
-  color: white;
-  border-color: #E03636;
-}
-
-.pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination-numbers {
-  display: flex;
-  gap: 4px;
-}
-
-.pagination-number {
-  min-width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e2e8f0;
-  background: white;
-  border-radius: 6px;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.pagination-number:hover:not(.active):not(:disabled) {
-  background: #f1f5f9;
-  border-color: #E03636;
-}
-
-.pagination-number.active {
-  background: #E03636;
-  color: white;
-  border-color: #E03636;
-}
-
-.loading-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #E03636;
-  border-radius: 50%;
-  margin: 0 auto 12px;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.error-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.retry-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 12px;
-}
-
-.retry-button:hover {
-  background: #b82c2c;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px !important;
-  color: #94a3b8;
-  font-size: 0.95rem;
-}
-
-@media (max-width: 768px) {
-  .management-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .header-left {
-    justify-content: center;
-  }
-  
-  .header-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .rows-per-page {
-    justify-content: center;
-  }
-  
-  .search-input {
-    width: 100%;
-  }
-  
-  .table-footer {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .pagination-controls {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .btn-text {
-    display: none;
-  }
-  
-  .asunto-cell {
-    max-width: 150px;
-  }
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

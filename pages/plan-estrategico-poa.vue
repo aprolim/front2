@@ -72,12 +72,12 @@
           </div>
           <div>
 
-            <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Programación Operativo Anual (POA)</h2>
+            <h2 class="font-bold text-senado-primary text-[4.5vw] sm:text-2xl">Plan Operativo Anual (POA)</h2>
           </div>
         </div>
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-[4vw] sm:p-6">
           <p class="text-gray-700 text-[2.7vw] sm:text-base leading-relaxed mb-[3vw] sm:mb-4">
-            Instrumento de planificación anual que operacionaliza los objetivos estratégicos de la Cámara de Senadores, definiendo metas, actividades, responsables y recursos necesarios para su cumplimiento durante la gestión 2026.
+            Instrumento de planificación anual que operacionaliza los objetivos estratégicos de la Cámara de Senadores, definiendo metas, actividades, responsables y recursos necesarios para su cumplimiento.
           </p>
           <div class="flex flex-wrap items-center gap-[3vw] sm:gap-4 mb-[3vw] sm:mb-4">
             <div class="flex items-center gap-[2vw] sm:gap-2 text-[2.4vw] sm:text-sm text-gray-600">
@@ -91,26 +91,7 @@
             </div>
           </div>
 
-          <!-- Resumen del POA 2026 -->
-          <div class="bg-senado-gold-lightest rounded-lg p-[3.5vw] sm:p-4 mb-[3vw] sm:mb-4">
-            <h4 class="font-bold text-senado-primary text-[3vw] sm:text-base mb-[2vw] sm:mb-3 flex items-center gap-[1.5vw] sm:gap-2">
-              <Icon name="mdi:information" class="text-[4.5vw] sm:text-xl" />
-              Resumen de los Objetivos Estratégicos del POA 2026
-            </h4>
-            <div class="space-y-[2.5vw] sm:space-y-3">
-              <div class="bg-white rounded-lg p-[3vw] sm:p-3 border-l-4 border-senado-primary">
-                <p class="font-semibold text-senado-primary text-[2.7vw] sm:text-sm mb-[1vw] sm:mb-1">Objetivo Estratégico Institucional 1</p>
-                <p class="text-gray-700 text-[2.4vw] sm:text-sm">Consolidar la arquitectura de nuestro nuevo Estado al 2025, a través de la aprobación, sanción o rechazo del 100% de los proyectos de ley, instrumentos de gestión parlamentaria y fiscalizar de manera democrática y participativa.</p>
-              </div>
-              <div class="bg-white rounded-lg p-[3vw] sm:p-3 border-l-4 border-senado-gold-dark">
-                <p class="font-semibold text-senado-primary text-[2.7vw] sm:text-sm mb-[1vw] sm:mb-1">Objetivo Estratégico Institucional 2</p>
-                <p class="text-gray-700 text-[2.4vw] sm:text-sm">Administrar la Cámara de Senadores de manera eficiente, eficaz y transparente, a través de la implementación progresiva de herramientas TIC's y mejoramiento operativo de sistemas de gestión pública.</p>
-              </div>
-            </div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-xs mt-[2.5vw] sm:mt-3 italic">
-              El POA 2026 incluye 17 áreas organizacionales, 89 unidades, 185 operaciones y 185 tareas con metas trimestrales.
-            </p>
-          </div>
+        
 
           <!-- Botón de descarga del PDF -->
           <div class="pt-[3vw] sm:pt-4 border-t border-gray-200">

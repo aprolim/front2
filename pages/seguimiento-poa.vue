@@ -9,7 +9,7 @@
               <Icon name="mdi:chart-line" class="text-senado-gold text-[3.6vw] sm:text-lg" />
               <span class="text-white/80 tracking-wider font-medium text-[2.1vw] sm:text-xs">SEGUIMIENTO Y EVALUACIÓN</span>
             </div>
-            <h1 class="font-bold leading-tight text-[10.5vw] sm:text-4xl md:text-5xl">
+            <h1 class="font-bold my-[.25em] leading-tight text-[10.5vw] sm:text-4xl md:text-5xl">
               Seguimiento y Evaluación <span class="text-senado-gold">del POA</span>
             </h1>
             <p class="text-white/60 tracking-widest font-light text-[2.7vw] sm:text-sm">
@@ -101,7 +101,7 @@
                   <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-gray-500 font-mono">{{ fila.codigo }}</td>
                   <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-gray-800">{{ fila.descripcion }}</td>
                   <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-center">
-                    <span class="inline-block px-[1.8vw] sm:px-2 py-[0.3vw] sm:py-0.5 rounded-full text-[2.1vw] sm:text-xs font-semibold"
+                    <span class="inline-block px-[1.8vw] sm:px-2 py-[0.3vw] sm:py-0.5 rounded-full text-[2.1vw] sm:text-xs"
                           :class="getBadgeClass(fila.fisico)">
                       {{ fila.fisico }}%
                     </span>
@@ -269,10 +269,11 @@ const formatBs = (n) => {
 }
 
 const getBadgeClass = (valor) => {
-  if (valor >= 75) return 'bg-green-100 text-green-700'
-  if (valor >= 50) return 'bg-blue-100 text-blue-700'
-  if (valor >= 25) return 'bg-yellow-100 text-yellow-700'
-  return 'bg-gray-100 text-gray-600'
+  // if (valor >= 75) return 'bg-green-100 text-green-700'
+  // if (valor >= 50) return 'bg-blue-100 text-blue-700'
+  // if (valor >= 25) return 'bg-yellow-100 text-yellow-700'
+  // return 'bg-gray-100 text-gray-600'
+  return ''
 }
 
 useHead({
