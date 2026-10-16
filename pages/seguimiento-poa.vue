@@ -51,108 +51,22 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
             <div class="text-[5.4vw] sm:text-2xl font-bold text-senado-primary">{{ trimestreActual.resumen.avanceFisico }}%</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Avance Físico</p>
+            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Física Financiera</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
             <div class="text-[5.4vw] sm:text-2xl font-bold text-green-600">{{ trimestreActual.resumen.avanceFinanciero }}%</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Avance Financiero</p>
+            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Financiera</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[4.2vw] sm:text-xl font-bold text-gray-700">{{ formatBs(trimestreActual.resumen.presupuesto) }}</div>
+            <div class="text-[4.2vw] sm:text-xl font-bold text-gray-700">{{ formatBs(trimestreActual.resumen.presupuesto) }} Bs.</div>
             <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Presupuesto</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[4.2vw] sm:text-xl font-bold text-blue-600">{{ formatBs(trimestreActual.resumen.ejecutado) }}</div>
+            <div class="text-[4.2vw] sm:text-xl font-bold text-blue-600">{{ formatBs(trimestreActual.resumen.ejecutado) }} Bs.</div>
             <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecutado</p>
           </div>
         </div>
 
-        <!-- Tabla por Acción de Corto Plazo -->
-        <div v-for="(accion, idx) in trimestreActual.acciones" :key="`${trimestreActual.key}-accion-${idx}`"
-             class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-[4.5vw] sm:mb-6">
-
-          <div class="bg-gradient-to-r from-senado-primary to-senado-primary-dark px-[3.6vw] sm:px-5 py-[2.4vw] sm:py-3">
-            <div class="flex items-start gap-[2vw] sm:gap-3">
-              <span class="bg-senado-gold text-senado-primary-dark font-bold rounded-full w-[6vw] sm:w-8 h-[6vw] sm:h-8 flex items-center justify-center flex-shrink-0 text-[3vw] sm:text-sm">
-                {{ idx + 1 }}
-              </span>
-              <div class="flex-1">
-                <p class="text-white/60 text-[1.8vw] sm:text-xs uppercase tracking-wider mb-[0.5vw] sm:mb-0.5">Acción de Corto Plazo</p>
-                <h3 class="font-semibold text-white text-[2.7vw] sm:text-sm leading-snug">{{ accion.descripcion }}</h3>
-              </div>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-[2.4vw] sm:text-sm">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="text-left px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">Categoría Programática</th>
-                  <th class="text-left px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">Descripción</th>
-                  <th class="text-center px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">% Físico</th>
-                  <th class="text-center px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">% Financiero</th>
-                  <th class="text-right px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">Presupuesto (Bs)</th>
-                  <th class="text-right px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 font-semibold text-gray-600">Ejecutado (Bs)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(fila, i) in accion.filas" :key="`${trimestreActual.key}-${idx}-${i}`"
-                    class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-gray-500 font-mono">{{ fila.codigo }}</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-gray-800">{{ fila.descripcion }}</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-center">
-                    <span class="inline-block px-[1.8vw] sm:px-2 py-[0.3vw] sm:py-0.5 rounded-full text-[2.1vw] sm:text-xs"
-                          :class="getBadgeClass(fila.fisico)">
-                      {{ fila.fisico }}%
-                    </span>
-                  </td>
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-center font-medium text-gray-700">{{ fila.financiero }}%</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-right text-gray-700">{{ formatBs(fila.presupuesto) }}</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[1.8vw] sm:py-2 text-right text-gray-700 font-medium">{{ formatBs(fila.ejecutado) }}</td>
-                </tr>
-                <tr class="bg-gray-100 font-bold text-gray-800">
-                  <td colspan="2" class="px-[2.4vw] sm:px-3 py-[2vw] sm:py-2.5 text-right">Total</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[2vw] sm:py-2.5 text-center text-senado-primary">{{ accion.totalFisico }}%</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[2vw] sm:py-2.5 text-center text-green-700">{{ accion.totalFinanciero }}%</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[2vw] sm:py-2.5 text-right">{{ formatBs(accion.totalPresupuesto) }}</td>
-                  <td class="px-[2.4vw] sm:px-3 py-[2vw] sm:py-2.5 text-right text-blue-700">{{ formatBs(accion.totalEjecutado) }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Total General -->
-        <div class="bg-gradient-to-r from-senado-primary to-senado-primary-dark rounded-xl shadow-lg p-[4vw] sm:p-6 text-white">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[3vw] sm:gap-4">
-            <div class="flex items-center gap-[2vw] sm:gap-3">
-              <Icon name="mdi:sigma" class="text-senado-gold text-[8vw] sm:text-3xl" />
-              <h3 class="font-bold text-[3.6vw] sm:text-lg">Total General</h3>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-[3vw] sm:gap-6 w-full sm:w-auto">
-              <div class="text-center sm:text-right">
-                <div class="text-[4.2vw] sm:text-xl font-bold text-senado-gold">{{ trimestreActual.resumen.avanceFisico }}%</div>
-                <p class="text-white/60 text-[1.8vw] sm:text-xs">Físico</p>
-              </div>
-              <div class="text-center sm:text-right">
-                <div class="text-[4.2vw] sm:text-xl font-bold text-green-300">{{ trimestreActual.resumen.avanceFinanciero }}%</div>
-                <p class="text-white/60 text-[1.8vw] sm:text-xs">Financiero</p>
-              </div>
-              <div class="text-center sm:text-right">
-                <div class="text-[3vw] sm:text-base font-bold">{{ formatBs(trimestreActual.resumen.presupuesto) }}</div>
-                <p class="text-white/60 text-[1.8vw] sm:text-xs">Presupuesto</p>
-              </div>
-              <div class="text-center sm:text-right">
-                <div class="text-[3vw] sm:text-base font-bold text-blue-200">{{ formatBs(trimestreActual.resumen.ejecutado) }}</div>
-                <p class="text-white/60 text-[1.8vw] sm:text-xs">Ejecutado</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p class="text-center text-gray-400 text-[2.1vw] sm:text-xs mt-[3vw] sm:mt-4">
-          Fuente: Reporte de Seguimiento y Evaluación al {{ trimestreActual.nombre }} — Gestión 2026
-        </p>
       </div>
 
       <div class="text-center mt-[6vw] sm:mt-8">
@@ -263,16 +177,18 @@ const trimestres = [
   },
 ]
 
+// ============================================
+// 🔥 FORMATEO DE Bs (sin decimales, con sufijo "Bs")
+// ============================================
 const formatBs = (n) => {
-  if (n === undefined || n === null) return '0'
-  return new Intl.NumberFormat('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n)
+  if (n === undefined || n === null) return 'Bs 0'
+  return 'Bs ' + new Intl.NumberFormat('es-BO', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(n)
 }
 
 const getBadgeClass = (valor) => {
-  // if (valor >= 75) return 'bg-green-100 text-green-700'
-  // if (valor >= 50) return 'bg-blue-100 text-blue-700'
-  // if (valor >= 25) return 'bg-yellow-100 text-yellow-700'
-  // return 'bg-gray-100 text-gray-600'
   return ''
 }
 

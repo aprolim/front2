@@ -13,10 +13,7 @@
       <!-- Encabezado -->
       <div class="text-center mb-[6vw] sm:mb-12">
         <h1 class="text-[8vw] sm:text-5xl lg:text-6xl font-bold text-senado-primary leading-tight">
-          Misión, Visión y <span class="text-senado-gold-dark relative">
-            Valores
-            <span class="absolute -bottom-2 left-0 right-0 h-1 bg-senado-gold-dark rounded-full"></span>
-          </span>
+          Misión y Visión
         </h1>
         <p class="text-gray-500 mt-[3vw] sm:mt-4 text-[3.3vw] sm:text-lg max-w-2xl mx-auto">
           Principios que guían nuestra labor legislativa
@@ -67,61 +64,7 @@
         </div>
       </div>
 
-      <!-- ============================================ -->
-      <!-- VALORES INSTITUCIONALES                      -->
-      <!-- ============================================ -->
-      <div class="max-w-6xl mx-auto mb-[8vw] sm:mb-16">
-        <div class="text-center mb-[5vw] sm:mb-8">
-          <div class="inline-flex items-center gap-[1.5vw] sm:gap-2 bg-senado-primary/10 rounded-full px-[3.6vw] sm:px-4 py-[1.2vw] sm:py-1.5 mb-[2vw] sm:mb-3">
-            <Icon name="mdi:heart-multiple" class="text-senado-primary text-[3.6vw] sm:text-lg" />
-            <span class="text-senado-primary font-bold text-[2.1vw] sm:text-sm uppercase tracking-wider">Valores Institucionales</span>
-          </div>
-          <p class="text-gray-600 text-[2.7vw] sm:text-base max-w-3xl mx-auto leading-relaxed">
-            Los valores institucionales constituyen los fundamentos éticos y organizacionales que orientan el ejercicio de las funciones legislativa, fiscalizadora y de gestión institucional de la Cámara de Senadores.
-          </p>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[3vw] sm:gap-4">
-          <div v-for="(valor, i) in valores" :key="i"
-               class="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-[4vw] sm:p-5 border-t-4 border-senado-primary">
-            <div class="flex flex-col items-center text-center">
-              <div class="w-[14vw] sm:w-16 h-[14vw] sm:h-16 rounded-full bg-gradient-to-br from-senado-primary/10 to-senado-gold-dark/10 flex items-center justify-center mb-[2.4vw] sm:mb-3 group-hover:scale-110 transition-transform">
-                <Icon :name="valor.icono" class="text-[7vw] sm:text-3xl text-senado-primary" />
-              </div>
-              <h3 class="font-bold text-senado-primary text-[3.3vw] sm:text-base mb-[1.5vw] sm:mb-2">{{ valor.nombre }}</h3>
-              <p class="text-gray-600 text-[2.4vw] sm:text-sm leading-relaxed">{{ valor.descripcion }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================ -->
-      <!-- PRINCIPIOS INSTITUCIONALES                   -->
-      <!-- ============================================ -->
-      <div class="max-w-6xl mx-auto mb-[6vw] sm:mb-12">
-        <div class="text-center mb-[5vw] sm:mb-8">
-          <div class="inline-flex items-center gap-[1.5vw] sm:gap-2 bg-senado-gold-dark/15 rounded-full px-[3.6vw] sm:px-4 py-[1.2vw] sm:py-1.5 mb-[2vw] sm:mb-3">
-            <Icon name="mdi:shield-star" class="text-senado-gold-dark text-[3.6vw] sm:text-lg" />
-            <span class="text-senado-gold-dark font-bold text-[2.1vw] sm:text-sm uppercase tracking-wider">Principios Institucionales</span>
-          </div>
-          <p class="text-gray-600 text-[2.7vw] sm:text-base max-w-3xl mx-auto leading-relaxed">
-            Los principios institucionales constituyen los fundamentos que orientan el ejercicio de las funciones legislativa, fiscalizadora y de gestión institucional de la Cámara de Senadores.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[3vw] sm:gap-4">
-          <div v-for="(principio, i) in principios" :key="i"
-               class="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-[4vw] sm:p-5 border-t-4 border-senado-gold-dark">
-            <div class="flex flex-col items-center text-center">
-              <div class="w-[14vw] sm:w-16 h-[14vw] sm:h-16 rounded-full bg-gradient-to-br from-senado-gold-dark/15 to-senado-primary/10 flex items-center justify-center mb-[2.4vw] sm:mb-3 group-hover:scale-110 transition-transform">
-                <Icon :name="principio.icono" class="text-[7vw] sm:text-3xl text-senado-gold-dark" />
-              </div>
-              <h3 class="font-bold text-senado-primary text-[3.3vw] sm:text-base mb-[1.5vw] sm:mb-2">{{ principio.nombre }}</h3>
-              <p class="text-gray-600 text-[2.4vw] sm:text-sm leading-relaxed">{{ principio.descripcion }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Botón volver -->
       <div class="text-center pt-[4vw] sm:pt-8">

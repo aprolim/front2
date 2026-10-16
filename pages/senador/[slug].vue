@@ -205,11 +205,11 @@
       </div>
 
       <!-- 🔥 NOTICIAS RELACIONADAS CON EL SENADOR -->
-      <NoticiasSenador 
+      <!-- <NoticiasSenador 
         :senador-id="senator.id" 
         :nombre-senador="senator.name"
         :limit="6"
-      />
+      /> -->
     </div>
 
     <div v-else class="text-center py-[10vw] sm:py-[5vw]">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6">
-      Facultades Legislativas
+      Facultades de la Camara de Senadores 
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

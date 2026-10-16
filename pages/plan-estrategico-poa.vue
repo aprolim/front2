@@ -49,18 +49,7 @@
               </span>
             </div>
           </div>
-          <div class="pt-[3vw] sm:pt-4 border-t border-gray-200">
-            <a 
-              href="/pdfs/planificacion/PEI-2021-2025.pdf" 
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-[2vw] sm:gap-2 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors px-[4vw] sm:px-5 py-[2.4vw] sm:py-2.5 text-[2.7vw] sm:text-sm font-semibold"
-            >
-              <Icon name="mdi:file-pdf-box" class="text-[4vw] sm:text-lg" />
-              Descargar PEI 2021-2025 (PDF)
-            </a>
-          </div>
+
         </div>
       </div>
 

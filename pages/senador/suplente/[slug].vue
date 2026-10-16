@@ -204,11 +204,11 @@
       </div>
 
       <!-- 🔥 NOTICIAS RELACIONADAS CON EL SUPLENTE -->
-      <NoticiasSenador 
+      <!-- <NoticiasSenador 
         :senador-id="suplente.id" 
         :nombre-senador="suplente.name"
         :limit="6"
-      />
+      /> -->
     </div>
 
     <div v-else class="text-center py-[10vw] sm:py-[5vw]">

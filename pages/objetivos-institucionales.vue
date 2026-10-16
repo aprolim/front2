@@ -86,23 +86,6 @@
         </div>
       </div>
 
-      <!-- Descarga del PEI -->
-      <div class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-[4vw] sm:p-5 mb-[4.5vw] sm:mb-6">
-        <h3 class="font-bold text-senado-primary text-[3vw] sm:text-base mb-[2.4vw] sm:mb-3 flex items-center gap-[1.5vw] sm:gap-2">
-          <Icon name="mdi:download" class="text-[4.5vw] sm:text-xl" />
-          Documento Fuente
-        </h3>
-        <a 
-          href="/pdfs/planificacion/PEI-2021-2025.pdf" 
-          download
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-[2vw] sm:gap-2 bg-senado-primary text-white rounded-lg hover:bg-senado-primary-dark transition-colors px-[4vw] sm:px-4 py-[2vw] sm:py-2 text-[2.7vw] sm:text-sm font-medium"
-        >
-          <Icon name="mdi:file-pdf-box" class="text-[4vw] sm:text-base" />
-          Descargar PEI 2021-2025 (PDF)
-        </a>
-      </div>
 
       <!-- Botón volver -->
       <div class="text-center mt-[6vw] sm:mt-8">
