@@ -1,179 +1,101 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
-    <div class="w-[90%] max-w-7xl">
-      <!-- Botón volver -->
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="w-[95%] max-w-7xl mx-auto">
+
       <div class="mb-6">
-        <NuxtLink 
-          to="/" 
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
+        <NuxtLink to="/" class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           Volver al inicio
         </NuxtLink>
       </div>
 
-      <!-- ========================================== -->
-      <!-- TABLA DE DECLARACIONES CAMARALES           -->
-      <!-- ========================================== -->
-      <div class="management-container">
-        <!-- Header -->
-        <div class="management-header">
-          <div class="header-left">
-            <h2 class="management-title">
-              Declaraciones Camarales
-              <span v-if="!loading && !error" class="badge">{{ totalItems }} registros</span>
-            </h2>
-          </div>
-          
-          <div class="header-controls">
-            <!-- Selector de filas por página -->
-            <div class="rows-per-page">
-              <span>Mostrar</span>
-              <select v-model.number="itemsPorPagina" @change="cambiarFilasPorPagina">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <span>filas</span>
-            </div>
+      <div class="mb-6">
+        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">📋 Gestión</div>
+        <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Declaraciones Camarales</h1>
+        <p class="text-gray-600 mt-1 text-sm">Registro oficial de declaraciones camarales de la Cámara de Senadores</p>
+      </div>
 
-            <!-- Buscador -->
-            <div class="search-box">
-              <input 
-                type="text" 
-                v-model="terminoBusquedaLocal"
-                @keyup.enter="aplicarBusquedaLocal"
-                placeholder="Buscar por título, número o asunto..."
-                class="search-input"
-              >
-              <button @click="aplicarBusquedaLocal" class="search-button" :disabled="loading">
-                <span class="search-icon">🔍</span>
-              </button>
-              <button 
-                v-if="terminoBusquedaLocal" 
-                @click="limpiarBusquedaLocal" 
-                class="clear-button"
-                title="Limpiar búsqueda"
-              >
-                ✕
-              </button>
+      <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, asunto, proyectista..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- Estado de carga -->
-        <div v-if="loading" class="loading-state">
-          <div class="spinner"></div>
-          <p>Cargando documentos...</p>
-        </div>
+      <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
+        Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> declaración{{ total !== 1 ? 'es' : '' }}
+        <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+      </div>
 
-        <!-- Estado de error -->
-        <div v-else-if="error" class="error-state">
-          <span class="error-icon">⚠️</span>
-          <p>{{ error }}</p>
-          <button @click="cargarDatosCompletos" class="retry-button">Reintentar</button>
-        </div>
+      <div v-if="loading" class="bg-white rounded-lg shadow-sm py-16 text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#611717] mx-auto"></div>
+        <p class="mt-4 text-gray-600 text-sm">Cargando declaraciones...</p>
+      </div>
 
-        <!-- Tabla -->
-        <div v-else class="table-responsive">
-          <table class="management-table">
-            <thead>
+      <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <p class="text-red-700 font-medium text-sm">{{ error }}</p>
+        <button @click="cargarDocumentos" class="mt-3 px-4 py-2 bg-[#611717] text-white rounded-lg hover:bg-[#3a060d] text-sm">Reintentar</button>
+      </div>
+
+      <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
+        <div class="text-5xl mb-3">📭</div>
+        <h3 class="text-lg font-medium text-gray-800 mb-1">No hay declaraciones</h3>
+        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay declaraciones registradas.' }}</p>
+      </div>
+
+      <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-[#611717] text-white">
               <tr>
-                <th @click="ordenarPor('titulo')" class="sortable">
-                  Título / Número
-                  <span class="sort-icon">{{ getSortIcon('titulo') }}</span>
-                </th>
-                <th @click="ordenarPor('asunto')" class="sortable">
-                  Asunto
-                  <span class="sort-icon">{{ getSortIcon('asunto') }}</span>
-                </th>
-                <th class="actions-column">Documento</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Petición</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
+                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="item in itemsPaginados" :key="item.id" class="management-row">
-                <td class="title-cell">
-                  <div class="titulo-principal">{{ item.titulo }}</div>
-                  <div class="numero-ley">N° {{ item.numero }}</div>
-                  <div class="fecha-info" v-if="item.fecha_aprobacion">
-                    <span class="fecha-label">Aprobado:</span> {{ formatearFecha(item.fecha_aprobacion) }}
-                  </div>
+            <tbody class="divide-y divide-gray-100">
+              <tr v-for="doc in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
+                <td class="px-4 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
                 </td>
-                <td class="asunto-cell">
-                  <div class="asunto-texto">{{ truncarTexto(item.asunto, 100) }}</div>
-                  <div class="gestion-info" v-if="item.gestion">
-                    <span class="gestion-label">Gestión:</span> {{ item.gestion }}
-                  </div>
-                  <div class="institucion-info" v-if="item.institucion_text">
-                    <span class="institucion-label">Institución:</span> {{ item.institucion_text }}
-                  </div>
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <td class="actions-cell">
-                  <a 
-                    v-if="item.doc_archivo"
-                    :href="`https://apisi.senado.gob.bo/${item.doc_archivo}`" 
-                    target="_blank"
-                    class="btn-documento"
-                    title="Ver documento PDF"
-                  >
-                    <span class="btn-icon">📄</span>
-                    <span class="btn-text">PDF</span>
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ doc.peticionario || '—' }}</td>
+                <td class="px-4 py-4 text-center whitespace-nowrap">
+                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    Ver PDF
                   </a>
-                  <span v-else class="sin-documento">Sin documento</span>
-                </td>
-              </tr>
-              
-              <!-- Fila vacía -->
-              <tr v-if="itemsFiltrados.length === 0">
-                <td colspan="3" class="empty-state">
-                  <p>No se encontraron documentos</p>
+                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Paginación -->
-        <div v-if="itemsFiltrados.length > 0 && !loading" class="table-footer">
-          <div class="pagination-info">
-            Mostrando {{ (paginaActual - 1) * itemsPorPagina + 1 }} - 
-            {{ Math.min(paginaActual * itemsPorPagina, itemsFiltrados.length) }} de 
-            {{ itemsFiltrados.length }} documentos
+        <div v-if="totalPages > 1" class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]">
+          <div class="text-xs text-gray-600">
+            Mostrando registros del <strong class="text-[#611717]">{{ (page - 1) * itemsPorPagina + 1 }}</strong> al <strong class="text-[#611717]">{{ Math.min(page * itemsPorPagina, total) }}</strong> de un total de <strong class="text-[#611717]">{{ total }}</strong> registros
           </div>
-          
-          <div class="pagination-controls">
-            <button 
-              class="pagination-btn" 
-              :disabled="paginaActual === 1"
-              @click="cambiarPagina(paginaActual - 1)"
-            >
-              ← Anterior
+          <div class="flex items-center gap-1">
+            <button @click="prevPage" :disabled="page === 1" class="p-2 rounded-md text-[#611717] hover:bg-[#e3d194] disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
             </button>
-            
-            <div class="pagination-numbers">
-              <button 
-                v-for="page in paginasMostradas" 
-                :key="page"
-                class="pagination-number"
-                :class="{ active: page === paginaActual }"
-                @click="cambiarPagina(page)"
-              >
-                {{ page }}
-              </button>
-            </div>
-            
-            <button 
-              class="pagination-btn" 
-              :disabled="paginaActual === totalPaginas"
-              @click="cambiarPagina(paginaActual + 1)"
-            >
-              Siguiente →
+            <button v-for="p in paginasVisibles" :key="p" @click="irAPagina(p)" class="w-9 h-9 rounded-full text-xs font-semibold transition-colors" :class="page === p ? 'bg-[#611717] text-white shadow-md' : 'hover:bg-[#e3d194] text-[#611717]'">{{ p }}</button>
+            <span v-if="totalPages > 5 && page < totalPages - 2" class="px-1 text-[#611717]">...</span>
+            <button @click="nextPage" :disabled="page === totalPages" class="p-2 rounded-md text-[#611717] hover:bg-[#e3d194] disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
             </button>
           </div>
         </div>
@@ -185,672 +107,92 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// ============================================
-// ESTADO
-// ============================================
-const todosLosDatos = ref([])
+useHead({
+  title: 'Declaraciones Camarales | Senado de Bolivia',
+  meta: [{ name: 'description', content: 'Registro oficial de declaraciones camarales de la Cámara de Senadores de Bolivia.' }]
+})
+
+const config = useRuntimeConfig()
+const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
+
+const documentos = ref([])
 const loading = ref(false)
 const error = ref(null)
-const paginaActual = ref(1)
-const itemsPorPagina = ref(10)
-const terminoBusquedaLocal = ref('')
-const busquedaLocalActiva = ref('')
-const orden = ref({
-  columna: 'titulo',
-  direccion: 'desc'
-})
+const page = ref(1)
+const totalPages = ref(1)
+const total = ref(0)
+const itemsPorPagina = 10
+const filters = ref({ search: '' })
+let searchTimeout = null
 
-// ============================================
-// CONFIGURACIÓN DEL ENDPOINT
-// ============================================
-const ENDPOINT = {
-  url: 'https://apisi.senado.gob.bo/page/declaraciones-camarales',
-  procesarRespuesta: (data) => {
-    if (data.data && data.data.data) {
-      return data.data.data
-    }
-    return []
-  },
-  obtenerTotalPaginas: (data) => {
-    return data.data?.last_page || 1
+const paginasVisibles = computed(() => {
+  const paginas = []
+  const rango = 2
+  for (let i = 1; i <= totalPages.value; i++) {
+    if (i === 1 || i === totalPages.value || (i >= page.value - rango && i <= page.value + rango)) { paginas.push(i) }
   }
-}
-
-// ============================================
-// COMPUTED
-// ============================================
-const itemsFiltrados = computed(() => {
-  let datos = [...todosLosDatos.value]
-  
-  if (busquedaLocalActiva.value && busquedaLocalActiva.value.trim() !== '') {
-    const termino = busquedaLocalActiva.value.toLowerCase().trim()
-    datos = datos.filter(item => 
-      (item.titulo && item.titulo.toLowerCase().includes(termino)) ||
-      (item.numero && item.numero.toLowerCase().includes(termino)) ||
-      (item.asunto && item.asunto.toLowerCase().includes(termino))
-    )
-  }
-  
-  return datos
+  return paginas
 })
 
-const itemsOrdenados = computed(() => {
-  if (!itemsFiltrados.value.length) return []
-  
-  return [...itemsFiltrados.value].sort((a, b) => {
-    if (orden.value.columna === 'titulo') {
-      const textoA = a.titulo || ''
-      const textoB = b.titulo || ''
-      return orden.value.direccion === 'asc' 
-        ? textoA.localeCompare(textoB) 
-        : textoB.localeCompare(textoA)
-    } else if (orden.value.columna === 'asunto') {
-      const asuntoA = a.asunto || ''
-      const asuntoB = b.asunto || ''
-      return orden.value.direccion === 'asc' 
-        ? asuntoA.localeCompare(asuntoB) 
-        : asuntoB.localeCompare(asuntoA)
-    }
-    return 0
-  })
-})
-
-const itemsPaginados = computed(() => {
-  const inicio = (paginaActual.value - 1) * itemsPorPagina.value
-  const fin = inicio + itemsPorPagina.value
-  return itemsOrdenados.value.slice(inicio, fin)
-})
-
-const totalItems = computed(() => {
-  return todosLosDatos.value.length
-})
-
-const totalPaginas = computed(() => {
-  return Math.ceil(itemsFiltrados.value.length / itemsPorPagina.value)
-})
-
-const paginasMostradas = computed(() => {
-  const total = totalPaginas.value
-  const actual = paginaActual.value
-  const rango = 5
-  
-  let inicio = Math.max(1, actual - Math.floor(rango / 2))
-  let fin = Math.min(total, inicio + rango - 1)
-  
-  if (fin - inicio + 1 < rango) {
-    inicio = Math.max(1, fin - rango + 1)
-  }
-  
-  return Array.from({ length: fin - inicio + 1 }, (_, i) => inicio + i)
-})
-
-// ============================================
-// FUNCIONES
-// ============================================
 const formatearFecha = (fecha) => {
-  if (!fecha) return ''
-  return new Date(fecha).toLocaleDateString('es-BO')
-}
-
-const truncarTexto = (texto, longitud) => {
-  if (!texto) return ''
-  if (texto.length <= longitud) return texto
-  return texto.substring(0, longitud) + '...'
-}
-
-const obtenerPagina = async (page) => {
-  const url = `${ENDPOINT.url}?page=${page}`
-  
+  if (!fecha) return '—'
   try {
-    const response = await fetch(url)
-    const data = await response.json()
-    return data
-  } catch (err) {
-    console.error(`Error cargando página ${page}:`, err)
-    return null
-  }
+    const d = new Date(fecha)
+    if (isNaN(d.getTime())) return '—'
+    return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
+  } catch { return '—' }
 }
 
-const cargarDatosCompletos = async () => {
+const cargarDocumentos = async () => {
   loading.value = true
   error.value = null
-  
   try {
-    const primeraPagina = await obtenerPagina(1)
-    
-    if (!primeraPagina) {
-      throw new Error('No se pudo obtener la primera página')
-    }
-    
-    const datosPrimeraPagina = ENDPOINT.procesarRespuesta(primeraPagina) || []
-    const todasLasResoluciones = [...datosPrimeraPagina]
-    
-    const totalPaginas = ENDPOINT.obtenerTotalPaginas(primeraPagina)
-    
-    if (totalPaginas > 1) {
-      const paginasRestantes = Array.from(
-        { length: totalPaginas - 1 }, 
-        (_, i) => i + 2
-      )
-      
-      const promesas = paginasRestantes.map(page => obtenerPagina(page))
-      const resultados = await Promise.all(promesas)
-      
-      resultados.forEach(res => {
-        if (res) {
-          const datosPagina = ENDPOINT.procesarRespuesta(res) || []
-          todasLasResoluciones.push(...datosPagina)
-        }
-      })
-    }
-    
-    todosLosDatos.value = todasLasResoluciones
-    paginaActual.value = 1
-    
-    console.log(`✅ Cargados ${todosLosDatos.value.length} registros`)
+    const params = new URLSearchParams()
+    params.append('page', String(page.value))
+    params.append('limit', String(itemsPorPagina))
+    if (filters.value.search) params.append('search', filters.value.search)
+
+    const url = `${API_BASE_URL}/legislativos/declaracion-camaral?${params.toString()}`
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) throw new Error(result.message || 'Error al cargar las declaraciones')
+
+    documentos.value = result.data?.documentos || []
+    total.value = result.data?.total || 0
+    totalPages.value = result.data?.pages || 1
   } catch (err) {
-    error.value = 'Error al cargar los datos: ' + err.message
-    console.error('Error:', err)
+    console.error('Error cargando Declaraciones:', err)
+    error.value = err.message || 'Error al cargar las declaraciones'
+    documentos.value = []
+    total.value = 0
+    totalPages.value = 1
   } finally {
     loading.value = false
   }
 }
 
-const aplicarBusquedaLocal = () => {
-  busquedaLocalActiva.value = terminoBusquedaLocal.value || ''
-  paginaActual.value = 1
+const onSearchInput = () => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => { page.value = 1; cargarDocumentos() }, 500)
 }
 
-const limpiarBusquedaLocal = () => {
-  terminoBusquedaLocal.value = ''
-  busquedaLocalActiva.value = ''
-  paginaActual.value = 1
-}
+const limpiarBusqueda = () => { filters.value.search = ''; page.value = 1; cargarDocumentos() }
 
-const cambiarPagina = (pagina) => {
-  if (pagina >= 1 && pagina <= totalPaginas.value) {
-    paginaActual.value = pagina
+const irAPagina = (p) => {
+  if (p >= 1 && p <= totalPages.value) {
+    page.value = p
+    cargarDocumentos()
+    if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
-const cambiarFilasPorPagina = () => {
-  itemsPorPagina.value = Number(itemsPorPagina.value)
-  paginaActual.value = 1
-}
+const prevPage = () => { if (page.value > 1) { page.value--; cargarDocumentos(); if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) } }
+const nextPage = () => { if (page.value < totalPages.value) { page.value++; cargarDocumentos(); if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) } }
 
-const ordenarPor = (columna) => {
-  if (orden.value.columna === columna) {
-    orden.value.direccion = orden.value.direccion === 'asc' ? 'desc' : 'asc'
-  } else {
-    orden.value.columna = columna
-    orden.value.direccion = 'desc'
-  }
-  paginaActual.value = 1
-}
-
-const getSortIcon = (columna) => {
-  if (orden.value.columna !== columna) return '↕️'
-  return orden.value.direccion === 'asc' ? '↑' : '↓'
-}
-
-// ============================================
-// CARGAR DATOS
-// ============================================
-onMounted(() => {
-  cargarDatosCompletos()
-})
+onMounted(() => { cargarDocumentos() })
 </script>
 
 <style scoped>
-.management-container {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  width: 100%;
-  background: transparent;
-}
-
-.management-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.management-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-}
-
-.badge {
-  background: linear-gradient(135deg, #E03636, #b82c2c);
-  color: white;
-  padding: 2px 8px;
-  border-radius: 16px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.header-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.rows-per-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  font-size: 0.85rem;
-  color: #475569;
-}
-
-.rows-per-page select {
-  border: 1px solid #e2e8f0;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: white;
-  color: #0f172a;
-  font-size: 0.85rem;
-  cursor: pointer;
-  outline: none;
-}
-
-.rows-per-page select:hover {
-  border-color: #E03636;
-}
-
-.search-box {
-  display: flex;
-  gap: 4px;
-  background: white;
-  padding: 3px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.search-input {
-  border: 1px solid #e2e8f0;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  width: 260px;
-  border-radius: 6px;
-  outline: none;
-  transition: all 0.2s;
-  padding-right: 65px;
-}
-
-.search-input:focus {
-  border-color: #E03636;
-  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
-}
-
-.search-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.85rem;
-  position: absolute;
-  right: 3px;
-  top: 3px;
-}
-
-.search-button:hover:not(:disabled) {
-  background: #b82c2c;
-}
-
-.search-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.clear-button {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0 6px;
-  position: absolute;
-  right: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  line-height: 1;
-}
-
-.clear-button:hover {
-  color: #E03636;
-}
-
-.table-responsive {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: auto;
-  margin-bottom: 16px;
-}
-
-.management-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.management-table th {
-  background: #f8fafc;
-  padding: 8px 12px;
-  text-align: left;
-  font-weight: 600;
-  color: #475569;
-  border-bottom: 2px solid #e2e8f0;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-.sortable:hover {
-  background: #f1f5f9;
-}
-
-.sort-icon {
-  margin-left: 4px;
-  font-size: 0.75rem;
-  opacity: 0.6;
-}
-
-.management-row td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #eef2f6;
-  color: #334155;
-  line-height: 1.3;
-}
-
-.management-row:hover td {
-  background-color: #f8fafc;
-}
-
-.title-cell {
-  min-width: 220px;
-}
-
-.titulo-principal {
-  font-weight: 500;
-  color: #0f172a;
-  margin-bottom: 2px;
-  font-size: 0.85rem;
-}
-
-.numero-ley {
-  font-size: 0.7rem;
-  color: #64748b;
-  background: #f1f5f9;
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 10px;
-  margin-bottom: 2px;
-}
-
-.fecha-info {
-  font-size: 0.65rem;
-  color: #94a3b8;
-  margin-top: 2px;
-}
-
-.fecha-label, .gestion-label, .institucion-label {
-  font-weight: 500;
-  color: #64748b;
-}
-
-.asunto-cell {
-  max-width: 450px;
-}
-
-.asunto-texto {
-  line-height: 1.3;
-  color: #475569;
-  font-size: 0.8rem;
-  margin-bottom: 4px;
-}
-
-.gestion-info, .institucion-info {
-  font-size: 0.7rem;
-  color: #E03636;
-  margin-top: 2px;
-}
-
-.actions-cell {
-  width: 70px;
-  text-align: center;
-}
-
-.btn-documento {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #E03636;
-  color: white;
-  text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 5px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-documento:hover {
-  background: #b82c2c;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
-}
-
-.sin-documento {
-  font-size: 0.7rem;
-  color: #94a3b8;
-}
-
-.table-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 12px 0;
-  font-size: 0.85rem;
-}
-
-.pagination-info {
-  color: #64748b;
-}
-
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.pagination-btn:hover:not(:disabled) {
-  background: #E03636;
-  color: white;
-  border-color: #E03636;
-}
-
-.pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination-numbers {
-  display: flex;
-  gap: 4px;
-}
-
-.pagination-number {
-  min-width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e2e8f0;
-  background: white;
-  border-radius: 6px;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.pagination-number:hover:not(.active):not(:disabled) {
-  background: #f1f5f9;
-  border-color: #E03636;
-}
-
-.pagination-number.active {
-  background: #E03636;
-  color: white;
-  border-color: #E03636;
-}
-
-.loading-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #E03636;
-  border-radius: 50%;
-  margin: 0 auto 12px;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.error-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.retry-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 12px;
-}
-
-.retry-button:hover {
-  background: #b82c2c;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px !important;
-  color: #94a3b8;
-  font-size: 0.95rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .management-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .header-left {
-    justify-content: center;
-  }
-  
-  .header-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .rows-per-page {
-    justify-content: center;
-  }
-  
-  .search-input {
-    width: 100%;
-  }
-  
-  .table-footer {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .pagination-controls {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .btn-text {
-    display: none;
-  }
-  
-  .asunto-cell {
-    max-width: 150px;
-  }
-}
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>

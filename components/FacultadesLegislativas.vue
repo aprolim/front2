@@ -116,6 +116,7 @@ const counts = ref<Record<string, number>>({
   'homenaje-camaral': 0,
   // Legislación
   'proyecto-ley-tratamiento-senado': 0,
+  'proyecto-ley-revision-diputados': 0, // 🔥 NUEVO
   'proyecto-ley-aprobados': 0,
   'proyecto-ley-sancionados': 0,
   'proyecto-ley-modificaciones': 0,
@@ -128,9 +129,14 @@ const counts = ref<Record<string, number>>({
 // ============================================
 const legislacionItems = computed(() => [
   {
-    label: 'Proyectos de Ley en Tratamiento',
+    label: 'Proyectos de Ley en Tratamiento (Senado)',
     count: counts.value['proyecto-ley-tratamiento-senado'] || 0,
-    link: '/facultades-legislativas/proyectos-tratamiento'
+    link: '/proyectos-tratamiento'
+  },
+  {
+    label: 'Proyectos de Ley en Revisión (Diputados)',
+    count: counts.value['proyecto-ley-revision-diputados'] || 0,
+    link: '/proyectos-revision-diputados'
   },
   {
     label: 'Proyectos de Ley Aprobados',
@@ -138,12 +144,12 @@ const legislacionItems = computed(() => [
     link: '/facultades-legislativas/proyectos-aprobados'
   },
   {
-    label: 'Leyes Sancionadas',
+    label: 'Proyectos de Ley Sancionados',
     count: counts.value['proyecto-ley-sancionados'] || 0,
-    link: '/facultades-legislativas/leyes-sancionadas'
+    link: '/facultades-legislativas/proyectos-sancionados'
   },
   {
-    label: 'Proyectos de Ley con Modificaciones',
+    label: 'Proyectos de Ley con Modificaciones (Devueltos)',
     count: counts.value['proyecto-ley-modificaciones'] || 0,
     link: '/facultades-legislativas/proyectos-modificaciones'
   },
@@ -151,6 +157,11 @@ const legislacionItems = computed(() => [
     label: 'Proyectos de Ley Rechazados',
     count: counts.value['proyecto-ley-rechazados'] || 0,
     link: '/facultades-legislativas/proyectos-rechazados'
+  },
+  {
+    label: 'Leyes Promulgadas',
+    count: counts.value['ley-promulgada'] || 0,
+    link: '/facultades-legislativas/leyes-promulgadas'
   }
 ])
 
@@ -182,6 +193,11 @@ const gestionItems = computed(() => [
     label: 'Minutas de Comunicación',
     count: counts.value['minuta-comunicacion'] || 0,
     link: '/minutas-comunicacion'
+  },
+  {
+    label: 'Homenajes Camarales',
+    count: counts.value['homenaje-camaral'] || 0,
+    link: '/homenajes-camarales'
   }
 ])
 
@@ -191,7 +207,6 @@ const gestionItems = computed(() => [
 const cargarContadores = async () => {
   const tipos = Object.keys(counts.value)
 
-  // Cargar todos los stats en paralelo, sin que uno bloquee a los otros
   const results = await Promise.allSettled(
     tipos.map((tipo) => getStats(tipo as any))
   )

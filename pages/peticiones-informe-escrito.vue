@@ -6,7 +6,7 @@
       <div class="mb-6">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-[#611717] transition-colors text-sm"
+          class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -28,38 +28,34 @@
         </p>
       </div>
 
-      <!-- Filtros -->
-      <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-wrap gap-3 items-center">
-        <div class="flex-1 min-w-[250px]">
-          <div class="relative">
-            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+      <!-- 🔥 BUSCADOR PROFESIONAL -->
+      <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
             <input
               v-model="filters.search"
               @input="onSearchInput"
               type="text"
-              placeholder="Buscar por código, asunto, peticionario o destinatario..."
-              class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#611717] focus:border-transparent outline-none"
+              placeholder="Buscar por código, asunto, peticionante..."
+              class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200"
             />
+            <button
+              v-if="filters.search"
+              @click="limpiarBusqueda"
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors"
+              title="Limpiar búsqueda"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
-        <select
-          v-model="filters.gestion"
-          @change="onFilterChange"
-          class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#611717] outline-none"
-        >
-          <option value="">Todas las gestiones</option>
-          <option v-for="year in aniosDisponibles" :key="year" :value="year">
-            {{ year }}
-          </option>
-        </select>
-        <button
-          @click="resetFilters"
-          class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
-        >
-          Limpiar
-        </button>
       </div>
 
       <!-- Contador de resultados -->
@@ -90,148 +86,80 @@
       <!-- Sin resultados -->
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
         <div class="text-5xl mb-3">📭</div>
-        <h3 class="text-lg font-medium text-gray-800 mb-1">
-          No hay peticiones
-        </h3>
+        <h3 class="text-lg font-medium text-gray-800 mb-1">No hay peticiones</h3>
         <p class="text-gray-500 text-sm">
-          {{ tieneFiltros ? 'Prueba con otros filtros.' : 'Aún no hay peticiones registradas.' }}
+          {{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay peticiones registradas.' }}
         </p>
       </div>
 
       <!-- Tabla -->
-      <div v-else class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <table class="min-w-full text-sm">
+            <!-- 🔥 ENCABEZADO CON PALETA GUINDA DEL SENADO -->
             <thead class="bg-[#611717] text-white">
               <tr>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Nº
                 </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Código o Nombre
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                  Fecha de Petición
                 </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha de Ingreso
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                  Descripción
                 </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Peticionario
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                  Peticionante
                 </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">
-                  Asunto
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Destinatario
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Tipo de Destinatario
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha de Remisión al Destinatario
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha de Respuesta
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha de Remisión al Peticionario
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Conminatoria
-                </th>
-                <th class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Observación
-                </th>
-                <th class="px-3 py-3 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Archivo
+                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                  Adjuntos
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody class="divide-y divide-gray-100">
               <tr
                 v-for="doc in documentos"
                 :key="doc._id"
-                class="hover:bg-gray-50 transition-colors"
+                class="hover:bg-[#fbf8f1] transition-colors"
               >
                 <!-- Nº -->
-                <td class="px-3 py-3 font-bold text-[#611717] whitespace-nowrap">
-                  {{ doc.numero }}
+                <td class="px-4 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
+                    {{ doc.numero }}
+                  </span>
                 </td>
 
-                <!-- Código -->
-                <td class="px-3 py-3 font-mono text-xs text-gray-800 whitespace-nowrap">
-                  {{ doc.codigo }}
-                </td>
-
-                <!-- Fecha Ingreso -->
-                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">
+                <!-- Fecha de Petición -->
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
-                <!-- Peticionario -->
-                <td class="px-3 py-3 text-gray-700 min-w-[180px]">
-                  {{ doc.peticionario || '—' }}
-                </td>
-
-                <!-- Asunto (truncado con tooltip) -->
-                <td class="px-3 py-3 text-gray-700 min-w-[320px] max-w-md">
+                <!-- Descripción (Asunto) -->
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Destinatario -->
-                <td class="px-3 py-3 text-gray-700 min-w-[180px]">
-                  {{ doc.destinatario || '—' }}
+                <!-- Peticionante -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">
+                  {{ doc.peticionario || '—' }}
                 </td>
 
-                <!-- Tipo Destinatario -->
-                <td class="px-3 py-3 whitespace-nowrap">
-                  <span
-                    v-if="doc.tipoDestinatario"
-                    class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs font-medium"
-                  >
-                    {{ doc.tipoDestinatario }}
-                  </span>
-                  <span v-else class="text-gray-300">—</span>
-                </td>
-
-                <!-- Fecha Remisión Destinatario -->
-                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">
-                  {{ formatearFecha(doc.fechaRemisionDestinatario) }}
-                </td>
-
-                <!-- Fecha Respuesta -->
-                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">
-                  {{ formatearFecha(doc.fechaRespuesta) }}
-                </td>
-
-                <!-- Fecha Remisión Peticionario -->
-                <td class="px-3 py-3 text-gray-700 whitespace-nowrap">
-                  {{ formatearFecha(doc.fechaRemisionPeticionario) }}
-                </td>
-
-                <!-- Conminatoria -->
-                <td class="px-3 py-3 text-gray-700 min-w-[140px]">
-                  {{ doc.conminatoria || '—' }}
-                </td>
-
-                <!-- Observación -->
-                <td class="px-3 py-3 text-gray-700 min-w-[140px]">
-                  <div class="line-clamp-2 text-xs" :title="doc.observacion">
-                    {{ doc.observacion || '—' }}
-                  </div>
-                </td>
-
-                <!-- Archivo -->
-                <td class="px-3 py-3 text-center whitespace-nowrap">
+                <!-- Adjuntos -->
+                <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a
                     v-if="doc.archivo && doc.archivo.url"
                     :href="doc.archivo.url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs font-medium transition-colors"
+                    class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200"
                     title="Ver PDF"
                   >
-                    📄 Ver PDF
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Ver PDF
                   </a>
                   <span v-else class="text-gray-300 text-xs">Sin archivo</span>
                 </td>
@@ -243,30 +171,43 @@
         <!-- Paginación -->
         <div
           v-if="totalPages > 1"
-          class="px-4 py-3 border-t border-gray-200 flex flex-wrap justify-between items-center gap-3 bg-gray-50"
+          class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]"
         >
-          <button
-            @click="prevPage"
-            :disabled="page === 1"
-            class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#611717] hover:text-white hover:border-[#611717] transition-colors"
-          >
-            ← Anterior
-          </button>
-
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">
-              Página <strong class="text-[#611717]">{{ page }}</strong>
-              de <strong class="text-[#611717]">{{ totalPages }}</strong>
-            </span>
+          <div class="text-xs text-gray-600">
+            Mostrando registros del <strong class="text-[#611717]">{{ (page - 1) * itemsPorPagina + 1 }}</strong> al
+            <strong class="text-[#611717]">{{ Math.min(page * itemsPorPagina, total) }}</strong> de un total de
+            <strong class="text-[#611717]">{{ total }}</strong> registros
           </div>
-
-          <button
-            @click="nextPage"
-            :disabled="page === totalPages"
-            class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#611717] hover:text-white hover:border-[#611717] transition-colors"
-          >
-            Siguiente →
-          </button>
+          <div class="flex items-center gap-1">
+            <button
+              @click="prevPage"
+              :disabled="page === 1"
+              class="p-2 rounded-md text-[#611717] hover:bg-[#e3d194] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              v-for="p in paginasVisibles"
+              :key="p"
+              @click="irAPagina(p)"
+              class="w-9 h-9 rounded-full text-xs font-semibold transition-colors"
+              :class="page === p ? 'bg-[#611717] text-white shadow-md' : 'hover:bg-[#e3d194] text-[#611717]'"
+            >
+              {{ p }}
+            </button>
+            <span v-if="totalPages > 5 && page < totalPages - 2" class="px-1 text-[#611717]">...</span>
+            <button
+              @click="nextPage"
+              :disabled="page === totalPages"
+              class="p-2 rounded-md text-[#611717] hover:bg-[#e3d194] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -304,11 +245,10 @@ const error = ref(null)
 const page = ref(1)
 const totalPages = ref(1)
 const total = ref(0)
-const itemsPorPagina = 20
+const itemsPorPagina = 10
 
 const filters = ref({
-  search: '',
-  gestion: ''
+  search: ''
 })
 
 let searchTimeout = null
@@ -316,15 +256,16 @@ let searchTimeout = null
 // ============================================
 // COMPUTED
 // ============================================
-const tieneFiltros = computed(() => !!(filters.value.search || filters.value.gestion))
-
-const aniosDisponibles = computed(() => {
-  const actual = new Date().getFullYear()
-  const anios = []
-  for (let y = actual + 1; y >= 2020; y--) {
-    anios.push(y)
+// 🔥 Lógica para mostrar los números de página de forma inteligente
+const paginasVisibles = computed(() => {
+  const paginas = []
+  const rango = 2
+  for (let i = 1; i <= totalPages.value; i++) {
+    if (i === 1 || i === totalPages.value || (i >= page.value - rango && i <= page.value + rango)) {
+      paginas.push(i)
+    }
   }
-  return anios
+  return paginas
 })
 
 // ============================================
@@ -358,7 +299,6 @@ const cargarDocumentos = async () => {
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
-    if (filters.value.gestion) params.append('gestion', String(filters.value.gestion))
 
     const url = `${API_BASE_URL}/legislativos/peticion-informe-escrito?${params.toString()}`
     const response = await fetch(url)
@@ -393,15 +333,20 @@ const onSearchInput = () => {
   }, 500)
 }
 
-const onFilterChange = () => {
+const limpiarBusqueda = () => {
+  filters.value.search = ''
   page.value = 1
   cargarDocumentos()
 }
 
-const resetFilters = () => {
-  filters.value = { search: '', gestion: '' }
-  page.value = 1
-  cargarDocumentos()
+const irAPagina = (p) => {
+  if (p >= 1 && p <= totalPages.value) {
+    page.value = p
+    cargarDocumentos()
+    if (process.client) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 }
 
 const prevPage = () => {
@@ -433,13 +378,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
