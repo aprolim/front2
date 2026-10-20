@@ -209,7 +209,7 @@
               >
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision</NuxtLink>
                 <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
-                <NuxtLink to="/objetivos-institucionales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Objetivos Institucionales</NuxtLink>
+                <!-- <NuxtLink to="/objetivos-institucionales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Objetivos Institucionales</NuxtLink> -->
                 <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Marco Normativo</NuxtLink>
                 <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Galeria de Imagenes</NuxtLink>
                 <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
@@ -241,7 +241,7 @@
               >
                 <NuxtLink to="/plan-estrategico-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plan Estratégico y POA</NuxtLink>
                 <NuxtLink to="/seguimiento-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Seguimiento y Evaluación al POA</NuxtLink>
-                <NuxtLink to="/mapa-procesos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Flujos de Procesos (Mapa)</NuxtLink>
+                <!-- <NuxtLink to="/mapa-procesos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Flujos de Procesos (Mapa)</NuxtLink> -->
               </div>
             </div>
 
