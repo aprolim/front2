@@ -105,19 +105,19 @@
         <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ stats?.enTratamiento || 0 }}</div>
+            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.enTratamiento }}</div>
           </div>
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ stats?.aprobados || 0 }}</div>
+            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.aprobados }}</div>
           </div>
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ stats?.sancionadas || 0 }}</div>
+            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.sancionadas }}</div>
           </div>
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Peticiones de<br />Informe</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ peticiones?.peticionesInforme || 0 }}</div>
+            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.peticiones }}</div>
           </div>
         </div>
       </div>
@@ -129,24 +129,71 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 
-// Stores
+// Stores existentes (para sesiones y en vivo)
 import { useSessionStore } from '~/stores/session'
-import { useStatsStore } from '~/stores/stats'
 import { useLiveStore } from '~/stores/live'
-import { usePeticionesStore } from '~/stores/peticiones'
+
+// 🔥 NUEVO: Usar el composable de documentos legislativos
+import { useDocumentosLegislativos } from '~/composables/useDocumentosLegislativos'
 
 // ==========================================
-// STORES
+// STORES Y COMPOSABLES
 // ==========================================
 const sessionStore = useSessionStore()
-const statsStore = useStatsStore()
 const liveStore = useLiveStore()
-const peticionesStore = usePeticionesStore()
+const { getStats } = useDocumentosLegislativos()
 
 const { hasValidData, sessionData, formattedDate } = storeToRefs(sessionStore)
-const { data: stats } = storeToRefs(statsStore)
 const { liveVideo } = storeToRefs(liveStore)
-const { data: peticiones } = storeToRefs(peticionesStore)
+
+// ==========================================
+// 🔥 NUEVO: ESTADO DINÁMICO DE ESTADÍSTICAS
+// ==========================================
+const statsDinamicos = ref({
+  enTratamiento: 0,
+  aprobados: 0,
+  sancionadas: 0,
+  peticiones: 0
+})
+
+const cargarEstadisticas = async () => {
+  try {
+    // Consultamos todos los endpoints en paralelo para mayor velocidad
+    const [
+      resTratamiento,
+      resAprobados,
+      resSancionados,
+      resEscrito,
+      resOral
+    ] = await Promise.allSettled([
+      getStats('proyecto-ley-tratamiento-senado'),
+      getStats('proyecto-ley-aprobados'),
+      getStats('proyecto-ley-sancionados'),
+      getStats('peticion-informe-escrito'),
+      getStats('peticion-informe-oral')
+    ])
+
+    // Extraer los totales (si falla, se queda en 0)
+    const enTratamiento = resTratamiento.status === 'fulfilled' ? (resTratamiento.value?.total || 0) : 0
+    const aprobados = resAprobados.status === 'fulfilled' ? (resAprobados.value?.total || 0) : 0
+    const sancionadas = resSancionados.status === 'fulfilled' ? (resSancionados.value?.total || 0) : 0
+    
+    // 🔥 Sumar Peticiones de Informe Escrito + Oral
+    const informeEscrito = resEscrito.status === 'fulfilled' ? (resEscrito.value?.total || 0) : 0
+    const informeOral = resOral.status === 'fulfilled' ? (resOral.value?.total || 0) : 0
+    
+    statsDinamicos.value = {
+      enTratamiento,
+      aprobados,
+      sancionadas,
+      peticiones: informeEscrito + informeOral
+    }
+
+    console.log('✅ [HeroVideo] Estadísticas cargadas:', statsDinamicos.value)
+  } catch (error) {
+    console.error('❌ [HeroVideo] Error al cargar estadísticas:', error)
+  }
+}
 
 // ==========================================
 // CONFIGURACIÓN DEL VIDEO DE FONDO
@@ -181,9 +228,10 @@ onMounted(() => {
 
   // Aseguramos que los stores estén cargando (por si acaso)
   sessionStore.ensureLoaded()
-  statsStore.ensureLoaded()
   liveStore.ensureLoaded()
-  peticionesStore.ensureLoaded()
+
+  // 🔥 CARGAR LAS ESTADÍSTICAS DINÁMICAS
+  cargarEstadisticas()
 
   // Resize con rAF
   let resizeRaf = null

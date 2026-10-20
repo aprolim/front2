@@ -1,3 +1,4 @@
+<!-- components/FacultadesLegislativas.vue -->
 <template>
   <div>
     <h2 class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6">
@@ -46,7 +47,7 @@
           <ul class="mt-3 space-y-2 text-[3.6vw] md:text-[1.2vw]">
             <li
               v-for="item in fiscalizacionItems"
-              :key="item.link"
+              :key="item.label"
               class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800"
             >
               <NuxtLink
@@ -75,7 +76,7 @@
           <ul class="mt-3 space-y-2 text-[3.6vw] md:text-[1.2vw]">
             <li
               v-for="item in gestionItems"
-              :key="item.link"
+              :key="item.label"
               class="flex items-center justify-between hover:text-senado-primary transition-colors text-gray-800"
             >
               <NuxtLink
@@ -96,7 +97,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useDocumentosLegislativos } from '~/composables/useDocumentosLegislativos'
 
@@ -105,7 +106,7 @@ const { getStats } = useDocumentosLegislativos()
 // ============================================
 // ESTADO DE CONTADORES (por tipo)
 // ============================================
-const counts = ref<Record<string, number>>({
+const counts = ref({
   // Fiscalización
   'peticion-informe-escrito': 0,
   'peticion-informe-oral': 0,
@@ -116,7 +117,7 @@ const counts = ref<Record<string, number>>({
   'homenaje-camaral': 0,
   // Legislación
   'proyecto-ley-tratamiento-senado': 0,
-  'proyecto-ley-revision-diputados': 0, // 🔥 NUEVO
+  'proyecto-ley-revision-diputados': 0,
   'proyecto-ley-aprobados': 0,
   'proyecto-ley-sancionados': 0,
   'proyecto-ley-modificaciones': 0,
@@ -125,7 +126,7 @@ const counts = ref<Record<string, number>>({
 })
 
 // ============================================
-// ITEMS DE CADA BLOQUE (usando counts)
+// ITEMS DE CADA BLOQUE (con rutas corregidas)
 // ============================================
 const legislacionItems = computed(() => [
   {
@@ -141,27 +142,27 @@ const legislacionItems = computed(() => [
   {
     label: 'Proyectos de Ley Aprobados',
     count: counts.value['proyecto-ley-aprobados'] || 0,
-    link: '/facultades-legislativas/proyectos-aprobados'
+    link: '/proyectos-aprobados'
   },
   {
     label: 'Proyectos de Ley Sancionados',
     count: counts.value['proyecto-ley-sancionados'] || 0,
-    link: '/facultades-legislativas/proyectos-sancionados'
+    link: '/proyectos-sancionados'
   },
   {
     label: 'Proyectos de Ley con Modificaciones (Devueltos)',
     count: counts.value['proyecto-ley-modificaciones'] || 0,
-    link: '/facultades-legislativas/proyectos-modificaciones'
+    link: '/proyectos-modificaciones'
   },
   {
     label: 'Proyectos de Ley Rechazados',
     count: counts.value['proyecto-ley-rechazados'] || 0,
-    link: '/facultades-legislativas/proyectos-rechazados'
+    link: '/proyectos-rechazados'
   },
   {
     label: 'Leyes Promulgadas',
     count: counts.value['ley-promulgada'] || 0,
-    link: '/facultades-legislativas/leyes-promulgadas'
+    link: '/leyes-promulgadas'
   }
 ])
 
@@ -208,7 +209,7 @@ const cargarContadores = async () => {
   const tipos = Object.keys(counts.value)
 
   const results = await Promise.allSettled(
-    tipos.map((tipo) => getStats(tipo as any))
+    tipos.map((tipo) => getStats(tipo))
   )
 
   const nuevos = { ...counts.value }
