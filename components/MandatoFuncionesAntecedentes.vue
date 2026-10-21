@@ -1,12 +1,13 @@
 <template>
   <div class="mt-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-[2vw] items-end">
+    <div class="grid grid-cols-1 gap-[2vw] items-end">
+    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-[2vw] items-end"> -->
       <!-- Mandato Constitucional -->
       <NuxtLink to="/mandato-constitucional" class="text-center group block">
         <h3 class="text-[2.2vw] font-[500] text-black mb-3 leading-[1.1] group-hover:text-[#4a1111] transition-colors duration-300 font-inter">
           Mandato Constitucional
         </h3>
-        <div class="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw]">
+        <div class="w-[60%] sm:w-[50%] lg:w-[40%] mx-auto aspect-video bg-gray-200 rounded-lg overflow-hidden mt-[3.4vw] shadow-sm">
           <img 
             src="/images/25.webp" 
             alt="Mandato Constitucional" 
@@ -16,7 +17,7 @@
       </NuxtLink>
 
       <!-- Antecedentes históricos -->
-      <NuxtLink to="/antecedentes-historicos" class="text-center group block">
+      <!-- <NuxtLink to="/antecedentes-historicos" class="text-center group block">
         <h3 class="text-[2.2vw] font-[500] text-black mb-3 leading-[1.1] group-hover:text-[#4a1111] transition-colors duration-300 font-inter">
           Antecedentes históricos
         </h3>
@@ -27,7 +28,7 @@
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-      </NuxtLink>
+      </NuxtLink> -->
     </div>
   </div>
 </template>

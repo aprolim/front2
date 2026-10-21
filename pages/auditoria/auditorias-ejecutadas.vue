@@ -62,47 +62,47 @@
             v-for="tab in tabs"
             :key="tab.key"
             @click="tabActivo = tab.key"
-            class="relative rounded-xl transition-all duration-300 text-left overflow-hidden group px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-3"
+            class="relative rounded-xl transition-all duration-300 text-left overflow-hidden group px-[2.4vw] sm:px-5 py-[2.4vw] sm:py-4 shadow-sm border border-gray-200"
             :class="tabActivo === tab.key
-              ? 'ring-2 ring-senado-primary shadow-lg transform scale-[1.02]'
-              : 'hover:shadow-md hover:scale-[1.01]'"
+              ? 'bg-[#5e0d0d] border-[#5e0d0d] shadow-lg' 
+              : 'bg-white hover:shadow-md'"
           >
-            <div
-              class="absolute inset-0 transition-all duration-300"
-              :class="tabActivo === tab.key
-                ? 'bg-gradient-to-r from-senado-primary to-senado-primary-dark'
-                : 'bg-white opacity-100'"
-            ></div>
-
             <div class="relative z-10 flex items-center justify-between">
               <div class="flex items-center gap-[1.8vw] sm:gap-3">
+                <!-- Ícono -->
                 <div
-                  class="rounded-full flex items-center justify-center transition-all duration-300 w-[6.6vw] sm:w-11 h-[6.6vw] sm:h-11"
+                  class="rounded-full flex items-center justify-center transition-all duration-300 w-[6.6vw] sm:w-10 h-[6.6vw] sm:h-10 flex-shrink-0"
                   :class="tabActivo === tab.key
-                    ? 'bg-senado-primary text-white'
+                    ? 'bg-white/10 text-senado-gold'
                     : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'"
                 >
                   <Icon :name="tab.icono" class="text-[3.6vw] sm:text-xl" />
                 </div>
 
+                <!-- Textos -->
                 <div>
                   <h3
-                    class="font-semibold transition-colors duration-300 text-[2.55vw] sm:text-base"
-                    :class="tabActivo === tab.key ? 'text-senado-gold' : 'text-gray-700'"
+                    class="font-semibold transition-colors duration-300 text-[2.55vw] sm:text-[0.95rem] leading-tight"
+                    :class="tabActivo === tab.key ? 'text-senado-gold' : 'text-gray-800'"
                   >
                     {{ tab.nombre }}
                   </h3>
-                  <div class="flex items-center gap-[1.5vw] sm:gap-2 mt-[0.3vw] sm:mt-0.5">
+                  <div class="flex items-center gap-[1.5vw] sm:gap-2 mt-[0.5vw] sm:mt-1">
                     <span
                       class="font-bold text-[3.6vw] sm:text-xl"
                       :class="tabActivo === tab.key ? 'text-senado-gold' : 'text-gray-500'"
                     >
                       {{ obtenerTotalPorTipo(tab.key) }}
                     </span>
-                    <span class="text-gray-400 text-[1.65vw] sm:text-xs">documentos</span>
+                    <span 
+                      class="text-[1.8vw] sm:text-xs"
+                      :class="tabActivo === tab.key ? 'text-white/70' : 'text-gray-400'"
+                    >
+                      documentos
+                    </span>
                     <span
                       v-if="tabActivo === tab.key"
-                      class="px-[1.5vw] sm:px-2 py-[0.15vw] sm:py-0.5 rounded-full bg-senado-primary text-white font-bold text-[1.35vw] sm:text-[10px]"
+                      class="px-[1.5vw] sm:px-2 py-[0.15vw] sm:py-0.5 rounded-full bg-white/10 text-white font-bold text-[1.35vw] sm:text-[10px] tracking-wider"
                     >
                       ACTIVO
                     </span>
@@ -110,22 +110,14 @@
                 </div>
               </div>
 
+              <!-- Flecha -->
               <div
                 class="transition-all duration-300 text-[3.9vw] sm:text-xl"
-                :class="tabActivo === tab.key ? 'text-senado-primary' : 'text-gray-300'"
+                :class="tabActivo === tab.key ? 'text-senado-gold opacity-100' : 'text-gray-300 opacity-0 group-hover:opacity-100'"
               >
-                <Icon
-                  name="mdi:chevron-right"
-                  :class="tabActivo === tab.key ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
-                />
+                <Icon name="mdi:chevron-right" />
               </div>
             </div>
-
-            <div
-              class="absolute bottom-0 left-0 h-1 transition-all duration-300"
-              :class="tabActivo === tab.key ? 'bg-senado-primary' : 'bg-transparent group-hover:bg-gray-200'"
-              :style="tabActivo === tab.key ? 'width: 100%;' : 'width: 0%;'"
-            ></div>
           </button>
         </div>
 
@@ -272,9 +264,9 @@ const tabs = computed(() => {
   if (categorias.value.length === 0) {
     // Fallback mientras carga
     return [
-      { key: 'confiabilidad', nombre: 'Auditoría de Confiabilidad', icono: 'mdi:shield-check' },
-      { key: 'cumplimiento',  nombre: 'Auditoría de Cumplimiento', icono: 'mdi:clipboard-check' },
-      { key: 'operacionales', nombre: 'Auditoría de Operativa',    icono: 'mdi:cog' },
+      { key: 'confiabilidad', nombre: 'Auditorías de Confiabilidad', icono: 'mdi:shield-check' },
+      { key: 'cumplimiento',  nombre: 'Auditorías de Cumplimiento', icono: 'mdi:clipboard-check' },
+      { key: 'operacionales', nombre: 'Auditorías de Operacionales',    icono: 'mdi:cog' },
     ]
   }
   const lista = [...categorias.value]
@@ -358,7 +350,23 @@ const cargarDatos = async () => {
     const result = await response.json()
 
     if (result.success && result.data) {
-      categorias.value = result.data.categorias || []
+      
+      // 🔥 FORZAMOS LOS NOMBRES EXACTOS QUE SOLICITASTE
+      if (result.data.categorias && result.data.categorias.length > 0) {
+        const nombresPersonalizados = {
+          'confiabilidad': 'Auditorías de Confiabilidad',
+          'cumplimiento': 'Auditorías de Cumplimiento',
+          'operacionales': 'Auditorías de Operacionales'
+        }
+        
+        categorias.value = result.data.categorias.map(cat => ({
+          ...cat,
+          nombre: nombresPersonalizados[cat.key] || cat.nombre
+        }))
+      } else {
+        categorias.value = []
+      }
+
       documentos.value = result.data.documentos || []
 
       // Activar el primer tab disponible

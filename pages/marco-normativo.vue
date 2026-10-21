@@ -38,12 +38,13 @@
             <div 
               v-for="doc in documentosDestacados" 
               :key="doc.id"
-              class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300 group"
+              class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
+              @click="abrirVisor(doc)"
             >
               
-              <!-- 🔥 VISOR DE LA PRIMERA HOJA DEL PDF -->
-              <div class="p-4 bg-gray-50 border-b border-gray-200">
-                <div class="relative w-full aspect-[3/4] bg-white shadow-sm border border-gray-300 overflow-hidden cursor-pointer flex items-center justify-center" @click="abrirDocumento(doc.url)">
+              <!-- VISOR DE LA PRIMERA HOJA DEL PDF -->
+              <div class="p-4 bg-gray-50">
+                <div class="relative w-full aspect-[3/4] bg-white shadow-sm border border-gray-300 overflow-hidden flex items-center justify-center">
                   
                   <!-- Spinner de carga del PDF -->
                   <div v-if="!portadasCargadas[doc.id]" class="flex flex-col items-center text-gray-400">
@@ -61,23 +62,6 @@
                 </div>
               </div>
 
-              <!-- Info to delete-->
-              <!-- <div class="p-4 flex-1 flex flex-col text-center bg-white">
-                <h3 class="text-sm font-bold text-gray-800 mb-1 leading-tight line-clamp-2 min-h-[2.5rem] flex items-center justify-center">
-                  {{ doc.nombre }}
-                </h3>
-                <p class="text-xs text-gray-500 mb-4">Gestión {{ doc.gestion }}</p>
-                
-                <div class="mt-auto pt-2">
-                  <a 
-                    :href="doc.url" 
-                    target="_blank"
-                    class="inline-flex items-center justify-center w-full gap-2 bg-[#E03636] hover:bg-[#b82c2c] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Ver documento
-                  </a>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -97,9 +81,7 @@
             >
               <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-senado-gold-lightest flex items-center justify-center text-senado-primary">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                  </svg>
+                  <Icon name="mdi:folder" class="w-4 h-4" />
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">{{ categoria.nombre }}</h2>
                 <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-0.5 rounded-full">
@@ -107,9 +89,7 @@
                 </span>
               </div>
               <div class="text-gray-400 transform transition-transform duration-300" :class="{ 'rotate-180': abiertos.includes(categoria.nombre) }">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+                <Icon name="mdi:chevron-down" class="w-6 h-6" />
               </div>
             </button>
 
@@ -119,7 +99,7 @@
                   <tr>
                     <th class="px-6 py-4 text-left text-sm font-semibold w-2/3">Descripción</th>
                     <th class="px-6 py-4 text-left text-sm font-semibold w-1/6">Gestión</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold w-1/6">Archivo PDF</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold w-1/6">Acciones</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -131,16 +111,24 @@
                       {{ doc.gestion }}
                     </td>
                     <td class="px-6 py-4 text-sm text-center">
-                      <a 
-                        :href="doc.url" 
-                        target="_blank"
-                        class="inline-flex items-center gap-1 text-[#611717] hover:text-[#8f1522] font-medium hover:underline"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Descargar
-                      </a>
+                      <div class="flex items-center justify-center gap-3">
+                        <button 
+                          @click="abrirVisor(doc)"
+                          class="inline-flex items-center gap-1 text-[#611717] hover:text-[#8f1522] font-medium hover:underline"
+                        >
+                          <Icon name="mdi:eye" class="w-4 h-4" />
+                          Leer
+                        </button>
+                        <a 
+                          :href="doc.url" 
+                          download
+                          target="_blank"
+                          class="inline-flex items-center gap-1 text-gray-500 hover:text-gray-800 font-medium hover:underline"
+                        >
+                          <Icon name="mdi:download" class="w-4 h-4" />
+                          Descargar
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -153,22 +141,105 @@
       <!-- Botón volver -->
       <div class="text-center mt-12">
         <NuxtLink to="/" class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
+          <Icon name="mdi:arrow-left" class="w-5 h-5" />
           Volver al inicio
         </NuxtLink>
       </div>
     </div>
+
+    <!-- ============================================ -->
+    <!-- MODAL VISOR DE PDF (CARGA PÁGINA POR PÁGINA) -->
+    <!-- ============================================ -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <div 
+          v-if="visorAbierto"
+          class="fixed inset-0 z-[999999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          @click.self="cerrarVisor"
+        >
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col">
+            
+            <!-- Barra Superior del Visor -->
+            <div class="flex-shrink-0 bg-[#611717] text-white p-3 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-3">
+                <button @click="cerrarVisor" class="hover:bg-white/20 rounded-lg p-2 transition-colors">
+                  <Icon name="mdi:close" class="w-6 h-6" />
+                </button>
+                <div class="flex items-center gap-2">
+                  <Icon name="mdi:file-pdf-box" class="w-5 h-5 text-senado-gold" />
+                  <span class="font-bold text-lg truncate max-w-[200px] sm:max-w-md">
+                    {{ pdfTitulo }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Controles del visor -->
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                  <button 
+                    @click="paginaAnteriorPDF"
+                    :disabled="paginaActualPDF <= 1 || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-left" class="w-5 h-5" />
+                  </button>
+                  <span class="text-xs font-mono px-2">
+                    {{ paginaActualPDF }} / {{ totalPaginasPDF || '?' }}
+                  </span>
+                  <button 
+                    @click="paginaSiguientePDF"
+                    :disabled="paginaActualPDF >= totalPaginasPDF || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-right" class="w-5 h-5" />
+                  </button>
+                </div>
+
+                <a 
+                  :href="pdfUrlActual" 
+                  download
+                  target="_blank"
+                  class="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition-colors text-sm font-medium"
+                >
+                  <Icon name="mdi:download" class="w-4 h-4" />
+                  Descargar <span class="hidden sm:inline">({{ pdfPeso ? formatearTamaño(pdfPeso) : '...' }})</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Área de Lectura (Canvas) -->
+            <div class="flex-1 overflow-auto bg-gray-200 p-4 relative flex justify-center items-start">
+              
+              <div v-if="cargandoPDF" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-10">
+                <div class="w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-700 font-medium">Cargando página...</p>
+              </div>
+
+              <canvas 
+                ref="pdfCanvas"
+                class="w-full max-w-[800px] shadow-2xl rounded bg-white"
+              ></canvas>
+            </div>
+
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, onUnmounted } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 
-// 🔥 IMPORTANTE: Configurar el Worker de PDF.js
-// Como Nuxt lo empaqueta, debemos apuntar a la ruta del worker en la carpeta pública.
+// Configurar el Worker de PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
 
 // ============================================
@@ -179,9 +250,20 @@ const error = ref(null)
 const documentos = ref([])
 const abiertos = ref([])
 
-// 🔥 Estado para saber qué canvas ya se renderizaron
+// Estado para saber qué canvas ya se renderizaron
 const portadasCargadas = ref({})
 const canvases = ref({})
+
+// Estado para el VISOR MODAL
+const visorAbierto = ref(false)
+const pdfTitulo = ref('')
+const pdfUrlActual = ref('')
+const pdfPeso = ref(0)
+const pdfDocumento = ref(null)
+const pdfCanvas = ref(null)
+const paginaActualPDF = ref(1)
+const totalPaginasPDF = ref(0)
+const cargandoPDF = ref(false)
 
 const setCanvasRef = (el, id) => {
   if (el) {
@@ -193,147 +275,30 @@ const setCanvasRef = (el, id) => {
 // DATOS
 // ============================================
 const documentosData = [
-  {
-    id: 1,
-    categoria: 'Constitución Política del Estado',
-    nombre: 'Constitución Política Del Estado Plurinacional de Bolivia',
-    gestion: '2009',
-    url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf'
-  },
-  {
-    id: 2,
-    categoria: 'Norma General de Área Legislativa',
-    nombre: 'Reglamento General de la Cámara de Senadores',
-    gestion: '2024',
-    url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf'
-  },
+  // 🔥 Se eliminó el "peso" falso, ahora se detectará automáticamente (366 KB)
+  { id: 1, categoria: 'Constitución Política del Estado', nombre: 'Constitución Política Del Estado Plurinacional de Bolivia', gestion: '2009', url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf' },
+  
+  { id: 2, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento General de la Cámara de Senadores', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf' },
+  { id: 3, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Participación Ciudadana y Deliberación Pública', gestion: '2012', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Participación Ciudadana y Deliberación Pública.pdf' },
+  { id: 4, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento Específico de Homenajes Camarales', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf' },
+  { id: 5, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Condecoraciones', gestion: '2022', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Condecoraciones.pdf' },
+  { id: 6, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Ética', gestion: '2014', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Ética.pdf' },
 
-  {
-    id: 3,
-    categoria: 'Norma General de Área Legislativa',
-    nombre: 'Reglamento de Participación Ciudadana y Deliberación Pública',
-    gestion: '2012',
-    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Participación Ciudadana y Deliberación Pública.pdf'
-  },
-  {
-    id: 4,
-    categoria: 'Norma General de Área Legislativa',
-    nombre: 'Reglamento Específico de Homenajes Camarales',
-    gestion: '2024',
-    url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf'
-  },
-  {
-    id: 5,
-    categoria: 'Norma General de Área Legislativa',
-    nombre: 'Reglamento de Condecoraciones',
-    gestion: '2022',
-    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Condecoraciones.pdf'
-  },
-  {
-    id: 6,
-    categoria: 'Norma General de Área Legislativa',
-    nombre: 'Reglamento de Ética',
-    gestion: '2014',
-    url: '/pdfs/Norma General de Área Legislativa/Reglamento de Ética.pdf'
-  },
-  {
-    id: 7,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Manual de Organización y Funciones',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf'
-  },
-  {
-    id: 8,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Interno de Personal',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf'
-  },
-  {
-    id: 9,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Manual de Administración de Activos Fijos',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf'
-  },
-  {
-    id: 10,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema Contabilidad Integrada',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf'
-  },
-  {
-    id: 11,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf'
-  },
-  {
-    id: 12,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema de Administración de Personal',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf'
-  },
-  {
-    id: 13,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema de Organización Administrativa',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf'
-  },
-  {
-    id: 14,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema de Presupuestos',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf'
-  },
-  {
-    id: 15,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico del Sistema de Programación de Operaciones',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf'
-  },
-  {
-    id: 16,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento Específico Sistema de Tesorería',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf'
-  },
-  {
-    id: 17,
-    categoria: 'Normas del Área Administrativa',
-    nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios',
-    gestion: '2020',
-    url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf'
-  },
-  {
-    id: 18,
-    categoria: 'Normativa Interna',
-    nombre: 'Código de Ética',
-    gestion: '2020',
-    url: '/pdfs/Normativa Interna/Código de Ética.pdf'
-  },
-  {
-    id: 19,
-    categoria: 'Normativa Interna',
-    nombre: 'Manual de Administración de Almacenes',
-    gestion: '2020',
-    url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf'
-  },
-  {
-    id: 20,
-    categoria: 'Normativa Interna',
-    nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos',
-    gestion: '2020',
-    url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf'
-  }
+  { id: 7, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Organización y Funciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf' },
+  { id: 8, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Interno de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf' },
+  { id: 9, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Administración de Activos Fijos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf' },
+  { id: 10, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema Contabilidad Integrada', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf' },
+  { id: 11, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf' },
+  { id: 12, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf' },
+  { id: 13, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Organización Administrativa', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf' },
+  { id: 14, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf' },
+  { id: 15, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Programación de Operaciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf' },
+  { id: 16, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico Sistema de Tesorería', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf' },
+  { id: 17, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf' },
+
+  { id: 18, categoria: 'Normativa Interna', nombre: 'Código de Ética', gestion: '2020', url: '/pdfs/Normativa Interna/Código de Ética.pdf' },
+  { id: 19, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf' },
+  { id: 20, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf' }
 ]
 
 // ============================================
@@ -347,10 +312,7 @@ const documentosDestacados = computed(() => {
 })
 
 const categoriasAcordeon = computed(() => {
-  const categorias = [
-    'Normas del Área Administrativa',
-    'Normativa Interna'
-  ]
+  const categorias = ['Normas del Área Administrativa', 'Normativa Interna']
   return categorias.map(nombre => ({
     nombre,
     documentos: documentos.value.filter(d => d.categoria === nombre)
@@ -361,50 +323,38 @@ const categoriasAcordeon = computed(() => {
 // MÉTODOS
 // ============================================
 
-// 🔥 FUNCIÓN PARA DIBUJAR LA PRIMERA PÁGINA DEL PDF
-const renderizarPortadas = async () => {
-  await nextTick() // Esperar a que los canvas existan en el DOM
+const formatearTamaño = (bytes) => {
+  if (!bytes || bytes === 0) return '...'
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / 1048576).toFixed(1) + ' MB'
+}
 
+const renderizarPortadas = async () => {
+  await nextTick()
   for (const doc of documentosDestacados.value) {
     const canvas = canvases.value[doc.id]
     if (!canvas) continue
-
     try {
-      // 1. Cargar el documento PDF
       const loadingTask = pdfjsLib.getDocument(doc.url)
       const pdf = await loadingTask.promise
-
-      // 2. Obtener la primera página
       const page = await pdf.getPage(1)
-
-      // 3. Calcular escala para que encaje bien en la tarjeta
       const context = canvas.getContext('2d')
       const viewportBase = page.getViewport({ scale: 1 })
-      
-      // Ajustamos la escala para que el ancho del PDF coincida con el ancho del contenedor (aprox 300px)
       const escala = 300 / viewportBase.width 
       const viewport = page.getViewport({ scale: escala })
-
-      // 4. Configurar el canvas
       const dpr = window.devicePixelRatio || 1
       canvas.width = viewport.width * dpr
       canvas.height = viewport.height * dpr
-      
-      // 5. Renderizar
       const renderContext = {
         canvasContext: context,
         viewport: viewport,
         transform: [dpr, 0, 0, dpr, 0, 0]
       }
-      
       await page.render(renderContext).promise
-
-      // 6. Marcar como cargada para quitar el spinner
       portadasCargadas.value[doc.id] = true
-      
     } catch (err) {
       console.error(`Error cargando portada del PDF ${doc.id}:`, err)
-      // Si falla, marcamos como cargada para que no se quede colgado el spinner
       portadasCargadas.value[doc.id] = true
     }
   }
@@ -423,7 +373,6 @@ const cargarDocumentos = () => {
   loading.value = true
   try {
     documentos.value = documentosData
-    // Una vez que tenemos los documentos, renderizamos los PDFs
     setTimeout(() => {
       renderizarPortadas()
     }, 100)
@@ -434,10 +383,94 @@ const cargarDocumentos = () => {
   }
 }
 
-const abrirDocumento = (url) => {
-  if (process.client && url) {
-    window.open(url, '_blank')
+const abrirVisor = async (doc) => {
+  pdfTitulo.value = doc.nombre
+  pdfUrlActual.value = doc.url
+  pdfPeso.value = 0 // Reiniciar peso
+  visorAbierto.value = true
+  cargandoPDF.value = true
+  paginaActualPDF.value = 1
+  document.body.style.overflow = 'hidden'
+  
+  await nextTick()
+  
+  try {
+    // 🔥 Siempre consultamos el peso real mediante una petición HEAD
+    try {
+      const response = await fetch(pdfUrlActual.value, { method: 'HEAD' })
+      const size = response.headers.get('content-length')
+      if (size) pdfPeso.value = parseInt(size)
+    } catch (e) {
+      console.warn('No se pudo obtener el peso del archivo', e)
+    }
+
+    // 🔥 CONFIGURACIÓN CLAVE PARA NO DESCARGAR LOS 200MB DE GOLPE
+    const loadingTask = pdfjsLib.getDocument({
+      url: pdfUrlActual.value,
+      disableAutoFetch: true,    // No descargar páginas que no se ven
+      disableStream: false,      // Permitir streaming por rangos
+      rangeChunkSize: 65536,     // Descargar en bloques de 64KB
+    })
+    
+    pdfDocumento.value = await loadingTask.promise
+    totalPaginasPDF.value = pdfDocumento.value.numPages
+    await renderizarPaginaPDF(1)
+  } catch (error) {
+    console.error('Error al cargar PDF:', error)
+    alert('Error al cargar el PDF.')
+    cerrarVisor()
+  } finally {
+    cargandoPDF.value = false
   }
+}
+
+const renderizarPaginaPDF = async (numero) => {
+  if (!pdfDocumento.value || !pdfCanvas.value) return
+  cargandoPDF.value = true
+  
+  try {
+    const page = await pdfDocumento.value.getPage(numero)
+    const canvas = pdfCanvas.value
+    const context = canvas.getContext('2d')
+    
+    const viewportBase = page.getViewport({ scale: 1 })
+    const escala = 800 / viewportBase.width 
+    const viewport = page.getViewport({ scale: escala })
+    
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = viewport.width * dpr
+    canvas.height = viewport.height * dpr
+    canvas.style.width = '100%' 
+    canvas.style.height = 'auto'
+    
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+      transform: [dpr, 0, 0, dpr, 0, 0]
+    }
+    
+    await page.render(renderContext).promise
+    paginaActualPDF.value = numero
+  } catch (error) {
+    console.error('Error al renderizar página:', error)
+  } finally {
+    cargandoPDF.value = false
+  }
+}
+
+const paginaAnteriorPDF = () => {
+  if (paginaActualPDF.value > 1) renderizarPaginaPDF(paginaActualPDF.value - 1)
+}
+
+const paginaSiguientePDF = () => {
+  if (paginaActualPDF.value < totalPaginasPDF.value) renderizarPaginaPDF(paginaActualPDF.value + 1)
+}
+
+const cerrarVisor = () => {
+  visorAbierto.value = false
+  document.body.style.overflow = 'auto'
+  pdfDocumento.value = null
+  pdfUrlActual.value = ''
 }
 
 // ============================================
@@ -446,10 +479,13 @@ const abrirDocumento = (url) => {
 onMounted(() => {
   cargarDocumentos()
 })
+
+onUnmounted(() => {
+  document.body.style.overflow = 'auto'
+})
 </script>
 
 <style scoped>
-/* Estilos para que el canvas se vea bien dentro de la tarjeta */
 canvas {
   max-width: 100%;
   max-height: 100%;

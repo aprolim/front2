@@ -1,136 +1,240 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 flex justify-center">
+  <div class="min-h-screen bg-gray-50 py-[8vw] sm:py-8 flex justify-center">
     <div class="w-[90%] max-w-6xl">
+      
       <!-- Botón volver -->
-      <div class="mb-6">
+      <div class="mb-[4vw] sm:mb-6">
         <NuxtLink 
           to="/" 
-          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors"
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-senado-primary transition-colors text-[3.6vw] sm:text-[1vw]"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
+          <Icon name="mdi:arrow-left" class="w-[5vw] sm:w-5 h-[5vw] sm:h-5" />
           Volver al inicio
         </NuxtLink>
       </div>
 
       <!-- ========================================== -->
-      <!-- ESCALA SALARIAL                           -->
+      <!-- ESCALA SALARIAL                            -->
       <!-- ========================================== -->
-      <div class="management-container">
+      <div class="w-full font-sans">
+        
         <!-- Header -->
-        <div class="management-header">
-          <div class="header-left">
-            <h2 class="management-title">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-[4vw] sm:mb-6 gap-[4vw] sm:gap-4 flex-wrap">
+          <div class="flex items-center gap-[3vw] sm:gap-3 flex-wrap">
+            <h2 class="text-[5.4vw] sm:text-2xl font-bold text-senado-primary flex items-center gap-2 m-0">
               Escala Salarial
-              <span v-if="!loading && !error" class="badge">{{ documentos.length }} documentos</span>
+              <span v-if="!loading && !error" class="bg-gradient-to-r from-[#E03636] to-[#b82c2c] text-white px-2 py-0.5 rounded-full text-[2.4vw] sm:text-xs font-medium">
+                {{ documentos.length }} documentos
+              </span>
             </h2>
           </div>
           
-          <div class="header-controls">
+          <div class="flex gap-[3vw] sm:gap-4 items-center flex-wrap w-full sm:w-auto">
             <!-- Buscador -->
-            <div class="search-box">
+            <div class="relative flex bg-white p-1 rounded-lg shadow-sm w-full sm:w-auto">
               <input 
                 type="text" 
                 v-model="terminoBusqueda"
                 @input="filtrarDocumentos"
                 placeholder="Buscar documentos..."
-                class="search-input"
+                class="border border-gray-200 px-[3vw] sm:px-3 py-[1.5vw] sm:py-1.5 text-[3vw] sm:text-sm w-full sm:w-64 rounded-md outline-none transition-all focus:border-[#E03636] focus:ring-2 focus:ring-[#E03636]/20 pr-[15vw] sm:pr-16"
               >
-              <button class="search-button" :disabled="loading">
-                <span class="search-icon">🔍</span>
+              <button class="absolute right-1 top-1 bg-[#E03636] hover:bg-[#b82c2c] text-white px-[2vw] sm:px-3 py-[1.5vw] sm:py-1.5 rounded-md transition-colors disabled:opacity-50 text-[3vw] sm:text-sm" :disabled="loading">
+                <Icon name="mdi:magnify" class="w-[4vw] sm:w-4 h-[4vw] sm:h-4" />
               </button>
               <button 
                 v-if="terminoBusqueda" 
                 @click="limpiarBusqueda" 
-                class="clear-button"
+                class="absolute right-[12vw] sm:right-[50px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#E03636] text-[3.6vw] sm:text-sm p-1"
                 title="Limpiar búsqueda"
               >
-                ✕
+                <Icon name="mdi:close" class="w-[4vw] sm:w-4 h-[4vw] sm:h-4" />
               </button>
             </div>
           </div>
         </div>
 
         <!-- Estado de carga -->
-        <div v-if="loading" class="loading-state">
-          <div class="spinner"></div>
-          <p>Cargando documentos...</p>
+        <div v-if="loading" class="text-center py-20 bg-white rounded-xl shadow-sm">
+          <div class="w-10 h-10 border-4 border-gray-200 border-t-[#E03636] rounded-full mx-auto mb-4 animate-spin"></div>
+          <p class="text-[3.6vw] sm:text-base text-gray-500">Cargando documentos...</p>
         </div>
 
         <!-- Estado de error -->
-        <div v-else-if="error" class="error-state">
-          <span class="error-icon">⚠️</span>
-          <p>{{ error }}</p>
-          <button @click="cargarDocumentos" class="retry-button">Reintentar</button>
+        <div v-else-if="error" class="text-center py-20 bg-white rounded-xl shadow-sm">
+          <Icon name="mdi:alert-circle-outline" class="w-[15vw] sm:w-12 h-[15vw] sm:h-12 text-red-500 mx-auto mb-4" />
+          <p class="text-[3.6vw] sm:text-base text-gray-700 mb-4">{{ error }}</p>
+          <button @click="cargarDocumentos" class="bg-[#E03636] hover:bg-[#b82c2c] text-white px-6 py-2 rounded-lg text-[3.6vw] sm:text-sm font-medium transition-colors">
+            Reintentar
+          </button>
         </div>
 
-        <!-- Lista de documentos -->
-        <div v-else class="table-responsive">
-          <table class="management-table">
-            <thead>
-              <tr>
-                <th @click="ordenarPor('nombre')" class="sortable">
-                  Nombre del archivo
-                  <span class="sort-icon">{{ getSortIcon('nombre') }}</span>
-                </th>
-                <th @click="ordenarPor('fecha')" class="sortable">
-                  Fecha de subida
-                  <span class="sort-icon">{{ getSortIcon('fecha') }}</span>
-                </th>
-                <th @click="ordenarPor('tamaño')" class="sortable">
-                  Tamaño
-                  <span class="sort-icon">{{ getSortIcon('tamaño') }}</span>
-                </th>
-                <th class="actions-column">Documento</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="doc in documentosFiltrados" :key="doc.id" class="management-row">
-                <td class="title-cell">
-                  <div class="titulo-principal">{{ doc.nombre }}</div>
-                  <div v-if="doc.descripcion" class="descripcion">{{ doc.descripcion }}</div>
-                  <div v-if="doc.gestion" class="gestion-info">Gestión: {{ doc.gestion }}</div>
-                </td>
-                <td>{{ formatearFecha(doc.fecha) }}</td>
-                <td>{{ formatearTamaño(doc.tamaño) }}</td>
-                <td class="actions-cell">
-                  <a 
-                    :href="doc.url" 
-                    target="_blank"
-                    class="btn-documento"
-                    title="Ver PDF"
-                  >
-                    <span class="btn-icon">📄</span>
-                    <span class="btn-text">Ver PDF</span>
-                  </a>
-                </td>
-              </tr>
-              
-              <!-- Fila vacía -->
-              <tr v-if="documentosFiltrados.length === 0 && !loading">
-                <td colspan="4" class="empty-state">
-                  <p>No hay documentos disponibles</p>
-                  <p v-if="terminoBusqueda" class="text-sm text-gray-400 mt-1">
-                    No se encontraron resultados para "{{ terminoBusqueda }}"
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Tabla de documentos -->
+        <div v-else class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 mb-4">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gray-50 border-b-2 border-gray-200">
+                  <th @click="ordenarPor('nombre')" class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors whitespace-nowrap">
+                    Nombre del archivo
+                    <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('nombre') }}</span>
+                  </th>
+                  <th @click="ordenarPor('fecha')" class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors whitespace-nowrap">
+                    Fecha de subida
+                    <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('fecha') }}</span>
+                  </th>
+                  <th @click="ordenarPor('tamaño')" class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors whitespace-nowrap">
+                    Tamaño
+                    <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('tamaño') }}</span>
+                  </th>
+                  <!-- Columna de acciones ajustada -->
+                  <th class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider text-center w-[120px] whitespace-nowrap">
+                    Documento
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr v-for="doc in documentosFiltrados" :key="doc.id" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3">
+                    <div class="font-medium text-[3vw] sm:text-sm text-gray-900 mb-0.5">{{ doc.nombre }}</div>
+                    <div v-if="doc.descripcion" class="text-[2.4vw] sm:text-xs text-gray-500">{{ doc.descripcion }}</div>
+                    <div v-if="doc.gestion" class="text-[2.4vw] sm:text-xs text-[#E03636] mt-0.5 font-medium">Gestión: {{ doc.gestion }}</div>
+                  </td>
+                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[3vw] sm:text-sm text-gray-600 whitespace-nowrap">
+                    {{ formatearFecha(doc.fecha) }}
+                  </td>
+                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[3vw] sm:text-sm text-gray-600 whitespace-nowrap">
+                    {{ formatearTamaño(doc.tamaño) }}
+                  </td>
+                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-center">
+                    <!-- Botón rediseñado -->
+                    <button 
+                      @click="abrirVisor(doc)"
+                      class="inline-flex items-center justify-center gap-1.5 bg-[#E03636] hover:bg-[#b82c2c] text-white px-3 py-1.5 rounded-md font-medium transition-all hover:shadow-md text-[2.4vw] sm:text-xs whitespace-nowrap min-w-[80px]"
+                      title="Ver PDF"
+                    >
+                      <Icon name="mdi:file-pdf-box" class="w-[3.6vw] sm:w-4 h-[3.6vw] sm:h-4" />
+                      <span>Ver PDF</span>
+                    </button>
+                  </td>
+                </tr>
+                
+                <!-- Fila vacía -->
+                <tr v-if="documentosFiltrados.length === 0 && !loading">
+                  <td colspan="4" class="text-center py-12 text-gray-500">
+                    <Icon name="mdi:file-search-outline" class="w-[12vw] sm:w-10 h-[12vw] sm:h-10 mx-auto mb-2 opacity-50" />
+                    <p class="text-[3.6vw] sm:text-base font-medium">No hay documentos disponibles</p>
+                    <p v-if="terminoBusqueda" class="text-[3vw] sm:text-sm text-gray-400 mt-1">
+                      No se encontraron resultados para "{{ terminoBusqueda }}"
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- Información de depuración (opcional) -->
-        <div v-if="documentos.length > 0 && !loading" class="debug-info p-2 text-xs border-t border-gray-200 bg-gray-50">
+        <!-- Info de depuración -->
+        <div v-if="documentos.length > 0 && !loading" class="p-2 text-[2.4vw] sm:text-xs bg-gray-100 rounded-lg text-gray-600 font-mono border border-gray-200">
           <p>Total documentos: {{ documentos.length }} | Mostrando: {{ documentosFiltrados.length }}</p>
         </div>
       </div>
     </div>
+
+    <!-- ============================================ -->
+    <!-- MODAL VISOR DE PDF (CARGA PÁGINA POR PÁGINA) -->
+    <!-- ============================================ -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <div 
+          v-if="visorAbierto"
+          class="fixed inset-0 z-[999999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          @click.self="cerrarVisor"
+        >
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col">
+            
+            <!-- Barra Superior del Visor -->
+            <div class="flex-shrink-0 bg-[#611717] text-white p-3 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-3">
+                <button @click="cerrarVisor" class="hover:bg-white/20 rounded-lg p-2 transition-colors">
+                  <Icon name="mdi:close" class="w-6 h-6" />
+                </button>
+                <div class="flex items-center gap-2">
+                  <Icon name="mdi:file-pdf-box" class="w-5 h-5 text-senado-gold" />
+                  <span class="font-bold text-lg truncate max-w-[200px] sm:max-w-md">
+                    {{ pdfTitulo }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Controles del visor -->
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                  <button 
+                    @click="paginaAnteriorPDF"
+                    :disabled="paginaActualPDF <= 1 || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-left" class="w-5 h-5" />
+                  </button>
+                  <span class="text-xs font-mono px-2">
+                    {{ paginaActualPDF }} / {{ totalPaginasPDF || '?' }}
+                  </span>
+                  <button 
+                    @click="paginaSiguientePDF"
+                    :disabled="paginaActualPDF >= totalPaginasPDF || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-right" class="w-5 h-5" />
+                  </button>
+                </div>
+
+                <a 
+                  :href="pdfUrlActual" 
+                  download
+                  target="_blank"
+                  class="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition-colors text-sm font-medium"
+                >
+                  <Icon name="mdi:download" class="w-4 h-4" />
+                  Descargar <span class="hidden sm:inline">({{ pdfPeso ? formatearTamaño(pdfPeso) : '...' }})</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Área de Lectura (Canvas) -->
+            <div class="flex-1 overflow-auto bg-gray-200 p-4 relative flex justify-center items-start">
+              
+              <div v-if="cargandoPDF" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-10">
+                <div class="w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-700 font-medium">Cargando página...</p>
+              </div>
+
+              <canvas 
+                ref="pdfCanvas"
+                class="w-full max-w-[800px] shadow-2xl rounded bg-white"
+              ></canvas>
+            </div>
+
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick, onUnmounted } from 'vue'
+import * as pdfjsLib from 'pdfjs-dist'
+
+// Configurar el Worker de PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
 
 // ============================================
 // ESTADO
@@ -145,11 +249,16 @@ const orden = ref({
   direccion: 'desc'
 })
 
-// ============================================
-// CONFIGURACIÓN DEL ENDPOINT
-// ============================================
-// 🔥 CAMBIA ESTA URL CUANDO TENGAS EL BACKEND
-const API_URL = 'https://api.senado.gob.bo/escala-salarial'
+// Estado para el VISOR MODAL
+const visorAbierto = ref(false)
+const pdfTitulo = ref('')
+const pdfUrlActual = ref('')
+const pdfPeso = ref(0)
+const pdfDocumento = ref(null)
+const pdfCanvas = ref(null)
+const paginaActualPDF = ref(1)
+const totalPaginasPDF = ref(0)
+const cargandoPDF = ref(false)
 
 // ============================================
 // FUNCIONES
@@ -164,7 +273,7 @@ const formatearFecha = (fecha) => {
 }
 
 const formatearTamaño = (bytes) => {
-  if (!bytes) return '0 KB'
+  if (!bytes || bytes === 0) return '...'
   if (bytes < 1024) return bytes + ' B'
   if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB'
   return (bytes / 1048576).toFixed(1) + ' MB'
@@ -173,6 +282,7 @@ const formatearTamaño = (bytes) => {
 const filtrarDocumentos = () => {
   if (!terminoBusqueda.value.trim()) {
     documentosFiltrados.value = [...documentos.value]
+    aplicarOrdenamiento()
     return
   }
   
@@ -183,7 +293,6 @@ const filtrarDocumentos = () => {
     (doc.gestion && doc.gestion.toLowerCase().includes(termino))
   )
   
-  // Re-aplicar ordenamiento
   aplicarOrdenamiento()
 }
 
@@ -240,12 +349,6 @@ const cargarDocumentos = async () => {
   error.value = null
   
   try {
-    // 🔥 SIMULACIÓN DE DATOS - REEMPLAZAR CON LLAMADA REAL
-    // const response = await fetch(API_URL)
-    // const data = await response.json()
-    // documentos.value = data
-    
-    // 📌 DATOS DE EJEMPLO (ELIMINAR CUANDO TENGA API)
     await new Promise(resolve => setTimeout(resolve, 800))
     documentos.value = [
       {
@@ -271,316 +374,104 @@ const cargarDocumentos = async () => {
 }
 
 // ============================================
-// CARGAR DATOS AL MONTAR
+// LÓGICA DEL VISOR DE PDF
+// ============================================
+const abrirVisor = async (doc) => {
+  pdfTitulo.value = doc.nombre
+  pdfUrlActual.value = doc.url
+  pdfPeso.value = 0
+  visorAbierto.value = true
+  cargandoPDF.value = true
+  paginaActualPDF.value = 1
+  document.body.style.overflow = 'hidden'
+  
+  await nextTick()
+  
+  try {
+    try {
+      const response = await fetch(pdfUrlActual.value, { method: 'HEAD' })
+      const size = response.headers.get('content-length')
+      if (size) pdfPeso.value = parseInt(size)
+    } catch (e) {
+      console.warn('No se pudo obtener el peso del archivo', e)
+    }
+
+    const loadingTask = pdfjsLib.getDocument({
+      url: pdfUrlActual.value,
+      disableAutoFetch: true,
+      disableStream: false,
+      rangeChunkSize: 65536,
+    })
+    
+    pdfDocumento.value = await loadingTask.promise
+    totalPaginasPDF.value = pdfDocumento.value.numPages
+    await renderizarPaginaPDF(1)
+  } catch (error) {
+    console.error('Error al cargar PDF:', error)
+    alert('Error al cargar el PDF.')
+    cerrarVisor()
+  } finally {
+    cargandoPDF.value = false
+  }
+}
+
+const renderizarPaginaPDF = async (numero) => {
+  if (!pdfDocumento.value || !pdfCanvas.value) return
+  cargandoPDF.value = true
+  
+  try {
+    const page = await pdfDocumento.value.getPage(numero)
+    const canvas = pdfCanvas.value
+    const context = canvas.getContext('2d')
+    
+    const viewportBase = page.getViewport({ scale: 1 })
+    const escala = 800 / viewportBase.width 
+    const viewport = page.getViewport({ scale: escala })
+    
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = viewport.width * dpr
+    canvas.height = viewport.height * dpr
+    canvas.style.width = '100%' 
+    canvas.style.height = 'auto'
+    
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+      transform: [dpr, 0, 0, dpr, 0, 0]
+    }
+    
+    await page.render(renderContext).promise
+    paginaActualPDF.value = numero
+  } catch (error) {
+    console.error('Error al renderizar página:', error)
+  } finally {
+    cargandoPDF.value = false
+  }
+}
+
+const paginaAnteriorPDF = () => {
+  if (paginaActualPDF.value > 1) renderizarPaginaPDF(paginaActualPDF.value - 1)
+}
+
+const paginaSiguientePDF = () => {
+  if (paginaActualPDF.value < totalPaginasPDF.value) renderizarPaginaPDF(paginaActualPDF.value + 1)
+}
+
+const cerrarVisor = () => {
+  visorAbierto.value = false
+  document.body.style.overflow = 'auto'
+  pdfDocumento.value = null
+  pdfUrlActual.value = ''
+}
+
+// ============================================
+// LIFECYCLE
 // ============================================
 onMounted(() => {
   cargarDocumentos()
 })
+
+onUnmounted(() => {
+  document.body.style.overflow = 'auto'
+})
 </script>
-
-<style scoped>
-.management-container {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  width: 100%;
-  background: transparent;
-}
-
-.management-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.management-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-}
-
-.badge {
-  background: linear-gradient(135deg, #E03636, #b82c2c);
-  color: white;
-  padding: 2px 8px;
-  border-radius: 16px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.header-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.search-box {
-  display: flex;
-  gap: 4px;
-  background: white;
-  padding: 3px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.search-input {
-  border: 1px solid #e2e8f0;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  width: 260px;
-  border-radius: 6px;
-  outline: none;
-  transition: all 0.2s;
-  padding-right: 65px;
-}
-
-.search-input:focus {
-  border-color: #E03636;
-  box-shadow: 0 0 0 2px rgba(224, 54, 54, 0.2);
-}
-
-.search-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.85rem;
-  position: absolute;
-  right: 3px;
-  top: 3px;
-}
-
-.search-button:hover:not(:disabled) {
-  background: #b82c2c;
-}
-
-.search-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.clear-button {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0 6px;
-  position: absolute;
-  right: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  line-height: 1;
-}
-
-.clear-button:hover {
-  color: #E03636;
-}
-
-.table-responsive {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: auto;
-  margin-bottom: 16px;
-}
-
-.management-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.management-table th {
-  background: #f8fafc;
-  padding: 8px 12px;
-  text-align: left;
-  font-weight: 600;
-  color: #475569;
-  border-bottom: 2px solid #e2e8f0;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-.sortable:hover {
-  background: #f1f5f9;
-}
-
-.sort-icon {
-  margin-left: 4px;
-  font-size: 0.75rem;
-  opacity: 0.6;
-}
-
-.management-row td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #eef2f6;
-  color: #334155;
-  line-height: 1.3;
-}
-
-.management-row:hover td {
-  background-color: #f8fafc;
-}
-
-.title-cell {
-  min-width: 220px;
-}
-
-.titulo-principal {
-  font-weight: 500;
-  color: #0f172a;
-  margin-bottom: 2px;
-  font-size: 0.85rem;
-}
-
-.descripcion {
-  font-size: 0.7rem;
-  color: #94a3b8;
-}
-
-.gestion-info {
-  font-size: 0.7rem;
-  color: #E03636;
-  margin-top: 2px;
-}
-
-.actions-cell {
-  width: 100px;
-  text-align: center;
-}
-
-.btn-documento {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #E03636;
-  color: white;
-  text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 5px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-documento:hover {
-  background: #b82c2c;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(224, 54, 54, 0.3);
-}
-
-.loading-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #E03636;
-  border-radius: 50%;
-  margin: 0 auto 12px;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-state {
-  text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-}
-
-.error-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.retry-button {
-  background: #E03636;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 12px;
-}
-
-.retry-button:hover {
-  background: #b82c2c;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px !important;
-  color: #94a3b8;
-  font-size: 0.95rem;
-}
-
-.debug-info {
-  background-color: #f1f5f9;
-  border-radius: 0 0 10px 10px;
-  font-family: monospace;
-  color: #334155;
-}
-
-@media (max-width: 768px) {
-  .management-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .header-left {
-    justify-content: center;
-  }
-  
-  .header-controls {
-    justify-content: center;
-  }
-  
-  .search-input {
-    width: 100%;
-  }
-  
-  .btn-text {
-    display: none;
-  }
-}
-</style>

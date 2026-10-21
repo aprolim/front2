@@ -95,15 +95,15 @@
                 <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearFecha(doc.fecha) }}</td>
                 <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearTamaño(doc.tamaño) }}</td>
                 <td class="actions-cell">
-                  <a 
-                    :href="doc.url" 
-                    target="_blank"
+                  <!-- 🔥 AHORA ABRE EL VISOR MODAL EN LUGAR DE UNA NUEVA PESTAÑA -->
+                  <button 
+                    @click="abrirVisor(doc)"
                     class="btn-documento text-[2.4vw] sm:text-[0.7rem]"
                     title="Ver PDF"
                   >
                     <span class="btn-icon text-[3.6vw] sm:text-[1rem]">📄</span>
                     <span class="btn-text">Ver PDF</span>
-                  </a>
+                  </button>
                 </td>
               </tr>
               
@@ -126,11 +126,102 @@
         </div>
       </div>
     </div>
+
+    <!-- ============================================ -->
+    <!-- MODAL VISOR DE PDF (CARGA PÁGINA POR PÁGINA) -->
+    <!-- ============================================ -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <div 
+          v-if="visorAbierto"
+          class="fixed inset-0 z-[999999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          @click.self="cerrarVisor"
+        >
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col">
+            
+            <!-- Barra Superior del Visor -->
+            <div class="flex-shrink-0 bg-[#611717] text-white p-3 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-3">
+                <button @click="cerrarVisor" class="hover:bg-white/20 rounded-lg p-2 transition-colors">
+                  <Icon name="mdi:close" class="w-6 h-6" />
+                </button>
+                <div class="flex items-center gap-2">
+                  <Icon name="mdi:file-pdf-box" class="w-5 h-5 text-senado-gold" />
+                  <span class="font-bold text-lg truncate max-w-[200px] sm:max-w-md">
+                    {{ pdfTitulo }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Controles del visor -->
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                  <button 
+                    @click="paginaAnteriorPDF"
+                    :disabled="paginaActualPDF <= 1 || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-left" class="w-5 h-5" />
+                  </button>
+                  <span class="text-xs font-mono px-2">
+                    {{ paginaActualPDF }} / {{ totalPaginasPDF || '?' }}
+                  </span>
+                  <button 
+                    @click="paginaSiguientePDF"
+                    :disabled="paginaActualPDF >= totalPaginasPDF || cargandoPDF"
+                    class="hover:bg-white/20 rounded p-1.5 transition-colors disabled:opacity-40"
+                  >
+                    <Icon name="mdi:chevron-right" class="w-5 h-5" />
+                  </button>
+                </div>
+
+                <!-- Botón de Descarga Directa -->
+                <a 
+                  :href="pdfUrlActual" 
+                  download
+                  target="_blank"
+                  class="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition-colors text-sm font-medium"
+                >
+                  <Icon name="mdi:download" class="w-4 h-4" />
+                  Descargar <span class="hidden sm:inline">({{ formatearTamaño(pdfPeso) }})</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Área de Lectura (Canvas) -->
+            <div class="flex-1 overflow-auto bg-gray-200 p-4 relative flex justify-center items-start">
+              
+              <div v-if="cargandoPDF" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-10">
+                <div class="w-12 h-12 border-4 border-[#611717] border-t-transparent rounded-full animate-spin"></div>
+                <p class="mt-4 text-gray-700 font-medium">Cargando página...</p>
+              </div>
+
+              <canvas 
+                ref="pdfCanvas"
+                class="w-full max-w-[800px] shadow-2xl rounded bg-white"
+              ></canvas>
+            </div>
+
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick, onUnmounted } from 'vue'
+import * as pdfjsLib from 'pdfjs-dist'
+
+// Configurar el Worker de PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
 
 // ============================================
 // ESTADO
@@ -145,11 +236,16 @@ const orden = ref({
   direccion: 'desc'
 })
 
-// ============================================
-// CONFIGURACIÓN DEL ENDPOINT
-// ============================================
-// 🔥 CAMBIA ESTA URL CUANDO TENGAS EL BACKEND
-const API_URL = 'https://api.senado.gob.bo/poai'
+// 🔥 Estado para el VISOR MODAL
+const visorAbierto = ref(false)
+const pdfTitulo = ref('')
+const pdfUrlActual = ref('')
+const pdfPeso = ref(0)
+const pdfDocumento = ref(null)
+const pdfCanvas = ref(null)
+const paginaActualPDF = ref(1)
+const totalPaginasPDF = ref(0)
+const cargandoPDF = ref(false)
 
 // ============================================
 // FUNCIONES
@@ -239,12 +335,7 @@ const cargarDocumentos = async () => {
   error.value = null
   
   try {
-    // 🔥 SIMULACIÓN DE DATOS - REEMPLAZAR CON LLAMADA REAL
-    // const response = await fetch(API_URL)
-    // const data = await response.json()
-    // documentos.value = data
-    
-    // 📌 DATOS DE EJEMPLO (ELIMINAR CUANDO TENGA API)
+    // 📌 DATOS DE EJEMPLO
     await new Promise(resolve => setTimeout(resolve, 800))
     documentos.value = [
       {
@@ -253,7 +344,7 @@ const cargarDocumentos = async () => {
         descripcion: 'Plan Operativo Anual Individual 2026',
         gestion: '2026',
         fecha: '2026-08-25T10:00:00',
-        tamaño: 204423168,
+        tamaño: 204423168, // Simulando los 200 MB
         url: '/pdfs/Recursos-humanos/POAIs 2026 APROBADO.pdf'
       }
     ]
@@ -270,10 +361,98 @@ const cargarDocumentos = async () => {
 }
 
 // ============================================
-// CARGAR DATOS AL MONTAR
+// LÓGICA DEL VISOR DE PDF (CARGA BAJO DEMANDA)
+// ============================================
+const abrirVisor = async (doc) => {
+  pdfTitulo.value = doc.nombre
+  pdfUrlActual.value = doc.url
+  pdfPeso.value = doc.tamaño || 0
+  visorAbierto.value = true
+  cargandoPDF.value = true
+  paginaActualPDF.value = 1
+  document.body.style.overflow = 'hidden'
+  
+  await nextTick()
+  
+  try {
+    // 🔥 CONFIGURACIÓN CLAVE PARA NO DESCARGAR LOS 200MB DE GOLPE
+    const loadingTask = pdfjsLib.getDocument({
+      url: pdfUrlActual.value,
+      disableAutoFetch: true,    // No descargar páginas que no se ven
+      disableStream: false,      // Permitir streaming por rangos
+      rangeChunkSize: 65536,     // Descargar en bloques de 64KB (ajustable)
+    })
+    
+    pdfDocumento.value = await loadingTask.promise
+    totalPaginasPDF.value = pdfDocumento.value.numPages
+    await renderizarPaginaPDF(1)
+  } catch (error) {
+    console.error('Error al cargar PDF:', error)
+    alert('Error al cargar el PDF.')
+    cerrarVisor()
+  } finally {
+    cargandoPDF.value = false
+  }
+}
+
+const renderizarPaginaPDF = async (numero) => {
+  if (!pdfDocumento.value || !pdfCanvas.value) return
+  cargandoPDF.value = true
+  
+  try {
+    const page = await pdfDocumento.value.getPage(numero)
+    const canvas = pdfCanvas.value
+    const context = canvas.getContext('2d')
+    
+    const viewportBase = page.getViewport({ scale: 1 })
+    const escala = 800 / viewportBase.width // Forzar un ancho de 800px en el visor
+    const viewport = page.getViewport({ scale: escala })
+    
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = viewport.width * dpr
+    canvas.height = viewport.height * dpr
+    canvas.style.width = '100%' 
+    canvas.style.height = 'auto'
+    
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+      transform: [dpr, 0, 0, dpr, 0, 0]
+    }
+    
+    await page.render(renderContext).promise
+    paginaActualPDF.value = numero
+  } catch (error) {
+    console.error('Error al renderizar página:', error)
+  } finally {
+    cargandoPDF.value = false
+  }
+}
+
+const paginaAnteriorPDF = () => {
+  if (paginaActualPDF.value > 1) renderizarPaginaPDF(paginaActualPDF.value - 1)
+}
+
+const paginaSiguientePDF = () => {
+  if (paginaActualPDF.value < totalPaginasPDF.value) renderizarPaginaPDF(paginaActualPDF.value + 1)
+}
+
+const cerrarVisor = () => {
+  visorAbierto.value = false
+  document.body.style.overflow = 'auto'
+  pdfDocumento.value = null
+  pdfUrlActual.value = ''
+}
+
+// ============================================
+// LIFECYCLE
 // ============================================
 onMounted(() => {
   cargarDocumentos()
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = 'auto'
 })
 </script>
 

@@ -14,7 +14,7 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- PERIODO 2025-2026 (2 tomos)                -->
+      <!-- PERIODO 2025-2026 (3 tomos)                -->
       <!-- ========================================== -->
       <div class="mb-16">
         <div class="flex items-center gap-3 mb-6">
@@ -501,22 +501,30 @@ const tomos2025 = [
     pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2025-2026.pdf',
     portada: '/images/portadas/2025-2026/default.jpg',
     nombreArchivo: 'Redactor_Tomo_II_2025-2026.pdf'
+  },
+  { 
+    id: 3, 
+    numero: 'TOMO III', 
+    titulo: 'Tomo III - Gestión 2025-2026', 
+    pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2025-2026.pdf',
+    portada: '/images/portadas/2025-2026/default.jpg',
+    nombreArchivo: 'Redactor_Tomo_III_2025-2026.pdf'
   }
 ]
 
 const tomos2023 = [
-  { id: 3, numero: 'TOMO I', titulo: 'Tomo I - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_I_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_I_2023-2024.pdf' },
-  { id: 4, numero: 'TOMO II', titulo: 'Tomo II - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_II_2023-2024.pdf' },
-  { id: 5, numero: 'TOMO III', titulo: 'Tomo III - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_III_2023-2024.pdf' },
-  { id: 6, numero: 'TOMO IV', titulo: 'Tomo IV - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IV_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IV_2023-2024.pdf' },
-  { id: 7, numero: 'TOMO V', titulo: 'Tomo V - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_V_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_V_2023-2024.pdf' },
-  { id: 8, numero: 'TOMO VI', titulo: 'Tomo VI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VI_2023-2024.pdf' },
-  { id: 9, numero: 'TOMO VII', titulo: 'Tomo VII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VII_2023-2024.pdf' },
-  { id: 10, numero: 'TOMO VIII', titulo: 'Tomo VIII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VIII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VIII_2023-2024.pdf' },
-  { id: 11, numero: 'TOMO IX', titulo: 'Tomo IX - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IX_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IX_2023-2024.pdf' },
-  { id: 12, numero: 'TOMO X', titulo: 'Tomo X - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_X_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_X_2023-2024.pdf' },
-  { id: 13, numero: 'TOMO XI', titulo: 'Tomo XI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XI_2023-2024.pdf' },
-  { id: 14, numero: 'TOMO XII', titulo: 'Tomo XII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XII_2023-2024.pdf' }
+  { id: 4, numero: 'TOMO I', titulo: 'Tomo I - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_I_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_I_2023-2024.pdf' },
+  { id: 5, numero: 'TOMO II', titulo: 'Tomo II - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_II_2023-2024.pdf' },
+  { id: 6, numero: 'TOMO III', titulo: 'Tomo III - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_III_2023-2024.pdf' },
+  { id: 7, numero: 'TOMO IV', titulo: 'Tomo IV - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IV_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IV_2023-2024.pdf' },
+  { id: 8, numero: 'TOMO V', titulo: 'Tomo V - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_V_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_V_2023-2024.pdf' },
+  { id: 9, numero: 'TOMO VI', titulo: 'Tomo VI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VI_2023-2024.pdf' },
+  { id: 10, numero: 'TOMO VII', titulo: 'Tomo VII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VII_2023-2024.pdf' },
+  { id: 11, numero: 'TOMO VIII', titulo: 'Tomo VIII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VIII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VIII_2023-2024.pdf' },
+  { id: 12, numero: 'TOMO IX', titulo: 'Tomo IX - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IX_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IX_2023-2024.pdf' },
+  { id: 13, numero: 'TOMO X', titulo: 'Tomo X - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_X_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_X_2023-2024.pdf' },
+  { id: 14, numero: 'TOMO XI', titulo: 'Tomo XI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XI_2023-2024.pdf' },
+  { id: 15, numero: 'TOMO XII', titulo: 'Tomo XII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XII_2023-2024.pdf' }
 ]
 
 // ============================================ //
