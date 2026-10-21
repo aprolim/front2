@@ -209,7 +209,6 @@
               >
                 <NuxtLink to="/mision-vision-valores-principios" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Misión, Vision</NuxtLink>
                 <NuxtLink to="/mandato-constitucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Mandato Constitucional</NuxtLink>
-                <!-- <NuxtLink to="/objetivos-institucionales" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Objetivos Institucionales</NuxtLink> -->
                 <NuxtLink to="/marco-normativo" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Marco Normativo</NuxtLink>
                 <NuxtLink to="/galeria-de-imagenes" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Galeria de Imagenes</NuxtLink>
                 <NuxtLink to="/memoria-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Memoria Institucional - Redactor</NuxtLink>
@@ -241,7 +240,6 @@
               >
                 <NuxtLink to="/plan-estrategico-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plan Estratégico y POA</NuxtLink>
                 <NuxtLink to="/seguimiento-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Seguimiento y Evaluación al POA</NuxtLink>
-                <!-- <NuxtLink to="/mapa-procesos" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Flujos de Procesos (Mapa)</NuxtLink> -->
               </div>
             </div>
 
@@ -316,7 +314,7 @@
               </div>
             </div>
 
-            <!-- AUDITORÍA Y TRANSPARENCIA -->
+            <!-- AUDITORÍA -->
             <div
               @mouseenter="handleSubmenuHoverEnter('auditoriaTransparencia')"
               @mouseleave="handleSubmenuHoverLeave('auditoriaTransparencia')"
@@ -327,7 +325,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
-                  <span>&nbsp;&nbsp;&nbsp; Auditoría y Transparencia</span>
+                  <span>&nbsp;&nbsp;&nbsp; Auditoría</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.auditoriaTransparencia ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -341,28 +339,35 @@
               >
                 <NuxtLink to="/auditoria/auditorias-ejecutadas" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Auditorías Ejecutadas</NuxtLink>
                 <NuxtLink to="/presupuesto" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Presupuesto y Ejecución</NuxtLink>
+              </div>
+            </div>
 
-                <div>
-                  <div
-                    @click="toggleSubmenu('transparenciaInstitucional', 'auditoriaTransparencia')"
-                    class="cursor-pointer py-2 px-3 flex items-center justify-between hover:bg-white/60"
-                  >
-                    <span class="font-[500] text-black hover:text-senado-primary transition-colors text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw]">• Transparencia y Lucha contra la Corrupción</span>
-                    <span class="transition-transform duration-300 inline-flex" :class="submenus.transparenciaInstitucional ? 'rotate-90' : ''">
-                      <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    </span>
-                  </div>
-                  <div
-                    class="bg-black/5 ml-6 space-y-0 text-[3vw] sm:text-[1.2vw] lg:text-[1vw] overflow-hidden transition-all duration-300 ease-in-out font-[500]"
-                    :class="submenus.transparenciaInstitucional ? 'max-h-[250px] opacity-100' : 'max-h-0 opacity-0'"
-                  >
-                    <NuxtLink to="/gestion-de-denuncia" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</NuxtLink>
-                    <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Solicitud de Información</NuxtLink>
-                    <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
-                  </div>
+            <!-- TRANSPARENCIA Y LUCHA CONTRA LA CORRUPCIÓN (AHORA ES MENÚ PRINCIPAL) -->
+            <div
+              @mouseenter="handleSubmenuHoverEnter('transparenciaInstitucional')"
+              @mouseleave="handleSubmenuHoverLeave('transparenciaInstitucional')"
+              class="menu-item-wrapper"
+            >
+              <div
+                @click="toggleSubmenu('transparenciaInstitucional', null)"
+                class="cursor-pointer menu-item"
+              >
+                <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60">
+                  <span>&nbsp;&nbsp;&nbsp; Transparencia y Lucha contra la Corrupción</span>
+                  <span class="transition-transform duration-300 inline-flex" :class="submenus.transparenciaInstitucional ? 'rotate-90' : ''">
+                    <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </span>
                 </div>
+              </div>
+              <div
+                class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
+                :class="submenus.transparenciaInstitucional ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
+              >
+                <NuxtLink to="/gestion-de-denuncia" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Gestión de Denuncia de Actos/Hechos de Corrupción</NuxtLink>
+                <NuxtLink to="/solicitud-informacion" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Solicitud de Información</NuxtLink>
+                <a href="https://observatorio.gob.bo/#/" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Rendición Pública de Cuentas</a>
               </div>
             </div>
 
@@ -396,7 +401,7 @@
               </div>
             </div>
 
-            <!-- TRÁMITES Y SERVICIOS gaby-->
+            <!-- TRÁMITES Y SERVICIOS -->
             <div
               @mouseenter="handleSubmenuHoverEnter('tramites')"
               @mouseleave="handleSubmenuHoverLeave('tramites')"
@@ -419,8 +424,6 @@
                 class="bg-black/10 ml-4 mt-2 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] text-black overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.tramites ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
-                <!-- <a href="https://systemdemo.es/track-document" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Consulta tu trámite</a>
-                <NuxtLink to="https://systemdemo.es/auth/login-external" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plataforma Digital</NuxtLink> -->
                 <NuxtLink to="/visita-senado" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Visita el Senado</NuxtLink>
               </div>
             </div>
@@ -716,7 +719,8 @@ export default {
         'legislativa',
         'senadores',
         'recursosHumanos',
-        'auditoriaTransparencia'
+        'auditoriaTransparencia',
+        'transparenciaInstitucional'
       ]
 
       if (mainMenuKeys.includes(key)) {
@@ -740,7 +744,8 @@ export default {
           'legislativa': ['fiscalizacion', 'gestion'],
           'senadores': [],
           'recursosHumanos': [],
-          'auditoriaTransparencia': ['auditoriaInstitucional', 'transparenciaInstitucional']
+          'auditoriaTransparencia': [],
+          'transparenciaInstitucional': []
         }
 
         if (parentSubmenus[parentKey]) {
@@ -764,7 +769,8 @@ export default {
         'legislativa': ['fiscalizacion', 'gestion'],
         'senadores': [],
         'recursosHumanos': [],
-        'auditoriaTransparencia': ['auditoriaInstitucional', 'transparenciaInstitucional']
+        'auditoriaTransparencia': [],
+        'transparenciaInstitucional': []
       }
       return map[mainKey] || []
     },

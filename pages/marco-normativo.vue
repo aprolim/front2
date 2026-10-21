@@ -238,77 +238,77 @@ const documentosData = [
   },
   {
     id: 7,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Manual de Organización y Funciones',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf'
   },
   {
     id: 8,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Interno de Personal',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf'
   },
   {
     id: 9,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Manual de Administración de Activos Fijos',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf'
   },
   {
     id: 10,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema Contabilidad Integrada',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf'
   },
   {
     id: 11,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf'
   },
   {
     id: 12,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema de Administración de Personal',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf'
   },
   {
     id: 13,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema de Organización Administrativa',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf'
   },
   {
     id: 14,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema de Presupuestos',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf'
   },
   {
     id: 15,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico del Sistema de Programación de Operaciones',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf'
   },
   {
     id: 16,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento Específico Sistema de Tesorería',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf'
   },
   {
     id: 17,
-    categoria: 'Norma General de Área Administrativa',
+    categoria: 'Normas del Área Administrativa',
     nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios',
     gestion: '2020',
     url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf'
@@ -348,7 +348,7 @@ const documentosDestacados = computed(() => {
 
 const categoriasAcordeon = computed(() => {
   const categorias = [
-    'Norma General de Área Administrativa',
+    'Normas del Área Administrativa',
     'Normativa Interna'
   ]
   return categorias.map(nombre => ({
