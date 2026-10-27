@@ -51,7 +51,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
             <div class="text-[5.4vw] sm:text-2xl font-bold text-senado-primary">{{ trimestreActual.resumen.avanceFisico }}%</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Física Financiera</p>
+            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Física</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
             <div class="text-[5.4vw] sm:text-2xl font-bold text-green-600">{{ trimestreActual.resumen.avanceFinanciero }}%</div>
@@ -142,6 +142,47 @@ const trimestres = [
       avanceFinanciero: 38.87,
       presupuesto: 88555306,
       ejecutado: 34417987.14,
+    },
+    acciones: [
+      {
+        descripcion: 'Coadyuvar a la arquitectura del Estado en el 2026; a través de la aprobación, sanción o rechazo del 100% de los proyectos de ley, instrumentos de gestión parlamentaria e instrumentos de fiscalización de manera democrática y participativa.',
+        filas: [
+          { codigo: '51', descripcion: '01 Directiva Camaral', fisico: 10.31, financiero: 10.31, presupuesto: 351600, ejecutado: 36242 },
+          { codigo: '51', descripcion: '02 Secretaría General', fisico: 53.40, financiero: 23.77, presupuesto: 201500, ejecutado: 47900 },
+          { codigo: '51', descripcion: '03 Comisiones', fisico: 23.44, financiero: 23.44, presupuesto: 730500, ejecutado: 171244 },
+          { codigo: '51', descripcion: '04 Cómites', fisico: 12.31, financiero: 12.31, presupuesto: 1120240, ejecutado: 137922 },
+          { codigo: '51', descripcion: '05 Bancadas Políticas', fisico: 0, financiero: 0, presupuesto: 16100, ejecutado: 0 },
+          { codigo: '51', descripcion: '06 Brigadas Parlamentarias', fisico: 19.77, financiero: 19.77, presupuesto: 437697, ejecutado: 86553.35 },
+          { codigo: '51', descripcion: '09 Area Legislativa - Personal Eventual CS', fisico: 40.33, financiero: 34.50, presupuesto: 28130098, ejecutado: 9706176.39 },
+        ],
+        totalFisico: 30.04,
+        totalFinanciero: 32.87,
+        totalPresupuesto: 30987735,
+        totalEjecutado: 10186037.74,
+      },
+      {
+        descripcion: "Administrar la Cámara de Senadores en la gestión 2026, de manera eficiente, eficaz, económicamente y transparente, a través de la implementación progresiva de herramientas TIC's y mejora de la gestión pública mediante la implementación de los sistemas y reglamentos de la Ley N° 1178.",
+        filas: [
+          { codigo: '1', descripcion: '01 Administración Central', fisico: 47.47, financiero: 39.88, presupuesto: 53252546, ejecutado: 21238591.35 },
+          { codigo: '1', descripcion: '07 Administración Nuevo Edificio ALP', fisico: 100.0, financiero: 99.98, presupuesto: 2519615, ejecutado: 2519057.50 },
+          { codigo: '99', descripcion: 'Participación y Control Social', fisico: 0, financiero: 0, presupuesto: 41000, ejecutado: 0 },
+          { codigo: '91', descripcion: 'Personal Discapacitado', fisico: 27.03, financiero: 27.03, presupuesto: 1754410, ejecutado: 474300.55 },
+        ],
+        totalFisico: 47.34,
+        totalFinanciero: 42.09,
+        totalPresupuesto: 57567571,
+        totalEjecutado: 24231949.40,
+      },
+    ],
+  },
+    {
+    key: 't3',
+    nombre: 'Tercer Trimestre 2026',
+    resumen: {
+      avanceFisico: 57.03,
+      avanceFinanciero: 49.80,
+      presupuesto: 109555306,
+      ejecutado: 54555932,
     },
     acciones: [
       {

@@ -56,8 +56,10 @@
             <thead class="bg-[#611717] text-white">
               <tr>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Petición</th>
+                <!-- 🔥 CAMBIO: "Fecha de Petición" a "Fecha" -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
+                <!-- 🔥 La columna proyectista se mantiene -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
@@ -71,7 +73,8 @@
                 <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ doc.peticionario || '—' }}</td>
+                <!-- 🔥 CAMBIO: Uso de formatearPeticionario -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ formatearPeticionario(doc.peticionario) }}</td>
                 <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -141,6 +144,37 @@ const formatearFecha = (fecha) => {
     if (isNaN(d.getTime())) return '—'
     return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
   } catch { return '—' }
+}
+
+// 🔥 NUEVA FUNCIÓN PARA LIMPIAR EL ARRAY CON FORMATO STRING
+const formatearPeticionario = (peticionario) => {
+  if (!peticionario) return '—'
+  
+  // Si ya es un array real
+  if (Array.isArray(peticionario)) {
+    return peticionario.join(', ')
+  }
+
+  // Si es un string que parece un array JSON (ej: '["Nombre"]')
+  if (typeof peticionario === 'string') {
+    const trimmed = peticionario.trim()
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      try {
+        // Intentamos parsearlo
+        const parsed = JSON.parse(trimmed)
+        if (Array.isArray(parsed)) {
+          return parsed.join(', ')
+        }
+      } catch (e) {
+        // Si falla el parseo, hacemos una limpieza manual con Regex
+        return trimmed.replace(/[\[\]"]/g, '').trim()
+      }
+    }
+    // Si es un string normal, lo devolvemos tal cual
+    return trimmed
+  }
+
+  return String(peticionario)
 }
 
 const cargarDocumentos = async () => {

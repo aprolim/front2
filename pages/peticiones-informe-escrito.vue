@@ -108,8 +108,9 @@
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Descripción
                 </th>
+                <!-- 🔥 TÍTULO CAMBIADO -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Peticionante
+                  Senador(es) Peticionante(s)
                 </th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Adjuntos
@@ -141,27 +142,46 @@
                   </div>
                 </td>
 
-                <!-- Peticionante -->
+                <!-- 🔥 Peticionante CORREGIDO -->
                 <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">
-                  {{ doc.peticionario || '—' }}
+                  {{ formatearPeticionario(doc.peticionario) }}
                 </td>
 
-                <!-- Adjuntos -->
+                <!-- Adjuntos y Estado de Respuesta -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
-                  <a
-                    v-if="doc.archivo && doc.archivo.url"
-                    :href="doc.archivo.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200"
-                    title="Ver PDF"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Ver PDF
-                  </a>
-                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+                  <div class="flex flex-col items-center gap-2">
+                    <!-- Botón Ver PDF -->
+                    <a
+                      v-if="doc.archivo && doc.archivo.url"
+                      :href="doc.archivo.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200"
+                      title="Ver PDF"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Ver PDF
+                    </a>
+                    <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+
+                    <!-- 🔥 ETIQUETA C.R. / S.R. -->
+                    <span 
+                      v-if="doc.fechaRespuesta" 
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded border border-green-200" 
+                      title="Con Respuesta"
+                    >
+                      C.R.
+                    </span>
+                    <span 
+                      v-else 
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-200" 
+                      title="Sin Respuesta"
+                    >
+                      S.R.
+                    </span>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -256,7 +276,6 @@ let searchTimeout = null
 // ============================================
 // COMPUTED
 // ============================================
-// 🔥 Lógica para mostrar los números de página de forma inteligente
 const paginasVisibles = computed(() => {
   const paginas = []
   const rango = 2
@@ -285,6 +304,31 @@ const formatearFecha = (fecha) => {
   } catch {
     return '—'
   }
+}
+
+const formatearPeticionario = (peticionario) => {
+  if (!peticionario) return '—'
+  
+  if (Array.isArray(peticionario)) {
+    return peticionario.join(', ')
+  }
+
+  if (typeof peticionario === 'string') {
+    const trimmed = peticionario.trim()
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      try {
+        const parsed = JSON.parse(trimmed)
+        if (Array.isArray(parsed)) {
+          return parsed.join(', ')
+        }
+      } catch (e) {
+        return trimmed.replace(/[\[\]"]/g, '').trim()
+      }
+    }
+    return trimmed
+  }
+
+  return String(peticionario)
 }
 
 // ============================================

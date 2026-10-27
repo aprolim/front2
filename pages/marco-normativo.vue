@@ -297,8 +297,9 @@ const documentosData = [
   { id: 17, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf' },
 
   { id: 18, categoria: 'Normativa Interna', nombre: 'Código de Ética', gestion: '2020', url: '/pdfs/Normativa Interna/Código de Ética.pdf' },
-  { id: 19, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf' },
-  { id: 20, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf' }
+  { id: 19, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf' },
+  { id: 20, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf' }
+  
 ]
 
 // ============================================

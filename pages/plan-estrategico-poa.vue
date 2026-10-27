@@ -41,7 +41,7 @@
           <div class="flex flex-wrap items-center gap-[3vw] sm:gap-4 mb-[3vw] sm:mb-4">
             <div class="flex items-center gap-[2vw] sm:gap-2 text-[2.4vw] sm:text-sm text-gray-600">
               <Icon name="mdi:calendar" class="text-senado-primary text-[3.6vw] sm:text-base" />
-              <span>Gestión 2021-2025</span>
+              <span>Gestión 2026-2027</span>
             </div>
             <div class="flex items-center gap-[2vw] sm:gap-2 text-[2.4vw] sm:text-sm">
               <span class="inline-flex items-center px-[2vw] sm:px-2.5 py-[0.3vw] sm:py-0.5 rounded-full text-[2.1vw] sm:text-xs font-medium bg-green-100 text-green-800">
@@ -113,7 +113,7 @@
 useHead({
   title: 'Plan Estratégico y POA | Senado de Bolivia',
   meta: [
-    { name: 'description', content: 'Plan Estratégico Institucional (PEI 2021-2025), Programación Operativo Anual (POA 2026), Seguimiento y Evaluación al POA, y Flujos de Procesos de la Cámara de Senadores.' },
+    { name: 'description', content: 'Plan Estratégico Institucional (PEI 2026-2027), Programación Operativo Anual (POA 2026), Seguimiento y Evaluación al POA, y Flujos de Procesos de la Cámara de Senadores.' },
   ],
 })
 </script>

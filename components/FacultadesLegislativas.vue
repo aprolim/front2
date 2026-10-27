@@ -119,16 +119,19 @@ const counts = ref({
   'proyecto-ley-tratamiento-senado': 0,
   'proyecto-ley-revision-diputados': 0,
   'proyecto-ley-aprobados': 0,
-  'proyecto-ley-sancionados': 0,
   'proyecto-ley-modificaciones': 0,
-  'proyecto-ley-rechazados': 0,
-  'ley-promulgada': 0
+  'proyecto-ley-rechazados': 0
 })
 
 // ============================================
 // ITEMS DE CADA BLOQUE (con rutas corregidas)
 // ============================================
 const legislacionItems = computed(() => [
+  {
+    label: 'Proyectos de Ley Aprobados',
+    count: counts.value['proyecto-ley-aprobados'] || 0,
+    link: '/proyectos-aprobados'
+  },
   {
     label: 'Proyectos de Ley en Tratamiento (Senado)',
     count: counts.value['proyecto-ley-tratamiento-senado'] || 0,
@@ -140,17 +143,7 @@ const legislacionItems = computed(() => [
     link: '/proyectos-revision-diputados'
   },
   {
-    label: 'Proyectos de Ley Aprobados',
-    count: counts.value['proyecto-ley-aprobados'] || 0,
-    link: '/proyectos-aprobados'
-  },
-  {
-    label: 'Proyectos de Ley Sancionados',
-    count: counts.value['proyecto-ley-sancionados'] || 0,
-    link: '/proyectos-sancionados'
-  },
-  {
-    label: 'Proyectos de Ley con Modificaciones (Devueltos)',
+    label: 'Proyectos de Ley con Modificaciones (Devueltos a la Camara de Diputados)',
     count: counts.value['proyecto-ley-modificaciones'] || 0,
     link: '/proyectos-modificaciones'
   },
@@ -158,11 +151,6 @@ const legislacionItems = computed(() => [
     label: 'Proyectos de Ley Rechazados',
     count: counts.value['proyecto-ley-rechazados'] || 0,
     link: '/proyectos-rechazados'
-  },
-  {
-    label: 'Leyes Promulgadas',
-    count: counts.value['ley-promulgada'] || 0,
-    link: '/leyes-promulgadas'
   }
 ])
 

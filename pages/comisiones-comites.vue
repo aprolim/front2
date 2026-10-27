@@ -10,10 +10,7 @@
         <h1 class="text-[3.2vw] font-bold text-senado-primary leading-tight">
           Comisiones y Comités
         </h1>
-        <p class="text-gray-600 text-[1.1vw] mt-[1.5vw] max-w-[60vw]">
-          Conoce las comisiones y comités de la Cámara de Senadores y los senadores que las integran.
-          <span class="block text-gray-400 text-[0.9vw] mt-[0.5vw]">Haz clic en una comisión para ver sus miembros.</span>
-        </p>
+
         <div class="w-[8vw] h-[0.2vw] bg-senado-gold-dark mt-[2vw] rounded-full"></div>
       </div>
 
@@ -34,22 +31,27 @@
 
       <!-- Contenido -->
       <template v-else>
-        <!-- Buscador -->
+        <!-- Buscador Mejorado -->
         <div class="max-w-[60vw] mx-auto mb-[4vw]">
-          <div class="relative">
+          <div class="relative flex items-center">
+            <div class="absolute left-[2vw] text-gray-400 flex items-center justify-center">
+              <Icon name="mdi:magnify" class="text-[1.8vw]" />
+            </div>
+            
             <input
               v-model="busqueda"
               type="text"
-              placeholder="🔎︎ Buscar comisión o comité..."
-              class="w-full px-[3vw] py-[1.4vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm"
-              @input="filtrarComisiones"
+              placeholder="Buscar comisión, comité o senador..."
+              class="w-full pl-[5vw] pr-[4vw] py-[1.4vw] border border-gray-300 rounded-full text-[1.1vw] focus:outline-none focus:ring-2 focus:ring-senado-primary focus:border-transparent bg-white shadow-sm transition-all"
             />
+            
             <button
               v-if="busqueda"
               @click="limpiarBusqueda"
-              class="absolute right-[2.5vw] top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-[1.4vw]"
+              class="absolute right-[2vw] text-gray-400 hover:text-gray-600 flex items-center justify-center p-[0.5vw]"
+              title="Limpiar búsqueda"
             >
-              ✕
+              <Icon name="mdi:close" class="text-[1.5vw]" />
             </button>
           </div>
           <div v-if="busqueda" class="text-[0.95vw] text-gray-500 mt-[0.8vw] text-center">
@@ -81,9 +83,9 @@
                   </span>
                   <h2 class="text-[1.2vw] font-bold text-senado-primary" v-html="resaltarTexto(comision.nombre)"></h2>
                 </div>
-                <span class="text-[0.7vw] font-semibold px-[1vw] py-[0.25vw] rounded-full bg-blue-100 text-blue-700">
-                  Comisión
-                </span>
+                
+                <!-- 🔥 SE ELIMINÓ LA ETIQUETA AZUL DE "Comisión" AQUÍ -->
+                
                 <span class="text-[0.7vw] text-gray-400">
                   {{ (comision.comites || []).length }} comités
                 </span>
@@ -108,211 +110,107 @@
               <div v-if="isOpen(comision.nombre)" class="overflow-hidden">
                 <div class="px-[3vw] pb-[3vw] pt-[1vw]">
 
-                  <!-- Presidente + Suplente -->
-                  <div v-if="comision.presidente" class="mb-[2vw]">
-                    <div class="flex flex-col sm:flex-row gap-[1.5vw]">
-
-                      <!-- Titular (Presidente) -->
-                      <div class="flex-1 min-w-[40%] bg-gray-50 rounded-[0.6vw] p-[1.5vw] border border-gray-100">
-                        <div class="flex items-center gap-[1.8vw]">
-                          <NuxtLink
-                            :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
-                            class="flex-shrink-0"
-                          >
-                            <img
-                              :src="getImageUrl(comision.presidente.foto)"
-                              :alt="comision.presidente.nombreCompleto"
-                              class="w-[10vw] h-[10vw] rounded-full object-cover border-[0.15vw] flex-shrink-0"
-                              :style="{ borderColor: comision.presidente.color || '#ccc' }"
-                              @error="(e) => e.target.src = defaultAvatar"
-                            />
-                          </NuxtLink>
-                          <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-[0.5vw] flex-wrap">
-                              <NuxtLink
-                                :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
-                                class="text-[1.1vw] font-bold text-senado-primary hover:underline truncate"
-                              >
-                                {{ comision.presidente.nombreCompleto }}
-                              </NuxtLink>
-                              <span class="text-[0.7vw] font-bold text-green-700 bg-green-100 px-[0.8vw] py-[0.15vw] rounded whitespace-nowrap">
-                                Titular
-                              </span>
-                            </div>
-                            <div class="flex items-center gap-[0.5vw] flex-wrap mt-[0.4vw]">
-                              <span
-                                class="text-[0.9vw] font-bold px-[1vw] py-[0.2vw] rounded whitespace-nowrap tracking-wide"
-                                :style="{
-                                  backgroundColor: comision.presidente.color + '20',
-                                  color: comision.presidente.color || '#666'
-                                }"
-                              >
-                                {{ comision.presidente.partido }}
-                              </span>
-                              <span class="text-[0.8vw] text-gray-500 font-medium">
-                                {{ comision.presidente.cargo || 'Senador' }}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                  <!-- Presidente (Centrado) -->
+                  <div v-if="comision.presidente" class="mb-[2.5vw]">
+                    <div class="w-full bg-gray-50 rounded-[0.8vw] p-[3vw] border border-gray-100 flex flex-col items-center justify-center text-center">
+                      
+                      <NuxtLink
+                        :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                        class="flex-shrink-0 mb-[1.5vw]"
+                      >
+                        <img
+                          :src="getImageUrl(comision.presidente.foto)"
+                          :alt="comision.presidente.nombreCompleto"
+                          class="w-[14vw] h-[14vw] rounded-full object-cover border-[0.25vw] shadow-md hover:scale-105 transition-transform"
+                          :style="{ borderColor: comision.presidente.color || '#ccc' }"
+                          @error="(e) => e.target.src = defaultAvatar"
+                        />
+                      </NuxtLink>
+                      
+                      <div class="flex flex-col items-center gap-[0.5vw]">
+                        <NuxtLink
+                          :to="`/senador/${generarSlug(comision.presidente.nombreCompleto)}`"
+                          class="text-[1.8vw] font-bold text-senado-primary hover:underline mb-[0.5vw] text-center leading-tight"
+                        >
+                          {{ comision.presidente.nombreCompleto }}
+                        </NuxtLink>
+                        
+                        <span class="text-[1.3vw] font-bold text-gray-800 uppercase tracking-wider">
+                          {{ obtenerPrimeraPalabra(comision.presidente.cargo) || 'SENADOR' }}
+                        </span>
+                        
+                        <span
+                          class="text-[1.4vw] font-bold px-[2vw] py-[0.5vw] rounded-md whitespace-nowrap tracking-wide shadow-sm mt-[0.2vw]"
+                          :style="{
+                            backgroundColor: comision.presidente.color + '20',
+                            color: comision.presidente.color || '#666',
+                            border: `2px solid ${comision.presidente.color || '#ccc'}`
+                          }"
+                        >
+                          {{ comision.presidente.partido }}
+                        </span>
                       </div>
 
-                      <!-- Suplente del Presidente -->
-                      <div v-if="comision.presidente.suplente && comision.presidente.suplenteNombre" class="flex-1 min-w-[40%] bg-gray-50 rounded-[0.6vw] p-[1.5vw] border border-gray-100">
-                        <div class="flex items-center gap-[1.8vw]">
-                          <NuxtLink
-                            :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
-                            class="flex-shrink-0"
-                          >
-                            <img
-                              :src="getImageUrl(comision.presidente.fotoSuplente) || defaultAvatar"
-                              :alt="comision.presidente.suplenteNombre"
-                              class="w-[10vw] h-[10vw] rounded-full object-cover border-[0.15vw] flex-shrink-0"
-                              :style="{ borderColor: comision.presidente.color || '#ccc' }"
-                              @error="(e) => e.target.src = defaultAvatar"
-                            />
-                          </NuxtLink>
-                          <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-[0.5vw] flex-wrap">
-                              <NuxtLink
-                                :to="`/senador/suplente/${generarSlug(comision.presidente.suplenteNombre)}`"
-                                class="text-[1vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
-                              >
-                                {{ comision.presidente.suplenteNombre }}
-                              </NuxtLink>
-                              <span class="text-[0.7vw] font-bold text-orange-600 bg-orange-100 px-[0.8vw] py-[0.15vw] rounded whitespace-nowrap">
-                                Suplente
-                              </span>
-                            </div>
-                            <div class="flex items-center gap-[0.5vw] flex-wrap mt-[0.4vw]">
-                              <span
-                                class="text-[0.9vw] font-bold px-[1vw] py-[0.2vw] rounded whitespace-nowrap tracking-wide"
-                                :style="{
-                                  backgroundColor: comision.presidente.color + '20',
-                                  color: comision.presidente.color || '#666'
-                                }"
-                              >
-                                {{ comision.presidente.partido }}
-                              </span>
-                              <span class="text-[0.8vw] text-gray-500 font-medium">
-                                {{ comision.presidente.cargoSuplente || 'Senador Suplente' }}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
-                  <!-- Comités -->
+                  <!-- Comités (En 2 Columnas, alturas iguales) -->
                   <div v-if="comision.comites && comision.comites.length > 0" class="border-t border-gray-100 pt-[1.5vw]">
-                    <div class="space-y-[1.2vw]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-[1.5vw] items-stretch">
                       <div
                         v-for="comite in comision.comites"
                         :key="comite.nombre"
-                        class="bg-gray-50 rounded-[0.6vw] p-[1.5vw] border"
+                        class="bg-gray-50 rounded-[0.8vw] p-[2vw] border flex flex-col h-full"
                         :class="comite.destacado ? 'border-senado-primary border-2 bg-senado-gold-lightest' : 'border-gray-100'"
                       >
-                        <div class="flex items-center gap-[0.8vw] flex-wrap mb-[1vw]">
-                          <h4 class="font-semibold text-gray-800 text-[1.1vw]" v-html="resaltarTexto(comite.nombre)"></h4>
-                          <span class="text-[0.65vw] font-semibold px-[0.8vw] py-[0.15vw] rounded-full bg-green-100 text-green-700">
-                            Comité
-                          </span>
-                          <span v-if="comite.destacado" class="text-[0.6vw] font-semibold px-[0.7vw] py-[0.15vw] rounded-full bg-yellow-100 text-yellow-700">
+                        <!-- Título del comité (arriba) -->
+                        <div class="flex items-start gap-[0.8vw] flex-wrap mb-[1.5vw]">
+                          <h4 class="font-semibold text-gray-800 text-[1.3vw] leading-tight" v-html="resaltarTexto(comite.nombre)"></h4>
+                          
+                          <span v-if="comite.destacado" class="text-[0.65vw] font-semibold px-[0.7vw] py-[0.15vw] rounded-full bg-yellow-100 text-yellow-700 mt-[0.2vw]">
                             ✦ Coincidencia
                           </span>
                         </div>
 
-                        <!-- Secretario + Suplente -->
-                        <div v-if="comite.secretario" class="flex flex-col sm:flex-row gap-[1.5vw]">
-
-                          <!-- Secretario (Titular) -->
-                          <div class="flex-1 min-w-[40%] bg-white rounded-[0.6vw] p-[1.2vw] border border-gray-100">
-                            <div class="flex items-center gap-[1.5vw]">
+                        <!-- Tarjeta del Secretario -->
+                        <div v-if="comite.secretario" class="w-full bg-white rounded-[0.8vw] p-[2vw] border border-gray-100 flex items-center gap-[2.5vw] mt-auto">
+                          <NuxtLink
+                            :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
+                            class="flex-shrink-0"
+                          >
+                            <img
+                              :src="getImageUrl(comite.secretario.foto)"
+                              :alt="comite.secretario.nombreCompleto"
+                              class="w-[11vw] h-[11vw] rounded-full object-cover border-[0.2vw] flex-shrink-0"
+                              :style="{ borderColor: comite.secretario.color || '#ccc' }"
+                              @error="(e) => e.target.src = defaultAvatar"
+                            />
+                          </NuxtLink>
+                          <div class="flex-1 min-w-0 flex flex-col gap-[0.5vw]">
+                            <div class="flex items-center flex-wrap w-full">
                               <NuxtLink
                                 :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
-                                class="flex-shrink-0"
+                                class="text-[1.3vw] font-bold text-senado-primary hover:underline leading-tight break-words"
                               >
-                                <img
-                                  :src="getImageUrl(comite.secretario.foto)"
-                                  :alt="comite.secretario.nombreCompleto"
-                                  class="w-[10vw] h-[10vw] rounded-full object-cover border-[0.15vw] flex-shrink-0"
-                                  :style="{ borderColor: comite.secretario.color || '#ccc' }"
-                                  @error="(e) => e.target.src = defaultAvatar"
-                                />
+                                {{ comite.secretario.nombreCompleto }}
                               </NuxtLink>
-                              <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-[0.5vw] flex-wrap">
-                                  <NuxtLink
-                                    :to="`/senador/${generarSlug(comite.secretario.nombreCompleto)}`"
-                                    class="text-[1vw] font-bold text-senado-primary hover:underline truncate"
-                                  >
-                                    {{ comite.secretario.nombreCompleto }}
-                                  </NuxtLink>
-                                  <span class="text-[0.7vw] font-bold text-green-700 bg-green-100 px-[0.8vw] py-[0.15vw] rounded whitespace-nowrap">
-                                    Titular
-                                  </span>
-                                </div>
-                                <div class="flex items-center gap-[0.5vw] flex-wrap mt-[0.4vw]">
-                                  <span
-                                    class="text-[0.9vw] font-bold px-[1vw] py-[0.2vw] rounded whitespace-nowrap tracking-wide"
-                                    :style="{
-                                      backgroundColor: comite.secretario.color + '20',
-                                      color: comite.secretario.color || '#666'
-                                    }"
-                                  >
-                                    {{ comite.secretario.partido }}
-                                  </span>
-                                  <span class="text-[0.8vw] text-gray-500 font-medium">
-                                    {{ comite.secretario.cargo || 'Senador' }}
-                                  </span>
-                                </div>
-                              </div>
                             </div>
-                          </div>
-
-                          <!-- Suplente del Secretario -->
-                          <div v-if="comite.secretario.suplente && comite.secretario.suplenteNombre" class="flex-1 min-w-[40%] bg-white rounded-[0.6vw] p-[1.2vw] border border-gray-100">
-                            <div class="flex items-center gap-[1.5vw]">
-                              <NuxtLink
-                                :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
-                                class="flex-shrink-0"
+                            
+                            <!-- Cargo arriba y Partido abajo -->
+                            <div class="flex flex-col items-start gap-[0.4vw]">
+                              <span class="text-[1.1vw] font-bold text-gray-800 uppercase tracking-wider mt-[0.2vw]">
+                                {{ obtenerPrimeraPalabra(comite.secretario.cargo) || 'SENADOR' }}
+                              </span>
+                              <span
+                                class="text-[1.2vw] font-bold px-[1.5vw] py-[0.4vw] rounded-md whitespace-nowrap tracking-wide shadow-sm"
+                                :style="{
+                                  backgroundColor: comite.secretario.color + '20',
+                                  color: comite.secretario.color || '#666',
+                                  border: `1px solid ${comite.secretario.color || '#ccc'}`
+                                }"
                               >
-                                <img
-                                  :src="getImageUrl(comite.secretario.fotoSuplente) || defaultAvatar"
-                                  :alt="comite.secretario.suplenteNombre"
-                                  class="w-[10vw] h-[10vw] rounded-full object-cover border-[0.15vw] flex-shrink-0"
-                                  :style="{ borderColor: comite.secretario.color || '#ccc' }"
-                                  @error="(e) => e.target.src = defaultAvatar"
-                                />
-                              </NuxtLink>
-                              <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-[0.5vw] flex-wrap">
-                                  <NuxtLink
-                                    :to="`/senador/suplente/${generarSlug(comite.secretario.suplenteNombre)}`"
-                                    class="text-[0.95vw] font-semibold text-gray-700 hover:text-senado-primary hover:underline truncate"
-                                  >
-                                    {{ comite.secretario.suplenteNombre }}
-                                  </NuxtLink>
-                                  <span class="text-[0.65vw] font-bold text-orange-600 bg-orange-100 px-[0.8vw] py-[0.15vw] rounded whitespace-nowrap">
-                                    Suplente
-                                  </span>
-                                </div>
-                                <div class="flex items-center gap-[0.5vw] flex-wrap mt-[0.4vw]">
-                                  <span
-                                    class="text-[0.85vw] font-bold px-[0.9vw] py-[0.2vw] rounded whitespace-nowrap tracking-wide"
-                                    :style="{
-                                      backgroundColor: comite.secretario.color + '20',
-                                      color: comite.secretario.color || '#666'
-                                    }"
-                                  >
-                                    {{ comite.secretario.partido }}
-                                  </span>
-                                  <span class="text-[0.8vw] text-gray-500 font-medium">
-                                    {{ comite.secretario.cargoSuplente || 'Senador Suplente' }}
-                                  </span>
-                                </div>
-                              </div>
+                                {{ comite.secretario.partido }}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -327,13 +225,16 @@
 
         <!-- Sin resultados -->
         <div v-if="comisionesFiltradas.length === 0" class="text-center py-[8vw]">
-          <div class="text-[3vw] mb-[1.5vw]">🔍</div>
+          <div class="flex justify-center mb-[1.5vw] text-gray-300">
+             <Icon name="mdi:file-search-outline" class="text-[5vw]" />
+          </div>
           <h3 class="text-[1.6vw] font-bold text-gray-700 mb-[0.8vw]">No se encontraron resultados</h3>
-          <p class="text-gray-500 text-[1.1vw]">No hay comisiones o comités que coincidan con "<strong>{{ busqueda }}</strong>"</p>
+          <p class="text-gray-500 text-[1.1vw]">No hay comisiones, comités o senadores que coincidan con "<strong>{{ busqueda }}</strong>"</p>
           <button
             @click="limpiarBusqueda"
-            class="mt-[2.5vw] text-senado-primary hover:underline text-[1.1vw] font-medium"
+            class="mt-[2.5vw] text-senado-primary hover:underline text-[1.1vw] font-medium flex items-center gap-[0.5vw] mx-auto"
           >
+            <Icon name="mdi:backspace-outline" class="text-[1.2vw]" />
             Limpiar búsqueda
           </button>
         </div>
@@ -344,12 +245,7 @@
             to="/"
             class="inline-flex items-center gap-[0.8vw] text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
           >
-            <ClientOnly>
-              <Icon name="material-symbols:arrow-back-rounded" class="text-[1.4vw]" />
-              <template #fallback>
-                <span class="text-[1.4vw]">←</span>
-              </template>
-            </ClientOnly>
+            <Icon name="mdi:arrow-left" class="text-[1.4vw]" />
             Volver al inicio
           </NuxtLink>
         </div>
@@ -398,6 +294,12 @@ const generarSlug = (nombre) => {
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-')
+}
+
+// Extrae solo la primera palabra del cargo
+const obtenerPrimeraPalabra = (texto) => {
+  if (!texto) return ''
+  return texto.trim().split(/\s+/)[0]
 }
 
 const toggleItem = (nombre) => {
@@ -463,7 +365,7 @@ const fetchComisiones = async () => {
 }
 
 // ========================================== //
-// FILTRADO
+// FILTRADO MEJORADO
 // ========================================== //
 const comisionesFiltradas = computed(() => {
   if (!busqueda.value.trim()) {
@@ -475,7 +377,10 @@ const comisionesFiltradas = computed(() => {
 
   return comisionesData.value.map(comision => {
     const comisionNombre = normalizarTexto(comision.nombre)
+    const nombrePresidente = comision.presidente ? normalizarTexto(comision.presidente.nombreCompleto) : ''
+    
     let comisionCoincide = false
+    let presidenteCoincide = false
     let comitesCoinciden = false
 
     for (const palabra of palabras) {
@@ -485,18 +390,37 @@ const comisionesFiltradas = computed(() => {
       }
     }
 
+    for (const palabra of palabras) {
+      if (nombrePresidente.includes(palabra)) {
+        presidenteCoincide = true
+        comisionCoincide = true
+        break
+      }
+    }
+
     const comitesFiltrados = (comision.comites || []).map(comite => {
       const comiteNombre = normalizarTexto(comite.nombre)
-      let coincide = false
+      const nombreSecretario = comite.secretario ? normalizarTexto(comite.secretario.nombreCompleto) : ''
+      
+      let comiteCoincide = false
+      let secretarioCoincide = false
+
       for (const palabra of palabras) {
-        if (comiteNombre.includes(palabra)) {
-          coincide = true
-          comitesCoinciden = true
-          break
-        }
+        if (comiteNombre.includes(palabra)) comiteCoincide = true
+        if (nombreSecretario.includes(palabra)) secretarioCoincide = true
       }
-      return { ...comite, destacado: coincide }
-    })
+
+      if (comiteCoincide || secretarioCoincide) {
+        comitesCoinciden = true
+        return { ...comite, destacado: true }
+      }
+      
+      if (comisionCoincide || presidenteCoincide) {
+         return { ...comite, destacado: false }
+      }
+
+      return null
+    }).filter(Boolean)
 
     if (comisionCoincide || comitesCoinciden) {
       return {

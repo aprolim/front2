@@ -21,7 +21,7 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
-            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, asunto, proyectista..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, asunto..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
             <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
@@ -56,9 +56,10 @@
             <thead class="bg-[#611717] text-white">
               <tr>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Petición</th>
+                <!-- 🔥 CAMBIO: "Fecha de Petición" a "Fecha" -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
+                <!-- 🔥 CAMBIO: Columna "Proyectista" eliminada -->
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
@@ -71,7 +72,7 @@
                 <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ doc.peticionario || '—' }}</td>
+                <!-- 🔥 CAMBIO: Celda de "Proyectista" eliminada -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>

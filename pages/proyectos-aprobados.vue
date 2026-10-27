@@ -66,7 +66,6 @@
             <thead class="bg-[#611717] text-white">
               <tr>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Petición</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
@@ -77,7 +76,6 @@
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
                 </td>
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ formatearFecha(doc.fechaIngreso) }}</td>
                 <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
@@ -148,15 +146,6 @@ const paginasVisibles = computed(() => {
   }
   return paginas
 })
-
-const formatearFecha = (fecha) => {
-  if (!fecha) return '—'
-  try {
-    const d = new Date(fecha)
-    if (isNaN(d.getTime())) return '—'
-    return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
-  } catch { return '—' }
-}
 
 const cargarDocumentos = async () => {
   loading.value = true

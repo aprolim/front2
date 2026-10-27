@@ -19,7 +19,7 @@
       </div>
       
       <p class="text-gray-600 text-lg text-center max-w-2xl mx-auto mt-6 px-4">
-        Conoce la historia y el patrimonio del Senado de Bolivia
+        Historia y el patrimonio del Senado
       </p>
       <p class="text-gray-500 text-sm text-center mt-2 px-4">
         {{ totalImages }} imágenes | Página {{ currentPage }} de {{ totalPages }}
