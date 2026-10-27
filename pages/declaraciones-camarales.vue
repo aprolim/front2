@@ -12,7 +12,7 @@
       <div class="mb-6">
         <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">📋 Gestión</div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Declaraciones Camarales</h1>
-        <p class="text-gray-600 mt-1 text-sm">Registro oficial de declaraciones camarales de la Cámara de Senadores</p>
+
       </div>
 
       <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">

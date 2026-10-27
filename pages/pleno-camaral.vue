@@ -3,29 +3,19 @@
     <!-- ========================================== -->
     <!-- HERO                                        -->
     <!-- ========================================== -->
-    <header class="w-full bg-gradient-to-br from-[#611717] to-[#8b2020] text-white px-4 pt-12 pb-14 text-center relative overflow-hidden">
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-white/5 blur-3xl"></div>
-        <div class="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-white/5 blur-3xl"></div>
-      </div>
+ 
+    <div class="mb-12 text-center pt-12">
+      <h1 class="text-[4vw] font-bold text-senado-primary leading-tight flex flex-col items-center text-center">
+        Pleno Camaral
+        <div class="w-[12vw] h-1 bg-senado-gold-dark mt-[.5vw] rounded-full"></div>
+      </h1>
 
-      <div class="relative max-w-4xl mx-auto">
-        <span class="inline-block text-xs font-semibold tracking-[0.15em] uppercase opacity-85 mb-3">
-          Cámara de Senadores
-        </span>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-2 leading-tight">
-          Pleno Camaral
-        </h1>
-        <p class="text-sm md:text-lg opacity-90 font-normal leading-relaxed">
-          Composición y distribución de escaños del Senado de Bolivia
-        </p>
-      </div>
-    </header>
+    </div>
 
     <!-- ========================================== -->
     <!-- FILTRO COMPACTO CENTRADO                    -->
     <!-- ========================================== -->
-    <section class="w-full flex justify-center -mt-7 relative z-10 px-4">
+    <section class="w-full flex justify-center -mt-7 relative z-10 px-4 hidden">
       <div class="inline-flex flex-wrap items-center justify-center gap-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] px-5 py-4">
         
         <!-- Título -->

@@ -10,17 +10,12 @@
 
     <div class="relative z-10 mx-auto w-[85%]">
       <!-- Título -->
-      <div class="mb-12">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-sm font-bold px-4 py-1 rounded-full mb-4">
-          🏛️ Directiva Camaral
-        </div>
-        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight">
+      <div class="mb-12 text-center">
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight flex flex-col items-center text-center">
           Directiva Camaral
+          <div class="w-[12vw] h-1 bg-senado-gold-dark mt-[.5vw] rounded-full"></div>
         </h1>
-        <p class="text-gray-600 text-lg mt-4 max-w-3xl">
-          Conoce a los miembros de la Directiva de la Cámara de Senadores para la Legislatura 2025-2026
-        </p>
-        <div class="w-24 h-1 bg-senado-gold-dark mt-4 rounded-full"></div>
+
       </div>
 
       <!-- Estado de carga -->

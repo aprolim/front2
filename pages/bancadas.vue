@@ -4,30 +4,16 @@
     <!-- ========================================== -->
     <!-- HERO                                       -->
     <!-- ========================================== -->
-    <header class="relative bg-gradient-to-br from-[#611717] to-[#8b2020] text-white overflow-hidden">
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-white/5 blur-3xl"></div>
-        <div class="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-white/5 blur-3xl"></div>
-      </div>
+    
 
-      <div class="relative container mx-auto px-4 max-w-6xl py-12 md:py-16 text-center">
-        <span class="inline-block text-xs font-semibold tracking-[0.2em] uppercase opacity-80 mb-3">
-          Cámara de Senadores
-        </span>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-3">
-          Bancadas
-        </h1>
-        <p class="text-sm md:text-lg opacity-90 max-w-2xl mx-auto">
-          Conoce las fuerzas políticas representadas en el Senado y a los senadores que las integran
-        </p>
-      </div>
+    <div class="mb-12 text-center pt-10">
+      <h1 class="text-[4vw] font-bold text-senado-primary leading-tight flex flex-col items-center text-center">
+        Bancadas
+        <div class="w-[12vw] h-1 bg-senado-gold-dark mt-[.5vw] rounded-full"></div>
+      </h1>
 
-      <div class="absolute bottom-0 left-0 right-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" class="w-full">
-          <path fill="#f9fafb" fill-opacity="1" d="M0,48L48,42.7C96,37,192,27,288,24C384,21,480,27,576,29.3C672,32,768,27,864,24C960,21,1056,21,1152,24C1248,27,1344,32,1392,34.7L1440,37L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
-        </svg>
-      </div>
-    </header>
+    </div>
+
 
     <!-- ========================================== -->
     <!-- CONTENIDO                                  -->

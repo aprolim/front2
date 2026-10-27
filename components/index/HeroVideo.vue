@@ -102,23 +102,25 @@
           <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-2" />
         </svg>
 
-        <div class="w-full h-full grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
+        <!-- CAMBIO: grid-cols-4 cambiado a grid-cols-3 -->
+        <div class="w-full h-full grid grid-cols-1 sm:grid-cols-3 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
+          
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
             <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.enTratamiento }}</div>
           </div>
+          
           <div class="flex flex-col items-center justify-center text-center px-1">
             <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
             <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.aprobados }}</div>
           </div>
+
+          <!-- CAMBIO: Se reemplazó "Sancionadas" por "Rechazados" -->
           <div class="flex flex-col items-center justify-center text-center px-1">
-            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Sancionadas</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.sancionadas }}</div>
+            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Rechazados</div>
+            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.rechazados }}</div>
           </div>
-          <div class="flex flex-col items-center justify-center text-center px-1">
-            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Peticiones de<br />Informe</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.peticiones }}</div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -133,7 +135,7 @@ import { storeToRefs } from 'pinia'
 import { useSessionStore } from '~/stores/session'
 import { useLiveStore } from '~/stores/live'
 
-// 🔥 NUEVO: Usar el composable de documentos legislativos
+// 🔥 Usar el composable de documentos legislativos
 import { useDocumentosLegislativos } from '~/composables/useDocumentosLegislativos'
 
 // ==========================================
@@ -147,13 +149,12 @@ const { hasValidData, sessionData, formattedDate } = storeToRefs(sessionStore)
 const { liveVideo } = storeToRefs(liveStore)
 
 // ==========================================
-// 🔥 NUEVO: ESTADO DINÁMICO DE ESTADÍSTICAS
+// 🔥 ESTADO DINÁMICO DE ESTADÍSTICAS
 // ==========================================
 const statsDinamicos = ref({
   enTratamiento: 0,
   aprobados: 0,
-  sancionadas: 0,
-  peticiones: 0
+  rechazados: 0 // CAMBIO: Renombrado de sancionadas a rechazados
 })
 
 const cargarEstadisticas = async () => {
@@ -162,31 +163,22 @@ const cargarEstadisticas = async () => {
     const [
       resTratamiento,
       resAprobados,
-      resSancionados,
-      resEscrito,
-      resOral
+      resRechazados // CAMBIO: Ahora consulta rechazados
     ] = await Promise.allSettled([
       getStats('proyecto-ley-tratamiento-senado'),
       getStats('proyecto-ley-aprobados'),
-      getStats('proyecto-ley-sancionados'),
-      getStats('peticion-informe-escrito'),
-      getStats('peticion-informe-oral')
+      getStats('proyecto-ley-rechazados') // CAMBIO: Endpoint de rechazados
     ])
 
     // Extraer los totales (si falla, se queda en 0)
     const enTratamiento = resTratamiento.status === 'fulfilled' ? (resTratamiento.value?.total || 0) : 0
     const aprobados = resAprobados.status === 'fulfilled' ? (resAprobados.value?.total || 0) : 0
-    const sancionadas = resSancionados.status === 'fulfilled' ? (resSancionados.value?.total || 0) : 0
-    
-    // 🔥 Sumar Peticiones de Informe Escrito + Oral
-    const informeEscrito = resEscrito.status === 'fulfilled' ? (resEscrito.value?.total || 0) : 0
-    const informeOral = resOral.status === 'fulfilled' ? (resOral.value?.total || 0) : 0
+    const rechazados = resRechazados.status === 'fulfilled' ? (resRechazados.value?.total || 0) : 0
     
     statsDinamicos.value = {
       enTratamiento,
       aprobados,
-      sancionadas,
-      peticiones: informeEscrito + informeOral
+      rechazados
     }
 
     console.log('✅ [HeroVideo] Estadísticas cargadas:', statsDinamicos.value)

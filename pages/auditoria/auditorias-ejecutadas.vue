@@ -100,11 +100,15 @@
                     >
                       documentos
                     </span>
+
+                    <!-- Rango de años SIEMPRE visible, con estilos dinámicos -->
                     <span
-                      v-if="tabActivo === tab.key"
-                      class="px-[1.5vw] sm:px-2 py-[0.15vw] sm:py-0.5 rounded-full bg-white/10 text-white font-bold text-[1.35vw] sm:text-[10px] tracking-wider"
+                      class="px-[1.5vw] sm:px-2 py-[0.15vw] sm:py-0.5 rounded-full font-bold text-[1.35vw] sm:text-[10px] tracking-wider transition-colors duration-300"
+                      :class="tabActivo === tab.key 
+                        ? 'bg-white/10 text-white' 
+                        : 'bg-gray-100 text-gray-500'"
                     >
-                      ACTIVO
+                      {{ obtenerRangoAnios(tab.key) }}
                     </span>
                   </div>
                 </div>
@@ -124,26 +128,7 @@
         <!-- Contenido de los tabs -->
         <div v-for="tab in tabs" :key="tab.key">
           <div v-show="tabActivo === tab.key">
-            <!-- Estadísticas -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
-              <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-3">
-                <div class="font-bold text-senado-primary text-[5.4vw] sm:text-2xl">{{ obtenerTotalPorTipo(tab.key) }}</div>
-                <p class="text-gray-500 text-[2.1vw] sm:text-sm">Total</p>
-              </div>
-              <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-3">
-                <div class="font-bold text-blue-600 text-[5.4vw] sm:text-2xl">{{ obtenerUltimoAnio(tab.key) }}</div>
-                <p class="text-gray-500 text-[2.1vw] sm:text-sm">Último año</p>
-              </div>
-              <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-3">
-                <div class="font-bold text-green-600 text-[5.4vw] sm:text-2xl">{{ obtenerAniosUnicos(tab.key) }}</div>
-                <p class="text-gray-500 text-[2.1vw] sm:text-sm">Años distintos</p>
-              </div>
-              <div class="bg-white rounded-lg shadow-sm text-center border border-gray-100 px-[2.4vw] sm:px-4 py-[2.4vw] sm:py-3">
-                <div class="font-bold text-yellow-600 text-[5.4vw] sm:text-2xl">{{ obtenerRangoAnios(tab.key) }}</div>
-                <p class="text-gray-500 text-[2.1vw] sm:text-sm">Rango de años</p>
-              </div>
-            </div>
-
+            
             <!-- Tabla de documentos -->
             <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
               <div class="border-b border-gray-100 flex items-center justify-between px-[3.6vw] sm:px-4 py-[1.8vw] sm:py-2">

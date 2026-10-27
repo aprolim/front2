@@ -3,15 +3,13 @@
     <div class="mx-auto w-[90%]">
 
       <!-- Título -->
-      <div class="mb-[6vw]">
-        <div class="inline-block bg-senado-gold-soft text-senado-primary text-[1vw] font-bold px-[2.5vw] py-[0.7vw] rounded-full mb-[1.5vw]">
-          📋 Comisiones y Comités
-        </div>
-        <h1 class="text-[3.2vw] font-bold text-senado-primary leading-tight">
+    
+      <div class="mb-12 text-center">
+        <h1 class="text-[4vw] font-bold text-senado-primary leading-tight flex flex-col items-center text-center">
           Comisiones y Comités
+          <div class="w-[12vw] h-1 bg-senado-gold-dark mt-[.5vw] rounded-full"></div>
         </h1>
 
-        <div class="w-[8vw] h-[0.2vw] bg-senado-gold-dark mt-[2vw] rounded-full"></div>
       </div>
 
       <!-- Estado de carga -->

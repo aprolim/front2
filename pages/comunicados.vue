@@ -4,11 +4,9 @@
       <!-- Encabezado -->
       <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-senado-primary mb-4">
-          Avisos y Comunicados
+          Comunicados
         </h1>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          Información institucional, comunicados oficiales y avisos de la Cámara de Senadores
-        </p>
+
         <div class="w-24 h-1 bg-senado-gold mx-auto mt-4"></div>
       </div>
 

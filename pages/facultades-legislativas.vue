@@ -29,10 +29,7 @@
             Facultades de la Camara de Senadores
           </h1>
 
-          <p class="text-white/70 mt-3 max-w-3xl text-sm sm:text-base">
-            Consulta los proyectos de ley, peticiones de informe, resoluciones,
-            declaraciones y minutas de la Cámara de Senadores.
-          </p>
+
         </div>
 
         <!-- Onda inferior -->

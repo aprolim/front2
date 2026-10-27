@@ -16,7 +16,6 @@
           ⚖️ Legislación
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley en Tratamiento</h1>
-        <p class="text-gray-600 mt-1 text-sm">Origen: Cámara de Senadores</p>
       </div>
 
       <!-- Buscador -->

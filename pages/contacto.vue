@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Hero / Banner -->
+    <!-- ============================================ -->
+    <!-- HERO / BANNER (CONTACTO)                     -->
+    <!-- ============================================ -->
     <section 
       class="relative bg-gradient-to-r from-senado-primary to-senado-primary-dark text-white"
       role="banner"
@@ -14,7 +16,7 @@
             aria-hidden="true"
           >
             <Icon name="mdi:email" class="text-senado-gold text-lg md:text-xl lg:text-2xl" />
-            <span class="text-white/80 tracking-wider font-medium text-xs md:text-sm ml-2">CONTACTO</span>
+            <span class="text-white/80 tracking-wider font-medium text-xs md:text-sm ml-2">CONTACTO Y VISITAS</span>
           </div>
           
           <h1 
@@ -25,7 +27,7 @@
           </h1>
           
           <p class="text-white/70 max-w-2xl text-sm md:text-base lg:text-lg mt-2 md:mt-3">
-            Estamos aquí para escucharte y brindarte la información que necesitas
+            Estamos aquí para escucharte, brindarte información y recibir tu visita en el Palacio Legislativo.
           </p>
         </div>
       </div>
@@ -40,7 +42,9 @@
 
     <main class="container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl">
       
-      <!-- Tarjetas de contacto rápido -->
+      <!-- ============================================ -->
+      <!-- TARJETAS DE CONTACTO RÁPIDO                  -->
+      <!-- ============================================ -->
       <div 
         class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 -mt-6 md:-mt-10 relative z-10"
         role="list"
@@ -49,10 +53,7 @@
           class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           role="listitem"
         >
-          <div 
-            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
-            aria-hidden="true"
-          >
+          <div class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto" aria-hidden="true">
             <Icon name="mdi:phone" class="text-3xl text-senado-primary" />
           </div>
           <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Teléfono</h3>
@@ -67,10 +68,7 @@
           class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           role="listitem"
         >
-          <div 
-            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
-            aria-hidden="true"
-          >
+          <div class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto" aria-hidden="true">
             <Icon name="mdi:email" class="text-3xl text-senado-primary" />
           </div>
           <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Correo Electrónico</h3>
@@ -85,10 +83,7 @@
           class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           role="listitem"
         >
-          <div 
-            class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto"
-            aria-hidden="true"
-          >
+          <div class="flex items-center justify-center w-14 h-14 bg-senado-primary/10 rounded-full mb-4 mx-auto" aria-hidden="true">
             <Icon name="mdi:clock" class="text-3xl text-senado-primary" />
           </div>
           <h3 class="text-center font-bold text-gray-800 text-base md:text-lg">Horario de Atención</h3>
@@ -98,8 +93,7 @@
       </div>
 
       <!-- ============================================ -->
-      <!-- 🔥 NUEVA SECCIÓN: ENCARGADOS DE RECIBIR MENSAJES -->
-      <!-- Según lineamiento 16.1                        -->
+      <!-- ENCARGADOS DE RECIBIR MENSAJES (16.1)        -->
       <!-- ============================================ -->
       <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
         <div class="bg-gradient-to-r from-[#1a3a6c] to-[#0f2347] text-white px-4 py-3 md:px-6 md:py-4">
@@ -147,14 +141,94 @@
         </div>
       </section>
 
-      <!-- Grid: Mapa + Dirección -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-8 md:mt-12">
+      <!-- ============================================ -->
+      <!-- 🔥 SECCIÓN FUSIONADA: VISITAS GUIADAS        -->
+      <!-- ============================================ -->
+      <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-[#611717] to-[#8f1522] text-white px-4 py-3 md:px-6 md:py-4 flex items-center justify-between flex-wrap gap-2">
+          <h2 class="font-bold text-lg md:text-xl flex items-center gap-2">
+            <Icon name="mdi:bank" />
+            Visitas Guiadas al Palacio Legislativo
+          </h2>
+          <span class="text-xs md:text-sm bg-white/20 px-3 py-1 rounded-full">
+            Acceso Gratuito
+          </span>
+        </div>
         
+        <div class="p-4 md:p-6">
+          <p class="text-gray-600 text-sm md:text-base mb-6 text-center max-w-3xl mx-auto">
+            Las visitas guiadas tienen por objetivo generar un espacio de acercamiento al <strong>Poder Legislativo</strong>, 
+            para que conozcas dónde y cómo trabajan los representantes del pueblo en la confección de las leyes que fortalecen la democracia.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- Requisitos -->
+            <div class="bg-[#f8f6f0] rounded-xl p-5 md:p-6">
+              <h3 class="text-base md:text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
+                <Icon name="mdi:clipboard-check" class="text-xl" />
+                Requisitos para el Ingreso
+              </h3>
+              <ul class="space-y-3 text-sm md:text-base text-gray-700">
+                <li class="flex items-start gap-3">
+                  <span class="text-senado-primary font-bold mt-0.5">•</span>
+                  <span>Completar la <strong>solicitud en la plataforma digital</strong></span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-senado-primary font-bold mt-0.5">•</span>
+                  <span>Presentar <strong>cédula de identidad</strong> el día de la visita</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-senado-primary font-bold mt-0.5">•</span>
+                  <span>Respetar las <strong>normas de conducta</strong> del Reglamento del Senado</span>
+                </li>
+
+              </ul>
+            </div>
+
+            <!-- Horarios -->
+            <div class="bg-[#f8f6f0] rounded-xl p-5 md:p-6">
+              <h3 class="text-base md:text-lg font-bold text-senado-primary mb-4 flex items-center gap-2">
+                <Icon name="mdi:clock-outline" class="text-xl" />
+                Horarios de Visita
+              </h3>
+              <div class="space-y-2 text-sm md:text-base text-gray-700">
+                <div class="flex justify-between py-2 border-b border-gray-300">
+                  <span class="font-medium">Lunes a Viernes</span>
+                  <span>08:30 - 16:30</span>
+                </div>
+                <div class="flex justify-between py-2">
+                  <span class="font-medium">Sábados y Domingos</span>
+                  <span class="text-gray-400">Cerrado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Botón de Solicitud -->
+          <div class="text-center">
+            <a 
+              href="https://systemdemo.es/auth/login-external" 
+              target="_blank"
+              class="inline-flex items-center justify-center gap-2 py-3 px-8 bg-[#611717] text-white rounded-lg font-semibold hover:bg-[#3a060d] transition text-sm md:text-base"
+            >
+              <span>Iniciar Solicitud de Visita en la Plataforma</span>
+              <Icon name="mdi:open-in-new" class="text-lg" />
+            </a>
+            <p class="text-xs text-gray-400 mt-3">
+              La solicitud debe realizarse con al menos 15 días de anticipación.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- MAPA + DIRECCIÓN                             -->
+      <!-- ============================================ -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mt-8 md:mt-12">
         <!-- Mapa -->
-        <section 
-          class="bg-white rounded-xl shadow-lg overflow-hidden"
-          aria-labelledby="mapa-titulo"
-        >
+        <section class="bg-white rounded-xl shadow-lg overflow-hidden" aria-labelledby="mapa-titulo">
           <div class="bg-senado-primary text-white px-4 py-3 md:px-6 md:py-4">
             <h2 id="mapa-titulo" class="font-bold text-lg md:text-xl flex items-center gap-2">
               <Icon name="mdi:map-marker" />
@@ -176,13 +250,10 @@
         </section>
 
         <!-- Dirección detallada -->
-        <section 
-          class="bg-white rounded-xl shadow-lg p-4 md:p-6"
-          aria-labelledby="direccion-titulo"
-        >
+        <section class="bg-white rounded-xl shadow-lg p-4 md:p-6" aria-labelledby="direccion-titulo">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <h3 id="direccion-titulo" class="font-bold text-senado-primary text-base flex items-center gap-2">
+              <h3 id="direccion-titulo" class="font-bold text-senado-primary text-base flex items-center gap-2 mb-2">
                 <Icon name="mdi:map-marker" />
                 Dirección
               </h3>
@@ -199,7 +270,7 @@
               </p>
             </div>
             <div>
-              <h4 class="font-bold text-senado-primary text-base flex items-center gap-2">
+              <h4 class="font-bold text-senado-primary text-base flex items-center gap-2 mb-2">
                 <Icon name="mdi:car" />
                 Cómo llegar
               </h4>
@@ -235,106 +306,12 @@
         </section>
       </div>
 
+
       <!-- ============================================ -->
-      <!-- 🔥 NUEVA SECCIÓN: REGISTRO DE RESPUESTAS ENVIADAS -->
-      <!-- Según lineamiento 16.2                        -->
+      <!-- ENLACES DE INTERÉS                           -->
       <!-- ============================================ -->
-      <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-[#8f1522] to-[#611717] text-white px-4 py-3 md:px-6 md:py-4 flex items-center justify-between flex-wrap gap-2">
-          <h2 class="font-bold text-lg md:text-xl flex items-center gap-2">
-            <Icon name="mdi:clipboard-text-clock" />
-            Registro de respuestas enviadas
-          </h2>
-          <span class="text-xs md:text-sm bg-white/20 px-3 py-1 rounded-full">
-            Total: {{ respuestasFiltradas.length }}
-          </span>
-        </div>
-        <div class="p-4 md:p-6">
-          <p class="text-gray-600 text-sm md:text-base mb-4">
-            Registro público de las consultas recibidas y respuestas enviadas por la institución,
-            conforme al lineamiento 16.2 de la R.M. 067/2025.
-          </p>
-
-          <!-- Buscador -->
-          <div class="mb-4">
-            <div class="relative">
-              <input 
-                v-model="busquedaRespuestas" 
-                type="text" 
-                placeholder="Buscar por tipo de consulta o canal..."
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-senado-primary focus:border-transparent"
-              />
-              <Icon name="mdi:magnify" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-            </div>
-          </div>
-
-          <!-- Tabla -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Fecha</th>
-                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Tipo de Consulta</th>
-                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs">Canal</th>
-                  <th class="text-left px-3 py-2 font-semibold text-gray-600 text-xs hidden md:table-cell">Respuesta</th>
-                  <th class="text-center px-3 py-2 font-semibold text-gray-600 text-xs">Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(r, i) in respuestasFiltradas" :key="i" class="border-b border-gray-100 hover:bg-gray-50">
-                  <td class="px-3 py-2 text-gray-600 text-xs whitespace-nowrap">{{ r.fecha }}</td>
-                  <td class="px-3 py-2 text-gray-800">{{ r.tipo }}</td>
-                  <td class="px-3 py-2 text-gray-600">
-                    <span class="inline-flex items-center gap-1">
-                      <Icon :name="r.icono" class="text-senado-primary text-sm" />
-                      {{ r.canal }}
-                    </span>
-                  </td>
-                  <td class="px-3 py-2 text-gray-600 text-xs hidden md:table-cell">{{ r.respuesta }}</td>
-                  <td class="px-3 py-2 text-center">
-                    <span 
-                      class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold"
-                      :class="{
-                        'bg-green-100 text-green-700': r.estado === 'Atendida',
-                        'bg-blue-100 text-blue-700': r.estado === 'Derivada',
-                        'bg-yellow-100 text-yellow-700': r.estado === 'En proceso'
-                      }"
-                    >
-                      {{ r.estado }}
-                    </span>
-                  </td>
-                </tr>
-                <tr v-if="respuestasFiltradas.length === 0">
-                  <td colspan="5" class="text-center py-8 text-gray-400 text-sm">
-                    No se encontraron registros
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Nota -->
-          <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 rounded-lg px-4 py-2">
-            <p class="text-blue-800 text-xs flex items-start gap-2">
-              <Icon name="mdi:information" class="text-blue-600 flex-shrink-0 mt-0.5" />
-              <span>
-                Este registro se actualiza trimestralmente. Los datos mostrados corresponden al trimestre en curso.
-                Para consultas sobre un registro específico, diríjase a la Unidad de Transparencia.
-              </span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Enlaces de interés -->
-      <div 
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12"
-        role="list"
-      >
-        <div 
-          class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-4 md:p-5"
-          role="listitem"
-        >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12" role="list">
+        <div class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-4 md:p-5" role="listitem">
           <div class="flex items-center gap-3">
             <Icon name="mdi:headset" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
             <div>
@@ -348,19 +325,13 @@
           </div>
         </div>
 
-        <div 
-          class="bg-senado-primary/5 rounded-xl border border-senado-primary/20 p-4 md:p-5"
-          role="listitem"
-        >
+        <div class="bg-senado-primary/5 rounded-xl border border-senado-primary/20 p-4 md:p-5" role="listitem">
           <div class="flex items-center gap-3">
             <Icon name="mdi:file-document" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
             <div>
               <h4 class="font-bold text-senado-primary text-sm md:text-base">Transparencia</h4>
               <p class="text-gray-600 text-sm">
-                <NuxtLink 
-                  to="/solicitud-informacion" 
-                  class="text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded"
-                >
+                <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded">
                   Solicita información
                 </NuxtLink>
               </p>
@@ -369,25 +340,24 @@
         </div>
       </div>
 
-      <!-- FAQ rápido -->
-      <section 
-        class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12"
-        aria-labelledby="faq-titulo"
-      >
+      <!-- ============================================ -->
+      <!-- PREGUNTAS FRECUENTES                         -->
+      <!-- ============================================ -->
+      <section class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12" aria-labelledby="faq-titulo">
         <h3 id="faq-titulo" class="text-center font-bold text-gray-800 text-xl md:text-2xl mb-4">
           ❓ Preguntas Frecuentes
         </h3>
         <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo puedo visitar el Senado?</dt>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo agendo una visita guiada?</dt>
             <dd class="text-gray-600 text-sm">
-              <NuxtLink to="/visita-senado" class="text-senado-primary hover:underline">
-                Agenda tu visita en nuestra página de visitas
-              </NuxtLink>
+              <a href="https://systemdemo.es/auth/login-external" target="_blank" class="text-senado-primary hover:underline">
+                Ingresa a la plataforma digital
+              </a> y completa tu solicitud con 15 días de anticipación.
             </dd>
           </div>
           <div>
-            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Cómo solicito información?</dt>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo solicito información pública?</dt>
             <dd class="text-gray-600 text-sm">
               <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline">
                 Solicita información aquí
@@ -395,8 +365,8 @@
             </dd>
           </div>
           <div>
-            <dt class="font-semibold text-senado-primary text-sm md:text-base">¿Horario de atención?</dt>
-            <dd class="text-gray-600 text-sm">Lunes a Viernes 08:00 - 17:00 hrs</dd>
+            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Horario de atención?</dt>
+            <dd class="text-gray-600 text-sm">Lunes a Viernes 08:30 - 16:30 hrs</dd>
           </div>
         </dl>
       </section>
@@ -431,7 +401,7 @@ const encargados = [
   },
   {
     nombre: 'Atención al Ciudadano',
-    cargo: 'Consultas generales y orientación',
+    cargo: 'Consultas generales, orientación y visitas',
     telefono: '(591-2) 2143400 int. 303',
     email: 'ciudadano@senado.gob.bo'
   },
@@ -509,14 +479,14 @@ const respuestasFiltradas = computed(() => {
 // SEO
 // ============================================
 useHead({
-  title: 'Contacto | Senado de Bolivia',
+  title: 'Contacto y Visitas | Senado de Bolivia',
   meta: [
     {
       name: 'description',
-      content: 'Contáctate con la Cámara de Senadores de Bolivia. Dirección, teléfonos, correos electrónicos, encargados de atención y registro de respuestas conforme a los Lineamientos de Contenidos Mínimos.'
+      content: 'Contáctate con la Cámara de Senadores de Bolivia o solicita tu visita guiada. Dirección, teléfonos, correos y registro de respuestas.'
     },
-    { property: 'og:title', content: 'Contacto | Senado de Bolivia' },
-    { property: 'og:description', content: 'Dirección, teléfonos, correos y encargados de atención al ciudadano.' },
+    { property: 'og:title', content: 'Contacto y Visitas | Senado de Bolivia' },
+    { property: 'og:description', content: 'Dirección, teléfonos, correos, visitas guiadas y encargados de atención al ciudadano.' },
     { property: 'og:type', content: 'website' },
   ],
 })

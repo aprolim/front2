@@ -1,0 +1,488 @@
+<template>
+  <div class="senate-chamber" @mouseleave="handleMouseLeave">
+    <div class="background-container">
+      
+      <!-- CABECERA: BOTONES TITULARES/SUPLENTES -->
+      <div class="botones-padre">
+        <div class="inline-flex rounded-md shadow-sm" role="group">
+          <button
+            @click="setTipoVisualizacion('titulares')"
+            class="px-[1.5vw] py-[0.6vw] text-[1.1vw] font-medium rounded-l-lg transition-colors"
+            :class="tipoVisualizacion === 'titulares'
+              ? 'bg-senado-primary text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'"
+          >
+            Titulares
+          </button>
+          <button
+            @click="setTipoVisualizacion('suplentes')"
+            class="px-[1.5vw] py-[0.6vw] text-[1.1vw] font-medium rounded-r-lg transition-colors"
+            :class="tipoVisualizacion === 'suplentes'
+              ? 'bg-senado-primary text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 border-l-0'"
+          >
+            Suplentes
+          </button>
+        </div>
+      </div>
+
+      <!-- HEMICICLO -->
+      <div class="hemicycle-wrapper">
+        <div class="hemicycle-container">
+          <svg
+            class="hemicycle-svg"
+            viewBox="250 200 700 400"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid meet"
+            @mousemove="updateTooltipPosition"
+            style="cursor: default;"
+          >
+            <!-- IMAGEN DE FONDO -->
+            <defs>
+              <pattern id="hemicicloBg" patternUnits="userSpaceOnUse" x="0" y="0" width="1200" height="800">
+                <image href="/background/hemiciclo.jpeg" x="0" y="0" width="1200" height="800" preserveAspectRatio="xMidYMid meet" opacity="0.15" filter="grayscale(1)" />
+              </pattern>
+            </defs>
+
+            <rect x="0" y="0" width="1200" height="800" fill="url(#hemicicloBg)" />
+
+            <!-- DIRECTIVA -->
+            <g>
+              <g>
+                <circle cx="500" cy="240" r="20" :fill="getColorDirectiva(12)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 12, 'filtered-out': getSeatFilteredOut(12) }" style="cursor: pointer;" @click="goToSenator(12, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)" @mouseleave="handleMouseLeave" />
+                <text x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
+                <circle cx="540" cy="240" r="20" :fill="getColorDirectiva(6)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 6, 'filtered-out': getSeatFilteredOut(6) }" style="cursor: pointer;" @click="goToSenator(6, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)" @mouseleave="handleMouseLeave" />
+                <text x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>
+                <circle cx="580" cy="240" r="22" :fill="getColorDirectiva(32)" stroke="white" stroke-width="2.5" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 32, 'filtered-out': getSeatFilteredOut(32) }" style="cursor: pointer;" @click="goToSenator(32, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)" @mouseleave="handleMouseLeave" />
+                <text x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
+                <circle cx="620" cy="240" r="20" :fill="getColorDirectiva(33)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 33, 'filtered-out': getSeatFilteredOut(33) }" style="cursor: pointer;" @click="goToSenator(33, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)" @mouseleave="handleMouseLeave" />
+                <text x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
+                <circle cx="660" cy="240" r="20" :fill="getColorDirectiva(24)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 24, 'filtered-out': getSeatFilteredOut(24) }" style="cursor: pointer;" @click="goToSenator(24, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)" @mouseleave="handleMouseLeave" />
+                <text x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
+                <circle cx="700" cy="240" r="20" :fill="getColorDirectiva(13)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 13, 'filtered-out': getSeatFilteredOut(13) }" style="cursor: pointer;" @click="goToSenator(13, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)" @mouseleave="handleMouseLeave" />
+                <text x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+              </g>
+
+              <!-- ARCO -->
+              <g v-for="seat in filteredSeats" :key="seat.id">
+                <circle
+                  :cx="seat.x" :cy="seat.y" r="20"
+                  :fill="seat.filteredOut ? '#e5e7eb' : (seat.partyColor || '#e5e7eb')"
+                  stroke="white" stroke-width="2"
+                  class="senator-circle"
+                  :class="{
+                    'selected': hoveredSeat?.id === seat.id,
+                    'suplente': tipoVisualizacion === 'suplentes' && !seat.isEmpty,
+                    'empty-seat': seat.isEmpty,
+                    'filtered-out': seat.filteredOut
+                  }"
+                  style="cursor: pointer;"
+                  @click="goToSenator(seat.id, false)"
+                  @mouseenter="handleMouseEnter(seat, $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text
+                  :x="seat.x" :y="seat.y + 5"
+                  text-anchor="middle"
+                  :fill="seat.filteredOut ? '#ccc' : 'white'"
+                  font-size="14"
+                  font-weight="bold"
+                  class="seat-number"
+                  :class="{ 'text-muted': seat.filteredOut }"
+                >
+                  {{ seat.seatNumber }}
+                </text>
+              </g>
+            </g>
+          </svg>
+
+          <!-- TOOLTIP -->
+          <div v-if="hoveredSeat && !isNavigating" class="tooltip-padre" :style="tooltipStyle">
+            <div class="tooltip-header">
+              <div class="seat-photo">
+                <img :src="hoveredSeat.fotoActual || defaultAvatar" :alt="hoveredSeat.nombreActual || hoveredSeat.name" class="foto-senador" :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }" @error="(e) => e.target.src = defaultAvatar" />
+              </div>
+              <div class="senator-info">
+                <h4 class="nombre-senador">{{ hoveredSeat.nombreActual || hoveredSeat.name }}</h4>
+                <div class="party-badge" :style="{ backgroundColor: hoveredSeat.partyColor + '20', color: hoveredSeat.partyColor || '#666' }">
+                  {{ hoveredSeat.partyShort || 'Sin partido' }}
+                </div>
+                <div v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.suplenteDe && !hoveredSeat.esDirectiva" class="suplente-de">
+                  Suplente de: {{ hoveredSeat.suplenteDe }}
+                </div>
+                <div v-if="hoveredSeat.isEmpty" class="sin-suplente">Sin suplente</div>
+              </div>
+            </div>
+            <div class="tooltip-body">
+              <div class="info-row">
+                <span class="label">Departamento:</span>
+                <span class="value">{{ hoveredSeat.department || '-' }}</span>
+              </div>
+              <div class="info-row" v-if="hoveredSeat.comite || hoveredSeat.comision">
+                <span class="label">Comité/Comisión:</span>
+                <span class="value">{{ hoveredSeat.comite || hoveredSeat.comision }}</span>
+              </div>
+              <div class="info-row" v-if="hoveredSeat.cargo">
+                <span class="label">Cargo:</span>
+                <span class="value cargo-value" :style="{ color: hoveredSeat.partyColor || '#611717' }">{{ hoveredSeat.cargo }}</span>
+              </div>
+              <div class="info-row link-row" v-if="tipoVisualizacion === 'titulares' && hoveredSeat.tipo === 'titular' && hoveredSeat.suplenteId">
+                <span class="label">Suplente:</span>
+                <NuxtLink :to="`/senador/suplente/${getSuplenteSlug(hoveredSeat.suplenteId)}`" class="value link-value">{{ getSuplenteNombre(hoveredSeat.suplenteId) }}</NuxtLink>
+              </div>
+              <div class="info-row link-row" v-if="tipoVisualizacion === 'suplentes' && hoveredSeat.tipo === 'suplente' && hoveredSeat.titularId">
+                <span class="label">Titular:</span>
+                <NuxtLink :to="`/senador/${getTitularSlug(hoveredSeat.titularId)}`" class="value link-value">{{ getTitularNombre(hoveredSeat.titularId) }}</NuxtLink>
+              </div>
+              <div class="hint">🖱️ Click para ver más detalles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTRO POR DEPARTAMENTO COMPACTO -->
+      <div v-if="!ocultarFiltro" class="w-full px-[4vw] pb-[2vw] mt-[0.5vw] flex justify-center">
+        <!-- El ancho ahora es auto (se ajusta al contenido), max-w-full para que no desborde -->
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 px-[2vw] py-[1vw] w-auto max-w-full">
+          
+          <div class="flex items-center justify-center gap-[0.5vw] font-bold text-[#611717] text-[0.85vw] mb-[0.8vw]">
+            <svg class="w-[1.1vw] h-[1.1vw]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            <span>Filtrar por departamento</span>
+          </div>
+          
+          <!-- Contenedor flex-nowrap ajustado -->
+          <div class="flex flex-nowrap items-center justify-center gap-[0.3vw] w-full overflow-hidden">
+            <button
+              type="button"
+              @click="emit('update:filtroDepartamento', null)"
+              class="px-[0.8vw] py-[0.3vw] rounded-md text-[0.8vw] font-semibold transition-all duration-200 border whitespace-nowrap"
+              :class="!filtroDepartamentoExterno
+                ? 'bg-senado-primary text-white border-senado-primary shadow-sm' 
+                : 'bg-white text-gray-600 border-gray-200 hover:border-senado-primary hover:text-senado-primary'"
+            >
+              Todos
+            </button>
+
+            <button
+              v-for="dep in departamentos"
+              :key="dep"
+              type="button"
+              @click="emit('update:filtroDepartamento', dep)"
+              class="px-[0.8vw] py-[0.3vw] rounded-md text-[0.8vw] font-semibold transition-all duration-200 border whitespace-nowrap"
+              :class="filtroDepartamentoExterno === dep 
+                ? 'bg-senado-primary text-white border-senado-primary shadow-sm' 
+                : 'bg-white text-gray-600 border-gray-200 hover:border-senado-primary hover:text-senado-primary'"
+            >
+              {{ dep }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { senadores } from '~/data/senadores'
+
+const router = useRouter()
+
+const props = defineProps({
+  filtroDepartamentoExterno: { type: String, default: null },
+  ocultarFiltro: { type: Boolean, default: false }
+})
+
+const emit = defineEmits(['update:stats', 'update:filtroDepartamento'])
+
+const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
+const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
+
+const departamentos = [
+  'Beni', 'Chuquisaca', 'Cochabamba', 'La Paz', 'Oruro',
+  'Pando', 'Potosí', 'Santa Cruz', 'Tarija'
+]
+
+const hoveredSeat = ref(null)
+const tooltipPosition = ref({ x: 0, y: 0 })
+const tooltipSide = ref('right')
+const isNavigating = ref(false)
+const tipoVisualizacion = ref('titulares')
+
+const guardarEstado = () => {
+  if (process.client) {
+    sessionStorage.setItem('tipoVisualizacion', tipoVisualizacion.value)
+    sessionStorage.setItem('scrollPosicion', window.scrollY.toString())
+  }
+}
+
+const restaurarEstado = () => {
+  if (process.client) {
+    const tipoGuardado = sessionStorage.getItem('tipoVisualizacion')
+    if (tipoGuardado === 'titulares' || tipoGuardado === 'suplentes') tipoVisualizacion.value = tipoGuardado
+    const scrollPos = sessionStorage.getItem('scrollPosicion')
+    if (scrollPos) {
+      setTimeout(() => {
+        window.scrollTo({ top: parseInt(scrollPos), behavior: 'smooth' })
+        sessionStorage.removeItem('scrollPosicion')
+      }, 300)
+    }
+  }
+}
+
+const seatPositionsArco = [
+  { x: 399, y: 303 }, { x: 405, y: 343 }, { x: 421, y: 380 }, { x: 445, y: 412 }, { x: 477, y: 436 }, { x: 513, y: 455 }, { x: 553, y: 465 },
+  { x: 647, y: 465 }, { x: 687, y: 455 }, { x: 723, y: 436 }, { x: 755, y: 412 }, { x: 779, y: 380 }, { x: 795, y: 343 }, { x: 801, y: 303 },
+  { x: 280, y: 252 }, { x: 283, y: 301 }, { x: 292, y: 349 }, { x: 307, y: 395 }, { x: 328, y: 438 }, { x: 355, y: 477 }, { x: 388, y: 511 }, { x: 423, y: 538 }, { x: 464, y: 559 }, { x: 507, y: 573 }, { x: 553, y: 580 },
+  { x: 647, y: 580 }, { x: 693, y: 573 }, { x: 736, y: 559 }, { x: 777, y: 538 }, { x: 812, y: 511 }, { x: 845, y: 477 }, { x: 872, y: 438 }, { x: 893, y: 395 }, { x: 908, y: 349 }, { x: 917, y: 301 }, { x: 920, y: 252 }
+]
+
+const esDirectiva = (id) => DIRECTIVA_IDS.includes(id)
+const getSuplenteNombre = (suplenteId) => senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')?.name || null
+const getSuplenteSlug = (suplenteId) => senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')?.slug || null
+const getTitularNombre = (titularId) => senadores.find(s => s.id === titularId && s.tipo === 'titular')?.name || null
+const getTitularSlug = (titularId) => senadores.find(s => s.id === titularId && s.tipo === 'titular')?.slug || null
+const getSeatFilteredOut = (id) => allSeats.value.find(s => s.id === id)?.filteredOut || false
+
+const allSeats = computed(() => {
+  const titulares = senadores.filter(s => s.tipo === 'titular')
+  const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
+
+  return titularesOrdenados.map((senator, index) => {
+    const pos = seatPositionsArco[index] || { x: 400, y: 300 }
+    const isDirectiva = esDirectiva(senator.id)
+    const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
+
+    if (tipoVisualizacion.value === 'suplentes') {
+      if (suplente) {
+        return {
+          ...suplente, id: senator.id, seatNumber: senator.seatNumber, nombreActual: suplente.name,
+          fotoActual: suplente.foto || defaultAvatar, slugSuplente: suplente.slug, party: suplente.party,
+          partyShort: suplente.partyShort, partyColor: suplente.partyColor, department: suplente.department,
+          comite: suplente.comite || null, comision: suplente.comision || null, cargo: suplente.cargo || null,
+          suplenteDe: suplente.suplenteDe || senator.name, x: pos.x, y: pos.y, isEmpty: false, esSuplente: true,
+          esDirectiva: isDirectiva, filteredOut: false, tipo: 'suplente', titularId: suplente.titularId
+        }
+      } else {
+        return {
+          ...senator, nombreActual: 'Sin suplente', fotoActual: defaultAvatar, x: pos.x, y: pos.y,
+          isEmpty: true, partyColor: '#e5e7eb', partyShort: 'Sin suplente', slugSuplente: null,
+          esSuplente: false, comite: null, comision: null, cargo: null, esDirectiva: isDirectiva,
+          filteredOut: false, tipo: 'titular', suplenteDe: null
+        }
+      }
+    }
+
+    return {
+      ...senator, nombreActual: senator.name, fotoActual: senator.foto, x: pos.x, y: pos.y,
+      isEmpty: false, partyColor: senator.partyColor, slugSuplente: suplente?.slug || null, esSuplente: false,
+      comite: senator.comite || null, comision: senator.comision || null, cargo: senator.cargo || null,
+      esDirectiva: isDirectiva, filteredOut: false, tipo: 'titular', suplenteId: suplente?.id || null, suplenteDe: null
+    }
+  })
+})
+
+const filteredSeats = computed(() => {
+  return allSeats.value.map(seat => {
+    let filteredOut = false
+    if (props.filtroDepartamentoExterno) {
+      if ((seat.department || '') !== props.filtroDepartamentoExterno) filteredOut = true
+    }
+    return { ...seat, filteredOut }
+  })
+})
+
+const getColorDirectiva = (id) => {
+  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  const seat = allSeats.value.find(s => s.id === id)
+  if (seat && seat.filteredOut) return '#e5e7eb'
+  return titular?.partyColor || '#cccccc'
+}
+
+const getSeatDirectiva = (id) => {
+  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  if (!titular) return null
+  const seat = allSeats.value.find(s => s.id === id)
+  const isFilteredOut = seat?.filteredOut || false
+  const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === id)
+
+  return {
+    ...titular, nombreActual: titular.name, fotoActual: titular.foto, isEmpty: false,
+    comite: titular.comite || null, comision: titular.comision || null, cargo: titular.cargo || null,
+    suplente: suplente?.name || null, suplenteId: suplente?.id || null, esDirectiva: true,
+    esSuplente: false, filteredOut: isFilteredOut, tipo: 'titular'
+  }
+}
+
+const setTipoVisualizacion = (tipo) => { tipoVisualizacion.value = tipo; guardarEstado() }
+
+const handleMouseEnter = (seat, event) => {
+  if (seat && !seat.filteredOut) {
+    hoveredSeat.value = seat
+    updateTooltipPosition(event)
+  }
+}
+
+const handleMouseLeave = () => { hoveredSeat.value = null }
+
+const updateTooltipPosition = (event) => {
+  if (event && event.clientX && event.clientY) {
+    const isMobile = window.innerWidth < 768
+    const mouseX = event.clientX
+    const windowWidth = window.innerWidth
+    const tooltipWidth = isMobile ? 300 : 400
+    tooltipSide.value = mouseX + tooltipWidth > windowWidth - 20 ? 'left' : 'right'
+    const offsetX = isMobile ? 0 : (tooltipSide.value === 'left' ? -tooltipWidth + 350 : 25)
+    const offsetY = isMobile ? -20 : -20
+    tooltipPosition.value = { x: event.clientX + offsetX, y: event.clientY + offsetY }
+  }
+}
+
+const goToSenator = (id, fromDirectiva = false) => {
+  const seat = allSeats.value.find(s => s.id === id)
+  if (!seat || seat.isEmpty || seat.filteredOut) return
+  guardarEstado()
+  isNavigating.value = true
+  hoveredSeat.value = null
+
+  if (fromDirectiva) {
+    const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+    if (titular && titular.slug) router.push(`/senador/${titular.slug}`)
+    return
+  }
+
+  if (tipoVisualizacion.value === 'suplentes') {
+    if (seat.tipo === 'suplente' && seat.slugSuplente) router.push(`/senador/suplente/${seat.slugSuplente}`)
+    return
+  }
+
+  if (seat.tipo === 'titular' && seat.slug) router.push(`/senador/${seat.slug}`)
+}
+
+const tooltipStyle = computed(() => {
+  if (!process.client) return {}
+  const isMobile = window.innerWidth < 768
+  const transform = isMobile ? 'translate(-50%, -100%)' : (tooltipSide.value === 'left' ? 'translate(-100%, -50%)' : 'translate(0, -50%)')
+  return {
+    position: 'fixed', left: tooltipPosition.value.x + 'px', top: tooltipPosition.value.y + 'px', transform: transform,
+    backgroundColor: 'white', borderRadius: '0.7em', padding: '1.15em', boxShadow: '0 0.5em 1.8em rgba(0, 0, 0, 0.25)',
+    border: '0.15em solid ' + (hoveredSeat.value?.partyColor || '#ccc'), pointerEvents: 'none', zIndex: 9999,
+    maxWidth: isMobile ? '92vw' : '28em', minWidth: isMobile ? '16em' : '20em', animation: 'fadeIn 0.15s ease'
+  }
+})
+
+watch(filteredSeats, (nuevos) => {
+  const visibles = nuevos.filter(s => !s.filteredOut && !s.isEmpty)
+  const porPartido = {}
+  visibles.forEach(s => { const p = s.party || 'Sin partido'; porPartido[p] = (porPartido[p] || 0) + 1 })
+  const porDepartamento = {}
+  visibles.forEach(s => { const d = s.department || 'Sin departamento'; porDepartamento[d] = (porDepartamento[d] || 0) + 1 })
+
+  emit('update:stats', {
+    totalVisibles: visibles.length, totalGeneral: allSeats.value.filter(s => !s.isEmpty).length,
+    porPartido, porDepartamento, tipoVisualizacion: tipoVisualizacion.value
+  })
+}, { immediate: true, deep: true })
+
+onMounted(() => { restaurarEstado() })
+</script>
+
+<style scoped>
+.senate-chamber {
+  width: 100%;
+  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.background-container {
+  background: #f9fafb;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1.5vw;
+  padding-bottom: 1vw;
+  border-radius: 12px;
+}
+
+.botones-padre {
+  margin-bottom: 0.5vw;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.hemicycle-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -1vw;
+}
+
+.hemicycle-container {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hemicycle-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 700 / 400;
+}
+
+@media (max-width: 1023px) {
+  .hemicycle-container { width: 100%; }
+  .hemicycle-svg { width: 100%; }
+}
+
+.senator-circle {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.senator-circle:hover {
+  stroke-width: 3;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.senator-circle.suplente { stroke-dasharray: 4 4; }
+.senator-circle.empty-seat { cursor: default !important; opacity: 0.5; }
+.senator-circle.empty-seat:hover { stroke-width: 2; filter: none; }
+.senator-circle.filtered-out { opacity: 0.2 !important; cursor: default !important; }
+.senator-circle.filtered-out:hover { stroke-width: 2; filter: none; }
+
+.seat-number { pointer-events: none; user-select: none; font-size: 14px; font-weight: 700; }
+.seat-number.text-muted { opacity: 0.3; }
+
+.tooltip-padre { font-size: 1.15vw; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; }
+.tooltip-padre .tooltip-header { display: flex; align-items: center; gap: 0.8em; margin-bottom: 0.7em; padding-bottom: 0.7em; border-bottom: 0.1em solid #e5e7eb; }
+.tooltip-padre .foto-senador { width: 4em; height: 4em; border-radius: 50%; object-fit: cover; border: 0.15em solid #e5e7eb; }
+.tooltip-padre .senator-info { flex: 1; min-width: 0; }
+.tooltip-padre .nombre-senador { font-size: 1em; font-weight: 700; color: #1f2937; margin: 0 0 0.15em 0; line-height: 1.3; }
+.tooltip-padre .party-badge { font-size: 0.7em; font-weight: 600; padding: 0.15em 0.6em; border-radius: 0.25em; display: inline-block; }
+.tooltip-padre .suplente-de, .tooltip-padre .sin-suplente { font-size: 0.65em; color: #6b7280; margin-top: 0.2em; }
+.tooltip-padre .tooltip-body { display: flex; flex-direction: column; gap: 0.4em; }
+.tooltip-padre .info-row { display: flex; justify-content: space-between; font-size: 0.8em; align-items: baseline; gap: 0.5em; }
+.tooltip-padre .label { color: #6b7280; font-weight: 500; flex-shrink: 0; }
+.tooltip-padre .value { font-weight: 600; color: #1f2937; text-align: right; font-size: 0.9em; }
+.tooltip-padre .cargo-value { color: #611717; font-weight: 700; font-size: 0.9em; }
+.tooltip-padre .link-value { color: #611717; font-weight: 600; text-decoration: none; cursor: pointer; text-align: right; font-size: 0.9em; }
+.tooltip-padre .link-value:hover { text-decoration: underline; }
+.tooltip-padre .hint { color: #3b82f6; font-style: italic; font-size: 0.7em; margin-top: 0.4em; text-align: center; border-top: 0.05em dashed #e5e7eb; padding-top: 0.4em; }
+
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+</style>

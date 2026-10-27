@@ -16,7 +16,7 @@
           📋 Gestión
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Minutas de Comunicación</h1>
-        <p class="text-gray-600 mt-1 text-sm">Registro oficial de minutas de comunicación de la Cámara de Senadores</p>
+
       </div>
 
       <!-- Buscador -->

@@ -290,7 +290,7 @@
     <!-- ========================================== -->
     <!-- LEYENDA DE PARTIDOS - ORDENADA             -->
     <!-- ========================================== -->
-    <div class="leyenda-padre">
+    <div v-if="!ocultarLeyenda" class="leyenda-padre">
       <div 
         v-for="partido in partidosOrdenados" 
         :key="partido.nombre"
@@ -321,6 +321,10 @@ const props = defineProps({
   filtroDepartamentoExterno: {
     type: String,
     default: null
+  },
+  ocultarLeyenda: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -876,17 +880,19 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* HEMICICLO                                  */
+/* HEMICICLO (MÁS PEQUEÑO)                    */
 /* ========================================== */
 .hemicycle-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin: -1em 0; 
 }
 
 .hemicycle-container {
-  width: 90%;
+  /* 🔥 Reducido al 60% */
+  width: 60%; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -900,14 +906,14 @@ onMounted(() => {
   aspect-ratio: 700 / 400;
 }
 
-/* 🔥 MÓVIL: SVG OCUPA MÁS ANCHO */
+/* 🔥 MÓVIL: Reducido al 100% */
 @media (max-width: 1023px) {
   .hemicycle-container {
-    width: 150%;
+    width: 100%;
   }
   
   .hemicycle-svg {
-    width: 150%;
+    width: 100%;
   }
 }
 

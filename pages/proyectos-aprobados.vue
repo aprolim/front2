@@ -16,7 +16,6 @@
           ⚖️ Legislación
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley Aprobados</h1>
-        <p class="text-gray-600 mt-1 text-sm">Listado de proyectos de ley que han sido aprobados</p>
       </div>
 
       <!-- Buscador -->

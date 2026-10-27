@@ -23,9 +23,6 @@
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">
           Peticiones de Informe Escrito
         </h1>
-        <p class="text-gray-600 mt-1 text-sm">
-          Registro oficial de peticiones de informe escrito de la Cámara de Senadores
-        </p>
       </div>
 
       <!-- 🔥 BUSCADOR PROFESIONAL -->
@@ -103,7 +100,7 @@
                   Nº
                 </th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha de Petición
+                  Fecha
                 </th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Descripción

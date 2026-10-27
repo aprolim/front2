@@ -16,7 +16,6 @@
           ⚖️ Legislación
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley en Revisión</h1>
-        <p class="text-gray-600 mt-1 text-sm">Origen: Cámara de Diputados</p>
       </div>
 
       <!-- Buscador -->
@@ -66,7 +65,7 @@
             <thead class="bg-[#611717] text-white">
               <tr>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Petición</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
