@@ -19,7 +19,7 @@
         <p class="ml-3 text-gray-500">Cargando documentos...</p>
       </div>
 
-      <!-- Error -->
+      <!-- Error general -->
       <div v-else-if="error" class="text-center py-12">
         <p class="text-red-600 mb-4">{{ error }}</p>
         <button @click="cargarDocumentos" class="bg-[#611717] text-white px-4 py-2 rounded-lg hover:bg-[#3a060d] transition">
@@ -245,7 +245,18 @@
                 <p class="mt-4 text-gray-700 font-medium">Cargando página...</p>
               </div>
 
+              <!-- Mensaje de error dentro del modal si falla el PDF -->
+              <div v-if="errorVisor" class="flex flex-col items-center justify-center text-center py-20 px-4">
+                <Icon name="mdi:alert-circle" class="w-16 h-16 text-red-500 mb-4" />
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No se pudo abrir el documento</h3>
+                <p class="text-gray-600 mb-6">{{ errorVisor }}</p>
+                <a :href="pdfUrlActual" target="_blank" class="px-4 py-2 bg-[#611717] text-white rounded hover:bg-[#3a060d]">
+                  Abrir PDF en nueva pestaña
+                </a>
+              </div>
+
               <canvas 
+                v-show="!errorVisor"
                 ref="pdfCanvas"
                 class="w-full max-w-[800px] shadow-2xl rounded bg-white"
               ></canvas>
@@ -287,6 +298,7 @@ const pdfCanvas = ref(null)
 const paginaActualPDF = ref(1)
 const totalPaginasPDF = ref(0)
 const cargandoPDF = ref(false)
+const errorVisor = ref(null) // Nuevo estado para errores específicos del visor
 
 const setCanvasRef = (el, id) => {
   if (el) {
@@ -298,6 +310,7 @@ const setCanvasRef = (el, id) => {
 // DATOS
 // ============================================
 const documentosData = [
+  // Se recomienda renombrar los archivos sin espacios ni tildes para evitar problemas (ej: constitucion.pdf)
   { id: 1, categoria: 'Constitución Política del Estado', nombre: 'Constitución Política Del Estado Plurinacional de Bolivia', gestion: '2009', url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf' },
   
   { id: 2, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento General de la Cámara de Senadores', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf' },
@@ -355,14 +368,14 @@ const formatearTamaño = (bytes) => {
 
 const renderizarPortadas = async () => {
   await nextTick()
-  // Solo renderizamos la portada del documento con id === 1
   for (const doc of documentosDestacados.value) {
     if (doc.id !== 1) continue; 
     
     const canvas = canvases.value[doc.id]
     if (!canvas) continue
     try {
-      const loadingTask = pdfjsLib.getDocument(doc.url)
+      // Usamos encodeURI para manejar espacios y tildes en la URL
+      const loadingTask = pdfjsLib.getDocument(encodeURI(doc.url))
       const pdf = await loadingTask.promise
       const page = await pdf.getPage(1)
       const context = canvas.getContext('2d')
@@ -411,8 +424,10 @@ const cargarDocumentos = () => {
 
 const abrirVisor = async (doc) => {
   pdfTitulo.value = doc.nombre
-  pdfUrlActual.value = doc.url
-  pdfPeso.value = 0 // Reiniciar peso
+  // Codificamos la URL para evitar errores por espacios
+  pdfUrlActual.value = encodeURI(doc.url)
+  pdfPeso.value = 0 
+  errorVisor.value = null // Limpiamos errores previos
   visorAbierto.value = true
   cargandoPDF.value = true
   paginaActualPDF.value = 1
@@ -421,7 +436,6 @@ const abrirVisor = async (doc) => {
   await nextTick()
   
   try {
-    // Siempre consultamos el peso real mediante una petición HEAD
     try {
       const response = await fetch(pdfUrlActual.value, { method: 'HEAD' })
       const size = response.headers.get('content-length')
@@ -430,21 +444,20 @@ const abrirVisor = async (doc) => {
       console.warn('No se pudo obtener el peso del archivo', e)
     }
 
-    // CONFIGURACIÓN CLAVE PARA NO DESCARGAR LOS 200MB DE GOLPE
     const loadingTask = pdfjsLib.getDocument({
       url: pdfUrlActual.value,
-      disableAutoFetch: true,    // No descargar páginas que no se ven
-      disableStream: false,      // Permitir streaming por rangos
-      rangeChunkSize: 65536,     // Descargar en bloques de 64KB
+      disableAutoFetch: true,    
+      disableStream: false,      
+      rangeChunkSize: 65536,     
     })
     
     pdfDocumento.value = await loadingTask.promise
     totalPaginasPDF.value = pdfDocumento.value.numPages
     await renderizarPaginaPDF(1)
-  } catch (error) {
-    console.error('Error al cargar PDF:', error)
-    alert('Error al cargar el PDF.')
-    cerrarVisor()
+  } catch (err) {
+    console.error('Error al cargar PDF:', err)
+    // Guardamos el error para mostrarlo en pantalla de forma elegante
+    errorVisor.value = 'El archivo no pudo ser leído. Verifica que exista en la carpeta public o intenta abrirlo en una pestaña nueva.'
   } finally {
     cargandoPDF.value = false
   }
@@ -497,6 +510,7 @@ const cerrarVisor = () => {
   document.body.style.overflow = 'auto'
   pdfDocumento.value = null
   pdfUrlActual.value = ''
+  errorVisor.value = null
 }
 
 // ============================================
