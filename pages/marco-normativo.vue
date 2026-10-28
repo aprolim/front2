@@ -42,22 +42,45 @@
               @click="abrirVisor(doc)"
             >
               
-              <!-- VISOR DE LA PRIMERA HOJA DEL PDF -->
+              <!-- VISOR DE LA PRIMERA HOJA DEL PDF O IMAGEN ESTÁTICA -->
               <div class="p-4 bg-gray-50">
                 <div class="relative w-full aspect-[3/4] bg-white shadow-sm border border-gray-300 overflow-hidden flex items-center justify-center">
                   
-                  <!-- Spinner de carga del PDF -->
-                  <div v-if="!portadasCargadas[doc.id]" class="flex flex-col items-center text-gray-400">
-                    <div class="w-6 h-6 border-2 border-gray-300 border-t-[#611717] rounded-full animate-spin mb-2"></div>
-                    <span class="text-[10px]">Cargando portada...</span>
-                  </div>
+                  <!-- Si es el primer documento (Constitución), renderizamos el PDF -->
+                  <template v-if="doc.id === 1">
+                    <!-- Spinner de carga del PDF -->
+                    <div v-if="!portadasCargadas[doc.id]" class="flex flex-col items-center text-gray-400 absolute inset-0 justify-center bg-white z-10">
+                      <div class="w-6 h-6 border-2 border-gray-300 border-t-[#611717] rounded-full animate-spin mb-2"></div>
+                      <span class="text-[10px]">Cargando portada...</span>
+                    </div>
 
-                  <!-- El Canvas donde se dibuja el PDF -->
-                  <canvas 
-                    :ref="el => setCanvasRef(el, doc.id)"
-                    class="w-full h-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                    :class="{ 'opacity-0': !portadasCargadas[doc.id] }"
-                  ></canvas>
+                    <!-- El Canvas donde se dibuja el PDF -->
+                    <canvas 
+                      :ref="el => setCanvasRef(el, doc.id)"
+                      class="w-full h-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                      :class="{ 'opacity-0': !portadasCargadas[doc.id] }"
+                    ></canvas>
+                  </template>
+
+                  <!-- Para los demás documentos, mostramos la imagen estática CON EL TEXTO SUPERPUESTO -->
+                  <div v-else class="relative w-full h-full group-hover:scale-[1.02] transition-transform duration-500">
+                    <!-- Imagen de fondo -->
+                    <img 
+                      src="/images/t-negra.png" 
+                      alt="Portada genérica"
+                      class="w-full h-full object-cover object-center absolute inset-0"
+                    />
+                    
+                    <!-- Texto superpuesto con estilo dorado brillante (Más abajo y 10% más pequeño) -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-end pb-6 p-5 bg-black/40">
+                      <h3 class="text-center text-xs md:text-sm font-bold uppercase tracking-wide text-[#f7e6a1] drop-shadow-[0_0_6px_rgba(247,230,161,0.8)] leading-snug">
+                        {{ doc.nombre }}
+                      </h3>
+                      <p class="text-center text-[9px] md:text-[10px] mt-1 text-[#e3d194] font-medium drop-shadow-md">
+                        Gestión {{ doc.gestion }}
+                      </p>
+                    </div>
+                  </div>
 
                 </div>
               </div>
@@ -275,7 +298,6 @@ const setCanvasRef = (el, id) => {
 // DATOS
 // ============================================
 const documentosData = [
-  // 🔥 Se eliminó el "peso" falso, ahora se detectará automáticamente (366 KB)
   { id: 1, categoria: 'Constitución Política del Estado', nombre: 'Constitución Política Del Estado Plurinacional de Bolivia', gestion: '2009', url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf' },
   
   { id: 2, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento General de la Cámara de Senadores', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf' },
@@ -333,7 +355,10 @@ const formatearTamaño = (bytes) => {
 
 const renderizarPortadas = async () => {
   await nextTick()
+  // Solo renderizamos la portada del documento con id === 1
   for (const doc of documentosDestacados.value) {
+    if (doc.id !== 1) continue; 
+    
     const canvas = canvases.value[doc.id]
     if (!canvas) continue
     try {
@@ -396,7 +421,7 @@ const abrirVisor = async (doc) => {
   await nextTick()
   
   try {
-    // 🔥 Siempre consultamos el peso real mediante una petición HEAD
+    // Siempre consultamos el peso real mediante una petición HEAD
     try {
       const response = await fetch(pdfUrlActual.value, { method: 'HEAD' })
       const size = response.headers.get('content-length')
@@ -405,7 +430,7 @@ const abrirVisor = async (doc) => {
       console.warn('No se pudo obtener el peso del archivo', e)
     }
 
-    // 🔥 CONFIGURACIÓN CLAVE PARA NO DESCARGAR LOS 200MB DE GOLPE
+    // CONFIGURACIÓN CLAVE PARA NO DESCARGAR LOS 200MB DE GOLPE
     const loadingTask = pdfjsLib.getDocument({
       url: pdfUrlActual.value,
       disableAutoFetch: true,    // No descargar páginas que no se ven
