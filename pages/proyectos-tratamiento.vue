@@ -81,7 +81,7 @@
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
                 <!-- Proyectista (peticionario) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ doc.peticionario || '—' }}</td>
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">{{ formatearProyectista(doc.peticionario) }}</td>
                 <!-- Adjunto (archivo) -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
@@ -145,6 +145,15 @@ const paginasVisibles = computed(() => {
   }
   return paginas
 })
+
+// Función para formatear el campo peticionario (proyectista)
+const formatearProyectista = (peticionario) => {
+  if (!peticionario) return '—'
+  if (Array.isArray(peticionario)) {
+    return peticionario.join(', ')
+  }
+  return peticionario
+}
 
 const cargarDocumentos = async () => {
   loading.value = true
