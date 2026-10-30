@@ -100,7 +100,7 @@
       </div>
 
       <!-- Estático -->
-      <MandatoFuncionesAntecedentes />
+      <!-- <MandatoFuncionesAntecedentes /> -->
     </div>
 
     <!-- MODAL DE ORDEN DEL DÍA -->

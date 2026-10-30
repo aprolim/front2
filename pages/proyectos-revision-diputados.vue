@@ -1,4 +1,3 @@
-<!-- proyectos-revision-diputados -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="w-[95%] max-w-7xl mx-auto">
@@ -38,6 +37,7 @@
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> proyectos
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
       <!-- Loading -->
@@ -65,9 +65,19 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- Nueva Columna Nº -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <!-- Columna Código (antes Nº) -->
+                <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
+                <th 
+                  @click="toggleOrden"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
+                  title="Click para invertir el orden"
+                >
+                  <span class="inline-flex items-center gap-1">
+                    Nº
+                    <span class="text-[10px] opacity-80 group-hover:opacity-100">
+                      {{ ordenDescendente ? '▼' : '▲' }}
+                    </span>
+                  </span>
+                </th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
@@ -76,29 +86,25 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- Nº: Inicia en total y baja hasta 1 -->
+                <!-- Nº secuencial GLOBAL -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
-                    {{ total - ((page - 1) * itemsPorPagina) - index }}
+                    {{ numeroSecuencial(index) }}
                   </span>
                 </td>
-                <!-- Código -->
                 <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero }}</span>
                 </td>
-                <!-- Fecha de Petición (fechaIngreso) -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ formatearFecha(doc.fechaIngreso) }}</td>
-                <!-- Descripción (asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs uppercase">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase">
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <!-- Adjunto (archivo) -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
-                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
+                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     Ver PDF
                   </a>
-                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+                  <span v-else class="text-gray-300 text-xs uppercase">Sin archivo</span>
                 </td>
               </tr>
             </tbody>
@@ -147,6 +153,8 @@ const itemsPorPagina = 10
 const filters = ref({ search: '' })
 let searchTimeout = null
 
+const ordenDescendente = ref(true)
+
 const paginasVisibles = computed(() => {
   const paginas = []
   const rango = 2
@@ -165,6 +173,13 @@ const formatearFecha = (fecha) => {
   } catch { return '—' }
 }
 
+const numeroSecuencial = (index) => {
+  if (ordenDescendente.value) {
+    return total.value - ((page.value - 1) * itemsPorPagina) - index
+  }
+  return (page.value - 1) * itemsPorPagina + index + 1
+}
+
 const cargarDocumentos = async () => {
   loading.value = true
   error.value = null
@@ -172,7 +187,8 @@ const cargarDocumentos = async () => {
     const params = new URLSearchParams()
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
-    if (filters.search) params.append('search', filters.search)
+    if (filters.value.search) params.append('search', filters.value.search)
+    params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
     const url = `${API_BASE_URL}/legislativos/proyecto-ley-revision-diputados?${params.toString()}`
     const response = await fetch(url)
@@ -189,6 +205,14 @@ const cargarDocumentos = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const toggleOrden = () => {
+  if (loading.value) return
+  ordenDescendente.value = !ordenDescendente.value
+  page.value = 1
+  cargarDocumentos()
+  if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const onSearchInput = () => {

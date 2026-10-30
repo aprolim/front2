@@ -26,7 +26,7 @@
         </h1>
       </div>
 
-      <!-- 🔥 BUSCADOR PROFESIONAL -->
+      <!-- BUSCADOR -->
       <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div class="relative flex-1">
@@ -62,6 +62,7 @@
         de <strong class="text-[#611717]">{{ total }}</strong>
         peticione{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
       <!-- Loading -->
@@ -94,12 +95,21 @@
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="min-w-full text-sm">
-            <!-- 🔥 ENCABEZADO CON PALETA GUINDA DEL SENADO -->
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- Nueva Columna Nº -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
-                <!-- Columna Código (antes Nº) -->
+                <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
+                <th
+                  @click="toggleOrden"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
+                  title="Click para invertir el orden"
+                >
+                  <span class="inline-flex items-center gap-1">
+                    Nº
+                    <span class="text-[10px] opacity-80 group-hover:opacity-100">
+                      {{ ordenDescendente ? '▼' : '▲' }}
+                    </span>
+                  </span>
+                </th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Fecha
@@ -107,9 +117,11 @@
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Descripción
                 </th>
-                <!-- 🔥 TÍTULO CAMBIADO -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Senador(es) Peticionante(s)
+                </th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                  Destinatario
                 </th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Adjuntos
@@ -122,47 +134,61 @@
                 :key="doc._id"
                 class="hover:bg-[#fbf8f1] transition-colors"
               >
-                <!-- Nº: Numeración global (Total al 1) -->
-                <td class="px-4 py-4 whitespace-nowrap">
+                <!-- Nº secuencial GLOBAL -->
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
-                    {{ total - ((page - 1) * itemsPorPagina) - index }}
+                    {{ numeroSecuencial(index) }}
                   </span>
                 </td>
 
-                <!-- Código (antes Nº) -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
-                    {{ doc.numero }}
+                <!-- Código (con el mismo estilo de pastilla) -->
+                <td class="px-4 py-4 whitespace-nowrap align-top">
+                  <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
+                    {{ doc.numero ?? '—' }}
                   </span>
                 </td>
 
                 <!-- Fecha de Petición -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
-                <!-- Descripción (Asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">
+                <!-- Descripción -->
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md align-top uppercase">
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- 🔥 Peticionante CORREGIDO -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">
-                  {{ formatearPeticionario(doc.peticionario) }}
+                <!-- Peticionante -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                  <div v-if="Array.isArray(doc.peticionario) && doc.peticionario.length > 0">
+                    <div v-for="(senador, i) in procesarPeticionarios(doc.peticionario)" :key="i" class="mb-1 last:mb-0">
+                      {{ senador }}
+                    </div>
+                  </div>
+                  <div v-else-if="typeof doc.peticionario === 'string'">
+                     <div v-for="(senador, i) in procesarPeticionarios([doc.peticionario])" :key="i" class="mb-1 last:mb-0">
+                      {{ senador }}
+                    </div>
+                  </div>
+                  <div v-else>—</div>
                 </td>
 
-                <!-- Adjuntos y Estado de Respuesta -->
-                <td class="px-4 py-4 text-center whitespace-nowrap">
+                <!-- Destinatario -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                  {{ doc.destinatario || '—' }}
+                </td>
+
+                <!-- Adjuntos y Estado -->
+                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
                   <div class="flex flex-col items-center gap-2">
-                    <!-- Botón Ver PDF -->
                     <a
                       v-if="doc.archivo && doc.archivo.url"
                       :href="doc.archivo.url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200"
+                      class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
                       title="Ver PDF"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,22 +196,21 @@
                       </svg>
                       Ver PDF
                     </a>
-                    <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+                    <span v-else class="text-gray-300 text-xs uppercase">Sin archivo</span>
 
-                    <!-- 🔥 ETIQUETA C.R. / S.R. -->
-                    <span 
-                      v-if="doc.fechaRespuesta" 
-                      class="inline-flex items-center gap-1 text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded border border-green-200" 
+                    <span
+                      v-if="doc.fechaRespuesta"
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded border border-green-200 uppercase"
                       title="Con Respuesta"
                     >
-                      C.R.
+                      Con Respuesta
                     </span>
-                    <span 
-                      v-else 
-                      class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-200" 
+                    <span
+                      v-else
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-200 uppercase"
                       title="Sin Respuesta"
                     >
-                      S.R.
+                      Sin Respuesta
                     </span>
                   </div>
                 </td>
@@ -243,9 +268,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// ============================================
-// SEO
-// ============================================
 useHead({
   title: 'Peticiones de Informe Escrito | Senado de Bolivia',
   meta: [
@@ -256,9 +278,6 @@ useHead({
   ]
 })
 
-// ============================================
-// API
-// ============================================
 const config = useRuntimeConfig()
 const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
 
@@ -270,14 +289,12 @@ const loading = ref(false)
 const error = ref(null)
 const page = ref(1)
 const totalPages = ref(1)
-const total = ref(0)
+const total = ref(0) // 👈 Aquí se guardará el 1898 real del backend
 const itemsPorPagina = 10
-
-const filters = ref({
-  search: ''
-})
-
+const filters = ref({ search: '' })
 let searchTimeout = null
+
+const ordenDescendente = ref(true)
 
 // ============================================
 // COMPUTED
@@ -312,33 +329,31 @@ const formatearFecha = (fecha) => {
   }
 }
 
-const formatearPeticionario = (peticionario) => {
-  if (!peticionario) return '—'
-  
-  if (Array.isArray(peticionario)) {
-    return peticionario.join(', ')
+// 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
+const numeroSecuencial = (index) => {
+  if (ordenDescendente.value) {
+    return total.value - ((page.value - 1) * itemsPorPagina) - index
   }
+  return (page.value - 1) * itemsPorPagina + index + 1
+}
 
-  if (typeof peticionario === 'string') {
-    const trimmed = peticionario.trim()
-    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
-      try {
-        const parsed = JSON.parse(trimmed)
-        if (Array.isArray(parsed)) {
-          return parsed.join(', ')
-        }
-      } catch (e) {
-        return trimmed.replace(/[\[\]"]/g, '').trim()
-      }
-    }
-    return trimmed
-  }
+const procesarPeticionarios = (peticionarioData) => {
+  if (!peticionarioData) return []
+  const lista = Array.isArray(peticionarioData)
+    ? peticionarioData.map((s) => String(s))
+    : [String(peticionarioData)]
 
-  return String(peticionario)
+  let textoUnido = lista.join(' ')
+  textoUnido = textoUnido.replace(/[\[\]"]/g, ' ').trim()
+
+  return textoUnido
+    .split(/(?=Sen\.)/i)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0)
 }
 
 // ============================================
-// CARGA DE DATOS
+// CARGA DE DATOS (CON PAGINACIÓN DEL BACKEND)
 // ============================================
 const cargarDocumentos = async () => {
   loading.value = true
@@ -349,6 +364,7 @@ const cargarDocumentos = async () => {
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
+    params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
     const url = `${API_BASE_URL}/legislativos/peticion-informe-escrito?${params.toString()}`
     const response = await fetch(url)
@@ -359,7 +375,7 @@ const cargarDocumentos = async () => {
     }
 
     documentos.value = result.data?.documentos || []
-    total.value = result.data?.total || 0
+    total.value = result.data?.total || 0 // 👈 Esto hace que diga "1898"
     totalPages.value = result.data?.pages || 1
   } catch (err) {
     console.error('Error cargando PIE:', err)
@@ -370,6 +386,15 @@ const cargarDocumentos = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// 🔥 Botón Nº
+const toggleOrden = () => {
+  if (loading.value) return
+  ordenDescendente.value = !ordenDescendente.value
+  page.value = 1
+  cargarDocumentos()
+  if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // ============================================
@@ -393,30 +418,16 @@ const irAPagina = (p) => {
   if (p >= 1 && p <= totalPages.value) {
     page.value = p
     cargarDocumentos()
-    if (process.client) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+    if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
 const prevPage = () => {
-  if (page.value > 1) {
-    page.value--
-    cargarDocumentos()
-    if (process.client) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
+  if (page.value > 1) irAPagina(page.value - 1)
 }
 
 const nextPage = () => {
-  if (page.value < totalPages.value) {
-    page.value++
-    cargarDocumentos()
-    if (process.client) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
+  if (page.value < totalPages.value) irAPagina(page.value + 1)
 }
 
 // ============================================

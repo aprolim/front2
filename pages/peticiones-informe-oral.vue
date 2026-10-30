@@ -95,7 +95,6 @@
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="min-w-full text-sm">
-            <!-- 🔥 ENCABEZADO CON PALETA GUINDA DEL SENADO Y TÍTULOS EXACTOS -->
             <thead class="bg-[#611717] text-white">
               <tr>
                 <!-- Nueva Columna Nº -->
@@ -111,6 +110,10 @@
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Senador(es) Peticionante(s)
                 </th>
+                <!-- 🔥 COLUMNA: Destinatario -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                  Destinatario
+                </th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Adjunto
                 </th>
@@ -123,44 +126,59 @@
                 class="hover:bg-[#fbf8f1] transition-colors"
               >
                 <!-- Nº: Numeración global (Total al 1) -->
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ total - ((page - 1) * itemsPorPagina) - index }}
                   </span>
                 </td>
 
                 <!-- Código (antes Nº) -->
-                <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
+                <td class="px-4 py-4 whitespace-nowrap align-top">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
                     {{ doc.numero }}
                   </span>
                 </td>
 
                 <!-- Fecha de Petición (fechaIngreso) -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
                 <!-- Descripción (asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md align-top uppercase">
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Peticionante (peticionario) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs">
-                  {{ doc.peticionario || '—' }}
+                <!-- Peticionante (peticionario) - Cada uno en su propia fila -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                  <div v-if="Array.isArray(doc.peticionario) && doc.peticionario.length > 0">
+                    <div v-for="(senador, i) in procesarPeticionarios(doc.peticionario)" :key="i" class="mb-1 last:mb-0">
+                      {{ senador }}
+                    </div>
+                  </div>
+                  <div v-else-if="typeof doc.peticionario === 'string'">
+                     <div v-for="(senador, i) in procesarPeticionarios([doc.peticionario])" :key="i" class="mb-1 last:mb-0">
+                      {{ senador }}
+                    </div>
+                  </div>
+                  <div v-else>—</div>
+                </td>
+
+                <!-- 🔥 CELDA: Destinatario -->
+                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                  {{ doc.destinatario || '—' }}
                 </td>
 
                 <!-- Adjunto (archivo) -->
-                <td class="px-4 py-4 text-center whitespace-nowrap">
+                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
                   <a
                     v-if="doc.archivo && doc.archivo.url"
                     :href="doc.archivo.url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200"
+                    class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
                     title="Ver PDF"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +186,7 @@
                     </svg>
                     Ver PDF
                   </a>
-                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+                  <span v-else class="text-gray-300 text-xs uppercase">Sin archivo</span>
                 </td>
               </tr>
             </tbody>
@@ -293,6 +311,35 @@ const formatearFecha = (fecha) => {
   }
 }
 
+// 🔥 NUEVA FUNCIÓN ROBUSTA PARA PROCESAR Y SEPARAR NOMBRES
+const procesarPeticionarios = (peticionarioData) => {
+  if (!peticionarioData) return []
+  
+  let lista = []
+  
+  // 1. Convertimos todo a un solo string largo si es un array
+  if (Array.isArray(peticionarioData)) {
+    lista = peticionarioData.map(str => String(str))
+  } else {
+    lista = [String(peticionarioData)]
+  }
+
+  // Unimos todo con un espacio
+  let textoUnido = lista.join(' ')
+  
+  // Limpiamos corchetes y comillas
+  textoUnido = textoUnido.replace(/[\[\]"]/g, ' ').trim()
+  
+  // 2. Separamos usando "Sen." como delimitador
+  // Buscamos "Sen." y cortamos ahí, manteniendo el "Sen." en el resultado
+  const partes = textoUnido.split(/(?=Sen\.)/i)
+  
+  // 3. Limpiamos cada parte y quitamos las que estén vacías
+  return partes
+    .map(p => p.trim())
+    .filter(p => p.length > 0)
+}
+
 // ============================================
 // CARGA DE DATOS
 // ============================================
@@ -306,7 +353,6 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
 
-    // 🔥 Endpoint apuntando a peticion-informe-oral
     const url = `${API_BASE_URL}/legislativos/peticion-informe-oral?${params.toString()}`
     const response = await fetch(url)
     const result = await response.json()

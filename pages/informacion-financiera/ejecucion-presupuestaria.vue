@@ -27,7 +27,7 @@
                     <th class="p-[2vw] sm:p-3 border border-white/20">VIGENTE</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">DEVENGADO AL 30/09/2026</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">TOTAL ÁREA</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">% EJECUCIÓN</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">PROCENTAJE</th>
                   </tr>
                 </thead>
                 <tbody class="text-[3.3vw] sm:text-[1.1vw] text-gray-700">
@@ -137,7 +137,7 @@
                     <th class="p-[2vw] sm:p-3 border border-white/20">VIGENTE</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">DEVENGADO AL 30/09/2026</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">TOTAL ÁREA</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">% EJECUCIÓN</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">PORCENTAJE</th>
                   </tr>
                 </thead>
                 <tbody class="text-[3.3vw] sm:text-[1.1vw] text-gray-700">

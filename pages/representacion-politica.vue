@@ -8,7 +8,7 @@
 
     <div class="mb-12 text-center pt-10">
       <h1 class="text-[4vw] font-bold text-senado-primary leading-tight flex flex-col items-center text-center">
-        Bancadas
+        Representación Política
         <div class="w-[12vw] h-1 bg-senado-gold-dark mt-[.5vw] rounded-full"></div>
       </h1>
 
