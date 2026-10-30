@@ -76,11 +76,11 @@
                 </td>
                 <!-- Código (antes Nº) -->
                 <td class="px-4 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ mayusculas(doc.numero) }}</span>
                 </td>
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ mayusculas(formatearFecha(doc.fechaIngreso)) }}</td>
                 <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="doc.asunto">{{ doc.asunto }}</div>
+                  <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="mayusculas(doc.asunto)">{{ mayusculas(doc.asunto) }}</div>
                 </td>
                 <!-- 🔥 CAMBIO: Celda de "Proyectista" eliminada -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
@@ -144,6 +144,12 @@ const paginasVisibles = computed(() => {
   }
   return paginas
 })
+
+// 🔥 Nueva función para convertir texto a mayúsculas
+const mayusculas = (texto) => {
+  if (texto === null || texto === undefined) return ''
+  return String(texto).toUpperCase()
+}
 
 const formatearFecha = (fecha) => {
   if (!fecha) return '—'
