@@ -1,3 +1,4 @@
+<!-- homenajes-camarales -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="w-[95%] max-w-7xl mx-auto">
@@ -54,7 +55,10 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
+                <!-- Nueva Columna Nº -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
+                <!-- Columna Código (antes Nº) -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <!-- 🔥 CAMBIO: "Fecha de Petición" a "Fecha" -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
@@ -64,7 +68,14 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="doc in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
+              <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
+                <!-- Nº: Numeración global (Total al 1) -->
+                <td class="px-4 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
+                    {{ total - ((page - 1) * itemsPorPagina) - index }}
+                  </span>
+                </td>
+                <!-- Código (antes Nº) -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
                 </td>

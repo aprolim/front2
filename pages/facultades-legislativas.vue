@@ -28,8 +28,6 @@
           <h1 class="font-bold leading-tight text-3xl sm:text-4xl md:text-5xl">
             Facultades de la Camara de Senadores
           </h1>
-
-
         </div>
 
         <!-- Onda inferior -->
@@ -41,7 +39,8 @@
       </section>
 
       <!-- Contenido: el componente con los contadores -->
-      <FacultadesLegislativas />
+      <!-- Se oculta el encabezado interno SOLO en esta página -->
+      <FacultadesLegislativas :mostrar-encabezado="false" />
 
       <!-- Botón volver inferior -->
       <div class="text-center mt-12">

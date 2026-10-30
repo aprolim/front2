@@ -1,7 +1,8 @@
 <!-- components/FacultadesLegislativas.vue -->
 <template>
   <div>
-    <h2 class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6">
+    <!-- Título condicional -->
+    <h2 v-if="mostrarEncabezado" class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6">
       Facultades de la Camara de Senadores 
     </h2>
 
@@ -100,6 +101,16 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useDocumentosLegislativos } from '~/composables/useDocumentosLegislativos'
+
+// ============================================
+// PROPS (Nuevo: controla el encabezado)
+// ============================================
+defineProps({
+  mostrarEncabezado: {
+    type: Boolean,
+    default: true
+  }
+})
 
 const { getStats } = useDocumentosLegislativos()
 

@@ -15,9 +15,6 @@
         <h1 class="text-[8vw] sm:text-5xl lg:text-6xl font-bold text-senado-primary leading-tight">
           Misión y Visión
         </h1>
-        <p class="text-gray-500 mt-[3vw] sm:mt-4 text-[3.3vw] sm:text-lg max-w-2xl mx-auto">
-          Principios que guían nuestra labor legislativa
-        </p>
       </div>
 
       <!-- ============================================ -->
@@ -29,12 +26,13 @@
         <div class="group relative bg-white/90 backdrop-blur-md rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/50 overflow-hidden">
           <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-senado-primary via-senado-gold-dark to-senado-primary"></div>
           <div class="p-[5vw] sm:p-8 md:p-10">
-            <div class="flex items-start gap-[3vw] sm:gap-5 mb-[3vw] sm:mb-5">
+            <!-- CORREGIDO: Se cambió items-start por items-center -->
+            <div class="flex items-center gap-[3vw] sm:gap-5 mb-[3vw] sm:mb-5">
+              <!-- CORREGIDO: Se quitó pt-2 y se ajustó el centrado -->
               <div class="flex-shrink-0 w-[12vw] sm:w-14 h-[12vw] sm:h-14 bg-gradient-to-br from-senado-primary/20 to-senado-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Icon name="mdi:bullseye-arrow" class="text-[6vw] sm:text-3xl text-senado-primary" />
               </div>
               <div>
-                <span class="text-[2.1vw] sm:text-sm font-semibold text-senado-primary/60 uppercase tracking-wider">Nuestro propósito</span>
                 <h2 class="text-[6vw] sm:text-3xl md:text-4xl font-bold text-senado-primary">Misión</h2>
               </div>
             </div>
@@ -48,12 +46,13 @@
         <div class="group relative bg-white/90 backdrop-blur-md rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/50 overflow-hidden">
           <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-senado-gold-dark via-senado-primary to-senado-gold-dark"></div>
           <div class="p-[5vw] sm:p-8 md:p-10">
-            <div class="flex items-start gap-[3vw] sm:gap-5 mb-[3vw] sm:mb-5">
+            <!-- CORREGIDO: Se cambió items-start por items-center -->
+            <div class="flex items-center gap-[3vw] sm:gap-5 mb-[3vw] sm:mb-5">
+              <!-- CORREGIDO: Se quitó pt-2 y se ajustó el centrado -->
               <div class="flex-shrink-0 w-[12vw] sm:w-14 h-[12vw] sm:h-14 bg-gradient-to-br from-senado-gold-dark/20 to-senado-gold-dark/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Icon name="mdi:binoculars" class="text-[6vw] sm:text-3xl text-senado-gold-dark" />
+                <Icon name="mdi:target" class="text-[6vw] sm:text-3xl text-senado-gold-dark" />
               </div>
               <div>
-                <span class="text-[2.1vw] sm:text-sm font-semibold text-senado-gold-dark/60 uppercase tracking-wider">Nuestra aspiración</span>
                 <h2 class="text-[6vw] sm:text-3xl md:text-4xl font-bold text-senado-primary">Visión</h2>
               </div>
             </div>
@@ -63,8 +62,6 @@
           </div>
         </div>
       </div>
-
-
 
       <!-- Botón volver -->
       <div class="text-center pt-[4vw] sm:pt-8">

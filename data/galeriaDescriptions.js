@@ -138,13 +138,22 @@ export const getDescription = (id) => {
 
 export const getAllImages = () => {
   const images = []
+  
+  // 1. Pon aquí los IDs de las imágenes que quieres ELIMINAR
+  const idsAEliminar = [126, 125, 124, 121, 122, 117, 115, 114, 113, 111, 109, 107, 104, 102, 100, 98, 97, 96, 93, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 71, 70, 69, 68, 63, 62, 61, 55, 27, 25, 22, 4]; 
+
   for (let i = 1; i <= 128; i++) {
+    // 2. Si el ID actual está en la lista de eliminados, lo saltamos
+    if (idsAEliminar.includes(i)) {
+      continue;
+    }
+
     images.push({
       id: i,
       description: getDescription(i)
     })
   }
-  return images.reverse() // Invertimos el orden para mostrar la imagen 128 primero
+  return images.reverse()
 }
 
 export default galeriaDescriptions

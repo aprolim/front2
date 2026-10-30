@@ -57,9 +57,12 @@
                     <!-- El Canvas donde se dibuja el PDF -->
                     <canvas 
                       :ref="el => setCanvasRef(el, doc.id)"
-                      class="w-full h-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                      class="w-full h-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.02] relative z-0"
                       :class="{ 'opacity-0': !portadasCargadas[doc.id] }"
                     ></canvas>
+
+                    <!-- Bloque blanco que tapa el logo superior izquierdo (Ajustado al 35% de ancho y 18% de alto) -->
+                    <div class="absolute top-0 left-0 w-[35%] h-[18%] bg-white z-20 pointer-events-none"></div>
                   </template>
 
                   <!-- Para los demás documentos, mostramos la imagen estática CON EL TEXTO SUPERPUESTO -->
@@ -298,7 +301,7 @@ const pdfCanvas = ref(null)
 const paginaActualPDF = ref(1)
 const totalPaginasPDF = ref(0)
 const cargandoPDF = ref(false)
-const errorVisor = ref(null) // Nuevo estado para errores específicos del visor
+const errorVisor = ref(null) 
 
 const setCanvasRef = (el, id) => {
   if (el) {
@@ -310,31 +313,37 @@ const setCanvasRef = (el, id) => {
 // DATOS
 // ============================================
 const documentosData = [
-  // Se recomienda renombrar los archivos sin espacios ni tildes para evitar problemas (ej: constitucion.pdf)
+  // 1 y 2. DESTACADOS (Tarjetas)
   { id: 1, categoria: 'Constitución Política del Estado', nombre: 'Constitución Política Del Estado Plurinacional de Bolivia', gestion: '2009', url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf' },
-  
   { id: 2, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento General de la Cámara de Senadores', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf' },
   { id: 3, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Participación Ciudadana y Deliberación Pública', gestion: '2012', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Participación Ciudadana y Deliberación Pública.pdf' },
   { id: 4, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento Específico de Homenajes Camarales', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf' },
   { id: 5, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Condecoraciones', gestion: '2022', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Condecoraciones.pdf' },
   { id: 6, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Ética', gestion: '2014', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Ética.pdf' },
 
+  // DOCUMENTOS QUE VAN AL ACORDEÓN UNIFICADO (Ordenados según tu solicitud)
+  // 1ro y 2do
   { id: 7, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Organización y Funciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf' },
   { id: 8, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Interno de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf' },
-  { id: 9, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Administración de Activos Fijos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf' },
-  { id: 10, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema Contabilidad Integrada', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf' },
-  { id: 11, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf' },
-  { id: 12, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf' },
-  { id: 13, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Organización Administrativa', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf' },
-  { id: 14, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf' },
-  { id: 15, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Programación de Operaciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf' },
-  { id: 16, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico Sistema de Tesorería', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf' },
-  { id: 17, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf' },
-
-  { id: 18, categoria: 'Normativa Interna', nombre: 'Código de Ética', gestion: '2020', url: '/pdfs/Normativa Interna/Código de Ética.pdf' },
-  { id: 19, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf' },
-  { id: 20, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf' }
   
+  // 3ro: Código de Ética
+  { id: 9, categoria: 'Normativa Interna', nombre: 'Código de Ética', gestion: '2020', url: '/pdfs/Normativa Interna/Código de Ética.pdf' },
+
+  // 4to en adelante: Resto de normativas
+  { id: 10, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema Contabilidad Integrada', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf' },
+  { id: 11, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf' },
+  { id: 12, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Organización Administrativa', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf' },
+  { id: 13, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Programación de Operaciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf' },
+  { id: 14, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico Sistema de Tesorería', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf' },
+  { id: 15, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf' },
+  { id: 16, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf' },
+  
+  // LOS ÚLTIMOS 4 DOCUMENTOS (Bienes y Servicios, Presupuesto, Activos Fijos, Almacenes)
+  { id: 17, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf' },
+  { id: 18, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf' },
+  { id: 19, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Interno Unidad de Transparencia y Lucha Contra la Corrupción', gestion: '2025', url: '/pdfs/trasparencia/Reglamento Interno UTLCC.pdf' },
+  { id: 20, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Administración de Activos Fijos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf' },
+  { id: 21, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf' }
 ]
 
 // ============================================
@@ -347,12 +356,19 @@ const documentosDestacados = computed(() => {
   )
 })
 
+// Unificamos todas las categorías en un solo acordeón respetando el orden del array
 const categoriasAcordeon = computed(() => {
-  const categorias = ['Normas del Área Administrativa', 'Normativa Interna']
-  return categorias.map(nombre => ({
-    nombre,
-    documentos: documentos.value.filter(d => d.categoria === nombre)
-  }))
+  const documentosUnificados = documentos.value.filter(d => 
+    d.categoria === 'Normas del Área Administrativa' || 
+    d.categoria === 'Normativa Interna'
+  )
+  
+  return [
+    {
+      nombre: 'Normativa Administrativa',
+      documentos: documentosUnificados
+    }
+  ]
 })
 
 // ============================================
@@ -374,7 +390,6 @@ const renderizarPortadas = async () => {
     const canvas = canvases.value[doc.id]
     if (!canvas) continue
     try {
-      // Usamos encodeURI para manejar espacios y tildes en la URL
       const loadingTask = pdfjsLib.getDocument(encodeURI(doc.url))
       const pdf = await loadingTask.promise
       const page = await pdf.getPage(1)
@@ -424,10 +439,9 @@ const cargarDocumentos = () => {
 
 const abrirVisor = async (doc) => {
   pdfTitulo.value = doc.nombre
-  // Codificamos la URL para evitar errores por espacios
   pdfUrlActual.value = encodeURI(doc.url)
   pdfPeso.value = 0 
-  errorVisor.value = null // Limpiamos errores previos
+  errorVisor.value = null
   visorAbierto.value = true
   cargandoPDF.value = true
   paginaActualPDF.value = 1
@@ -456,7 +470,6 @@ const abrirVisor = async (doc) => {
     await renderizarPaginaPDF(1)
   } catch (err) {
     console.error('Error al cargar PDF:', err)
-    // Guardamos el error para mostrarlo en pantalla de forma elegante
     errorVisor.value = 'El archivo no pudo ser leído. Verifica que exista en la carpeta public o intenta abrirlo en una pestaña nueva.'
   } finally {
     cargandoPDF.value = false

@@ -1,3 +1,4 @@
+<!-- proyectos-revision-diputados -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="w-[95%] max-w-7xl mx-auto">
@@ -64,15 +65,24 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
+                <!-- Nueva Columna Nº -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
+                <!-- Columna Código (antes Nº) -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              <tr v-for="doc in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- Nº -->
+              <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
+                <!-- Nº: Inicia en total y baja hasta 1 -->
+                <td class="px-4 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
+                    {{ total - ((page - 1) * itemsPorPagina) - index }}
+                  </span>
+                </td>
+                <!-- Código -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ doc.numero }}</span>
                 </td>
@@ -162,7 +172,7 @@ const cargarDocumentos = async () => {
     const params = new URLSearchParams()
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
-    if (filters.value.search) params.append('search', filters.value.search)
+    if (filters.search) params.append('search', filters.search)
 
     const url = `${API_BASE_URL}/legislativos/proyecto-ley-revision-diputados?${params.toString()}`
     const response = await fetch(url)
