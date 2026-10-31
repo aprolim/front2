@@ -33,6 +33,7 @@
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> declaración{{ total !== 1 ? 'es' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
       <div v-if="loading" class="bg-white rounded-lg shadow-sm py-16 text-center">
@@ -56,8 +57,19 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- Nueva Columna Nº -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Nº</th>
+                <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
+                <th
+                  @click="toggleOrden"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
+                  title="Click para invertir el orden"
+                >
+                  <span class="inline-flex items-center gap-1">
+                    Nº
+                    <span class="text-[10px] opacity-80 group-hover:opacity-100">
+                      {{ ordenDescendente ? '▼' : '▲' }}
+                    </span>
+                  </span>
+                </th>
                 <!-- Columna Código (antes Nº) -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <!-- 🔥 CAMBIO: "Fecha de Petición" a "Fecha" -->
@@ -69,10 +81,10 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- Nº: Numeración global (Total al 1) -->
+                <!-- Nº secuencial GLOBAL -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
-                    {{ total - ((page - 1) * itemsPorPagina) - index }}
+                    {{ numeroSecuencial(index) }}
                   </span>
                 </td>
                 <!-- Código (antes Nº) -->
@@ -137,6 +149,8 @@ const itemsPorPagina = 10
 const filters = ref({ search: '' })
 let searchTimeout = null
 
+const ordenDescendente = ref(true)
+
 const paginasVisibles = computed(() => {
   const paginas = []
   const rango = 2
@@ -161,6 +175,14 @@ const formatearFecha = (fecha) => {
   } catch { return '—' }
 }
 
+// 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
+const numeroSecuencial = (index) => {
+  if (ordenDescendente.value) {
+    return total.value - ((page.value - 1) * itemsPorPagina) - index
+  }
+  return (page.value - 1) * itemsPorPagina + index + 1
+}
+
 const cargarDocumentos = async () => {
   loading.value = true
   error.value = null
@@ -169,6 +191,7 @@ const cargarDocumentos = async () => {
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
+    params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
     const url = `${API_BASE_URL}/legislativos/declaracion-camaral?${params.toString()}`
     const response = await fetch(url)
@@ -188,6 +211,15 @@ const cargarDocumentos = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// 🔥 Botón Nº
+const toggleOrden = () => {
+  if (loading.value) return
+  ordenDescendente.value = !ordenDescendente.value
+  page.value = 1
+  cargarDocumentos()
+  if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const onSearchInput = () => {

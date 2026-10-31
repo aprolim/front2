@@ -10,15 +10,7 @@
     >
       <div class="container mx-auto px-4 py-8 md:py-16 lg:py-20">
         <div class="flex flex-col items-center text-center">
-          <!-- Badge -->
-          <div 
-            class="inline-flex items-center bg-white/10 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-2 md:mb-3"
-            aria-hidden="true"
-          >
-            <Icon name="mdi:email" class="text-senado-gold text-lg md:text-xl lg:text-2xl" />
-            <span class="text-white/80 tracking-wider font-medium text-xs md:text-sm ml-2">CONTACTO Y VISITAS</span>
-          </div>
-          
+               
           <h1 
             id="contacto-titulo"
             class="font-bold leading-tight text-3xl md:text-5xl lg:text-6xl"
@@ -26,9 +18,7 @@
             ¿Cómo podemos <span class="text-senado-gold">ayudarte</span>?
           </h1>
           
-          <p class="text-white/70 max-w-2xl text-sm md:text-base lg:text-lg mt-2 md:mt-3">
-            Estamos aquí para escucharte, brindarte información y recibir tu visita en el Palacio Legislativo.
-          </p>
+     
         </div>
       </div>
       
@@ -96,7 +86,7 @@
       <!-- ENCARGADOS DE RECIBIR MENSAJES (16.1)        -->
       <!-- ============================================ -->
       <section class="mt-8 md:mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-[#1a3a6c] to-[#0f2347] text-white px-4 py-3 md:px-6 md:py-4">
+        <div class="bg-gradient-to-r from-[#611717] to-[#8f1522] text-white px-4 py-3 md:px-6 md:py-4">
           <h2 class="font-bold text-lg md:text-xl flex items-center gap-2">
             <Icon name="mdi:account-tie" />
             Encargados de recibir y contestar mensajes y llamadas
@@ -151,7 +141,7 @@
             Visitas Guiadas al Palacio Legislativo
           </h2>
           <span class="text-xs md:text-sm bg-white/20 px-3 py-1 rounded-full">
-            Acceso Gratuito
+            Ingreso Gratuito
           </span>
         </div>
         
@@ -238,14 +228,14 @@
           <div class="h-64 md:h-80 lg:h-96 w-full">
             <iframe
               title="Mapa de ubicación del Senado - Casa Grande del Pueblo"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.123456789!2d-68.13359296560174!3d-16.496656424958083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f21d1a1f1f1f1%3A0x0!2zMTbCsDI5JzQ4LjAiUyA2OMCsMDgnMDAuMCJX!5e0!3m2!1ses!2sbo!4v1234567890&markers=color:red%7C-16.496656424958083,-68.13359296560174"
+              src="https://www.google.com/maps?q=-16.49655360837244,-68.13266436005826&hl=es&z=17&output=embed"
               width="100%"
               height="100%"
-              style="border:0"
-              allowfullscreen
+              style="border:0;"
+              allowfullscreen=""
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
           </div>
         </section>
 
@@ -280,7 +270,7 @@
               </p>
               <div class="mt-3">
                 <a 
-                  href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+                  href="https://maps.app.goo.gl/owuEBuvT5dzbKvee9" 
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded text-sm"
@@ -294,7 +284,7 @@
           
           <div class="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-gray-200">
             <a 
-              href="https://maps.app.goo.gl/4gpVed8ix3dF2mdV6" 
+              href="https://maps.app.goo.gl/owuEBuvT5dzbKvee9" 
               target="_blank"
               rel="noopener noreferrer"
               class="flex-1 bg-senado-primary text-white text-center rounded-lg hover:bg-senado-primary-dark transition font-medium flex items-center justify-center gap-2 px-4 py-2 text-sm"
@@ -345,10 +335,10 @@
       <!-- ============================================ -->
       <section class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12" aria-labelledby="faq-titulo">
         <h3 id="faq-titulo" class="text-center font-bold text-gray-800 text-xl md:text-2xl mb-4">
-          ❓ Preguntas Frecuentes
+          Preguntas Frecuentes
         </h3>
-        <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="text-center">
             <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo agendo una visita guiada?</dt>
             <dd class="text-gray-600 text-sm">
               <a href="https://systemdemo.es/auth/login-external" target="_blank" class="text-senado-primary hover:underline">
@@ -356,15 +346,7 @@
               </a> y completa tu solicitud con 15 días de anticipación.
             </dd>
           </div>
-          <div>
-            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo solicito información pública?</dt>
-            <dd class="text-gray-600 text-sm">
-              <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline">
-                Solicita información aquí
-              </NuxtLink>
-            </dd>
-          </div>
-          <div>
+          <div class="text-center">
             <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Horario de atención?</dt>
             <dd class="text-gray-600 text-sm">Lunes a Viernes 08:30 - 16:30 hrs</dd>
           </div>

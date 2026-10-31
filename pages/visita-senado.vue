@@ -22,7 +22,7 @@
       <div class="bg-[#f8f6f0] rounded-[3vw] sm:rounded-[1vw] p-[5vw] sm:p-[1.8vw] mb-[6vw] sm:mb-8 max-w-[90vw] sm:max-w-[80vw] mx-auto">
         <p class="text-[3.6vw] sm:text-[1vw] text-gray-700 leading-relaxed text-center">
           Las visitas guiadas al edificio legislativo tienen por objetivo generar un espacio de acercamiento al 
-          <strong>Poder Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
+          <strong>Órgano Legislativo</strong>, para que los visitantes conozcan dónde y cómo trabajan los 
           representantes del pueblo en la confección de las leyes que nos permiten ampliar nuestros derechos 
           y fortalecer la democracia.
         </p>
