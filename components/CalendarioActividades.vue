@@ -3,31 +3,23 @@
   <div class="calendario-moderno">
     <div class="calendario-grid">
       <!-- ========================================== -->
-      <!-- IZQUIERDA: CALENDARIO MEJORADO            -->
+      <!-- IZQUIERDA: CALENDARIO                      -->
       <!-- ========================================== -->
       <div class="calendario-panel">
         <!-- Header del calendario -->
         <div class="calendario-header">
-          <button 
-            @click="cambiarMes(-1)" 
-            class="btn-nav"
-            aria-label="Mes anterior"
-          >
+          <button @click="cambiarMes(-1)" class="btn-nav" aria-label="Mes anterior">
             <svg class="icon-nav" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          
+
           <div class="mes-titulo">
             <span class="mes-nombre">{{ nombreMes }}</span>
             <span class="mes-año">{{ añoActual }}</span>
           </div>
-          
-          <button 
-            @click="cambiarMes(1)" 
-            class="btn-nav"
-            aria-label="Mes siguiente"
-          >
+
+          <button @click="cambiarMes(1)" class="btn-nav" aria-label="Mes siguiente">
             <svg class="icon-nav" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
             </svg>
@@ -36,11 +28,7 @@
 
         <!-- Días de la semana -->
         <div class="dias-semana">
-          <div 
-            v-for="dia in diasSemana" 
-            :key="dia"
-            class="dia-semana"
-          >
+          <div v-for="dia in diasSemana" :key="dia" class="dia-semana">
             {{ dia }}
           </div>
         </div>
@@ -61,28 +49,14 @@
             }"
           >
             <span class="dia-numero">{{ dia.dia }}</span>
-            
-            <!-- Indicador de evento -->
-            <span 
-              v-if="dia.tieneEvento && !dia.esSeleccionado"
-              class="evento-indicador"
-            ></span>
-            
-            <!-- Indicador de evento seleccionado -->
-            <span 
-              v-if="dia.tieneEvento && dia.esSeleccionado"
-              class="evento-indicador-seleccionado"
-            ></span>
 
-            <!-- Círculo de hoy -->
-            <span 
-              v-if="dia.esHoy && dia.esMesActual"
-              class="hoy-indicador"
-            ></span>
+            <span v-if="dia.tieneEvento && !dia.esSeleccionado" class="evento-indicador"></span>
+            <span v-if="dia.tieneEvento && dia.esSeleccionado" class="evento-indicador-seleccionado"></span>
+            <span v-if="dia.esHoy && dia.esMesActual" class="hoy-indicador"></span>
           </div>
         </div>
 
-        <!-- Leyenda mejorada -->
+        <!-- Leyenda -->
         <div class="leyenda">
           <div class="leyenda-item">
             <span class="leyenda-dot dot-evento"></span>
@@ -106,7 +80,7 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- DERECHA: LÍNEA DE TIEMPO MEJORADA        -->
+      <!-- DERECHA: PDF SIMPLE + VIDEO YOUTUBE        -->
       <!-- ========================================== -->
       <div class="timeline-panel">
         <!-- Encabezado del día -->
@@ -116,99 +90,64 @@
             <span class="timeline-dia-numero">{{ diaSeleccionado?.dia || '' }}</span>
             <span class="timeline-mes">{{ diaSeleccionado?.mesNombre || '' }}</span>
           </div>
-          <div class="timeline-badge" v-if="actividadesDelDia.length > 0">
-            {{ actividadesDelDia.length }} actividad{{ actividadesDelDia.length > 1 ? 'es' : '' }}
+          <div class="timeline-badge" v-if="sesionSeleccionada">
+            {{ sesionSeleccionada.titulo }}
           </div>
         </div>
 
-        <!-- Contenido de la línea de tiempo -->
+        <!-- Contenido -->
         <div class="timeline-contenido">
           <!-- Estado vacío -->
-          <div v-if="actividadesDelDia.length === 0" class="timeline-vacio">
-            <p class="vacio-titulo">No hay actividades</p>
+          <div v-if="!sesionSeleccionada" class="timeline-vacio">
+            <p class="vacio-titulo">No hay sesión en esta fecha</p>
             <p class="vacio-subtitulo">Selecciona un día con sesión en el calendario</p>
           </div>
 
-          <!-- Línea de tiempo con actividades -->
-          <div v-else class="timeline-lista">
-            <!-- Línea vertical -->
-            <div class="timeline-linea"></div>
-
-            <!-- Actividades -->
-            <div
-              v-for="(actividad, index) in actividadesDelDia"
-              :key="index"
-              class="timeline-item"
-              :class="{ 'item-actual': actividad.esSesionActual }"
+          <!-- Contenido de la sesión -->
+          <div v-else class="sesion-contenido">
+            <!-- ========================================== -->
+            <!-- PDF SIMPLE (sin visor, solo card + enlace) -->
+            <!-- ========================================== -->
+            <a
+              :href="sesionSeleccionada.pdfUrl"
+              target="_blank"
+              rel="noopener"
+              class="pdf-card"
             >
-              <!-- Punto en la línea -->
-              <div class="timeline-punto" :class="{ 'punto-actual': actividad.esSesionActual }">
-                <div class="punto-interior" :class="{ 'punto-interior-actual': actividad.esSesionActual }"></div>
+              <div class="pdf-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
               </div>
+              <div class="pdf-card-info">
+                <span class="pdf-card-nombre">{{ nombreArchivoPdf(sesionSeleccionada.pdfUrl) }}</span>
+                <span class="pdf-card-tipo">PDF · Clic para abrir</span>
+              </div>
+              <div class="pdf-card-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-10 10M17 17V7H7" />
+                </svg>
+              </div>
+            </a>
 
-              <!-- Card de actividad -->
-              <div class="timeline-card" :class="{ 'card-actual': actividad.esSesionActual }">
-                <div class="card-header">
-                  <div class="card-tiempo">
-                    <svg class="card-icon-tiempo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{{ actividad.hora || '--:--' }}</span>
-                  </div>
-                  <div class="card-tags">
-                    <span 
-                      class="card-tag"
-                      :style="{
-                        backgroundColor: getTipoColor(actividad.tipo).bg,
-                        color: getTipoColor(actividad.tipo).text
-                      }"
-                    >
-                      {{ actividad.tipoLabel || 'Actividad' }}
-                    </span>
-                    <span 
-                      v-if="actividad.esSesionActual"
-                      class="card-tag-actual"
-                    >
-                      ● ACTUAL
-                    </span>
-                  </div>
-                </div>
-                
-                <h5 class="card-titulo">
-                  {{ actividad.titulo }}
-                </h5>
-                
-                <!-- <p v-if="actividad.descripcion" class="card-descripcion">
-                  {{ actividad.descripcion }}
-                </p> -->
-                
-                <div v-if="actividad.detalles && actividad.detalles.length > 0" class="card-detalles">
-                  <div 
-                    v-for="(detalle, idx) in actividad.detalles" 
-                    :key="idx" 
-                    class="card-detalle"
-                  >
-                    <span class="detalle-bullet">•</span>
-                    <span>{{ detalle }}</span>
-                  </div>
-                </div>
-
-                <!-- Estado -->
-                <div class="card-footer">
-                  <span 
-                    class="card-estado"
-                    :class="{
-                      'estado-completado': actividad.estado === 'completado',
-                      'estado-en-curso': actividad.estado === 'en_curso',
-                      'estado-pendiente': actividad.estado === 'pendiente'
-                    }"
-                  >
-                    <span class="estado-dot"></span>
-                    {{ actividad.estadoLabel || actividad.estado || 'Pendiente' }}
-                  </span>
-                  
-
-                </div>
+            <!-- ========================================== -->
+            <!-- YOUTUBE (debajo del PDF)                    -->
+            <!-- ========================================== -->
+            <div class="youtube-section">
+              <div class="section-titulo">
+                <span>Video de la sesión</span>
+              </div>
+              <div class="youtube-container">
+                <iframe
+                  :src="sesionSeleccionada.youtubeUrl"
+                  class="youtube-iframe"
+                  title="Video de la sesión"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
               </div>
             </div>
           </div>
@@ -228,17 +167,64 @@ const props = defineProps({
   fechasSesiones: {
     type: Array,
     default: () => []
-  },
-  actividades: {
-    type: Array,
-    default: () => []
   }
 })
 
 // ========================================== //
-// EMITS
+// DATA MOCK: 5 SESIONES CON PDF + YOUTUBE
 // ========================================== //
-const emit = defineEmits(['verDetalleSesion'])
+const sesionesMock = ref([
+  {
+    fecha: '2026-10-14',
+    titulo: 'Sesión Camaral 195ª',
+    hora: '16:00',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/Sesión Camaral 195ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/rmUZwEqxci4'
+  },
+  {
+    fecha: '2026-10-15',
+    titulo: 'Sesión Camaral 196ª',
+    hora: '10:30',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/Sesión Camaral 196ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/ReWQpaerzBM'
+  },
+  {
+    fecha: '2026-10-21',
+    titulo: 'Sesión Camaral 200ª',
+    hora: '10:00',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/Sesión Camaral 200ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/uphj06Fc97U'
+  },
+  {
+    fecha: '2026-10-22',
+    titulo: 'Sesión Camaral 201ª',
+    hora: '09:30',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/Sesión Camaral 201ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/3X5obP1_Lr8'
+  },
+  {
+    fecha: '2026-10-29',
+    titulo: 'Sesión Camaral 203ª',
+    hora: '10:30',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/Sesión Camaral 203ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/O-4ePZSd6Mk'
+  }
+])
 
 // ========================================== //
 // ESTADO
@@ -270,17 +256,23 @@ const totalEventosMes = computed(() => {
   return diasDelMes.value.filter(d => d.tieneEvento && d.esMesActual).length
 })
 
+// Sesión seleccionada = la que coincide con la fecha del día seleccionado
+const sesionSeleccionada = computed(() => {
+  if (!diaSeleccionado.value) return null
+  return sesionesMock.value.find(s => s.fecha === diaSeleccionado.value.fechaStr) || null
+})
+
 const diasDelMes = computed(() => {
   const año = añoActual.value
   const mes = mesActual.value
-  
+
   const primerDia = new Date(año, mes, 1).getDay()
   const diasEnMes = new Date(año, mes + 1, 0).getDate()
   const diasEnMesAnterior = new Date(año, mes, 0).getDate()
   const diasAnteriores = primerDia === 0 ? 6 : primerDia - 1
-  
+
   const resultado = []
-  
+
   // Días del mes anterior
   for (let i = diasAnteriores - 1; i >= 0; i--) {
     const diaNum = diasEnMesAnterior - i
@@ -288,102 +280,53 @@ const diasDelMes = computed(() => {
     resultado.push({
       dia: diaNum,
       esMesActual: false,
-      fecha: fecha,
+      fecha,
       fechaStr: fecha.toISOString().split('T')[0],
       tieneEvento: false,
       esSeleccionado: false,
       esHoy: false
     })
   }
-  
+
   // Días del mes actual
   for (let i = 1; i <= diasEnMes; i++) {
     const fecha = new Date(año, mes, i)
     const fechaStr = fecha.toISOString().split('T')[0]
-    const tieneEvento = props.fechasSesiones.some(f => f.fecha === fechaStr)
+    const tieneEvento = sesionesMock.value.some(s => s.fecha === fechaStr)
     const esHoy = fechaStr === hoy.value.fechaStr
-    
+
     resultado.push({
       dia: i,
       esMesActual: true,
-      fecha: fecha,
-      fechaStr: fechaStr,
-      tieneEvento: tieneEvento,
-      esSeleccionado: diaSeleccionado.value && 
-                      diaSeleccionado.value.dia === i && 
-                      diaSeleccionado.value.mes === mes && 
-                      diaSeleccionado.value.año === año,
-      esHoy: esHoy
+      fecha,
+      fechaStr,
+      tieneEvento,
+      esSeleccionado: diaSeleccionado.value &&
+        diaSeleccionado.value.dia === i &&
+        diaSeleccionado.value.mes === mes &&
+        diaSeleccionado.value.año === año,
+      esHoy
     })
   }
-  
+
   // Días del mes siguiente
   const totalActual = resultado.length
   const diasFaltantes = 42 - totalActual
-  
+
   for (let i = 1; i <= diasFaltantes; i++) {
     const fecha = new Date(año, mes + 1, i)
     resultado.push({
       dia: i,
       esMesActual: false,
-      fecha: fecha,
+      fecha,
       fechaStr: fecha.toISOString().split('T')[0],
       tieneEvento: false,
       esSeleccionado: false,
       esHoy: false
     })
   }
-  
-  return resultado
-})
 
-const actividadesDelDia = computed(() => {
-  if (!diaSeleccionado.value) return []
-  
-  const fechaSeleccionada = new Date(
-    diaSeleccionado.value.año,
-    diaSeleccionado.value.mes,
-    diaSeleccionado.value.dia
-  )
-  const fechaStr = fechaSeleccionada.toISOString().split('T')[0]
-  
-  const sesiones = props.fechasSesiones
-    .filter(f => f.fecha === fechaStr)
-    .map(f => ({
-      titulo: f.titulo || 'Sesión del Senado',
-      descripcion: f.descripcion || '',
-      hora: f.hora || '09:00',
-      tipo: 'sesion',
-      tipoLabel: 'Sesión',
-      estado: f.estado || 'pendiente',
-      estadoLabel: f.estadoLabel || 'Pendiente',
-      detalles: f.detalles || [],
-      esSesionActual: f.esSesionActual || false,
-      location: f.location || '',
-      modality: f.modality || ''
-    }))
-  
-  const otrasActividades = props.actividades
-    .filter(a => a.fecha === fechaStr)
-    .map(a => ({
-      titulo: a.titulo,
-      descripcion: a.descripcion || '',
-      hora: a.hora || '10:00',
-      tipo: a.tipo || 'evento',
-      tipoLabel: a.tipoLabel || 'Evento',
-      estado: a.estado || 'pendiente',
-      estadoLabel: a.estadoLabel || 'Pendiente',
-      detalles: a.detalles || [],
-      esSesionActual: false,
-      location: a.location || '',
-      modality: a.modality || ''
-    }))
-  
-  return [...sesiones, ...otrasActividades].sort((a, b) => {
-    if (a.hora < b.hora) return -1
-    if (a.hora > b.hora) return 1
-    return 0
-  })
+  return resultado
 })
 
 // ========================================== //
@@ -393,105 +336,73 @@ const cambiarMes = (delta) => {
   const nuevaFecha = new Date(añoActual.value, mesActual.value + delta, 1)
   mesActual.value = nuevaFecha.getMonth()
   añoActual.value = nuevaFecha.getFullYear()
-  // 🔥 Después de cambiar de mes, seleccionar el día con evento
   seleccionarDiaConEvento()
 }
 
 const seleccionarDia = (dia) => {
   if (!dia.esMesActual) return
-  
+
   const fecha = dia.fecha
   const diaSemana = diasSemanaCompleto[fecha.getDay()]
   const mesNombre = meses[fecha.getMonth()]
-  
+
   diaSeleccionado.value = {
     dia: dia.dia,
     mes: mesActual.value,
     año: añoActual.value,
     fecha: dia.fecha,
     fechaStr: dia.fechaStr,
-    diaSemana: diaSemana,
-    mesNombre: mesNombre,
-    fechaFormateada: dia.fecha.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    })
+    diaSemana,
+    mesNombre
   }
 }
 
-// 🔥 CORREGIDO: Seleccionar el día exacto de la sesión
+// Devuelve solo el nombre del archivo desde la ruta
+const nombreArchivoPdf = (url) => {
+  if (!url) return 'Documento.pdf'
+  const partes = url.split('/')
+  return decodeURIComponent(partes[partes.length - 1] || 'Documento.pdf')
+}
+
+// Selecciona la sesión más reciente disponible
 const seleccionarDiaConEvento = () => {
-  // 🔥 1. Si hay sesiones, usar la fecha de la sesión más reciente
-  if (props.fechasSesiones && props.fechasSesiones.length > 0) {
-    // Obtener la sesión más reciente
-    const sesionesOrdenadas = [...props.fechasSesiones].sort((a, b) => {
-      return new Date(b.fecha) - new Date(a.fecha)
-    })
-    
+  if (sesionesMock.value.length > 0) {
+    const sesionesOrdenadas = [...sesionesMock.value].sort(
+      (a, b) => new Date(b.fecha) - new Date(a.fecha)
+    )
     const sesionMasReciente = sesionesOrdenadas[0]
     if (sesionMasReciente) {
       const fechaSesion = new Date(sesionMasReciente.fecha)
       const dia = fechaSesion.getDate()
       const mes = fechaSesion.getMonth()
       const año = fechaSesion.getFullYear()
-      
-      // Cambiar al mes de la sesión
+
       mesActual.value = mes
       añoActual.value = año
-      
-      // 🔥 Esperar a que se actualice el DOM para tener los días del mes
+
       nextTick(() => {
         const dias = diasDelMes.value
-        const diaEncontrado = dias.find(d => 
-          d.dia === dia && 
-          d.esMesActual && 
-          d.fechaStr === sesionMasReciente.fecha
+        const diaEncontrado = dias.find(
+          d => d.dia === dia && d.esMesActual && d.fechaStr === sesionMasReciente.fecha
         )
         if (diaEncontrado) {
           seleccionarDia(diaEncontrado)
         } else {
-          // Si no se encuentra el día exacto, buscar cualquier día con evento
           const diaConEvento = dias.find(d => d.tieneEvento && d.esMesActual)
-          if (diaConEvento) {
-            seleccionarDia(diaConEvento)
-          }
+          if (diaConEvento) seleccionarDia(diaConEvento)
         }
       })
       return
     }
   }
-  
-  // 🔥 2. Fallback: si no hay sesiones, seleccionar el primer día con evento
-  const diasConEvento = diasDelMes.value.filter(d => d.tieneEvento && d.esMesActual)
-  if (diasConEvento.length > 0) {
-    seleccionarDia(diasConEvento[0])
-  }
-}
-
-// Mantener función para compatibilidad con el watcher
-const seleccionarDiaMasCercanoConEvento = seleccionarDiaConEvento
-
-const getTipoColor = (tipo) => {
-  const colores = {
-    sesion: { bg: '#dcfce7', text: '#166534' },
-    comision: { bg: '#dbeafe', text: '#1e40af' },
-    evento: { bg: '#fef3c7', text: '#92400e' },
-    default: { bg: '#f3f4f6', text: '#374151' }
-  }
-  return colores[tipo] || colores.default
-}
-
-const verDetalleSesion = (actividad) => {
-  emit('verDetalleSesion', actividad)
 }
 
 // ========================================== //
 // WATCHERS
 // ========================================== //
-watch(() => props.fechasSesiones, () => {
+watch(() => sesionesMock.value, () => {
   seleccionarDiaConEvento()
-}, { deep: true, immediate: true })
+}, { deep: true })
 
 // ========================================== //
 // LIFECYCLE
@@ -515,23 +426,26 @@ onMounted(() => {
   border: 1px solid rgba(97, 23, 23, 0.08);
 }
 
+/* Mismo alto para ambos paneles */
 .calendario-grid {
   display: grid;
   grid-template-columns: 42% 58%;
   gap: 0;
-  min-height: 600px;
+  align-items: stretch;
 }
 
 /* ========================================== */
-/* PANEL IZQUIERDO - CALENDARIO              */
+/* PANEL IZQUIERDO - CALENDARIO               */
 /* ========================================== */
 .calendario-panel {
   padding: 2rem 2rem 1.8rem;
   background: linear-gradient(180deg, #fdfcf9 0%, #f9f7ee 100%);
   border-right: 1px solid rgba(97, 23, 23, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-/* Header */
 .calendario-header {
   display: flex;
   align-items: center;
@@ -590,7 +504,6 @@ onMounted(() => {
   color: #8f8f8f;
 }
 
-/* Días de la semana */
 .dias-semana {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -608,7 +521,6 @@ onMounted(() => {
   padding: 0.5rem 0;
 }
 
-/* Grid de días */
 .grid-dias {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -682,7 +594,6 @@ onMounted(() => {
   z-index: 2;
 }
 
-/* Indicadores */
 .evento-indicador {
   position: absolute;
   bottom: 0.25rem;
@@ -718,7 +629,6 @@ onMounted(() => {
   background: white;
 }
 
-/* Leyenda */
 .leyenda {
   display: flex;
   align-items: center;
@@ -765,7 +675,6 @@ onMounted(() => {
   font-weight: 500;
 }
 
-/* Resumen del mes */
 .resumen-mes {
   display: flex;
   align-items: center;
@@ -787,16 +696,16 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* PANEL DERECHO - LÍNEA DE TIEMPO           */
+/* PANEL DERECHO - PDF SIMPLE + YOUTUBE       */
 /* ========================================== */
 .timeline-panel {
   padding: 2rem 2rem 1.8rem;
   background: white;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
-/* Encabezado del timeline */
 .timeline-header {
   display: flex;
   align-items: center;
@@ -804,6 +713,9 @@ onMounted(() => {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid rgba(97, 23, 23, 0.06);
+  flex-shrink: 0;
+  gap: 0.8rem;
+  flex-wrap: wrap;
 }
 
 .timeline-fecha {
@@ -836,48 +748,28 @@ onMounted(() => {
 .timeline-badge {
   background: #611717;
   color: white;
-  padding: 0.2rem 0.8rem;
+  padding: 0.25rem 0.9rem;
   border-radius: 2rem;
   font-size: 0.7rem;
   font-weight: 600;
 }
 
-/* Contenido del timeline */
+/* Sin scroll: se adapta al alto del calendario */
 .timeline-contenido {
   flex: 1;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-  max-height: 450px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.timeline-contenido::-webkit-scrollbar {
-  width: 4px;
-}
-
-.timeline-contenido::-webkit-scrollbar-track {
-  background: #f3f4f6;
-  border-radius: 10px;
-}
-
-.timeline-contenido::-webkit-scrollbar-thumb {
-  background: #611717;
-  border-radius: 10px;
-}
-
-/* Estado vacío */
 .timeline-vacio {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  flex: 1;
   min-height: 300px;
   color: #9ca3af;
-}
-
-.vacio-icono {
-  font-size: 3.5rem;
-  margin-bottom: 0.8rem;
 }
 
 .vacio-titulo {
@@ -892,273 +784,147 @@ onMounted(() => {
   margin-top: 0.3rem;
 }
 
-/* Línea de tiempo */
-.timeline-lista {
-  position: relative;
-  padding-left: 2.5rem;
+/* ========================================== */
+/* CONTENIDO DE LA SESIÓN                     */
+/* ========================================== */
+.sesion-contenido {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
+  flex: 1;
+  min-height: 0;
 }
 
-.timeline-linea {
-  position: absolute;
-  left: 0.6rem;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 2px;
-  background: linear-gradient(180deg, #611717 0%, rgba(97, 23, 23, 0.2) 100%);
-  border-radius: 2px;
+/* ========================================== */
+/* PDF SIMPLE (card, sin visor)               */
+/* ========================================== */
+.pdf-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: #f9fafb;
+  border: 1.5px solid rgba(97, 23, 23, 0.12);
+  border-radius: 0.8rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-/* Item del timeline */
-.timeline-item {
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.timeline-punto {
-  position: absolute;
-  left: -2.5rem;
-  top: 0.25rem;
-  width: 1.2rem;
-  height: 1.2rem;
+.pdf-card:hover {
   background: white;
-  border: 2px solid #611717;
-  border-radius: 50%;
+  border-color: #E03636;
+  box-shadow: 0 6px 20px rgba(224, 54, 54, 0.12);
+  transform: translateY(-2px);
+}
+
+.pdf-card-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.6rem;
+  background: #fee2e2;
+  color: #b91c1c;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 2;
+  flex-shrink: 0;
 }
 
-.punto-interior {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: #611717;
-  border-radius: 50%;
-  transition: all 0.3s ease;
+.pdf-card-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-.punto-actual {
-  border-color: #E03636;
-  box-shadow: 0 0 0 4px rgba(224, 54, 54, 0.15);
-  animation: pulse-punto 2s ease-in-out infinite;
-}
-
-.punto-interior-actual {
-  background: #E03636;
-}
-
-@keyframes pulse-punto {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(224, 54, 54, 0.15); }
-  50% { box-shadow: 0 0 0 8px rgba(224, 54, 54, 0.05); }
-}
-
-/* Card de actividad */
-.timeline-card {
-  background: #f9fafb;
-  border-radius: 0.8rem;
-  padding: 1.2rem 1.2rem 1rem;
-  border: 1px solid rgba(97, 23, 23, 0.06);
-  transition: all 0.3s ease;
-}
-
-.timeline-card:hover {
-  background: white;
-  border-color: rgba(97, 23, 23, 0.15);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  transform: translateX(4px);
-}
-
-.card-actual {
-  background: linear-gradient(135deg, #fdf2f2 0%, #fef9f9 100%);
-  border-color: #E03636;
-  border-left: 3px solid #E03636;
-}
-
-.card-actual:hover {
-  border-color: #E03636;
-  box-shadow: 0 4px 20px rgba(224, 54, 54, 0.1);
-}
-
-/* Card header */
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.card-tiempo {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #611717;
-}
-
-.card-icon-tiempo {
-  width: 0.9rem;
-  height: 0.9rem;
-  stroke: #611717;
-}
-
-.card-tags {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.card-tag {
-  font-size: 0.6rem;
-  font-weight: 600;
-  padding: 0.15rem 0.6rem;
-  border-radius: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.card-tag-actual {
-  font-size: 0.55rem;
-  font-weight: 700;
-  color: #E03636;
-  background: rgba(224, 54, 54, 0.1);
-  padding: 0.1rem 0.5rem;
-  border-radius: 2rem;
-  animation: pulse-text 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse-text {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Card título */
-.card-titulo {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 0.3rem 0;
-  line-height: 1.3;
-}
-
-.card-descripcion {
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin: 0.2rem 0 0.4rem 0;
-  line-height: 1.5;
-}
-
-/* Card detalles */
-.card-detalles {
+.pdf-card-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  margin: 0.4rem 0 0.5rem 0;
-  padding: 0.5rem 0.8rem;
-  background: rgba(97, 23, 23, 0.04);
-  border-radius: 0.4rem;
+  min-width: 0;
 }
 
-.card-detalle {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  font-size: 0.75rem;
-  color: #4b5563;
-}
-
-.detalle-bullet {
-  color: #611717;
+.pdf-card-nombre {
+  font-size: 0.85rem;
   font-weight: 700;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Card footer */
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid rgba(97, 23, 23, 0.06);
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.card-estado {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem 0.2rem 0.4rem;
-  border-radius: 2rem;
-}
-
-.estado-dot {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-}
-
-.estado-completado {
-  color: #16a34a;
-  background: #dcfce7;
-}
-.estado-completado .estado-dot {
-  background: #16a34a;
-}
-
-.estado-en-curso {
-  color: #ca8a04;
-  background: #fef3c7;
-}
-.estado-en-curso .estado-dot {
-  background: #ca8a04;
-}
-
-.estado-pendiente {
+.pdf-card-tipo {
+  font-size: 0.7rem;
   color: #6b7280;
-  background: #f3f4f6;
-}
-.estado-pendiente .estado-dot {
-  background: #6b7280;
+  font-weight: 500;
 }
 
-.btn-ver-detalle {
+.pdf-card-arrow {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(97, 23, 23, 0.06);
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: #611717;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.3rem;
+  justify-content: center;
+  flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
-.btn-ver-detalle:hover {
-  background: rgba(97, 23, 23, 0.08);
-}
-
-.btn-icon-detalle {
-  width: 0.8rem;
-  height: 0.8rem;
+.pdf-card-arrow svg {
+  width: 1rem;
+  height: 1rem;
   stroke: #611717;
-  transition: transform 0.3s ease;
 }
 
-.btn-ver-detalle:hover .btn-icon-detalle {
-  transform: translateX(3px);
+.pdf-card:hover .pdf-card-arrow {
+  background: #611717;
+}
+
+.pdf-card:hover .pdf-card-arrow svg {
+  stroke: white;
+}
+
+/* ========================================== */
+/* YOUTUBE                                    */
+/* ========================================== */
+.youtube-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.section-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #611717;
+  flex-shrink: 0;
+}
+
+.section-icon {
+  font-size: 1rem;
+}
+
+.youtube-container {
+  width: 100%;
+  flex: 1;
+  min-height: 220px;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  border: 1px solid rgba(97, 23, 23, 0.15);
+  background: #000;
+}
+
+.youtube-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
 /* ========================================== */
@@ -1168,14 +934,18 @@ onMounted(() => {
   .calendario-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .calendario-panel {
     border-right: none;
     border-bottom: 1px solid rgba(97, 23, 23, 0.08);
   }
-  
+
   .timeline-panel {
-    min-height: 350px;
+    min-height: 400px;
+  }
+
+  .youtube-container {
+    min-height: 260px;
   }
 }
 
@@ -1184,35 +954,33 @@ onMounted(() => {
   .timeline-panel {
     padding: 1.2rem;
   }
-  
+
   .mes-nombre {
     font-size: 1.1rem;
   }
-  
+
   .dia-item {
     font-size: 0.75rem;
   }
-  
+
   .timeline-dia-numero {
     font-size: 1.5rem;
   }
-  
-  .timeline-item {
-    padding-left: 1rem;
-  }
-  
-  .timeline-lista {
-    padding-left: 2rem;
-  }
-  
-  .card-header {
+
+  .timeline-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.6rem;
   }
-  
-  .card-footer {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .pdf-card {
+    padding: 0.8rem;
+    gap: 0.7rem;
+  }
+
+  .pdf-card-icon {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 }
 </style>

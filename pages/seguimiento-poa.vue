@@ -33,11 +33,17 @@
           v-for="t in trimestres"
           :key="t.key"
           type="button"
-          @click="seleccionarTrimestre(t.key)"
-          class="px-[4vw] sm:px-5 py-[2vw] sm:py-2.5 rounded-lg font-semibold transition-all text-[2.7vw] sm:text-sm flex items-center gap-[1.5vw] sm:gap-2"
-          :class="trimestreActivo === t.key
-            ? 'bg-senado-primary text-white shadow-md'
-            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'"
+          :disabled="!t.disponible"
+          @click="t.disponible && seleccionarTrimestre(t.key)"
+          class="px-[4vw] sm:px-5 py-[2vw] sm:py-2.5 rounded-lg font-semibold transition-all text-[2.7vw] sm:text-sm flex items-center gap-[1.5vw] sm:gap-2 border"
+          :class="[
+            trimestreActivo === t.key
+              ? 'bg-senado-primary text-white border-senado-primary shadow-md'
+              : 'bg-white text-gray-700 border-gray-200',
+            !t.disponible
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-gray-200 hover:text-gray-900'
+          ]"
         >
           <Icon name="mdi:calendar-range" class="text-[3.6vw] sm:text-base" />
           {{ t.nombre }}
@@ -47,23 +53,28 @@
       <!-- Contenido del trimestre activo -->
       <div v-if="trimestreActual" :key="trimestreActual.key">
 
-        <!-- Resumen general -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
-          <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[5.4vw] sm:text-2xl font-bold text-senado-primary">{{ trimestreActual.resumen.avanceFisico }}%</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Física</p>
-          </div>
-          <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[5.4vw] sm:text-2xl font-bold text-green-600">{{ trimestreActual.resumen.avanceFinanciero }}%</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Financiera</p>
-          </div>
-          <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[4.2vw] sm:text-xl font-bold text-gray-700">{{ formatBs(trimestreActual.resumen.presupuesto) }} Bs.</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Presupuesto</p>
-          </div>
-          <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
-            <div class="text-[4.2vw] sm:text-xl font-bold text-blue-600">{{ formatBs(trimestreActual.resumen.ejecutado) }} Bs.</div>
-            <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecutado</p>
+        <!-- Trimestre CON datos -->
+        <div v-if="trimestreActual.disponible">
+          <!-- Resumen general -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-[2.4vw] sm:gap-4 mb-[4.5vw] sm:mb-6">
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
+              <div class="text-[4.2vw] sm:text-xl font-bold text-gray-700">{{ formatBs(trimestreActual.resumen.presupuesto) }} Bs.</div>
+              <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Presupuesto</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
+              <div class="text-[4.2vw] sm:text-xl font-bold text-blue-600">{{ formatBs(trimestreActual.resumen.ejecutado) }} Bs.</div>
+              <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecutado</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
+              <div class="text-[5.4vw] sm:text-2xl font-bold text-green-600">{{ trimestreActual.resumen.avanceFinanciero }}%</div>
+              <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Financiera</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 text-center px-[2.4vw] sm:px-4 py-[3vw] sm:py-4">
+              <div class="text-[5.4vw] sm:text-2xl font-bold text-senado-primary">{{ trimestreActual.resumen.avanceFisico }}%</div>
+              <p class="text-gray-500 text-[2.1vw] sm:text-sm mt-1">Ejecución Física</p>
+            </div>
+
           </div>
         </div>
 
@@ -96,6 +107,7 @@ const trimestres = [
   {
     key: 't1',
     nombre: 'Primer Trimestre 2026',
+    disponible: true,
     resumen: {
       avanceFisico: 17.47,
       avanceFinanciero: 16.91,
@@ -137,6 +149,7 @@ const trimestres = [
   {
     key: 't2',
     nombre: 'Segundo Trimestre 2026',
+    disponible: true,
     resumen: {
       avanceFisico: 39.03,
       avanceFinanciero: 38.87,
@@ -175,9 +188,10 @@ const trimestres = [
       },
     ],
   },
-    {
+  {
     key: 't3',
     nombre: 'Tercer Trimestre 2026',
+    disponible: true,
     resumen: {
       avanceFisico: 57.03,
       avanceFinanciero: 49.80,
@@ -216,10 +230,18 @@ const trimestres = [
       },
     ],
   },
+  // CUARTO TRIMESTRE — DESHABILITADO (sin datos, no clickeable)
+  {
+    key: 't4',
+    nombre: 'Cuarto Trimestre 2026',
+    disponible: false,
+    resumen: null,
+    acciones: [],
+  },
 ]
 
 // ============================================
-// 🔥 FORMATEO DE Bs (sin decimales, con sufijo "Bs")
+// FORMATEO DE Bs (sin decimales, con sufijo "Bs")
 // ============================================
 const formatBs = (n) => {
   if (n === undefined || n === null) return 'Bs 0'
@@ -227,10 +249,6 @@ const formatBs = (n) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(n)
-}
-
-const getBadgeClass = (valor) => {
-  return ''
 }
 
 useHead({

@@ -79,14 +79,7 @@
                     Nombre del archivo
                     <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('nombre') }}</span>
                   </th>
-                  <th @click="ordenarPor('fecha')" class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors whitespace-nowrap">
-                    Fecha de subida
-                    <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('fecha') }}</span>
-                  </th>
-                  <th @click="ordenarPor('tamaño')" class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors whitespace-nowrap">
-                    Tamaño
-                    <span class="ml-1 opacity-60 text-[2.4vw] sm:text-xs">{{ getSortIcon('tamaño') }}</span>
-                  </th>
+
                   <!-- Columna de acciones ajustada -->
                   <th class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[2.4vw] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider text-center w-[120px] whitespace-nowrap">
                     Documento
@@ -96,16 +89,9 @@
               <tbody class="divide-y divide-gray-100">
                 <tr v-for="doc in documentosFiltrados" :key="doc.id" class="hover:bg-gray-50 transition-colors">
                   <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3">
-                    <div class="font-medium text-[3vw] sm:text-sm text-gray-900 mb-0.5">{{ doc.nombre }}</div>
                     <div v-if="doc.descripcion" class="text-[2.4vw] sm:text-xs text-gray-500">{{ doc.descripcion }}</div>
-                    <div v-if="doc.gestion" class="text-[2.4vw] sm:text-xs text-[#E03636] mt-0.5 font-medium">Gestión: {{ doc.gestion }}</div>
                   </td>
-                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[3vw] sm:text-sm text-gray-600 whitespace-nowrap">
-                    {{ formatearFecha(doc.fecha) }}
-                  </td>
-                  <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-[3vw] sm:text-sm text-gray-600 whitespace-nowrap">
-                    {{ formatearTamaño(doc.tamaño) }}
-                  </td>
+
                   <td class="px-[3vw] sm:px-4 py-[2vw] sm:py-3 text-center">
                     <!-- Botón rediseñado -->
                     <button 

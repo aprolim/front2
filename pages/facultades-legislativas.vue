@@ -26,7 +26,7 @@
           </div>
 
           <h1 class="font-bold leading-tight text-3xl sm:text-4xl md:text-5xl">
-            Facultades de la Camara de Senadores
+            Facultades Constitucionales de la Cámara de Senadores
           </h1>
         </div>
 

@@ -18,112 +18,14 @@
     <!-- ============================================ -->
     <!-- BARRA DE SESIÓN - SIEMPRE VISIBLE            -->
     <!-- ============================================ -->
-    <div
-      class="absolute top-0 left-0 right-0 z-20 w-full border-b border-white/20 py-[2.4vw] md:py-[.8vw] px-4 text-[3.6vw] md:text-[1.2vw]"
-      style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"
-    >
-      <div class="flex items-center justify-center gap-[2.4vw] md:gap-[.8vw] flex-wrap">
 
-        <!-- 🔥 CASO 1: Hay sesión aprobada -->
-        <template v-if="hasValidData && sessionData">
-          <span class="text-white/90 font-[700]">
-            {{ formattedDate }} -
-          </span>
-          <span class="text-white/90 font-medium">
-            {{ sessionData?.title || 'Sesión' }}
-          </span>
-
-          <template v-if="liveVideo">
-            <span class="text-senado-gold-dark">|</span>
-            <NuxtLink
-              to="/en-vivo"
-              class="flex items-center gap-2 px-3 py-1 bg-red-600/80 hover:bg-red-700 rounded-full text-white font-bold text-[2.4vw] md:text-[0.8vw] transition-all duration-300 animate-pulse-border"
-            >
-              <span class="inline-block w-2 h-2 bg-white rounded-full animate-pulse-dot"></span>
-              EN DIRECTO
-            </NuxtLink>
-          </template>
-
-          <template v-else>
-            <span class="text-senado-gold-dark">|</span>
-            <NuxtLink
-              to="/en-vivo"
-              class="text-white/90 hover:text-white font-medium flex items-center gap-1 underline transition-colors text-[3.6vw] md:text-[1.2vw]"
-            >
-              Ver sesiones previas
-            </NuxtLink>
-          </template>
-
-          <span class="text-senado-gold-dark">|</span>
-          <button
-            @click="openModal"
-            class="text-white/90 hover:text-white font-thin underline cursor-pointer transition-colors text-[3.6vw] md:text-[1.2vw]"
-          >
-            ORDEN DEL DÍA
-          </button>
-        </template>
-
-        <!-- 🔥 CASO 2: Sin sesión -->
-        <template v-else>
-          <!-- <span class="text-white/90 font-medium">
-            Bienvenido al portal del Senado de Bolivia
-          </span>
-          <span class="text-senado-gold-dark">|</span>
-          <NuxtLink
-            to="/en-vivo"
-            class="text-white/90 hover:text-white font-medium flex items-center gap-1 underline transition-colors text-[3.6vw] md:text-[1.2vw]"
-          >
-            Ver sesiones en vivo
-          </NuxtLink> -->
-        </template>
-
-      </div>
-    </div>
 
     <div class="absolute inset-0"></div>
 
     <!-- ============================================ -->
     <!-- ESTADÍSTICAS                                 -->
     <!-- ============================================ -->
-    <div
-      class="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-2xl shadow-2xl"
-      style="width: 90%; height: 30%;"
-    >
-      <div class="relative w-full h-full bg-black/5 backdrop-blur-md rounded-t-2xl border border-b-0 border-[#e3d194]/30">
-        <svg class="absolute inset-0 w-full h-full pointer-events-none z-20">
-          <defs>
-            <linearGradient id="comet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#e3d194" stop-opacity="1" />
-              <stop offset="20%" stop-color="#e3d194" stop-opacity="0.4" />
-              <stop offset="100%" stop-color="#e3d194" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-          <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-1" />
-          <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16" ry="16" fill="none" stroke="url(#comet-gradient)" stroke-width="3" pathLength="100" stroke-dasharray="18 82" class="comet-animation-2" />
-        </svg>
 
-        <!-- CAMBIO: grid-cols-4 cambiado a grid-cols-3 -->
-        <div class="w-full h-full grid grid-cols-1 sm:grid-cols-3 gap-1 md:gap-2 p-2 md:p-4 relative z-10">
-          
-          <div class="flex flex-col items-center justify-center text-center px-1">
-            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />en Tratamiento</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.enTratamiento }}</div>
-          </div>
-          
-          <div class="flex flex-col items-center justify-center text-center px-1">
-            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Aprobados</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.aprobados }}</div>
-          </div>
-
-          <!-- CAMBIO: Se reemplazó "Sancionadas" por "Rechazados" -->
-          <div class="flex flex-col items-center justify-center text-center px-1">
-            <div class="text-[#e3d194] text-[3.3vw] md:text-[1.1vw] font-[700] tracking-wider leading-tight">Proyectos de Ley<br />Rechazados</div>
-            <div class="text-white text-[9vw] md:text-[3vw] font-bold leading-none mt-1">{{ statsDinamicos.rechazados }}</div>
-          </div>
-
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

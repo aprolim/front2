@@ -3,7 +3,7 @@
     <div class="mx-auto w-[90%] sm:w-[80%]">
       <!-- Título -->
       <h1 class="text-[10vw] sm:text-[4vw] font-bold text-senado-primary text-center mb-[6vw] sm:mb-8 leading-tight">
-        Mandato Constitucional Senado
+        Mandato Constitucional
       </h1>
 
       <!-- Contenido principal -->

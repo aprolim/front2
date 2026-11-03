@@ -68,7 +68,7 @@
                 <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th 
                   @click="toggleOrden"
-                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
@@ -78,32 +78,39 @@
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
-                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-24">Código</th>
+                <!-- 🔥 Se amplió el ancho de la columna Descripción -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[500px]">Descripción</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap min-w-[220px]">Proyectista</th>
+                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-36">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
                 <!-- Nº: Numeración Global Dinámica -->
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
                 <!-- Código -->
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero }}</span>
                 </td>
-                <!-- Descripción (asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
+                <!-- 🔥 Descripción (asunto) - Más ancha y hasta 5 líneas de texto -->
+                <td class="px-4 py-4 text-gray-700 min-w-[500px] align-top">
+                  <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <!-- Proyectista (peticionario) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs uppercase">{{ formatearProyectista(doc.peticionario) }}</td>
+                <!-- 🔥 Proyectista (peticionario) - Separados por saltos de línea -->
+                <td class="px-4 py-4 text-gray-700 min-w-[220px] text-xs uppercase align-top">
+                  <div class="flex flex-col gap-1.5">
+                    <span v-for="(nombre, i) in formatearProyectista(doc.peticionario)" :key="i" class="block">
+                      {{ nombre }}
+                    </span>
+                  </div>
+                </td>
                 <!-- Adjunto (archivo) -->
-                <td class="px-4 py-4 text-center whitespace-nowrap">
+                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     Ver PDF
@@ -169,13 +176,26 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// Función para formatear el campo peticionario (proyectista)
+// 🔥 Función procesadora Avanzada para Nombres
 const formatearProyectista = (peticionario) => {
-  if (!peticionario) return '—'
-  if (Array.isArray(peticionario)) {
-    return peticionario.join(', ')
-  }
-  return peticionario
+  if (!peticionario) return ['—']
+  
+  // 1. Unir si viene como Array
+  let texto = Array.isArray(peticionario) ? peticionario.join(' ') : peticionario
+
+  // 2. Agregar un delimitador (|) justo antes de "Sen.", "Senador", "Ex. Sen.", etc.
+  // Esto separa los nombres aunque vengan pegados y sin comas en el texto.
+  let textoFormateado = texto.replace(/(Ex\.?\s*Sen\.?|Ex\s*Senador|Sen\.?|Senador|Senadora)(?=\s[A-ZÁÉÍÓÚÑ])/gi, '|$1')
+
+  // 3. Separar por el delimitador (|) o por comas
+  return textoFormateado
+    .split(/[|,]/) // Separar por el pipe o por comas
+    .map(nombre => {
+      // 4. Limpiar el nombre quitando los prefijos "Sen.", "Ex. Sen.", etc.
+      let limpio = nombre.replace(/^(Ex\.?\s*Sen\.?|Ex\s*Senador|Sen\.?|Senador|Senadora)\s+/gi, '')
+      return limpio.trim()
+    })
+    .filter(nombre => nombre.length > 0) // Quitar vacíos
 }
 
 // 🔥 Numeración secuencial GLOBAL basada en el orden actual
@@ -195,7 +215,7 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
     
-    // 🔥 Enviamos el orden dinámico al backend (usando el nuevo controlador)
+    // 🔥 Enviamos el orden dinámico al backend
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
     const url = `${API_BASE_URL}/legislativos/proyecto-ley-tratamiento-senado?${params.toString()}`
@@ -246,5 +266,11 @@ onMounted(() => { cargarDocumentos() })
 </script>
 
 <style scoped>
-.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* 🔥 Aumentado a 5 líneas para mostrar más descripción */
+.line-clamp-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>

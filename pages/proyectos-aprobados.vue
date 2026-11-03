@@ -69,7 +69,7 @@
                 <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th
                   @click="toggleOrden"
-                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
@@ -79,10 +79,11 @@
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
-                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-24">Código</th>
+                <!-- 🔥 Se amplió el ancho de la columna Descripción -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[500px]">Descripción</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap min-w-[200px]">Proyectista</th>
+                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-36">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -98,12 +99,18 @@
                     {{ doc.numero ?? '—' }}
                   </span>
                 </td>
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
+                <!-- 🔥 Descripción con más espacio y más líneas visibles -->
+                <td class="px-4 py-4 text-gray-700 min-w-[500px]">
+                  <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs uppercase">
-                  <span v-if="Array.isArray(doc.peticionario)">{{ doc.peticionario.join(', ') }}</span>
-                  <span v-else>{{ doc.peticionario || '—' }}</span>
+                <!-- 🔥 Proyectista formateado (uno debajo de otro y sin "Senador/Sen.") -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top">
+                  <div class="flex flex-col gap-1.5">
+                    <span v-for="(nombre, idx) in formatearPeticionarios(doc.peticionario)" :key="idx" class="block">
+                      {{ nombre }}
+                    </span>
+                    <span v-if="formatearPeticionarios(doc.peticionario).length === 0">—</span>
+                  </div>
                 </td>
                 <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
@@ -179,6 +186,24 @@ const numeroSecuencial = (index) => {
   return (page.value - 1) * itemsPorPagina + index + 1
 }
 
+// 🔥 PROCESADOR DE PROYECTISTAS: Limpia "Senador/Sen." y los separa por coma o saltos de línea
+const formatearPeticionarios = (peticionario) => {
+  if (!peticionario) return []
+  
+  // Si ya viene como Array, lo unimos con comas para procesarlo igual
+  let texto = Array.isArray(peticionario) ? peticionario.join(', ') : peticionario
+
+  return texto
+    .split(',') // Separar por comas
+    .map(nombre => {
+      let nombreLimpio = nombre.trim()
+      // Quitar prefijos como "Senador", "Sen.", "Senadora", "Senadora." al inicio de la cadena
+      nombreLimpio = nombreLimpio.replace(/^(senador|senadora|sen\.?|senadora\.?)\s+/i, '')
+      return nombreLimpio
+    })
+    .filter(nombre => nombre.length > 0) // Eliminar vacíos
+}
+
 const cargarDocumentos = async () => {
   loading.value = true
   error.value = null
@@ -188,7 +213,7 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
     
-    // 🔥 Le enviamos el orden dinámico al backend (según el controlador nuevo)
+    // 🔥 Le enviamos el orden dinámico al backend
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
     const url = `${API_BASE_URL}/legislativos/proyecto-ley-aprobados?${params.toString()}`
@@ -239,5 +264,11 @@ onMounted(() => { cargarDocumentos() })
 </script>
 
 <style scoped>
-.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* 🔥 Cambiado a 5 líneas para que se vea más texto */
+.line-clamp-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>

@@ -56,6 +56,10 @@
 
       <!-- Dinámico: usa store de noticias -->
       <ClientOnly>
+        <h2 class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6 flex items-center gap-3">
+          <!-- <Icon name="mdi:calendar-month" class="text-[7.5vw] md:text-[2.5vw] text-senado-primary" /> -->
+          Noticias
+        </h2>
         <NoticiasDinamicas />
         <template #fallback>
           <!-- 🔥 SKELETON: imita la estructura de noticias -->
@@ -91,7 +95,10 @@
         </div>
         <div class="flex-1 h-px bg-[#000]"></div>
       </div>
-
+      <h2 class="text-[6.6vw] md:text-[2.2vw] font-bold text-senado-primary mb-6 flex items-center gap-3">
+        <!-- <Icon name="mdi:calendar-month" class="text-[7.5vw] md:text-[2.5vw] text-senado-primary" /> -->
+        Composición del Senado
+      </h2>
       <!-- Estático -->
       <DescubraSenado />
 

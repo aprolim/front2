@@ -74,14 +74,6 @@
                   Nombre del archivo
                   <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('nombre') }}</span>
                 </th>
-                <th @click="ordenarPor('fecha')" class="sortable text-[2.4vw] sm:text-[0.8rem]">
-                  Fecha de subida
-                  <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('fecha') }}</span>
-                </th>
-                <th @click="ordenarPor('tamaño')" class="sortable text-[2.4vw] sm:text-[0.8rem]">
-                  Tamaño
-                  <span class="sort-icon text-[2.4vw] sm:text-[0.75rem]">{{ getSortIcon('tamaño') }}</span>
-                </th>
                 <th class="actions-column text-[2.4vw] sm:text-[0.8rem]">Documento</th>
               </tr>
             </thead>
@@ -89,11 +81,7 @@
               <tr v-for="doc in documentosFiltrados" :key="doc.id" class="management-row">
                 <td class="title-cell">
                   <div class="titulo-principal text-[3vw] sm:text-[0.85rem]">{{ doc.nombre }}</div>
-                  <div v-if="doc.descripcion" class="descripcion text-[2.4vw] sm:text-[0.7rem]">{{ doc.descripcion }}</div>
-                  <div v-if="doc.gestion" class="gestion-info text-[2.4vw] sm:text-[0.7rem]">Gestión: {{ doc.gestion }}</div>
                 </td>
-                <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearFecha(doc.fecha) }}</td>
-                <td class="text-[3vw] sm:text-[0.85rem]">{{ formatearTamaño(doc.tamaño) }}</td>
                 <td class="actions-cell">
                   <!-- 🔥 AHORA ABRE EL VISOR MODAL EN LUGAR DE UNA NUEVA PESTAÑA -->
                   <button 
