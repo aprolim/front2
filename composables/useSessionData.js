@@ -13,7 +13,7 @@ export const useSessionData = () => {
   const hasValidData = ref(false)
 
   const API_NORMATIVA = 'https://asistente.senado.gob.bo/ciudadana-api/api/v1'
-  const API_SESSIONS = 'https://systemdemo.es/api/v1/public/sessions'
+  const API_SESSIONS = 'https://systemdemo.es/api/v1/public/sessions?pageNumber=0&pageSize=10'
 
   const estadisticas = reactive({
     enTratamiento: 0,

@@ -197,7 +197,7 @@
 
 
           <!-- Botón de Solicitud -->
-          <div class="text-center">
+          <!-- <div class="text-center">
             <a 
               href="https://systemdemo.es/auth/login-external" 
               target="_blank"
@@ -209,7 +209,7 @@
             <p class="text-xs text-gray-400 mt-3">
               La solicitud debe realizarse con al menos 15 días de anticipación.
             </p>
-          </div>
+          </div> -->
         </div>
       </section>
 
@@ -228,7 +228,7 @@
           <div class="h-64 md:h-80 lg:h-96 w-full">
             <iframe
               title="Mapa de ubicación del Senado - Casa Grande del Pueblo"
-              src="https://www.google.com/maps?q=-16.49655360837244,-68.13266436005826&hl=es&z=17&output=embed"
+              src="https://www.google.com/maps?q=-16.49612465161191,-68.13294413885937&hl=es&z=17&output=embed"
               width="100%"
               height="100%"
               style="border:0;"
@@ -248,8 +248,8 @@
                 Dirección
               </h3>
               <address class="not-italic text-gray-600 text-sm">
-                <strong>Casa Grande del Pueblo</strong><br />
-                Calle Comercio esquina Colón<br />
+                <strong>Edif. Asamblea Legislativa Plurinacional</strong><br />
+                Ruta Nacional 2, entre Bolivar y Colon<br />
                 La Paz, Bolivia
               </address>
               <p class="text-gray-600 text-sm mt-2">
@@ -270,7 +270,7 @@
               </p>
               <div class="mt-3">
                 <a 
-                  href="https://maps.app.goo.gl/owuEBuvT5dzbKvee9" 
+                  href="https://maps.app.goo.gl/UjY1bNLzFyyB3hAh9" 
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded text-sm"
@@ -284,7 +284,7 @@
           
           <div class="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-gray-200">
             <a 
-              href="https://maps.app.goo.gl/owuEBuvT5dzbKvee9" 
+              href="https://maps.app.goo.gl/UjY1bNLzFyyB3hAh9" 
               target="_blank"
               rel="noopener noreferrer"
               class="flex-1 bg-senado-primary text-white text-center rounded-lg hover:bg-senado-primary-dark transition font-medium flex items-center justify-center gap-2 px-4 py-2 text-sm"
@@ -341,9 +341,7 @@
           <div class="text-center">
             <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo agendo una visita guiada?</dt>
             <dd class="text-gray-600 text-sm">
-              <a href="https://systemdemo.es/auth/login-external" target="_blank" class="text-senado-primary hover:underline">
-                Ingresa a la plataforma digital
-              </a> y completa tu solicitud con 15 días de anticipación.
+              Para mayor información o consultas sobre el procedimiento, puedes comunicarte al correo electrónico: protocolo@senado.gob.bo.
             </dd>
           </div>
           <div class="text-center">
