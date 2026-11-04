@@ -106,7 +106,7 @@
                   @error="(e) => e.target.src = defaultAvatar"
                 />
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-bold text-senado-primary truncate">
+                  <h3 class="text-lg font-bold text-senado-primary">
                     {{ cargo.name }}
                   </h3>
                   <div class="flex items-center gap-2 flex-wrap mt-1">

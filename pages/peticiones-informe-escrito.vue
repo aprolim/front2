@@ -200,9 +200,10 @@
                 <!-- Adjuntos y Estado -->
                 <td class="px-3 py-4 text-center whitespace-nowrap align-top">
                   <div class="flex flex-col items-center gap-2">
+                    <!-- 🔥 CAMBIO: usa getPdfUrl() en lugar de doc.archivo.url directo -->
                     <a
-                      v-if="doc.archivo && doc.archivo.url"
-                      :href="doc.archivo.url"
+                      v-if="getPdfUrl(doc)"
+                      :href="getPdfUrl(doc)"
                       target="_blank"
                       rel="noopener noreferrer"
                       class="inline-flex items-center gap-2 px-3 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
@@ -396,6 +397,26 @@ const procesarPeticionarios = (peticionarioData) => {
     .split(/(?=Sen\.)/i)
     .map((p) => p.trim())
     .filter((p) => p.length > 0)
+}
+
+// 🔥 NUEVO HELPER: Busca la URL del PDF en cualquier campo posible
+// (retrocompatible con la respuesta actual del backend)
+const getPdfUrl = (doc) => {
+  // 1. Campo archivo principal (lo que debería venir del backend)
+  if (doc?.archivo?.url) return doc.archivo.url
+
+  // 2. Fallback: primer elemento de archivoAnexo
+  //    (por si el backend lo puso ahí)
+  if (Array.isArray(doc?.archivoAnexo) && doc.archivoAnexo[0]?.url) {
+    return doc.archivoAnexo[0].url
+  }
+
+  // 3. Fallback: si archivo viene como string plano
+  if (typeof doc?.archivo === 'string' && doc.archivo) {
+    return doc.archivo
+  }
+
+  return null
 }
 
 // ============================================
