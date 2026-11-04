@@ -15,12 +15,7 @@
         <!-- Tarjeta: Desglose de Gastos -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden border-l-[1vw] sm:border-l-8 border-senado-primary">
           <div class="p-[4vw] sm:p-8">
-            <h2 class="text-[5vw] sm:text-[1.8vw] font-bold text-senado-primary mb-[2vw] sm:mb-2">
-              Entidad 650 “Asamblea Legislativa Plurinacional”
-            </h2>
-            <p class="text-[3.3vw] sm:text-[1.1vw] text-gray-600 mb-[4vw] sm:mb-6">
-              Presupuesto de Recursos 2026
-            </p>
+ 
             
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[700px]">

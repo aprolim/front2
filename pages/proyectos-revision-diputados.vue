@@ -33,11 +33,15 @@
         </div>
       </div>
 
-      <!-- Contador -->
+      <!-- Contador y Rango de Fechas -->
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> proyectos
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
+        
+        <!-- 🔥 AQUÍ SE MUESTRA EL PERIODO GLOBAL (enviado por el backend) -->
+        <span class="ml-2 text-xs text-gray-400" v-if="rangoGlobal">
+          · Periodo: {{ rangoGlobal }}
+        </span>
       </div>
 
       <!-- Loading -->
@@ -87,19 +91,23 @@
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
                 <!-- Nº secuencial GLOBAL -->
-                <td class="px-4 py-4 whitespace-nowrap">
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
-                <td class="px-4 py-4 whitespace-nowrap">
+                <!-- Código -->
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero }}</span>
                 </td>
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs uppercase">{{ formatearFecha(doc.fechaIngreso) }}</td>
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase">
+                <!-- Fecha -->
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs uppercase align-top">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <!-- Descripción -->
+                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase align-top">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <td class="px-4 py-4 text-center whitespace-nowrap">
+                <!-- Adjunto -->
+                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     Ver PDF
@@ -155,6 +163,10 @@ let searchTimeout = null
 
 const ordenDescendente = ref(true)
 
+// 🔥 Variables para guardar las fechas enviadas por el BACKEND
+const fechaExtremaMax = ref(null)
+const fechaExtremaMin = ref(null)
+
 const paginasVisibles = computed(() => {
   const paginas = []
   const rango = 2
@@ -162,6 +174,28 @@ const paginasVisibles = computed(() => {
     if (i === 1 || i === totalPages.value || (i >= page.value - rango && i <= page.value + rango)) { paginas.push(i) }
   }
   return paginas
+})
+
+// 🔥 Texto que muestra el periodo (AHORA VIENE DEL BACKEND)
+const rangoGlobal = computed(() => {
+  if (!fechaExtremaMax.value && !fechaExtremaMin.value) return null
+
+  const formatear = (fechaStr) => {
+    if (!fechaStr) return ''
+    const fecha = new Date(fechaStr)
+    if (isNaN(fecha.getTime())) return ''
+    return fecha.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
+  }
+
+  const fMax = formatear(fechaExtremaMax.value)
+  const fMin = formatear(fechaExtremaMin.value)
+
+  if (fMax && fMin) {
+    // Si el orden es descendente (más nuevo primero), mostramos de Mayor a Menor. 
+    // Si es ascendente, de Menor a Mayor.
+    return ordenDescendente.value ? `${fMax} – ${fMin}` : `${fMin} – ${fMax}`
+  }
+  return null
 })
 
 const formatearFecha = (fecha) => {
@@ -199,9 +233,16 @@ const cargarDocumentos = async () => {
     documentos.value = result.data?.documentos || []
     total.value = result.data?.total || 0
     totalPages.value = result.data?.pages || 1
+
+    // 🔥 GUARDAMOS LAS FECHAS EXTREMAS GLOBALES QUE ENVÍA EL BACKEND
+    fechaExtremaMax.value = result.data?.fechaMaxima || null
+    fechaExtremaMin.value = result.data?.fechaMinima || null
+
   } catch (err) {
     error.value = err.message
     documentos.value = []
+    fechaExtremaMax.value = null
+    fechaExtremaMin.value = null
   } finally {
     loading.value = false
   }
@@ -223,7 +264,11 @@ const onSearchInput = () => {
 const limpiarBusqueda = () => { filters.value.search = ''; page.value = 1; cargarDocumentos() }
 
 const irAPagina = (p) => {
-  if (p >= 1 && p <= totalPages.value) { page.value = p; cargarDocumentos(); if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  if (p >= 1 && p <= totalPages.value) { 
+    page.value = p
+    cargarDocumentos()
+    if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) 
+  }
 }
 
 const prevPage = () => { if (page.value > 1) irAPagina(page.value - 1) }

@@ -62,7 +62,15 @@
         de <strong class="text-[#611717]">{{ total }}</strong>
         peticione{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
+
+        <!-- 🔥 Periodo global enviado por el backend -->
+        <span class="ml-2 text-xs text-gray-400" v-if="rangoGlobal">
+          · Periodo: {{ rangoGlobal }}
+        </span>
+
+        <!-- <span class="ml-2 text-xs text-gray-400">
+          · Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}
+        </span> -->
       </div>
 
       <!-- Loading -->
@@ -94,13 +102,22 @@
       <!-- Tabla -->
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full text-sm">
+          <table class="min-w-full text-sm table-fixed">
+            <colgroup>
+              <col class="w-12" />
+              <col class="w-20" />
+              <col class="w-24" />
+              <col />
+              <col class="w-40" />
+              <col class="w-36" />
+              <col class="w-28" />
+            </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
                 <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
                 <th
                   @click="toggleOrden"
-                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
+                  class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
@@ -110,20 +127,20 @@
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Fecha
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Descripción
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Senador(es) Peticionante(s)
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Destinatario
                 </th>
-                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Adjuntos
                 </th>
               </tr>
@@ -135,33 +152,33 @@
                 class="hover:bg-[#fbf8f1] transition-colors"
               >
                 <!-- Nº secuencial GLOBAL -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
 
-                <!-- Código (con el mismo estilo de pastilla) -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <!-- Código -->
+                <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
                     {{ doc.numero ?? '—' }}
                   </span>
                 </td>
 
                 <!-- Fecha de Petición -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
+                <td class="px-3 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
-                <!-- Descripción -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md align-top uppercase">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
+                <!-- Descripción (absorbe el ancho sobrante) -->
+                <td class="px-3 py-4 text-gray-700 align-top uppercase">
+                  <div class="line-clamp-4 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Peticionante -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                <!-- Peticionante (columna reducida) -->
+                <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   <div v-if="Array.isArray(doc.peticionario) && doc.peticionario.length > 0">
                     <div v-for="(senador, i) in procesarPeticionarios(doc.peticionario)" :key="i" class="mb-1 last:mb-0">
                       {{ senador }}
@@ -175,20 +192,20 @@
                   <div v-else>—</div>
                 </td>
 
-                <!-- Destinatario -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
+                <!-- Destinatario (columna reducida) -->
+                <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   {{ doc.destinatario || '—' }}
                 </td>
 
                 <!-- Adjuntos y Estado -->
-                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
+                <td class="px-3 py-4 text-center whitespace-nowrap align-top">
                   <div class="flex flex-col items-center gap-2">
                     <a
                       v-if="doc.archivo && doc.archivo.url"
                       :href="doc.archivo.url"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
+                      class="inline-flex items-center gap-2 px-3 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
                       title="Ver PDF"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,12 +306,16 @@ const loading = ref(false)
 const error = ref(null)
 const page = ref(1)
 const totalPages = ref(1)
-const total = ref(0) // 👈 Aquí se guardará el 1898 real del backend
+const total = ref(0)
 const itemsPorPagina = 10
 const filters = ref({ search: '' })
 let searchTimeout = null
 
 const ordenDescendente = ref(true)
+
+// 🔥 Fechas extremas globales enviadas por el backend
+const fechaExtremaMax = ref(null)
+const fechaExtremaMin = ref(null)
 
 // ============================================
 // COMPUTED
@@ -308,6 +329,31 @@ const paginasVisibles = computed(() => {
     }
   }
   return paginas
+})
+
+// 🔥 Texto del periodo (viene del backend)
+const rangoGlobal = computed(() => {
+  if (!fechaExtremaMax.value && !fechaExtremaMin.value) return null
+
+  const formatear = (fechaStr) => {
+    if (!fechaStr) return ''
+    const fecha = new Date(fechaStr)
+    if (isNaN(fecha.getTime())) return ''
+    return fecha.toLocaleDateString('es-BO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'UTC'
+    })
+  }
+
+  const fMax = formatear(fechaExtremaMax.value)
+  const fMin = formatear(fechaExtremaMin.value)
+
+  if (fMax && fMin) {
+    return ordenDescendente.value ? `${fMax} – ${fMin}` : `${fMin} – ${fMax}`
+  }
+  return null
 })
 
 // ============================================
@@ -375,14 +421,20 @@ const cargarDocumentos = async () => {
     }
 
     documentos.value = result.data?.documentos || []
-    total.value = result.data?.total || 0 // 👈 Esto hace que diga "1898"
+    total.value = result.data?.total || 0
     totalPages.value = result.data?.pages || 1
+
+    // 🔥 Guardamos las fechas extremas globales
+    fechaExtremaMax.value = result.data?.fechaMaxima || null
+    fechaExtremaMin.value = result.data?.fechaMinima || null
   } catch (err) {
     console.error('Error cargando PIE:', err)
     error.value = err.message || 'Error al cargar las peticiones'
     documentos.value = []
     total.value = 0
     totalPages.value = 1
+    fechaExtremaMax.value = null
+    fechaExtremaMin.value = null
   } finally {
     loading.value = false
   }
@@ -442,6 +494,12 @@ onMounted(() => {
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

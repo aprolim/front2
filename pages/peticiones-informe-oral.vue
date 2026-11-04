@@ -24,7 +24,6 @@
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">
           Peticiones de Informe Oral
         </h1>
-
       </div>
 
       <!-- 🔥 BUSCADOR PROFESIONAL -->
@@ -63,7 +62,10 @@
         de <strong class="text-[#611717]">{{ total }}</strong>
         peticione{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
+
+        <span class="ml-2 text-xs text-gray-400" v-if="rangoGlobal">
+          · Periodo: {{ rangoGlobal }}
+        </span>
       </div>
 
       <!-- Loading -->
@@ -95,13 +97,22 @@
       <!-- Tabla -->
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full text-sm">
+          <table class="min-w-full text-sm table-fixed">
+            <colgroup>
+              <col class="w-12" />
+              <col class="w-20" />
+              <col class="w-24" />
+              <col />
+              <col class="w-48" />
+              <col class="w-44" />
+              <col class="w-28" />
+            </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
                 <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
                 <th
                   @click="toggleOrden"
-                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
+                  class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
@@ -111,22 +122,21 @@
                     </span>
                   </span>
                 </th>
-                <!-- Columna Código (antes Nº) -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Fecha
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Descripción
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Senador(es) Peticionante(s)
                 </th>
                 <!-- 🔥 COLUMNA: Destinatario -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Destinatario
                 </th>
-                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <th class="px-3 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
                   Adjunto
                 </th>
               </tr>
@@ -138,59 +148,71 @@
                 class="hover:bg-[#fbf8f1] transition-colors"
               >
                 <!-- Nº secuencial GLOBAL -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
 
-                <!-- Código (con el mismo estilo de pastilla) -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <!-- Código -->
+                <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
                     {{ doc.numero ?? '—' }}
                   </span>
                 </td>
 
-                <!-- Fecha de Petición (fechaIngreso) -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
+                <!-- Fecha de Petición -->
+                <td class="px-3 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
-                <!-- Descripción (asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md align-top uppercase">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
+                <!-- Descripción (absorbe el ancho sobrante) -->
+                <td class="px-3 py-4 text-gray-700 align-top uppercase">
+                  <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Peticionante (peticionario) - Cada uno en su propia fila -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
-                  <div v-if="Array.isArray(doc.peticionario) && doc.peticionario.length > 0">
-                    <div v-for="(senador, i) in procesarPeticionarios(doc.peticionario)" :key="i" class="mb-1 last:mb-0">
-                      {{ senador }}
-                    </div>
-                  </div>
-                  <div v-else-if="typeof doc.peticionario === 'string'">
-                     <div v-for="(senador, i) in procesarPeticionarios([doc.peticionario])" :key="i" class="mb-1 last:mb-0">
-                      {{ senador }}
+                <!-- Peticionante (separados por coma/puntos, con viñeta elegante) -->
+                <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
+                  <div v-if="procesarPeticionarios(doc.peticionario).length > 0">
+                    <div
+                      v-for="(senador, i) in procesarPeticionarios(doc.peticionario)"
+                      :key="i"
+                      class="mb-1.5 last:mb-0 flex items-start gap-1.5"
+                    >
+                      <!-- Viñeta elegante -->
+                      <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#611717] mt-1.5 shrink-0"></span>
+                      <span class="leading-tight">{{ senador }}</span>
                     </div>
                   </div>
                   <div v-else>—</div>
                 </td>
 
-                <!-- 🔥 CELDA: Destinatario -->
-                <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs align-top uppercase">
-                  {{ doc.destinatario || '—' }}
+                <!-- Destinatario (separados por coma/puntos, con viñeta elegante) -->
+                <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
+                  <div v-if="separarNombres(doc.destinatario).length > 0">
+                    <div
+                      v-for="(nombre, i) in separarNombres(doc.destinatario)"
+                      :key="i"
+                      class="mb-1.5 last:mb-0 flex items-start gap-1.5"
+                    >
+                      <!-- Viñeta elegante -->
+                      <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#611717] mt-1.5 shrink-0"></span>
+                      <span class="leading-tight">{{ nombre }}</span>
+                    </div>
+                  </div>
+                  <div v-else>—</div>
                 </td>
 
-                <!-- Adjunto (archivo) -->
-                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
+                <!-- Adjunto -->
+                <td class="px-3 py-4 text-center whitespace-nowrap align-top">
                   <a
                     v-if="doc.archivo && doc.archivo.url"
                     :href="doc.archivo.url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
+                    class="inline-flex items-center gap-2 px-3 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase"
                     title="Ver PDF"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,6 +314,10 @@ let searchTimeout = null
 
 const ordenDescendente = ref(true)
 
+// 🔥 Fechas extremas globales enviadas por el backend
+const fechaExtremaMax = ref(null)
+const fechaExtremaMin = ref(null)
+
 // ============================================
 // COMPUTED
 // ============================================
@@ -304,6 +330,31 @@ const paginasVisibles = computed(() => {
     }
   }
   return paginas
+})
+
+// 🔥 Texto del periodo (viene del backend)
+const rangoGlobal = computed(() => {
+  if (!fechaExtremaMax.value && !fechaExtremaMin.value) return null
+
+  const formatear = (fechaStr) => {
+    if (!fechaStr) return ''
+    const fecha = new Date(fechaStr)
+    if (isNaN(fecha.getTime())) return ''
+    return fecha.toLocaleDateString('es-BO', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      timeZone: 'UTC'
+    })
+  }
+
+  const fMax = formatear(fechaExtremaMax.value)
+  const fMin = formatear(fechaExtremaMin.value)
+
+  if (fMax && fMin) {
+    return ordenDescendente.value ? `${fMax} – ${fMin}` : `${fMin} – ${fMax}`
+  }
+  return null
 })
 
 // ============================================
@@ -333,33 +384,43 @@ const numeroSecuencial = (index) => {
   return (page.value - 1) * itemsPorPagina + index + 1
 }
 
-// 🔥 NUEVA FUNCIÓN ROBUSTA PARA PROCESAR Y SEPARAR NOMBRES
+// 🔥 Limpia prefijos "Sen." / "ex Sen." y separa por comas
+const separarNombres = (texto) => {
+  if (!texto) return []
+  return String(texto)
+    .replace(/\bex\s*\.?\s*sen\s*\.?\s*/gi, '')
+    .replace(/\bsen\s*\.\s*/gi, '')
+    .replace(/^\s*sen\s+/gi, '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0)
+}
+
+// 🔥 Procesa peticionarios separando primero por "Sen." (por si vienen pegados del backend)
 const procesarPeticionarios = (peticionarioData) => {
   if (!peticionarioData) return []
   
-  let lista = []
-  
-  // 1. Convertimos todo a un solo string largo si es un array
-  if (Array.isArray(peticionarioData)) {
-    lista = peticionarioData.map(str => String(str))
-  } else {
-    lista = [String(peticionarioData)]
-  }
+  let lista = Array.isArray(peticionarioData)
+    ? peticionarioData.map((s) => String(s))
+    : [String(peticionarioData)]
 
-  // Unimos todo con un espacio
-  let textoUnido = lista.join(' ')
+  const textoUnido = lista.join(' ').replace(/[\[\]"]/g, ' ').trim()
   
-  // Limpiamos corchetes y comillas
-  textoUnido = textoUnido.replace(/[\[\]"]/g, ' ').trim()
+  // 1. Separamos por "Sen." o "Ex Sen." ANTES de quitarlos
+  let partes = textoUnido.split(/(?=Sen\.|Ex Sen\.)/i)
   
-  // 2. Separamos usando "Sen." como delimitador
-  // Buscamos "Sen." y cortamos ahí, manteniendo el "Sen." en el resultado
-  const partes = textoUnido.split(/(?=Sen\.)/i)
-  
-  // 3. Limpiamos cada parte y quitamos las que estén vacías
-  return partes
-    .map(p => p.trim())
-    .filter(p => p.length > 0)
+  // 2. Limpiamos cada parte (le quitamos "Sen.", comas, etc.)
+  let resultado = partes.map(p => {
+    return p
+      .replace(/\bex\s*\.?\s*sen\s*\.?\s*/gi, '')
+      .replace(/\bsen\s*\.\s*/gi, '')
+      .replace(/^\s*sen\s+/gi, '')
+      .split(',') // Por si también tienen comas
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+  }).flat() // Aplanamos el arreglo
+
+  return resultado
 }
 
 // ============================================
@@ -387,12 +448,18 @@ const cargarDocumentos = async () => {
     documentos.value = result.data?.documentos || []
     total.value = result.data?.total || 0
     totalPages.value = result.data?.pages || 1
+
+    // 🔥 Guardamos las fechas extremas globales
+    fechaExtremaMax.value = result.data?.fechaMaxima || null
+    fechaExtremaMin.value = result.data?.fechaMinima || null
   } catch (err) {
     console.error('Error cargando PIO:', err)
     error.value = err.message || 'Error al cargar las peticiones'
     documentos.value = []
     total.value = 0
     totalPages.value = 1
+    fechaExtremaMax.value = null
+    fechaExtremaMin.value = null
   } finally {
     loading.value = false
   }
@@ -466,6 +533,18 @@ onMounted(() => {
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

@@ -20,100 +20,100 @@
                   <!-- Encabezado de 2 niveles -->
                   <tr class="bg-senado-primary text-white text-[3vw] sm:text-[1vw] text-center">
                     <th rowspan="2" class="p-[2vw] sm:p-3 border border-white/20 align-middle">ÁREA</th>
-                    <th rowspan="2" class="p-[2vw] sm:p-3 border border-white/20 align-middle">UNIDAD EJECUTORA</th>
+                    <th rowspan="2" class="p-[2vw] sm:p-3 border border-white/20 align-middle">DESCRIPCIÓN</th>
                     <th colspan="4" class="p-[2vw] sm:p-3 border border-white/20 border-b-0">PRESUPUESTO</th>
                   </tr>
                   <tr class="bg-senado-primary text-white text-[3vw] sm:text-[1vw] text-center">
                     <th class="p-[2vw] sm:p-3 border border-white/20">VIGENTE</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">DEVENGADO AL 30/09/2026</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">EJECUTADO AL<br>31/10/2026</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">TOTAL ÁREA</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">PROCENTAJE</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">% EJECUCIÓN</th>
                   </tr>
                 </thead>
                 <tbody class="text-[3.3vw] sm:text-[1.1vw] text-gray-700">
                   
                   <!-- Área Administrativa (2 filas) -->
                   <tr class="bg-senado-gold-lightest/30">
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-medium" rowspan="2">Área Administrativa</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-medium align-middle" rowspan="2">Administrativa</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Administración Central</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">43.365.739</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">18.054.787</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold align-middle" rowspan="2">18.825.145</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-bold align-middle" rowspan="2">41,72%</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">20.395.000</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold align-middle" rowspan="2">21.272.354</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-bold align-middle" rowspan="2">47,15%</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Personal con Discapacidad</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">1.754.410</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">770.358</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">877.353</td>
                   </tr>
 
                   <!-- Área Legislativa (11 filas) -->
                   <tr class="bg-senado-gold-lightest/30">
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-medium" rowspan="11">Área Legislativa</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-medium align-middle" rowspan="11">Legislativa</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Secretaría General</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">4.297.684</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">2.019.472</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold align-middle" rowspan="11">33.211.172</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-bold align-middle" rowspan="11">53,64%</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">2.285.812</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold align-middle" rowspan="11">38.324.266</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center font-bold align-middle" rowspan="11">61,90%</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Directiva Camaral</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">351.600</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">68.333</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">138.138</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Sueldos Senadores</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">17.177.069</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">10.580.197</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">11.907.254</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Comisiones</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">3.064.087</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">1.677.452</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">1.968.160</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Comités</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">1.120.240</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">332.190</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">558.745</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Bancadas Políticas</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">16.100</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">0</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">3.994</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Brigadas Parlamentarias</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">437.697</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">129.113</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">150.366</td>
                   </tr>
                   <tr class="bg-senado-gold-lightest/30 font-medium">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Área Legislativa — Personal Eventual</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">28.130.098</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">15.916.941</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">18.055.359</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Pasajes al interior y exterior del país</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">4.623.321</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">1.840.865</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">4.823.321</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">2.200.586</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Viáticos al interior y exterior del país</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">1.072.798</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">244.043</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">476.223</td>
                   </tr>
                   <tr class="hover:bg-senado-gold-lightest/50 transition-colors">
                     <td class="p-[2vw] sm:p-3 border border-gray-300">Combustible (Gasolina)</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">1.624.848</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right font-bold">402.565</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">579.630</td>
                   </tr>
 
                   <!-- Fila Total Parcial -->
                   <tr class="bg-senado-gold-light/40 text-senado-primary-dark font-bold">
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-center" colspan="2">TOTAL</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right text-[3.6vw] sm:text-[1.2vw]">107.035.691</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right text-[3.6vw] sm:text-[1.2vw]">52.036.317</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right text-[3.6vw] sm:text-[1.2vw]">52.036.317</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center text-[3.6vw] sm:text-[1.2vw]">48,62%</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right text-[3.6vw] sm:text-[1.2vw]">59.596.620</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right text-[3.6vw] sm:text-[1.2vw]">59.596.620</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center text-[3.6vw] sm:text-[1.2vw]">55,68%</td>
                   </tr>
                 </tbody>
               </table>
@@ -135,9 +135,9 @@
                   </tr>
                   <tr class="bg-senado-primary text-white text-[3vw] sm:text-[1vw] text-center">
                     <th class="p-[2vw] sm:p-3 border border-white/20">VIGENTE</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">DEVENGADO AL 30/09/2026</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">EJECUTADO AL<br>31/10/2026</th>
                     <th class="p-[2vw] sm:p-3 border border-white/20">TOTAL ÁREA</th>
-                    <th class="p-[2vw] sm:p-3 border border-white/20">PORCENTAJE</th>
+                    <th class="p-[2vw] sm:p-3 border border-white/20">%</th>
                   </tr>
                 </thead>
                 <tbody class="text-[3.3vw] sm:text-[1.1vw] text-gray-700">
@@ -171,9 +171,9 @@
                   <tr class="bg-senado-primary text-white font-bold text-[3.6vw] sm:text-[1.2vw]">
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-center align-middle" colspan="2">TOTAL GENERAL</td>
                     <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">109.555.306</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">54.555.932</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">54.555.932</td>
-                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center">49,8%</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">62.116.235</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-right">62.116.235</td>
+                    <td class="p-[2vw] sm:p-3 border border-gray-300 text-center">56,7%</td>
                   </tr>
 
                 </tbody>

@@ -8,9 +8,7 @@
           Memoria <span class="text-[#8f1522]">Institucional</span>
         </h1>
         <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
-        <p class="text-gray-600 text-lg mt-4 max-w-2xl mx-auto">
-          Redactor Legislativo - Seleccione un tomo para visualizar
-        </p>
+
       </div>
 
       <!-- ========================================== -->

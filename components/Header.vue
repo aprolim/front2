@@ -239,7 +239,7 @@
                 :class="submenus.planEstrategico ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/plan-estrategico-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Plan Estratégico y POA</NuxtLink>
-                <NuxtLink to="/seguimiento-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Seguimiento y Evaluación al POA</NuxtLink>
+                <!-- <NuxtLink to="/seguimiento-poa" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Seguimiento y Evaluación al POA</NuxtLink> -->
               </div>
             </div>
 
@@ -376,8 +376,8 @@
                 :class="submenus.informacionFinanciera ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'"
               >
                 <NuxtLink to="/informacion-financiera/presupuesto-institucional" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Presupuesto Institucional</NuxtLink>
-                <NuxtLink to="/informacion-financiera/ejecucion-presupuestaria" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Ejecución Presupuestaria</NuxtLink>
                 <NuxtLink to="/informacion-financiera/fuentes-financiamiento" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Fuentes de Financiamiento</NuxtLink>
+                <NuxtLink to="/informacion-financiera/ejecucion-presupuestaria" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Ejecución Presupuestaria</NuxtLink>
               </div>
             </div>
 
@@ -433,7 +433,7 @@
                 class="bg-black/10 ml-4 mt-1 space-y-0 text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] font-[500] overflow-hidden transition-all duration-300 ease-in-out rounded-lg overflow-hidden"
                 :class="submenus.comunicacion ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'"
               >
-                <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink>
+                <!-- <NuxtLink to="/comunicados" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Comunicados</NuxtLink> -->
                 <NuxtLink to="/noticias" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Notas de Prensa</NuxtLink>
                 <NuxtLink to="https://www.youtube.com/watch?v=ARVGab48kkw&list=PLa1BPhXlaW2fX3iN-hn6O5nPBHrSYEL5Y" target="_blank" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Publicaciones</NuxtLink>
                 <!-- <NuxtLink to="/campanas-actividades" class="block hover:text-senado-primary hover:bg-white/60 transition-colors py-2 px-3" @click="closeMenu">• Campañas y Actividades</NuxtLink> -->

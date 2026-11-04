@@ -99,7 +99,7 @@
             de consultas ciudadanas:
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div 
               v-for="(enc, i) in encargados" 
               :key="i" 
@@ -161,7 +161,7 @@
               <ul class="space-y-3 text-sm md:text-base text-gray-700">
                 <li class="flex items-start gap-3">
                   <span class="text-senado-primary font-bold mt-0.5">•</span>
-                  <span>Completar la <strong>solicitud en la plataforma digital</strong></span>
+                  <span>Enviar correo de solicitud al siguiente correo: solicitud@senado.gob.bo</span>
                 </li>
                 <li class="flex items-start gap-3">
                   <span class="text-senado-primary font-bold mt-0.5">•</span>
@@ -297,59 +297,6 @@
       </div>
 
 
-      <!-- ============================================ -->
-      <!-- ENLACES DE INTERÉS                           -->
-      <!-- ============================================ -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 md:mt-12" role="list">
-        <div class="bg-senado-gold-lightest rounded-xl border border-senado-gold p-4 md:p-5" role="listitem">
-          <div class="flex items-center gap-3">
-            <Icon name="mdi:headset" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
-            <div>
-              <h4 class="font-bold text-senado-primary text-sm md:text-base">Atención al Ciudadano</h4>
-              <p class="text-gray-600 text-sm">
-                <a href="tel:+59122143400" class="hover:text-senado-primary transition-colors">
-                  (591-2) 2143400
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-senado-primary/5 rounded-xl border border-senado-primary/20 p-4 md:p-5" role="listitem">
-          <div class="flex items-center gap-3">
-            <Icon name="mdi:file-document" class="text-senado-primary text-2xl md:text-3xl" aria-hidden="true" />
-            <div>
-              <h4 class="font-bold text-senado-primary text-sm md:text-base">Transparencia</h4>
-              <p class="text-gray-600 text-sm">
-                <NuxtLink to="/solicitud-informacion" class="text-senado-primary hover:underline focus:outline-none focus:ring-2 focus:ring-senado-primary rounded">
-                  Solicita información
-                </NuxtLink>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================ -->
-      <!-- PREGUNTAS FRECUENTES                         -->
-      <!-- ============================================ -->
-      <section class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-8 md:mt-12" aria-labelledby="faq-titulo">
-        <h3 id="faq-titulo" class="text-center font-bold text-gray-800 text-xl md:text-2xl mb-4">
-          Preguntas Frecuentes
-        </h3>
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="text-center">
-            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Cómo agendo una visita guiada?</dt>
-            <dd class="text-gray-600 text-sm">
-              Para mayor información o consultas sobre el procedimiento, puedes comunicarte al correo electrónico: protocolo@senado.gob.bo.
-            </dd>
-          </div>
-          <div class="text-center">
-            <dt class="font-semibold text-senado-primary text-sm md:text-base mb-1">¿Horario de atención?</dt>
-            <dd class="text-gray-600 text-sm">Lunes a Viernes 08:30 - 16:30 hrs</dd>
-          </div>
-        </dl>
-      </section>
 
     </main>
   </div>
@@ -372,12 +319,6 @@ const encargados = [
     cargo: 'Atención de consultas de acceso a la información',
     telefono: '(591-2) 2143400 int. 101',
     email: 'transparencia@senado.gob.bo'
-  },
-  {
-    nombre: 'Dirección de Comunicación',
-    cargo: 'Consulta de prensa y comunicación institucional',
-    telefono: '(591-2) 2143400 int. 202',
-    email: 'comunicacion@senado.gob.bo'
   },
   {
     nombre: 'Atención al Ciudadano',

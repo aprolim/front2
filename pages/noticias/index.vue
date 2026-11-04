@@ -8,9 +8,7 @@
           Todas las <span class="text-senado-primary-light">Noticias</span>
         </h1>
         <div class="w-[12vw] sm:w-[6vw] h-[0.4vw] sm:h-[0.2vw] bg-senado-primary-light mx-auto mt-[2vw] sm:mt-4"></div>
-        <p class="text-senado-primary drop-shadow-md mt-[3vw] sm:mt-6 text-[3.6vw] sm:text-[1.5vw] font-[500] tracking-wide">
-          Explora todas las noticias del Senado de Bolivia
-        </p>
+
       </div>
 
       <!-- Estado de carga -->

@@ -144,12 +144,12 @@ const legislacionItems = computed(() => [
     link: '/proyectos-aprobados'
   },
   {
-    label: 'Proyectos de Ley en Tratamiento (Senado)',
+    label: 'Proyectos de Ley en Tratamiento (Origen Senado)',
     count: counts.value['proyecto-ley-tratamiento-senado'] || 0,
     link: '/proyectos-tratamiento'
   },
   {
-    label: 'Proyectos de Ley en Revisión (Diputados)',
+    label: 'Proyectos de Ley en Revisión (Origen Diputados)',
     count: counts.value['proyecto-ley-revision-diputados'] || 0,
     link: '/proyectos-revision-diputados'
   },
