@@ -26,7 +26,7 @@
         </h1>
       </div>
 
-      <!-- 🔥 BUSCADOR PROFESIONAL -->
+      <!-- BUSCADOR -->
       <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div class="relative flex-1">
@@ -109,7 +109,6 @@
             </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
                 <th
                   @click="toggleOrden"
                   class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
@@ -132,7 +131,6 @@
                 <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Senador(es) Peticionante(s)
                 </th>
-                <!-- 🔥 COLUMNA: Destinatario -->
                 <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                   Destinatario
                 </th>
@@ -166,14 +164,14 @@
                   {{ formatearFecha(doc.fechaIngreso) }}
                 </td>
 
-                <!-- Descripción (absorbe el ancho sobrante) -->
+                <!-- Descripción -->
                 <td class="px-3 py-4 text-gray-700 align-top uppercase">
                   <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Peticionante (separados por coma/puntos, con viñeta elegante) -->
+                <!-- Peticionante -->
                 <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   <div v-if="procesarPeticionarios(doc.peticionario).length > 0">
                     <div
@@ -181,15 +179,14 @@
                       :key="i"
                       class="mb-1.5 last:mb-0 flex items-start gap-1.5"
                     >
-                      <!-- Viñeta elegante -->
-                      <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#611717] mt-1.5 shrink-0"></span>
+                      <span class="shrink-0 leading-tight">-</span>
                       <span class="leading-tight">{{ senador }}</span>
                     </div>
                   </div>
                   <div v-else>—</div>
                 </td>
 
-                <!-- Destinatario (separados por coma/puntos, con viñeta elegante) -->
+                <!-- Destinatario -->
                 <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   <div v-if="separarNombres(doc.destinatario).length > 0">
                     <div
@@ -197,8 +194,7 @@
                       :key="i"
                       class="mb-1.5 last:mb-0 flex items-start gap-1.5"
                     >
-                      <!-- Viñeta elegante -->
-                      <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#611717] mt-1.5 shrink-0"></span>
+                      <span class="shrink-0 leading-tight">-</span>
                       <span class="leading-tight">{{ nombre }}</span>
                     </div>
                   </div>
@@ -314,7 +310,6 @@ let searchTimeout = null
 
 const ordenDescendente = ref(true)
 
-// 🔥 Fechas extremas globales enviadas por el backend
 const fechaExtremaMax = ref(null)
 const fechaExtremaMin = ref(null)
 
@@ -332,7 +327,6 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// 🔥 Texto del periodo (viene del backend)
 const rangoGlobal = computed(() => {
   if (!fechaExtremaMax.value && !fechaExtremaMin.value) return null
 
@@ -376,7 +370,6 @@ const formatearFecha = (fecha) => {
   }
 }
 
-// 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
     return total.value - ((page.value - 1) * itemsPorPagina) - index
@@ -384,7 +377,6 @@ const numeroSecuencial = (index) => {
   return (page.value - 1) * itemsPorPagina + index + 1
 }
 
-// 🔥 Limpia prefijos "Sen." / "ex Sen." y separa por comas
 const separarNombres = (texto) => {
   if (!texto) return []
   return String(texto)
@@ -396,7 +388,6 @@ const separarNombres = (texto) => {
     .filter((s) => s.length > 0)
 }
 
-// 🔥 Procesa peticionarios separando primero por "Sen." (por si vienen pegados del backend)
 const procesarPeticionarios = (peticionarioData) => {
   if (!peticionarioData) return []
   
@@ -406,19 +397,17 @@ const procesarPeticionarios = (peticionarioData) => {
 
   const textoUnido = lista.join(' ').replace(/[\[\]"]/g, ' ').trim()
   
-  // 1. Separamos por "Sen." o "Ex Sen." ANTES de quitarlos
   let partes = textoUnido.split(/(?=Sen\.|Ex Sen\.)/i)
   
-  // 2. Limpiamos cada parte (le quitamos "Sen.", comas, etc.)
   let resultado = partes.map(p => {
     return p
       .replace(/\bex\s*\.?\s*sen\s*\.?\s*/gi, '')
       .replace(/\bsen\s*\.\s*/gi, '')
       .replace(/^\s*sen\s+/gi, '')
-      .split(',') // Por si también tienen comas
+      .split(',')
       .map(s => s.trim())
       .filter(s => s.length > 0)
-  }).flat() // Aplanamos el arreglo
+  }).flat()
 
   return resultado
 }
@@ -449,7 +438,6 @@ const cargarDocumentos = async () => {
     total.value = result.data?.total || 0
     totalPages.value = result.data?.pages || 1
 
-    // 🔥 Guardamos las fechas extremas globales
     fechaExtremaMax.value = result.data?.fechaMaxima || null
     fechaExtremaMin.value = result.data?.fechaMinima || null
   } catch (err) {
@@ -465,7 +453,6 @@ const cargarDocumentos = async () => {
   }
 }
 
-// 🔥 Botón Nº
 const toggleOrden = () => {
   if (loading.value) return
   ordenDescendente.value = !ordenDescendente.value

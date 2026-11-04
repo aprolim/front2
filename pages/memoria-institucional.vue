@@ -50,84 +50,6 @@
         </div>
       </div>
 
-      <!-- ========================================== -->
-      <!-- PERIODO 2023-2024 (12 tomos)               -->
-      <!-- ========================================== -->
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <h2 class="text-xl sm:text-2xl font-bold text-white bg-senado-primary-light w-full text-center py-3 rounded-lg shadow-md">
-            REDACTOR LEGISLATURA 2023-2024
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          <div 
-            v-for="tomo in tomosPaginados" 
-            :key="tomo.id"
-            @click="abrirPDF(tomo)"
-            class="bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 border-gray-200 hover:border-[#E03636] group"
-          >
-            <div class="flex flex-col items-center text-center">
-              <h5 class="text-sm sm:text-base font-bold text-[#A54A4A] mt-1">
-                {{ tomo.numero }}
-              </h5>
-              <div class="w-full aspect-square mb-2 overflow-hidden rounded-lg shadow-md bg-gray-100">
-                <img 
-                  :src="tomo.portada" 
-                  :alt="tomo.titulo"
-                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  loading="lazy"
-                  @error="(e) => e.target.src = '/images/portadas/default.jpg'"
-                />
-              </div>
-              <div class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-[#E03636]/10 rounded-full text-[#E03636] text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                <Icon name="mdi:file-pdf-box" class="w-3 h-3" />
-                <span>PDF</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Paginación -->
-        <div v-if="totalPaginas > 1" class="flex flex-wrap justify-center items-center gap-2 mt-6">
-          <button 
-            @click="paginaAnterior"
-            :disabled="paginaActual === 1"
-            class="px-3 py-1 rounded-lg transition-all duration-300 text-sm font-medium"
-            :class="paginaActual === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-[#E03636] hover:text-white'"
-          >
-            <Icon name="mdi:chevron-left" class="w-4 h-4" />
-            Anterior
-          </button>
-
-          <div class="flex gap-1 flex-wrap justify-center">
-            <button 
-              v-for="p in totalPaginas" 
-              :key="p"
-              @click="paginaActual = p"
-              class="w-8 h-8 rounded-lg transition-all duration-300 text-sm font-medium"
-              :class="paginaActual === p ? 'bg-[#E03636] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
-            >
-              {{ p }}
-            </button>
-          </div>
-
-          <button 
-            @click="paginaSiguiente"
-            :disabled="paginaActual === totalPaginas"
-            class="px-3 py-1 rounded-lg transition-all duration-300 text-sm font-medium"
-            :class="paginaActual === totalPaginas ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 text-gray-700 hover:bg-[#E03636] hover:text-white'"
-          >
-            Siguiente
-            <Icon name="mdi:chevron-right" class="w-4 h-4" />
-          </button>
-        </div>
-
-        <div class="text-center text-xs text-gray-400 mt-2">
-          Mostrando {{ inicioMostrar }} - {{ finMostrar }} de {{ totalTomos }} tomos
-        </div>
-      </div>
-
       <!-- Botón volver -->
       <div class="text-center mt-12">
         <NuxtLink 
@@ -509,47 +431,6 @@ const tomos2025 = [
     nombreArchivo: 'Redactor_Tomo_III_2025-2026.pdf'
   }
 ]
-
-const tomos2023 = [
-  { id: 4, numero: 'TOMO I', titulo: 'Tomo I - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_I_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_I_2023-2024.pdf' },
-  { id: 5, numero: 'TOMO II', titulo: 'Tomo II - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_II_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_II_2023-2024.pdf' },
-  { id: 6, numero: 'TOMO III', titulo: 'Tomo III - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_III_2023-2024.pdf' },
-  { id: 7, numero: 'TOMO IV', titulo: 'Tomo IV - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IV_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IV_2023-2024.pdf' },
-  { id: 8, numero: 'TOMO V', titulo: 'Tomo V - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_V_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_V_2023-2024.pdf' },
-  { id: 9, numero: 'TOMO VI', titulo: 'Tomo VI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VI_2023-2024.pdf' },
-  { id: 10, numero: 'TOMO VII', titulo: 'Tomo VII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VII_2023-2024.pdf' },
-  { id: 11, numero: 'TOMO VIII', titulo: 'Tomo VIII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_VIII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_VIII_2023-2024.pdf' },
-  { id: 12, numero: 'TOMO IX', titulo: 'Tomo IX - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IX_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_IX_2023-2024.pdf' },
-  { id: 13, numero: 'TOMO X', titulo: 'Tomo X - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_X_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_X_2023-2024.pdf' },
-  { id: 14, numero: 'TOMO XI', titulo: 'Tomo XI - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XI_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XI_2023-2024.pdf' },
-  { id: 15, numero: 'TOMO XII', titulo: 'Tomo XII - Gestión 2023-2024', pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_XII_2023-2024.pdf', portada: '/images/portadas/2023-2024/default.jpg', nombreArchivo: 'Redactor_Tomo_XII_2023-2024.pdf' }
-]
-
-// ============================================ //
-// ESTADO DE PAGINACIÓN
-// ============================================ //
-const paginaActual = ref(1)
-const itemsPorPagina = 6
-
-const totalTomos = computed(() => tomos2023.length)
-const totalPaginas = computed(() => Math.ceil(totalTomos.value / itemsPorPagina))
-
-const tomosPaginados = computed(() => {
-  const start = (paginaActual.value - 1) * itemsPorPagina
-  const end = start + itemsPorPagina
-  return tomos2023.slice(start, end)
-})
-
-const inicioMostrar = computed(() => (paginaActual.value - 1) * itemsPorPagina + 1)
-const finMostrar = computed(() => Math.min(paginaActual.value * itemsPorPagina, totalTomos.value))
-
-const paginaAnterior = () => {
-  if (paginaActual.value > 1) paginaActual.value--
-}
-
-const paginaSiguiente = () => {
-  if (paginaActual.value < totalPaginas.value) paginaActual.value++
-}
 
 // ============================================ //
 // ESTADO DEL VISOR DE PDF

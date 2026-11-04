@@ -63,7 +63,7 @@
           </h2>
 
           <p class="text-[3vw] sm:text-base text-gray-700 leading-relaxed mb-[2.5vw] sm:mb-4">
-            A través de este espacio, se pueden presentar denuncias en la camara de senadores sobre:
+            A través de este espacio, se pueden presentar denuncias en la Camara de Senadores sobre:
           </p>
 
           <ul class="space-y-[1.5vw] sm:space-y-2 text-[3vw] sm:text-base text-gray-700">
