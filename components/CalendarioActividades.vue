@@ -56,22 +56,6 @@
           </div>
         </div>
 
-        <!-- Leyenda -->
-        <div class="leyenda">
-          <div class="leyenda-item">
-            <span class="leyenda-dot dot-evento"></span>
-            <span class="leyenda-texto">Con sesión</span>
-          </div>
-          <div class="leyenda-item">
-            <span class="leyenda-dot dot-seleccionado"></span>
-            <span class="leyenda-texto">Seleccionado</span>
-          </div>
-          <div class="leyenda-item">
-            <span class="leyenda-dot dot-hoy"></span>
-            <span class="leyenda-texto">Hoy</span>
-          </div>
-        </div>
-
         <!-- Resumen del mes -->
         <div class="resumen-mes" v-if="totalEventosMes > 0">
           <span class="resumen-icon">📋</span>
@@ -80,7 +64,7 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- DERECHA: PDF SIMPLE + VIDEO YOUTUBE        -->
+      <!-- DERECHA: VIDEO YOUTUBE + PDF / IMAGEN      -->
       <!-- ========================================== -->
       <div class="timeline-panel">
         <!-- Encabezado del día -->
@@ -105,55 +89,110 @@
 
           <!-- Contenido de la sesión -->
           <div v-else class="sesion-contenido">
-            <!-- ========================================== -->
-            <!-- PDF SIMPLE (sin visor, solo card + enlace) -->
-            <!-- ========================================== -->
-            <a
-              :href="sesionSeleccionada.pdfUrl"
-              target="_blank"
-              rel="noopener"
-              class="pdf-card"
-            >
-              <div class="pdf-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div class="pdf-card-info">
-                <span class="pdf-card-nombre">{{ nombreArchivoPdf(sesionSeleccionada.pdfUrl) }}</span>
-                <span class="pdf-card-tipo">PDF · Clic para abrir</span>
-              </div>
-              <div class="pdf-card-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-10 10M17 17V7H7" />
-                </svg>
-              </div>
-            </a>
 
             <!-- ========================================== -->
-            <!-- YOUTUBE (debajo del PDF)                    -->
+            <!-- VISTA CON YOUTUBE (Sesiones normales)      -->
             <!-- ========================================== -->
-            <div class="youtube-section">
-              <div class="section-titulo">
-                <span>Video de la sesión</span>
+            <template v-if="sesionSeleccionada.youtubeUrl">
+              <!-- YOUTUBE (ARRIBA) -->
+              <div class="youtube-section">
+                <div class="section-titulo">
+                  <span>Video de la sesión</span>
+                </div>
+                <div class="youtube-container">
+                  <iframe
+                    :src="sesionSeleccionada.youtubeUrl"
+                    class="youtube-iframe"
+                    title="Video de la sesión"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy"
+                  ></iframe>
+                </div>
               </div>
-              <div class="youtube-container">
-                <iframe
-                  :src="sesionSeleccionada.youtubeUrl"
-                  class="youtube-iframe"
-                  title="Video de la sesión"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                  loading="lazy"
-                ></iframe>
+
+              <!-- PDF SIMPLE (ABAJO) -->
+              <a
+                :href="sesionSeleccionada.pdfUrl"
+                target="_blank"
+                rel="noopener"
+                class="pdf-card"
+              >
+                <div class="pdf-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div class="pdf-card-info">
+                  <span class="pdf-card-nombre">{{ nombreArchivoPdf(sesionSeleccionada.pdfUrl) }}</span>
+                  <span class="pdf-card-tipo">PDF · Clic para abrir</span>
+                </div>
+                <div class="pdf-card-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-10 10M17 17V7H7" />
+                  </svg>
+                </div>
+              </a>
+            </template>
+
+            <!-- ========================================== -->
+            <!-- VISTA CON IMAGEN (6 de Noviembre)          -->
+            <!-- ========================================== -->
+            <template v-else>
+              <div class="imagen-section">
+                <div class="section-titulo">
+                  <span>Imagen de la sesión</span>
+                </div>
+
+                <!-- Tarjeta clickeable para abrir el modal -->
+                <div
+                  class="imagen-card"
+                  @click="abrirModalImagen(sesionSeleccionada.pdfUrl)"
+                >
+                  <div class="imagen-preview">
+                    <img
+                      :src="sesionSeleccionada.pdfUrl"
+                      alt="Previsualización de la sesión"
+                    />
+                    <div class="imagen-overlay">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                      <span>Ampliar imagen</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </template>
+
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL / LIGHTBOX PARA IMAGEN               -->
+    <!-- ========================================== -->
+    <div
+      v-if="modalImagenAbierto"
+      class="modal-imagen-overlay"
+      @click="cerrarModalImagen"
+    >
+      <button class="modal-cerrar" @click.stop="cerrarModalImagen" aria-label="Cerrar imagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <img
+        :src="imagenModalActual"
+        alt="Imagen de la sesión en grande"
+        class="modal-imagen"
+        @click.stop
+      />
+    </div>
+
   </div>
 </template>
 
@@ -171,7 +210,7 @@ const props = defineProps({
 })
 
 // ========================================== //
-// DATA MOCK: 5 SESIONES CON PDF + YOUTUBE
+// DATA MOCK: 6 SESIONES (5 con video, 1 con imagen)
 // ========================================== //
 const sesionesMock = ref([
   {
@@ -223,6 +262,17 @@ const sesionesMock = ref([
     modality: 'Salón de Sesiones',
     pdfUrl: '/sesiones/Sesión Camaral 203ª.pdf',
     youtubeUrl: 'https://www.youtube.com/embed/O-4ePZSd6Mk'
+  },
+  // NUEVA SESIÓN 6 DE NOVIEMBRE (Solo imagen)
+  {
+    fecha: '2026-11-06',
+    titulo: 'Sesión Camaral 1ª',
+    hora: '15:00',
+    tipo: 'sesion',
+    tipoLabel: 'Sesión',
+    modality: 'Salón de Sesiones',
+    pdfUrl: '/sesiones/primera session.jpeg',
+    youtubeUrl: ''
   }
 ])
 
@@ -233,9 +283,29 @@ const mesActual = ref(new Date().getMonth())
 const añoActual = ref(new Date().getFullYear())
 const diaSeleccionado = ref(null)
 
+// Estado para el Modal de Imagen
+const modalImagenAbierto = ref(false)
+const imagenModalActual = ref('')
+
 const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const diasSemanaCompleto = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+
+// ========================================== //
+// HELPERS: Formateo de fecha LOCAL (evita bugs de UTC)
+// ========================================== //
+const formatearFecha = (fecha) => {
+  const y = fecha.getFullYear()
+  const m = String(fecha.getMonth() + 1).padStart(2, '0')
+  const d = String(fecha.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+const parsearFecha = (str) => {
+  // "2026-10-14" -> Date local (no UTC)
+  const [y, m, d] = str.split('-').map(Number)
+  return new Date(y, m - 1, d)
+}
 
 // ========================================== //
 // COMPUTED
@@ -248,7 +318,7 @@ const hoy = computed(() => {
     dia: ahora.getDate(),
     mes: ahora.getMonth(),
     año: ahora.getFullYear(),
-    fechaStr: ahora.toISOString().split('T')[0]
+    fechaStr: formatearFecha(ahora)
   }
 })
 
@@ -281,7 +351,7 @@ const diasDelMes = computed(() => {
       dia: diaNum,
       esMesActual: false,
       fecha,
-      fechaStr: fecha.toISOString().split('T')[0],
+      fechaStr: formatearFecha(fecha),
       tieneEvento: false,
       esSeleccionado: false,
       esHoy: false
@@ -291,7 +361,7 @@ const diasDelMes = computed(() => {
   // Días del mes actual
   for (let i = 1; i <= diasEnMes; i++) {
     const fecha = new Date(año, mes, i)
-    const fechaStr = fecha.toISOString().split('T')[0]
+    const fechaStr = formatearFecha(fecha)
     const tieneEvento = sesionesMock.value.some(s => s.fecha === fechaStr)
     const esHoy = fechaStr === hoy.value.fechaStr
 
@@ -319,7 +389,7 @@ const diasDelMes = computed(() => {
       dia: i,
       esMesActual: false,
       fecha,
-      fechaStr: fecha.toISOString().split('T')[0],
+      fechaStr: formatearFecha(fecha),
       tieneEvento: false,
       esSeleccionado: false,
       esHoy: false
@@ -364,51 +434,71 @@ const nombreArchivoPdf = (url) => {
   return decodeURIComponent(partes[partes.length - 1] || 'Documento.pdf')
 }
 
-// Selecciona la sesión más reciente disponible
+// Métodos para el Modal de Imagen
+const abrirModalImagen = (url) => {
+  imagenModalActual.value = url
+  modalImagenAbierto.value = true
+}
+
+const cerrarModalImagen = () => {
+  modalImagenAbierto.value = false
+  imagenModalActual.value = ''
+}
+
+// Selecciona el ÚLTIMO día con evento dentro del mes visible (si no hay, limpia)
 const seleccionarDiaConEvento = () => {
-  if (sesionesMock.value.length > 0) {
-    const sesionesOrdenadas = [...sesionesMock.value].sort(
-      (a, b) => new Date(b.fecha) - new Date(a.fecha)
-    )
-    const sesionMasReciente = sesionesOrdenadas[0]
-    if (sesionMasReciente) {
-      const fechaSesion = new Date(sesionMasReciente.fecha)
-      const dia = fechaSesion.getDate()
-      const mes = fechaSesion.getMonth()
-      const año = fechaSesion.getFullYear()
+  const dias = diasDelMes.value
+  const diasConEvento = dias.filter(d => d.tieneEvento && d.esMesActual)
 
-      mesActual.value = mes
-      añoActual.value = año
-
-      nextTick(() => {
-        const dias = diasDelMes.value
-        const diaEncontrado = dias.find(
-          d => d.dia === dia && d.esMesActual && d.fechaStr === sesionMasReciente.fecha
-        )
-        if (diaEncontrado) {
-          seleccionarDia(diaEncontrado)
-        } else {
-          const diaConEvento = dias.find(d => d.tieneEvento && d.esMesActual)
-          if (diaConEvento) seleccionarDia(diaConEvento)
-        }
-      })
-      return
-    }
+  if (diasConEvento.length > 0) {
+    // Tomamos el último día con evento del mes
+    const ultimoDiaConEvento = diasConEvento[diasConEvento.length - 1]
+    seleccionarDia(ultimoDiaConEvento)
+  } else {
+    // Si no hay eventos en el mes, limpiamos la selección
+    diaSeleccionado.value = null
   }
+}
+
+// Al cargar: ir al mes con la sesión más reciente (pero permitir navegar)
+const inicializarCalendario = () => {
+  if (sesionesMock.value.length === 0) return
+
+  const sesionesOrdenadas = [...sesionesMock.value].sort(
+    (a, b) => parsearFecha(b.fecha) - parsearFecha(a.fecha)
+  )
+  const sesionMasReciente = sesionesOrdenadas[0]
+
+  const fechaSesion = parsearFecha(sesionMasReciente.fecha)
+  mesActual.value = fechaSesion.getMonth()
+  añoActual.value = fechaSesion.getFullYear()
+
+  nextTick(() => {
+    const dias = diasDelMes.value
+    const diaEncontrado = dias.find(
+      d => d.esMesActual && d.fechaStr === sesionMasReciente.fecha
+    )
+    if (diaEncontrado) {
+      seleccionarDia(diaEncontrado)
+    } else {
+      // Si por alguna razón no se encuentra, seleccionar el último del mes
+      seleccionarDiaConEvento()
+    }
+  })
 }
 
 // ========================================== //
 // WATCHERS
 // ========================================== //
 watch(() => sesionesMock.value, () => {
-  seleccionarDiaConEvento()
+  inicializarCalendario()
 }, { deep: true })
 
 // ========================================== //
 // LIFECYCLE
 // ========================================== //
 onMounted(() => {
-  seleccionarDiaConEvento()
+  inicializarCalendario()
 })
 </script>
 
@@ -696,7 +786,7 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* PANEL DERECHO - PDF SIMPLE + YOUTUBE       */
+/* PANEL DERECHO - YOUTUBE + PDF              */
 /* ========================================== */
 .timeline-panel {
   padding: 2rem 2rem 1.8rem;
@@ -796,7 +886,45 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* PDF SIMPLE (card, sin visor)               */
+/* YOUTUBE (ARRIBA)                           */
+/* ========================================== */
+.youtube-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.section-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #611717;
+  flex-shrink: 0;
+}
+
+.youtube-container {
+  width: 100%;
+  flex: 1;
+  min-height: 220px;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  border: 1px solid rgba(97, 23, 23, 0.15);
+  background: #000;
+}
+
+.youtube-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ========================================== */
+/* PDF SIMPLE (ABAJO)                         */
 /* ========================================== */
 .pdf-card {
   display: flex;
@@ -886,45 +1014,152 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* YOUTUBE                                    */
+/* NUEVA SECCIÓN: IMAGEN DE LA SESIÓN         */
 /* ========================================== */
-.youtube-section {
+.imagen-section {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  flex: 1;
+  flex: 1; /* Toma el espacio disponible para centrar la tarjeta */
   min-height: 0;
+  justify-content: center; /* Centrado vertical de la tarjeta */
+  align-items: center; /* Centrado horizontal de la tarjeta */
 }
 
-.section-titulo {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #611717;
-  flex-shrink: 0;
-}
-
-.section-icon {
-  font-size: 1rem;
-}
-
-.youtube-container {
+.imagen-card {
   width: 100%;
-  flex: 1;
-  min-height: 220px;
+  max-width: 380px; /* Ancho máximo controlado */
+  height: 420px; /* Alto fijo controlado (un 10% aprox más pequeño que antes) */
   border-radius: 0.8rem;
   overflow: hidden;
-  border: 1px solid rgba(97, 23, 23, 0.15);
-  background: #000;
+  border: 1.5px solid rgba(97, 23, 23, 0.15);
+  position: relative;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.youtube-iframe {
+.imagen-card:hover {
+  border-color: #E03636;
+  box-shadow: 0 6px 20px rgba(224, 54, 54, 0.15);
+}
+
+.imagen-preview {
   width: 100%;
   height: 100%;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #f9fafb;
+}
+
+.imagen-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* No recorta la imagen */
+  object-position: center;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.imagen-card:hover .imagen-preview img {
+  transform: scale(1.03);
+}
+
+.imagen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(97, 23, 23, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.imagen-card:hover .imagen-overlay {
+  opacity: 1;
+}
+
+.imagen-overlay svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  stroke: white;
+}
+
+.imagen-overlay span {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ========================================== */
+/* MODAL / LIGHTBOX PARA IMAGEN               */
+/* ========================================== */
+.modal-imagen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  backdrop-filter: blur(4px);
+  cursor: zoom-out;
+}
+
+.modal-imagen {
+  max-width: 95%;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  cursor: default;
+  animation: zoomIn 0.3s ease;
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-cerrar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.modal-cerrar svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: white;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* ========================================== */
@@ -944,7 +1179,8 @@ onMounted(() => {
     min-height: 400px;
   }
 
-  .youtube-container {
+  .youtube-container,
+  .imagen-card {
     min-height: 260px;
   }
 }
@@ -981,6 +1217,15 @@ onMounted(() => {
   .pdf-card-icon {
     width: 2.2rem;
     height: 2.2rem;
+  }
+
+  .modal-imagen-overlay {
+    padding: 1rem;
+  }
+
+  .imagen-card {
+    min-height: 200px;
+    max-height: 300px;
   }
 }
 </style>
