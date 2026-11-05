@@ -508,10 +508,10 @@ onMounted(() => {
 /* ========================================== */
 .calendario-moderno {
   background: white;
-  border-radius: 1.5rem;
+  border-radius: 1.5vw;
   box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  max-width: 1200px;
+  max-width: 62.5vw; /* Equivale a 1200px en 1920px */
   margin: 0 auto;
   border: 1px solid rgba(97, 23, 23, 0.08);
 }
@@ -528,7 +528,7 @@ onMounted(() => {
 /* PANEL IZQUIERDO - CALENDARIO               */
 /* ========================================== */
 .calendario-panel {
-  padding: 2rem 2rem 1.8rem;
+  padding: 2vw 2vw 1.8vw;
   background: linear-gradient(180deg, #fdfcf9 0%, #f9f7ee 100%);
   border-right: 1px solid rgba(97, 23, 23, 0.08);
   display: flex;
@@ -540,12 +540,12 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5vw;
 }
 
 .btn-nav {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.8vw;
+  height: 2.8vw;
   border-radius: 50%;
   border: 1px solid rgba(97, 23, 23, 0.15);
   background: white;
@@ -569,8 +569,8 @@ onMounted(() => {
 }
 
 .icon-nav {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.4vw;
+  height: 1.4vw;
   stroke: #611717;
   transition: stroke 0.3s ease;
 }
@@ -578,18 +578,18 @@ onMounted(() => {
 .mes-titulo {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.5vw;
 }
 
 .mes-nombre {
-  font-size: 1.35rem;
+  font-size: 1.35vw;
   font-weight: 700;
   color: #611717;
   letter-spacing: 0.5px;
 }
 
 .mes-año {
-  font-size: 1.1rem;
+  font-size: 1.1vw;
   font-weight: 400;
   color: #8f8f8f;
 }
@@ -597,24 +597,24 @@ onMounted(() => {
 .dias-semana {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.3rem;
-  margin-bottom: 0.5rem;
+  gap: 0.3vw;
+  margin-bottom: 0.5vw;
 }
 
 .dia-semana {
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.7vw;
   font-weight: 600;
   color: #8f8f8f;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 0.5rem 0;
+  padding: 0.5vw 0;
 }
 
 .grid-dias {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.3rem;
+  gap: 0.3vw;
 }
 
 .dia-item {
@@ -623,10 +623,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.6rem;
+  border-radius: 0.6vw;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.85rem;
+  font-size: 0.85vw;
   font-weight: 500;
   user-select: none;
 }
@@ -652,7 +652,7 @@ onMounted(() => {
 .dia-con-evento {
   color: #611717;
   font-weight: 600;
-  border: 2px solid #E03636;
+  border: 0.1vw solid #E03636;
 }
 
 .dia-con-evento:hover {
@@ -686,9 +686,9 @@ onMounted(() => {
 
 .evento-indicador {
   position: absolute;
-  bottom: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  bottom: 0.25vw;
+  width: 0.5vw;
+  height: 0.5vw;
   background: #E03636;
   border-radius: 50%;
   z-index: 1;
@@ -696,9 +696,9 @@ onMounted(() => {
 
 .evento-indicador-seleccionado {
   position: absolute;
-  bottom: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  bottom: 0.25vw;
+  width: 0.5vw;
+  height: 0.5vw;
   background: white;
   border-radius: 50%;
   z-index: 1;
@@ -706,10 +706,10 @@ onMounted(() => {
 
 .hoy-indicador {
   position: absolute;
-  top: 0.2rem;
-  right: 0.2rem;
-  width: 0.45rem;
-  height: 0.45rem;
+  top: 0.2vw;
+  right: 0.2vw;
+  width: 0.45vw;
+  height: 0.45vw;
   background: #611717;
   border-radius: 50%;
   z-index: 1;
@@ -719,68 +719,22 @@ onMounted(() => {
   background: white;
 }
 
-.leyenda {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(97, 23, 23, 0.08);
-  flex-wrap: wrap;
-}
-
-.leyenda-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.leyenda-dot {
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.dot-evento {
-  background: #E03636;
-  border: 1px solid #E03636;
-}
-
-.dot-seleccionado {
-  background: #611717;
-}
-
-.dot-hoy {
-  background: #611717;
-  width: 0.5rem;
-  height: 0.5rem;
-  border: 2px solid #611717;
-  box-shadow: 0 0 0 2px white, 0 0 0 3px #611717;
-}
-
-.leyenda-texto {
-  font-size: 0.7rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
 .resumen-mes {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 1rem;
-  padding: 0.6rem 1rem;
+  gap: 0.6vw;
+  margin-top: 1vw;
+  padding: 0.6vw 1vw;
   background: rgba(97, 23, 23, 0.06);
-  border-radius: 0.6rem;
+  border-radius: 0.6vw;
 }
 
 .resumen-icon {
-  font-size: 0.9rem;
+  font-size: 0.9vw;
 }
 
 .resumen-texto {
-  font-size: 0.75rem;
+  font-size: 0.75vw;
   color: #611717;
   font-weight: 500;
 }
@@ -789,7 +743,7 @@ onMounted(() => {
 /* PANEL DERECHO - YOUTUBE + PDF              */
 /* ========================================== */
 .timeline-panel {
-  padding: 2rem 2rem 1.8rem;
+  padding: 2vw 2vw 1.8vw;
   background: white;
   display: flex;
   flex-direction: column;
@@ -800,22 +754,22 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  margin-bottom: 1.5vw;
+  padding-bottom: 1vw;
   border-bottom: 2px solid rgba(97, 23, 23, 0.06);
   flex-shrink: 0;
-  gap: 0.8rem;
+  gap: 0.8vw;
   flex-wrap: wrap;
 }
 
 .timeline-fecha {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0.6vw;
 }
 
 .timeline-dia-semana {
-  font-size: 0.7rem;
+  font-size: 0.7vw;
   font-weight: 600;
   color: #8f8f8f;
   text-transform: uppercase;
@@ -823,14 +777,14 @@ onMounted(() => {
 }
 
 .timeline-dia-numero {
-  font-size: 2rem;
+  font-size: 2vw;
   font-weight: 700;
   color: #611717;
   line-height: 1;
 }
 
 .timeline-mes {
-  font-size: 0.9rem;
+  font-size: 0.9vw;
   color: #6b7280;
   font-weight: 500;
 }
@@ -838,9 +792,9 @@ onMounted(() => {
 .timeline-badge {
   background: #611717;
   color: white;
-  padding: 0.25rem 0.9rem;
-  border-radius: 2rem;
-  font-size: 0.7rem;
+  padding: 0.25vw 0.9vw;
+  border-radius: 2vw;
+  font-size: 0.7vw;
   font-weight: 600;
 }
 
@@ -858,20 +812,20 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 300px;
+  min-height: 15vw;
   color: #9ca3af;
 }
 
 .vacio-titulo {
-  font-size: 1rem;
+  font-size: 1vw;
   font-weight: 600;
   color: #6b7280;
 }
 
 .vacio-subtitulo {
-  font-size: 0.8rem;
+  font-size: 0.8vw;
   color: #9ca3af;
-  margin-top: 0.3rem;
+  margin-top: 0.3vw;
 }
 
 /* ========================================== */
@@ -880,7 +834,7 @@ onMounted(() => {
 .sesion-contenido {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.2vw;
   flex: 1;
   min-height: 0;
 }
@@ -891,7 +845,7 @@ onMounted(() => {
 .youtube-section {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.6vw;
   flex: 1;
   min-height: 0;
 }
@@ -899,8 +853,8 @@ onMounted(() => {
 .section-titulo {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
+  gap: 0.4vw;
+  font-size: 0.85vw;
   font-weight: 700;
   color: #611717;
   flex-shrink: 0;
@@ -909,8 +863,8 @@ onMounted(() => {
 .youtube-container {
   width: 100%;
   flex: 1;
-  min-height: 220px;
-  border-radius: 0.8rem;
+  min-height: 11.5vw;
+  border-radius: 0.8vw;
   overflow: hidden;
   border: 1px solid rgba(97, 23, 23, 0.15);
   background: #000;
@@ -929,11 +883,11 @@ onMounted(() => {
 .pdf-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.2rem;
+  gap: 1vw;
+  padding: 1vw 1.2vw;
   background: #f9fafb;
-  border: 1.5px solid rgba(97, 23, 23, 0.12);
-  border-radius: 0.8rem;
+  border: 0.1vw solid rgba(97, 23, 23, 0.12);
+  border-radius: 0.8vw;
   text-decoration: none;
   color: inherit;
   transition: all 0.3s ease;
@@ -944,13 +898,13 @@ onMounted(() => {
   background: white;
   border-color: #E03636;
   box-shadow: 0 6px 20px rgba(224, 54, 54, 0.12);
-  transform: translateY(-2px);
+  transform: translateY(-0.1vw);
 }
 
 .pdf-card-icon {
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 0.6rem;
+  width: 2.8vw;
+  height: 2.8vw;
+  border-radius: 0.6vw;
   background: #fee2e2;
   color: #b91c1c;
   display: flex;
@@ -960,20 +914,20 @@ onMounted(() => {
 }
 
 .pdf-card-icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.5vw;
+  height: 1.5vw;
 }
 
 .pdf-card-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.15vw;
   min-width: 0;
 }
 
 .pdf-card-nombre {
-  font-size: 0.85rem;
+  font-size: 0.85vw;
   font-weight: 700;
   color: #1f2937;
   white-space: nowrap;
@@ -982,14 +936,14 @@ onMounted(() => {
 }
 
 .pdf-card-tipo {
-  font-size: 0.7rem;
+  font-size: 0.7vw;
   color: #6b7280;
   font-weight: 500;
 }
 
 .pdf-card-arrow {
-  width: 2rem;
-  height: 2rem;
+  width: 2vw;
+  height: 2vw;
   border-radius: 50%;
   background: rgba(97, 23, 23, 0.06);
   display: flex;
@@ -1000,8 +954,8 @@ onMounted(() => {
 }
 
 .pdf-card-arrow svg {
-  width: 1rem;
-  height: 1rem;
+  width: 1vw;
+  height: 1vw;
   stroke: #611717;
 }
 
@@ -1019,18 +973,18 @@ onMounted(() => {
 .imagen-section {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  flex: 1; /* Toma el espacio disponible para centrar la tarjeta */
+  gap: 0.6vw;
+  flex: 1;
   min-height: 0;
-  justify-content: center; /* Centrado vertical de la tarjeta */
-  align-items: center; /* Centrado horizontal de la tarjeta */
+  justify-content: center;
+  align-items: center;
 }
 
 .imagen-card {
   width: 100%;
-  max-width: 380px; /* Ancho máximo controlado */
-  height: 420px; /* Alto fijo controlado (un 10% aprox más pequeño que antes) */
-  border-radius: 0.8rem;
+  max-width: 20vw; /* 380px en 1920px */
+  height: 22vw; /* 420px en 1920px */
+  border-radius: 0.8vw;
   overflow: hidden;
   border: 1.5px solid rgba(97, 23, 23, 0.15);
   position: relative;
@@ -1058,7 +1012,7 @@ onMounted(() => {
 .imagen-preview img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* No recorta la imagen */
+  object-fit: contain;
   object-position: center;
   display: block;
   transition: transform 0.4s ease;
@@ -1076,7 +1030,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.5vw;
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -1087,13 +1041,13 @@ onMounted(() => {
 }
 
 .imagen-overlay svg {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.5vw;
+  height: 2.5vw;
   stroke: white;
 }
 
 .imagen-overlay span {
-  font-size: 0.9rem;
+  font-size: 0.9vw;
   font-weight: 600;
 }
 
@@ -1108,16 +1062,16 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 2vw;
   backdrop-filter: blur(4px);
   cursor: zoom-out;
 }
 
 .modal-imagen {
-  max-width: 95%;
+  max-width: 95vw;
   max-height: 95vh;
   object-fit: contain;
-  border-radius: 0.5rem;
+  border-radius: 0.5vw;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   cursor: default;
   animation: zoomIn 0.3s ease;
@@ -1125,10 +1079,10 @@ onMounted(() => {
 
 .modal-cerrar {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 3rem;
-  height: 3rem;
+  top: 1.5vw;
+  right: 1.5vw;
+  width: 3vw;
+  height: 3vw;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -1146,8 +1100,8 @@ onMounted(() => {
 }
 
 .modal-cerrar svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.5vw;
+  height: 1.5vw;
   stroke: white;
 }
 
@@ -1163,9 +1117,14 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* RESPONSIVE                                 */
+/* RESPONSIVE (Ajustes para evitar que se deforme) */
 /* ========================================== */
 @media (max-width: 1024px) {
+  .calendario-moderno {
+    max-width: 95vw;
+    border-radius: 2vw;
+  }
+
   .calendario-grid {
     grid-template-columns: 1fr;
   }
@@ -1173,59 +1132,46 @@ onMounted(() => {
   .calendario-panel {
     border-right: none;
     border-bottom: 1px solid rgba(97, 23, 23, 0.08);
+    padding: 4vw;
   }
 
   .timeline-panel {
-    min-height: 400px;
+    padding: 4vw;
+    min-height: 60vw;
   }
 
-  .youtube-container,
-  .imagen-card {
-    min-height: 260px;
-  }
-}
-
-@media (max-width: 640px) {
-  .calendario-panel,
-  .timeline-panel {
-    padding: 1.2rem;
-  }
-
-  .mes-nombre {
-    font-size: 1.1rem;
-  }
-
-  .dia-item {
-    font-size: 0.75rem;
-  }
-
-  .timeline-dia-numero {
-    font-size: 1.5rem;
-  }
-
-  .timeline-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.6rem;
-  }
-
-  .pdf-card {
-    padding: 0.8rem;
-    gap: 0.7rem;
-  }
-
-  .pdf-card-icon {
-    width: 2.2rem;
-    height: 2.2rem;
-  }
-
-  .modal-imagen-overlay {
-    padding: 1rem;
-  }
+  /* Forzar tamaños más legibles en tablet/móvil */
+  .mes-nombre { font-size: 4vw; }
+  .mes-año { font-size: 3.5vw; }
+  .btn-nav { width: 8vw; height: 8vw; }
+  .icon-nav { width: 4vw; height: 4vw; }
+  .dia-semana { font-size: 2.5vw; }
+  .dia-item { font-size: 2.5vw; border-radius: 1.5vw; }
+  .evento-indicador, .evento-indicador-seleccionado { width: 1.5vw; height: 1.5vw; bottom: 1vw; }
+  .hoy-indicador { width: 1.2vw; height: 1.2vw; top: 0.8vw; right: 0.8vw; }
+  .resumen-mes { font-size: 2.5vw; border-radius: 1.5vw; }
+  .resumen-texto { font-size: 2.5vw; }
+  
+  .timeline-dia-numero { font-size: 6vw; }
+  .timeline-dia-semana, .timeline-mes { font-size: 2.5vw; }
+  .timeline-badge { font-size: 2.5vw; padding: 1vw 3vw; border-radius: 4vw; }
+  .section-titulo { font-size: 3.5vw; }
+  
+  .youtube-container { min-height: 50vw; border-radius: 2vw; }
+  .pdf-card { padding: 3vw; gap: 3vw; border-radius: 2vw; }
+  .pdf-card-icon { width: 10vw; height: 10vw; border-radius: 2vw; }
+  .pdf-card-icon svg { width: 5vw; height: 5vw; }
+  .pdf-card-nombre { font-size: 3vw; }
+  .pdf-card-tipo { font-size: 2.5vw; }
+  .pdf-card-arrow { width: 6vw; height: 6vw; }
+  .pdf-card-arrow svg { width: 3vw; height: 3vw; }
 
   .imagen-card {
-    min-height: 200px;
-    max-height: 300px;
+    max-width: 60vw;
+    height: 80vw;
+    border-radius: 2vw;
   }
+  .imagen-overlay svg { width: 10vw; height: 10vw; }
+  .imagen-overlay span { font-size: 4vw; }
 }
 </style>
