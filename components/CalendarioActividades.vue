@@ -74,100 +74,127 @@
             <span class="timeline-dia-numero">{{ diaSeleccionado?.dia || '' }}</span>
             <span class="timeline-mes">{{ diaSeleccionado?.mesNombre || '' }}</span>
           </div>
-          <div class="timeline-badge" v-if="sesionSeleccionada">
-            {{ sesionSeleccionada.titulo }}
+          <!-- 🟢 Badge dinámico: en vivo o título de sesión -->
+          <div
+            class="timeline-badge"
+            :class="{ 'badge-live': isLive }"
+            v-if="isLive || sesionSeleccionada"
+          >
+            <span v-if="isLive" class="live-dot"></span>
+            {{ isLive ? 'EN VIVO' : sesionSeleccionada.titulo }}
           </div>
         </div>
 
         <!-- Contenido -->
         <div class="timeline-contenido">
-          <!-- Estado vacío -->
-          <div v-if="!sesionSeleccionada" class="timeline-vacio">
-            <p class="vacio-titulo">No hay sesión en esta fecha</p>
-            <p class="vacio-subtitulo">Selecciona un día con sesión en el calendario</p>
+          <!-- 🟢 PRIORIDAD 1: SI HAY TRANSMISIÓN EN VIVO -->
+          <div v-if="isLive" class="youtube-section live-section">
+            <div class="section-titulo">
+              <span>🔴 Transmisión en Vivo</span>
+            </div>
+            <div class="youtube-container live-container">
+              <iframe
+                :src="`https://www.youtube.com/embed/${liveYoutubeId}?autoplay=1&rel=0`"
+                class="youtube-iframe"
+                title="Transmisión en vivo del Senado"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
 
-          <!-- Contenido de la sesión -->
-          <div v-else class="sesion-contenido">
+          <!-- 🟢 PRIORIDAD 2: COMPORTAMIENTO NORMAL (SIN LIVE) -->
+          <template v-else>
+            <!-- Estado vacío -->
+            <div v-if="!sesionSeleccionada" class="timeline-vacio">
+              <p class="vacio-titulo">No hay sesión en esta fecha</p>
+              <p class="vacio-subtitulo">Selecciona un día con sesión en el calendario</p>
+            </div>
 
-            <!-- ========================================== -->
-            <!-- VISTA CON YOUTUBE (Sesiones normales)      -->
-            <!-- ========================================== -->
-            <template v-if="sesionSeleccionada.youtubeUrl">
-              <!-- YOUTUBE (ARRIBA) -->
-              <div class="youtube-section">
-                <div class="section-titulo">
-                  <span>Video de la sesión</span>
-                </div>
-                <div class="youtube-container">
-                  <iframe
-                    :src="sesionSeleccionada.youtubeUrl"
-                    class="youtube-iframe"
-                    title="Video de la sesión"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              </div>
+            <!-- Contenido de la sesión -->
+            <div v-else class="sesion-contenido">
 
-              <!-- PDF SIMPLE (ABAJO) -->
-              <a
-                :href="sesionSeleccionada.pdfUrl"
-                target="_blank"
-                rel="noopener"
-                class="pdf-card"
-              >
-                <div class="pdf-card-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <div class="pdf-card-info">
-                  <span class="pdf-card-nombre">{{ nombreArchivoPdf(sesionSeleccionada.pdfUrl) }}</span>
-                  <span class="pdf-card-tipo">PDF · Clic para abrir</span>
-                </div>
-                <div class="pdf-card-arrow">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-10 10M17 17V7H7" />
-                  </svg>
-                </div>
-              </a>
-            </template>
-
-            <!-- ========================================== -->
-            <!-- VISTA CON IMAGEN (6 de Noviembre)          -->
-            <!-- ========================================== -->
-            <template v-else>
-              <div class="imagen-section">
-                <div class="section-titulo">
-                  <span>Imagen de la sesión</span>
+              <!-- ========================================== -->
+              <!-- VISTA CON YOUTUBE (Sesiones normales)      -->
+              <!-- ========================================== -->
+              <template v-if="sesionSeleccionada.youtubeUrl">
+                <!-- YOUTUBE (ARRIBA) -->
+                <div class="youtube-section">
+                  <div class="section-titulo">
+                    <span>Video de la sesión</span>
+                  </div>
+                  <div class="youtube-container">
+                    <iframe
+                      :src="sesionSeleccionada.youtubeUrl"
+                      class="youtube-iframe"
+                      title="Video de la sesión"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                    ></iframe>
+                  </div>
                 </div>
 
-                <!-- Tarjeta clickeable para abrir el modal -->
-                <div
-                  class="imagen-card"
-                  @click="abrirModalImagen(sesionSeleccionada.pdfUrl)"
+                <!-- PDF SIMPLE (ABAJO) -->
+                <a
+                  :href="sesionSeleccionada.pdfUrl"
+                  target="_blank"
+                  rel="noopener"
+                  class="pdf-card"
                 >
-                  <div class="imagen-preview">
-                    <img
-                      :src="sesionSeleccionada.pdfUrl"
-                      alt="Previsualización de la sesión"
-                    />
-                    <div class="imagen-overlay">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                      </svg>
-                      <span>Ampliar imagen</span>
+                  <div class="pdf-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div class="pdf-card-info">
+                    <span class="pdf-card-nombre">{{ nombreArchivoPdf(sesionSeleccionada.pdfUrl) }}</span>
+                    <span class="pdf-card-tipo">PDF · Clic para abrir</span>
+                  </div>
+                  <div class="pdf-card-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7l-10 10M17 17V7H7" />
+                    </svg>
+                  </div>
+                </a>
+              </template>
+
+              <!-- ========================================== -->
+              <!-- VISTA CON IMAGEN (6 de Noviembre)          -->
+              <!-- ========================================== -->
+              <template v-else>
+                <div class="imagen-section">
+                  <div class="section-titulo">
+                    <span>Imagen de la sesión</span>
+                  </div>
+
+                  <!-- Tarjeta clickeable para abrir el modal -->
+                  <div
+                    class="imagen-card"
+                    @click="abrirModalImagen(sesionSeleccionada.pdfUrl)"
+                  >
+                    <div class="imagen-preview">
+                      <img
+                        :src="sesionSeleccionada.pdfUrl"
+                        alt="Previsualización de la sesión"
+                      />
+                      <div class="imagen-overlay">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                        <span>Ampliar imagen</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </template>
+              </template>
 
-          </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -197,7 +224,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted, nextTick } from 'vue'
 
 // ========================================== //
 // PROPS
@@ -286,6 +313,11 @@ const diaSeleccionado = ref(null)
 // Estado para el Modal de Imagen
 const modalImagenAbierto = ref(false)
 const imagenModalActual = ref('')
+
+// 🟢 NUEVO ESTADO: Para el modo "en vivo"
+const isLive = ref(false)
+const liveYoutubeId = ref('')
+let liveInterval = null
 
 const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -400,6 +432,45 @@ const diasDelMes = computed(() => {
 })
 
 // ========================================== //
+// 🟢 NUEVA FUNCIÓN: Consultar estado en vivo
+// ========================================== //
+const fetchLiveStatus = async () => {
+  try {
+    const response = await fetch('https://demoback.senado.gob.bo/api/sesiones')
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    if (data.success && Array.isArray(data.data)) {
+      // Buscar el video que esté EN VIVO y ACTIVO
+      const liveVideo = data.data.find(v => v.isLive === true && v.isActive === true)
+
+      if (liveVideo && liveVideo.youtubeId) {
+        isLive.value = true
+        liveYoutubeId.value = liveVideo.youtubeId
+        console.log('🔴 Transmisión en vivo detectada:', liveVideo.title)
+      } else {
+        if (isLive.value) {
+          console.log('⚪ Transmisión en vivo finalizada')
+        }
+        isLive.value = false
+        liveYoutubeId.value = ''
+      }
+    } else {
+      isLive.value = false
+      liveYoutubeId.value = ''
+    }
+  } catch (error) {
+    console.error('Error al obtener estado en vivo:', error)
+    // No apagamos el live si ya estaba encendido por un fallo de red
+    // (evita parpadeos). Solo lo apagamos si nunca estuvo encendido.
+  }
+}
+
+// ========================================== //
 // MÉTODOS
 // ========================================== //
 const cambiarMes = (delta) => {
@@ -493,7 +564,18 @@ watch(() => sesionesMock.value, () => {
 // LIFECYCLE
 // ========================================== //
 onMounted(() => {
-  inicializarCalendario()
+  fetchLiveStatus()          // 🟢 Primero consultamos el live
+  inicializarCalendario()    // 🟢 Después inicializamos el calendario
+
+  // 🟢 Re-consultar cada 60 s
+  liveInterval = setInterval(fetchLiveStatus, 60000)
+})
+
+onUnmounted(() => {
+  if (liveInterval) {
+    clearInterval(liveInterval)
+    liveInterval = null
+  }
 })
 </script>
 
@@ -793,6 +875,34 @@ onMounted(() => {
   font-weight: 600;
 }
 
+/* 🟢 Badge EN VIVO con animación */
+.timeline-badge.badge-live {
+  background: #dc2626;
+  animation: pulse-live 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 0.4vw;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 0.5vw;
+  height: 0.5vw;
+  background: white;
+  border-radius: 50%;
+  animation: blink-live 1.5s infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+  50%      { box-shadow: 0 0 10px 5px rgba(220, 38, 38, 0.4); }
+}
+
+@keyframes blink-live {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
 /* Sin scroll: se adapta al alto del calendario */
 .timeline-contenido {
   flex: 1;
@@ -870,6 +980,16 @@ onMounted(() => {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* 🟢 Sección EN VIVO */
+.live-section {
+  justify-content: flex-start;
+}
+
+.live-container {
+  border: 2px solid #dc2626;
+  box-shadow: 0 0 25px rgba(220, 38, 38, 0.35);
 }
 
 /* ========================================== */
@@ -1150,6 +1270,16 @@ onMounted(() => {
   .timeline-dia-numero { font-size: 6vw; }
   .timeline-dia-semana, .timeline-mes { font-size: 2.5vw; }
   .timeline-badge { font-size: 2.5vw; padding: 1vw 3vw; border-radius: 4vw; }
+
+  /* 🟢 Badge EN VIVO responsive */
+  .timeline-badge.badge-live {
+    gap: 1.2vw;
+  }
+  .live-dot {
+    width: 1.5vw;
+    height: 1.5vw;
+  }
+
   .section-titulo { font-size: 3.5vw; }
   
   .youtube-container { min-height: 50vw; border-radius: 2vw; }
