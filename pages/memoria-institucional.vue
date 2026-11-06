@@ -8,7 +8,6 @@
           Memoria <span class="text-[#8f1522]">Institucional</span>
         </h1>
         <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
-
       </div>
 
       <!-- ========================================== -->
@@ -50,8 +49,12 @@
         </div>
       </div>
 
-      <!-- Botón volver -->
-      <div class="text-center mt-12">
+      <!-- ========================================== -->
+      <!-- BOTONES INFERIORES                         -->
+      <!-- ========================================== -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+
+        <!-- Volver al inicio (navegación interna Nuxt) -->
         <NuxtLink 
           to="/" 
           class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
@@ -59,8 +62,50 @@
           <Icon name="mdi:arrow-left" class="w-5 h-5" />
           Volver al inicio
         </NuxtLink>
+
+        <!-- 🔥 NUEVO: Botón que redirige al HTML externo -->
+        <a 
+          href="/InformeFinal20252026.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#611717] hover:bg-[#3a060d] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+          title="Ver Informe Final 2025-2026"
+        >
+          <Icon name="mdi:file-document" class="w-5 h-5" />
+          Ver Informe Final 2025-2026
+          <Icon name="mdi:open-in-new" class="w-4 h-4 opacity-80" />
+        </a>
+
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- 🔥 BOTÓN FLOTANTE → InformeFinal20252026.html -->
+    <!-- Aparece al hacer scroll > 300px             -->
+    <!-- ========================================== -->
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0 translate-y-4"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 translate-y-4"
+    >
+      <a
+        v-if="mostrarBotonFlotante"
+        href="/InformeFinal20252026.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="fixed bottom-6 right-6 z-[9998] w-14 h-14 rounded-full bg-[#611717] hover:bg-[#3a060d] text-white shadow-2xl flex items-center justify-center transition-colors group"
+        title="Ver Informe Final 2025-2026"
+        aria-label="Ver Informe Final 2025-2026"
+      >
+        <Icon
+          name="mdi:file-document-arrow-right"
+          class="w-7 h-7 group-hover:scale-110 transition-transform"
+        />
+      </a>
+    </Transition>
 
     <!-- ========================================== -->
     <!-- MODAL DEL VISOR DE PDF                     -->
@@ -439,6 +484,15 @@ const tomos2025 = [
     nombreArchivo: 'Redactor_Tomo_IV_2025-2026.pdf'
   }  
 ]
+
+// ============================================ //
+// 🔥 BOTÓN FLOTANTE → InformeFinal20252026.html
+// ============================================ //
+const mostrarBotonFlotante = ref(false)
+
+const handleScrollBoton = () => {
+  mostrarBotonFlotante.value = window.scrollY > 300
+}
 
 // ============================================ //
 // ESTADO DEL VISOR DE PDF
@@ -886,10 +940,15 @@ watch(paginaInput, (newVal) => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
+  // 🔥 Listener para el botón flotante
+  window.addEventListener('scroll', handleScrollBoton, { passive: true })
+  handleScrollBoton()
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
+  // 🔥 Limpiar listener del botón flotante
+  window.removeEventListener('scroll', handleScrollBoton)
   document.body.style.overflow = 'auto'
 })
 </script>

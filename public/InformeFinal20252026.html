@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe de Gestión | Cámara de Senadores 2025-2026</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Chart.js DataLabels Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              300: '#faecc1',
+              400: '#eedda3',
+              500: '#e3d194',
+              600: '#c5b06e',
+              700: '#9b8744',
+            },
+            crimson: {
+              400: '#c83b3b',
+              500: '#a12626',
+              600: '#831c1c',
+              700: '#611717',
+              800: '#400c0c',
+              900: '#230505',
+              950: '#150303'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'glow-pulse': 'glowPulse 4s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            glowPulse: {
+              '0%': { opacity: '0.3', transform: 'scale(1)' },
+              '100%': { opacity: '0.6', transform: 'scale(1.08)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f0202;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', Georgia, serif;
+    }
+
+    .senado-bg {
+      background: radial-gradient(circle at 50% 25%, #3d0d0d 0%, #1e0505 50%, #0a0101 100%);
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fff4d1 0%, #e3d194 40%, #caa959 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-shine-text {
+      background: linear-gradient(
+        110deg,
+        #cfb160 0%,
+        #e3d194 20%,
+        #ffffff 45%,
+        #ffe89e 55%,
+        #c5a046 75%,
+        #faecc1 100%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShine 4s linear infinite;
+      filter: drop-shadow(0 2px 8px rgba(227, 209, 148, 0.25));
+    }
+
+    @keyframes goldShine {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .senado-glass {
+      background: rgba(35, 8, 8, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(227, 209, 148, 0.25);
+    }
+
+    .senado-glass-card {
+      background: rgba(28, 6, 6, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(227, 209, 148, 0.2);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .senado-glass-card:hover {
+      border-color: rgba(227, 209, 148, 0.6);
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(227, 209, 148, 0.2);
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(18, 3, 3, 0.9);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #a12626;
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #e3d194;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 senado-bg relative select-none">
+
+  <!-- Efectos Ambientales de Fondo -->
+  <div class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-[#a12626]/25 via-[#611717]/15 to-transparent blur-3xl pointer-events-none animate-glow-pulse"></div>
+  <div class="fixed bottom-[-15%] right-[-5%] w-[650px] h-[400px] bg-gradient-to-t from-[#e3d194]/12 to-transparent blur-3xl pointer-events-none"></div>
+
+  <!-- Barra Superior de Progreso -->
+  <div class="fixed top-0 left-0 right-0 h-2 bg-crimson-950/80 z-50">
+    <div id="progress-bar" class="h-full bg-gradient-to-r from-crimson-500 via-gold-500 to-gold-400 transition-all duration-300 w-[5.88%] shadow-[0_0_12px_rgba(227,209,148,0.6)]"></div>
+  </div>
+
+  <!-- Barra Institucional Superior -->
+  <header class="fixed top-2.5 left-0 right-0 px-6 md:px-12 py-3 z-40 flex items-center justify-between pointer-events-none">
+    <div class="flex items-center gap-3.5 pointer-events-auto">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-crimson-700 via-crimson-900 to-black border-2 border-gold-500/50 p-1 flex items-center justify-center shadow-lg shadow-crimson-950">
+        <img 
+          src="https://drive.google.com/thumbnail?id=15pHbZfrU6c7de8sRaKesOVzwxTAw7wJX&sz=w1000" 
+          alt="Escudo Senado" 
+          class="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          onerror="this.onerror=null; this.src='https://placehold.co/96x96/230505/e3d194?text=SENADO';"
+        />
+      </div>
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="font-cinzel text-sm md:text-base font-bold tracking-widest text-gold-500 uppercase">Cámara de Senadores</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-crimson-900/90 text-gold-400 border border-gold-500/30 font-medium">2025-2026</span>
+        </div>
+        <p id="deck-current-title" class="text-xs md:text-sm text-slate-300 font-medium hidden sm:block">Informe de Gestión</p>
+      </div>
+    </div>
+
+    <!-- Navegación Rápida -->
+    <div class="flex items-center gap-2 pointer-events-auto senado-glass px-3.5 py-2 rounded-full shadow-2xl">
+      <button id="btn-grid" title="Vista Cuadrícula (G)" class="p-2 rounded-full hover:bg-crimson-800/80 text-slate-300 hover:text-gold-400 transition-colors">
+        <i data-lucide="layout-grid" class="w-4 h-4 md:w-5 md:h-5"></i>
+      </button>
+      <button id="btn-index" title="Índice de Diapositivas (M)" class="p-2 rounded-full hover:bg-crimson-800/80 text-slate-300 hover:text-gold-400 transition-colors">
+        <i data-lucide="list-ordered" class="w-4 h-4 md:w-5 md:h-5"></i>
+      </button>
+      <div class="w-px h-5 bg-crimson-700/60 my-auto"></div>
+      <button id="btn-fullscreen" title="Pantalla Completa (F)" class="p-2 rounded-full hover:bg-crimson-800/80 text-slate-300 hover:text-gold-400 transition-colors">
+        <i id="fullscreen-icon" data-lucide="maximize" class="w-4 h-4 md:w-5 md:h-5"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Viewport de Diapositivas (Exactas 17 Diapositivas: 0 a 16) -->
+  <main id="viewport" class="relative w-full h-full flex items-center justify-center p-4 sm:p-8 md:p-14 pt-20 pb-20 overflow-hidden">
+
+    <!-- Diapositiva 0: Portada Principal -->
+    <section data-slide="0" class="slide-content absolute inset-0 w-full h-full flex flex-col justify-center items-center text-center transition-all duration-500 opacity-100 scale-100 z-10 overflow-hidden">
+      <div class="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden opacity-55">
+        <img 
+          src="https://drive.google.com/thumbnail?id=18Iy01G3HovnYNlSa5FpTJuiOuIYUW5Gu&sz=w2000" 
+          alt="Hemiciclo Senado" 
+          class="w-full h-full object-cover object-center scale-105 filter brightness-95 contrast-110"
+          onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/1a0404/eedda3?text=HEMICICLO+DEL+SENADO';"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0f0202]/85 via-transparent to-[#0f0202]/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0202] via-[#210505]/45 to-[#0f0202]/80"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,#0a0101_95%)]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center">
+        <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-crimson-900/70 border border-gold-500/40 text-gold-400 text-xs sm:text-sm font-semibold uppercase tracking-widest mb-6 animate-fade-up">
+          <span class="w-2.5 h-2.5 rounded-full bg-gold-500 animate-pulse"></span>
+          Estado Plurinacional de Bolivia
+        </div>
+
+        <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6 rounded-full bg-gradient-to-tr from-crimson-700 via-crimson-900 to-black p-1.5 shadow-[0_0_35px_rgba(227,209,148,0.3)] border-2 border-gold-500/60 animate-fade-up">
+          <div class="w-full h-full rounded-full bg-[#1e0404] flex items-center justify-center p-3 overflow-hidden">
+            <img 
+              src="https://drive.google.com/thumbnail?id=15pHbZfrU6c7de8sRaKesOVzwxTAw7wJX&sz=w1000" 
+              alt="Escudo Senado Bolivia" 
+              class="w-full h-full object-contain filter drop-shadow-[0_4px_10px_rgba(227,209,148,0.35)]"
+              onerror="this.onerror=null; this.src='https://placehold.co/160x160/230505/e3d194?text=BOLIVIA';"
+            />
+          </div>
+        </div>
+
+        <h1 class="font-cinzel text-5xl sm:text-7xl md:text-8xl font-black tracking-wider gold-shine-text uppercase leading-none mb-4 animate-fade-up">
+          INFORME DE GESTIÓN
+        </h1>
+        <h2 class="text-2xl sm:text-4xl md:text-5xl font-medium tracking-wide text-slate-100 mb-3 animate-fade-up">
+          CÁMARA DE SENADORES
+        </h2>
+        <div class="h-1 w-44 bg-gradient-to-r from-transparent via-gold-500 to-transparent my-4"></div>
+        <p class="font-cinzel text-base sm:text-xl md:text-2xl font-bold tracking-widest text-gold-400 uppercase mb-10 animate-fade-up">
+          LEGISLATURA 2025-2026
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-5 animate-fade-up">
+          <button onclick="Deck.next()" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 border border-gold-500/50 text-gold-300 font-bold text-base shadow-2xl shadow-crimson-950/80 hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+            <span>Iniciar Presentación</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+          <button onclick="Deck.toggleGrid()" class="px-8 py-4 rounded-2xl senado-glass hover:bg-crimson-900/60 border border-gold-500/30 text-slate-100 font-semibold text-base transition-all flex items-center gap-3">
+            <i data-lucide="grid" class="w-5 h-5 text-gold-500"></i>
+            <span>Temario Completo</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 1: Mensaje Institucional -->
+    <section data-slide="1" class="slide-content absolute inset-0 w-full h-full flex flex-col justify-center transition-all duration-500 opacity-0 pointer-events-none scale-95 overflow-hidden">
+      <div class="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden opacity-65">
+        <img 
+          src="https://drive.google.com/thumbnail?id=18Iy01G3HovnYNlSa5FpTJuiOuIYUW5Gu&sz=w2000" 
+          alt="Hemiciclo Senado" 
+          class="w-full h-full object-cover object-center scale-105 filter brightness-95 contrast-115"
+          onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/1a0404/eedda3?text=HEMICICLO+DEL+SENADO';"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0f0202]/80 via-transparent to-[#0f0202]/80"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0202] via-[#210505]/40 to-[#0f0202]/75"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,#0c0101_95%)]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-5xl w-full mx-auto px-6">
+        <div class="bg-[#120202]/30 backdrop-blur-sm p-10 sm:p-16 md:p-20 rounded-3xl overflow-hidden shadow-2xl border border-gold-500/25 border-l-8 border-l-gold-500 w-full">
+          <div class="flex items-center gap-4 text-gold-500 mb-8">
+            <div class="w-12 h-12 rounded-full bg-crimson-900/60 border border-gold-500/50 p-1.5 flex items-center justify-center backdrop-blur-sm">
+              <img 
+                src="https://drive.google.com/thumbnail?id=15pHbZfrU6c7de8sRaKesOVzwxTAw7wJX&sz=w1000" 
+                alt="Logo Senado" 
+                class="w-full h-full object-contain"
+                onerror="this.onerror=null; this.src='https://placehold.co/96x96/230505/e3d194?text=SENADO';"
+              />
+            </div>
+            <span class="font-cinzel text-base md:text-lg tracking-widest uppercase font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Compromiso Constitucional</span>
+          </div>
+
+          <blockquote class="text-3xl sm:text-5xl md:text-6xl font-serif text-white font-normal leading-tight italic mb-10 drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)]">
+            «Un año legislando con <span class="text-gold-400 font-semibold underline decoration-gold-500/40">vocación democrática</span>, fiscalización activa y compromiso patriótico por Bolivia.»
+          </blockquote>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-gold-500/30 text-sm md:text-base">
+            <div class="flex items-center gap-4 bg-crimson-950/45 p-4 rounded-xl border border-gold-500/20 backdrop-blur-sm shadow-lg">
+              <div class="w-10 h-10 rounded-lg bg-crimson-800/70 border border-gold-500/40 flex items-center justify-center text-gold-400 font-bold text-lg">1</div>
+              <span class="text-slate-200 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">Construcción de consensos plurales</span>
+            </div>
+            <div class="flex items-center gap-4 bg-crimson-950/45 p-4 rounded-xl border border-gold-500/20 backdrop-blur-sm shadow-lg">
+              <div class="w-10 h-10 rounded-lg bg-crimson-800/70 border border-gold-500/40 flex items-center justify-center text-gold-400 font-bold text-lg">2</div>
+              <span class="text-slate-200 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">Fiscalización irrestricta y transparente</span>
+            </div>
+            <div class="flex items-center gap-4 bg-crimson-950/45 p-4 rounded-xl border border-gold-500/20 backdrop-blur-sm shadow-lg">
+              <div class="w-10 h-10 rounded-lg bg-crimson-800/70 border border-gold-500/40 flex items-center justify-center text-gold-400 font-bold text-lg">3</div>
+              <span class="text-slate-200 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">Representación efectiva de las regiones</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 2: Periodo Legislativo -->
+    <section data-slide="2" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl sm:text-6xl md:text-7xl font-cinzel font-black text-white">
+          PERIODO LEGISLATIVO 2025-2026
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
+        <div class="senado-glass-card rounded-3xl p-10 text-center relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-crimson-600 to-crimson-400"></div>
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-crimson-900/60 border border-crimson-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="file-check-2" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl md:text-8xl font-black text-white mb-2 tracking-tight group-hover:text-gold-400 transition-colors">
+            <span class="counter" data-target="101">0</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-gold-500 uppercase tracking-wide">
+            Leyes Sancionadas y Proyectos Aprobados
+          </h3>
+        </div>
+
+        <div class="senado-glass-card rounded-3xl p-10 text-center relative overflow-hidden group">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-gold-500 to-gold-300"></div>
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="layers" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl md:text-8xl font-black text-white mb-2 tracking-tight group-hover:text-gold-400 transition-colors">
+            <span class="counter" data-target="365">0</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-gold-500 uppercase tracking-wide">
+            Proyectos de Ley en Tratamiento
+          </h3>
+        </div>
+
+        <div class="senado-glass-card rounded-3xl p-10 text-center relative overflow-hidden group border-gold-500/50 bg-gradient-to-b from-[#380c0c] to-[#1c0404]">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-gold-400 via-crimson-500 to-gold-400"></div>
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-crimson-800/80 border border-gold-500/50 flex items-center justify-center text-gold-300">
+            <i data-lucide="briefcase" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl md:text-8xl font-black gold-gradient-text mb-2 tracking-tight">
+            <span class="counter" data-target="466">0</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-gold-400 uppercase tracking-wide">
+            Total Gestión Legislativa
+          </h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 3: Distribución por Área -->
+    <section data-slide="3" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-2">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            Leyes Sancionadas y PL Aprobados por Área
+          </h2>
+        </div>
+        <div class="text-base text-gold-400 font-mono mt-2 md:mt-0 px-5 py-2 bg-crimson-900/80 rounded-xl border border-gold-500/40 font-bold shadow-lg">
+          Total: 101 Normativas (100%)
+        </div>
+      </div>
+
+      <div class="senado-glass p-3 sm:p-6 rounded-3xl flex items-center justify-center shadow-2xl relative overflow-hidden min-h-[520px]">
+        <div class="relative w-full max-w-5xl h-[490px] sm:h-[530px] flex items-center justify-center">
+          
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 shrink-0 z-10">
+            <canvas id="areasDoughnutChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-4xl sm:text-5xl font-cinzel font-black text-white"><span class="counter" data-target="101">0</span></span>
+              <span class="text-xs sm:text-sm text-gold-400 font-bold uppercase tracking-widest mt-1">Normativas</span>
+            </div>
+          </div>
+
+          <!-- 1. Cultura, Patrimonio e Historia (32%) -->
+          <div class="absolute top-2 right-2 sm:right-16 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-[#e67e22] shadow-[0_0_22px_rgba(230,126,34,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#e67e22] shadow-[0_0_10px_#e67e22]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block tracking-wide">Cultura, Patrimonio e Historia</span>
+              <span class="text-[#e67e22] font-mono font-black text-2xl sm:text-3xl">32%</span>
+            </div>
+          </div>
+
+          <!-- 2. Institucional y Justicia (23%) -->
+          <div class="absolute top-[42%] -right-1 sm:right-6 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-[#3498db] shadow-[0_0_22px_rgba(52,152,219,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#3498db] shadow-[0_0_10px_#3498db]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block tracking-wide">Institucional y Justicia</span>
+              <span class="text-[#3498db] font-mono font-black text-2xl sm:text-3xl">23%</span>
+            </div>
+          </div>
+
+          <!-- 3. Infraestructura y Transporte (13%) -->
+          <div class="absolute bottom-3 right-4 sm:right-20 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-[#9b59b6] shadow-[0_0_22px_rgba(155,89,182,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#9b59b6] shadow-[0_0_10px_#9b59b6]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block tracking-wide">Infraestructura y Transporte</span>
+              <span class="text-[#9b59b6] font-mono font-black text-2xl sm:text-3xl">13%</span>
+            </div>
+          </div>
+
+          <!-- 4. Economía (12%) -->
+          <div class="absolute -bottom-2 left-[36%] -translate-x-1/2 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-2xl border-2 border-[#2ecc71] shadow-[0_0_22px_rgba(46,204,113,0.45)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#2ecc71] shadow-[0_0_10px_#2ecc71]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-extrabold text-white block">Economía</span>
+              <span class="text-[#2ecc71] font-mono font-black text-xl sm:text-2xl">12%</span>
+            </div>
+          </div>
+
+          <!-- 5. Medio Ambiente y Energía (8%) -->
+          <div class="absolute bottom-12 left-1 sm:left-12 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-2xl border-2 border-[#1abc9c] shadow-[0_0_22px_rgba(26,188,156,0.45)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#1abc9c] shadow-[0_0_10px_#1abc9c]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-extrabold text-white block">Medio Ambiente y Energía</span>
+              <span class="text-[#1abc9c] font-mono font-black text-xl sm:text-2xl">8%</span>
+            </div>
+          </div>
+
+          <!-- 6. Salud y Protección Social (8%) -->
+          <div class="absolute top-[38%] -left-2 sm:left-6 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-[#e74c3c] shadow-[0_0_22px_rgba(231,76,60,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#e74c3c] shadow-[0_0_10px_#e74c3c]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block tracking-wide">Salud y Protección Social</span>
+              <span class="text-[#e74c3c] font-mono font-black text-2xl sm:text-3xl">8%</span>
+            </div>
+          </div>
+
+          <!-- 7. Trabajo y Educación (4%) -->
+          <div class="absolute top-3 left-4 sm:left-24 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-2xl border-2 border-[#f1c40f] shadow-[0_0_22px_rgba(241,196,15,0.45)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#f1c40f] shadow-[0_0_10px_#f1c40f]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-extrabold text-white block">Trabajo y Educación</span>
+              <span class="text-[#f1c40f] font-mono font-black text-xl sm:text-2xl">4%</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 4: Representación Política -->
+    <section data-slide="4" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-4">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            LEYES SANCIONADAS Y PROYECTOS DE LEY APROBADOS
+          </h2>
+          <p class="text-gold-400 text-lg md:text-xl mt-2 font-medium">Por Representación Política (en porcentaje)</p>
+        </div>
+        <div class="text-base text-gold-400 font-mono mt-2 md:mt-0 px-5 py-2 bg-crimson-900/80 rounded-xl border border-gold-500/40 font-bold shadow-lg">
+          Correlación de Fuerzas
+        </div>
+      </div>
+
+      <div class="senado-glass p-8 sm:p-12 rounded-3xl flex flex-col items-center justify-center shadow-2xl relative">
+        <div class="relative w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-8">
+          <div class="text-center bg-[#1c0606]/90 p-8 rounded-3xl border-2 border-gold-400 shadow-2xl w-full md:w-72">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-400/20 text-gold-300 font-bold text-sm uppercase tracking-wider mb-4">
+              <span class="w-3 h-3 rounded-full bg-gold-400 shadow-[0_0_8px_#eedda3]"></span> Bloque Mayoritario
+            </div>
+            <div class="font-cinzel text-7xl sm:text-8xl font-black text-gold-400 leading-none">
+              59%
+            </div>
+          </div>
+
+          <div class="relative w-80 h-80 sm:w-96 sm:h-96 shrink-0">
+            <canvas id="bancadasDoughnutChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-4xl font-cinzel font-black text-white">100%</span>
+              <span class="text-xs text-gold-400 font-bold uppercase tracking-widest mt-1">Plenario</span>
+            </div>
+          </div>
+
+          <div class="text-center bg-[#1c0606]/90 p-8 rounded-3xl border-2 border-crimson-500 shadow-2xl w-full md:w-72">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-crimson-500/20 text-crimson-300 font-bold text-sm uppercase tracking-wider mb-4">
+              <span class="w-3 h-3 rounded-full bg-crimson-500 shadow-[0_0_8px_#c83b3b]"></span> Bloque Minoritario
+            </div>
+            <div class="font-cinzel text-7xl sm:text-8xl font-black text-crimson-400 leading-none">
+              41%
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 5: Por Territorio -->
+    <section data-slide="5" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-2">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            LEYES SANCIONADAS Y PROYECTOS DE LEY APROBADOS
+          </h2>
+          <p class="text-gold-400 text-lg md:text-xl mt-1 font-medium">Por Territorio</p>
+        </div>
+        <div class="text-base text-gold-400 font-mono mt-2 md:mt-0 px-5 py-2 bg-crimson-900/80 rounded-xl border border-gold-500/40 font-bold shadow-lg">
+          Total: 101 Normativas (100%)
+        </div>
+      </div>
+
+      <div class="senado-glass p-3 sm:p-6 rounded-3xl flex items-center justify-center shadow-2xl relative overflow-hidden min-h-[520px]">
+        <div class="relative w-full max-w-5xl h-[490px] sm:h-[530px] flex items-center justify-center">
+
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 shrink-0 z-10">
+            <canvas id="territoryDoughnutChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-4xl sm:text-5xl font-cinzel font-black text-white"><span class="counter" data-target="101">0</span></span>
+              <span class="text-xs sm:text-sm text-gold-400 font-bold uppercase tracking-widest mt-1">Normativas</span>
+            </div>
+          </div>
+
+          <!-- Alcance Nacional -->
+          <div class="absolute top-1/2 -translate-y-1/2 right-1 sm:right-10 z-20 flex items-center gap-3.5 bg-[#170303]/95 backdrop-blur-md px-5 py-3.5 rounded-2xl border-3 border-gold-400 shadow-[0_0_30px_rgba(238,221,163,0.45)]">
+            <span class="w-5 h-5 rounded-full bg-gold-400 shadow-[0_0_12px_#eedda3]"></span>
+            <div class="text-left">
+              <span class="text-xs uppercase font-cinzel tracking-wider text-gold-300/90 font-bold block">Cobertura General</span>
+              <span class="text-base sm:text-xl font-black text-white block tracking-wide">ALCANCE NACIONAL</span>
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span class="text-gold-300 font-mono font-black text-3xl sm:text-4xl">53%</span>
+                <span class="text-sm sm:text-base font-bold text-slate-200 font-mono">(54 normativas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarija -->
+          <div class="absolute bottom-2 left-[32%] -translate-x-1/2 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#e67e22] shadow-[0_0_18px_rgba(230,126,34,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#e67e22] shadow-[0_0_8px_#e67e22]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">Tarija</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">9 <strong class="text-[#e67e22] text-sm">(9%)</strong></span>
+            </div>
+          </div>
+
+          <!-- La Paz -->
+          <div class="absolute bottom-16 left-2 sm:left-14 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#3498db] shadow-[0_0_18px_rgba(52,152,219,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#3498db] shadow-[0_0_8px_#3498db]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">La Paz</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">8 <strong class="text-[#3498db] text-sm">(8%)</strong></span>
+            </div>
+          </div>
+
+          <!-- Cochabamba -->
+          <div class="absolute top-[44%] -left-2 sm:left-6 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-xl border-2 border-[#2ecc71] shadow-[0_0_18px_rgba(46,204,113,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#2ecc71] shadow-[0_0_8px_#2ecc71]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">Cochabamba</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">6 <strong class="text-[#2ecc71] text-sm">(6%)</strong></span>
+            </div>
+          </div>
+
+          <!-- Chuquisaca -->
+          <div class="absolute top-24 left-2 sm:left-14 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#9b59b6] shadow-[0_0_18px_rgba(155,89,182,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#9b59b6] shadow-[0_0_8px_#9b59b6]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">Chuquisaca</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">5 <strong class="text-[#9b59b6] text-sm">(5%)</strong></span>
+            </div>
+          </div>
+
+          <!-- Potosí -->
+          <div class="absolute top-6 left-12 sm:left-28 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#e74c3c] shadow-[0_0_18px_rgba(231,76,60,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#e74c3c] shadow-[0_0_8px_#e74c3c]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">Potosí</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">5 <strong class="text-[#e74c3c] text-sm">(5%)</strong></span>
+            </div>
+          </div>
+
+          <!-- Santa Cruz -->
+          <div class="absolute top-2 left-[38%] -translate-x-1/2 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#1abc9c] shadow-[0_0_18px_rgba(26,188,156,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#1abc9c] shadow-[0_0_8px_#1abc9c]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-bold text-slate-300 block">Santa Cruz</span>
+              <span class="text-white font-mono font-black text-lg sm:text-xl">4 <strong class="text-[#1abc9c] text-sm">(4%)</strong></span>
+            </div>
+          </div>
+
+          <!-- Oruro, Pando y Beni -->
+          <div class="absolute top-2 left-[58%] -translate-x-1/2 z-20 flex flex-wrap gap-2 max-w-[320px] justify-center">
+            <div class="flex items-center gap-2 bg-[#130202]/95 backdrop-blur-md px-3 py-1.5 rounded-xl border-2 border-[#f1c40f] shadow-md">
+              <span class="w-3 h-3 rounded-full bg-[#f1c40f]"></span>
+              <span class="text-xs sm:text-sm font-bold text-white">Oruro: <strong class="text-[#f1c40f] font-mono text-base font-black">3</strong></span>
+            </div>
+            <div class="flex items-center gap-2 bg-[#130202]/95 backdrop-blur-md px-3 py-1.5 rounded-xl border-2 border-[#e84393] shadow-md">
+              <span class="w-3 h-3 rounded-full bg-[#e84393]"></span>
+              <span class="text-xs sm:text-sm font-bold text-white">Pando: <strong class="text-[#e84393] font-mono text-base font-black">3</strong></span>
+            </div>
+            <div class="flex items-center gap-2 bg-[#130202]/95 backdrop-blur-md px-3 py-1.5 rounded-xl border-2 border-[#a29bfe] shadow-md">
+              <span class="w-3 h-3 rounded-full bg-[#a29bfe]"></span>
+              <span class="text-xs sm:text-sm font-bold text-white">Beni: <strong class="text-[#a29bfe] font-mono text-base font-black">1</strong></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 6: Tabla 1 -->
+    <section data-slide="6" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            LEYES SANCIONADAS Y PROYECTOS DE LEY APROBADOS
+          </h2>
+        </div>
+        <span class="text-sm sm:text-base text-gold-400 font-mono bg-crimson-900/80 px-5 py-2 rounded-xl border border-gold-500/40 font-bold hidden sm:block">
+          Total: 101 Normativas
+        </span>
+      </div>
+
+      <div class="senado-glass rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl">
+        <div class="overflow-x-auto max-h-[64vh] custom-scroll">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-crimson-950 text-gold-400 font-cinzel sticky top-0 border-b border-gold-500/40 uppercase tracking-wider text-sm sm:text-base">
+              <tr>
+                <th class="py-4 px-6 w-[22%]">ÁREA</th>
+                <th class="py-4 px-6 w-[30%]">DESCRIPCIÓN DEL ÁREA</th>
+                <th class="py-4 px-4 text-center w-[12%]">TOTAL</th>
+                <th class="py-4 px-6 w-[36%]">LEYES PROMULGADAS DESTACADAS</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gold-500/20 text-slate-100 font-sans text-sm sm:text-base">
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Economía y Finanzas</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Tributarias, presupuestaria, crédito y liquidez.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">11</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1717 (Abrogación ITF), Ley 1733 (Alivio Tributario), Ley 1765 (Crédito FMI)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Institucional, Justicia y seguridad</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Judiciales, electorales, y policiales.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">22</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1701 (Elección TSE), Ley 1709 (Permanencia Autoridades)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Salud y Protección Social</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Protección social e infraestructura hospitalaria.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">9</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1764 (Protección Social), Ley 1704 (COVID-19), Ley 1724 (Oncológico Tarija)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Infraestructura y Transporte</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Urbanización, transporte y desarrollo carretero.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">14</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1759 (Teleférico), Ley 1703 (Parque Lineal)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Trabajo, Educación y Cooperación</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Generación de empleo y educación.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">4</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1739 (Empleo FONPLATA), PL 269 (Centro de Ciencia Sucre)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Medio Ambiente, Energía y Agricultura</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Desarrollo agrícola, energía solar, agua potable y alcantarillado.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">10</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Ley 1738 (Planta Solar), Ley 1721 (PTAR Cabeza de Toro)</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3.5 px-6 font-bold text-white align-top border-r border-gold-500/20">Cultura, Patrimonio e Historia</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top border-r border-gold-500/20">Declarativas: danzas, patrimoniales y reconocimientos.</td>
+                <td class="py-3.5 px-4 text-center font-mono font-extrabold text-gold-400 text-lg align-top border-r border-gold-500/20">31</td>
+                <td class="py-3.5 px-6 text-slate-200 align-top">Varias</td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-gradient-to-r from-crimson-950 via-[#360808] to-crimson-950 font-black text-gold-400 border-t-2 border-gold-500/50 font-mono text-base sm:text-lg">
+              <tr>
+                <td colspan="2" class="py-3.5 px-6 font-cinzel text-base uppercase tracking-wider text-white text-right pr-8 border-r border-gold-500/20">TOTAL</td>
+                <td class="py-3.5 px-4 text-center text-xl text-gold-300 border-r border-gold-500/20">101</td>
+                <td class="py-3.5 px-6 text-sm text-slate-300">Total Leyes Sancionadas y Proyectos Aprobados</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 7: Tabla 2 -->
+    <section data-slide="7" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            PROYECTOS DE LEY EN TRATAMIENTO POR COMISIONES
+          </h2>
+        </div>
+        <span class="text-sm sm:text-base text-gold-400 font-mono bg-crimson-900/80 px-5 py-2 rounded-xl border border-gold-500/40 font-bold hidden sm:block">
+          Total: 365 Proyectos
+        </span>
+      </div>
+
+      <div class="senado-glass rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl">
+        <div class="overflow-x-auto max-h-[64vh] custom-scroll">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-crimson-950 text-gold-400 font-cinzel sticky top-0 border-b border-gold-500/40 uppercase tracking-wider text-sm sm:text-base">
+              <tr>
+                <th class="py-4 px-6 w-[42%]">COMISIÓN</th>
+                <th class="py-4 px-4 text-center w-[12%]">TOTAL</th>
+                <th class="py-4 px-6 w-[46%]">PROYECTOS DE LEY RELEVANTES</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gold-500/20 text-slate-100 font-sans text-sm sm:text-base">
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Constitución, Derechos Humanos, Legislación y Sistema Electoral</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">64</td>
+                <td class="py-3 px-6 text-slate-200">Reforma constitucional, altos Tribunales.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Justicia Plural, Ministerio Público y Defensa Legal del Estado</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">8</td>
+                <td class="py-3 px-6 text-slate-200">Reformas a la normativa judicial.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Seguridad del Estado, FF.AA. y Policía Boliviana</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">27</td>
+                <td class="py-3 px-6 text-slate-200">Objeción de conciencia y normativa sobre seguridad y defensa.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Organización Territorial del Estado y Autonomías</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">10</td>
+                <td class="py-3 px-6 text-slate-200">Delimitación territorial del Estado.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Planificación, Política Económica y Finanzas</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">59</td>
+                <td class="py-3 px-6 text-slate-200">Pensiones, tributarias y enajenación de bienes públicos.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Economía Plural, Producción, Industria e Industrialización</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">60</td>
+                <td class="py-3 px-6 text-slate-200">Fortalecimiento productivo e industrialización</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Naciones y Pueblos Indígenas Originario Campesinos e Interculturalidad</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">44</td>
+                <td class="py-3 px-6 text-slate-200">Protección al patrimonio, cultura y arte.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Política Social, Educación y Salud</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">28</td>
+                <td class="py-3 px-6 text-slate-200">Promoción de la educación, salud y deporte.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Política Internacional</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">4</td>
+                <td class="py-3 px-6 text-slate-200">Convenio de cooperación en defensa.</td>
+              </tr>
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-3 px-6 font-medium text-white border-r border-gold-500/20">Comisión de Tierra y Territorio, Recursos Naturales y Medio Ambiente</td>
+                <td class="py-3 px-4 text-center font-mono font-extrabold text-gold-400 text-lg border-r border-gold-500/20">18</td>
+                <td class="py-3 px-6 text-slate-200">Protección animal, medio ambiente y modificación a normativas ambientales.</td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-gradient-to-r from-crimson-950 via-[#360808] to-crimson-950 font-black text-gold-400 border-t-2 border-gold-500/50 font-mono text-base sm:text-lg">
+              <tr>
+                <td class="py-3.5 px-6 font-cinzel text-base uppercase tracking-wider text-white text-right pr-8 border-r border-gold-500/20">TOTAL</td>
+                <td class="py-3.5 px-4 text-center text-xl text-gold-300 border-r border-gold-500/20">365</td>
+                <td class="py-3.5 px-6 text-sm text-slate-300">10 Comisiones Permanentes</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 8: Fiscalización -->
+    <section data-slide="8" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-6">
+        <h2 class="text-4xl sm:text-6xl font-cinzel font-bold text-white">
+          FISCALIZACIÓN
+        </h2>
+        <p class="text-gold-400 text-lg sm:text-xl font-medium mt-1">Peticiones de Informe Escrito y Oral (PIEs y PIOs)</p>
+      </div>
+
+      <div class="senado-glass p-6 sm:p-10 rounded-3xl border-t-4 border-t-gold-500 max-w-5xl mx-auto w-full shadow-2xl relative">
+        <div class="flex flex-col md:flex-row items-center justify-around gap-8">
+          <!-- Con Respuesta 84% -->
+          <div class="text-center bg-[#1c0606]/95 p-6 rounded-3xl border-2 border-emerald-400 shadow-2xl w-full md:w-72">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-sm uppercase tracking-wider mb-2">
+              <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]"></span> Con Respuesta
+            </div>
+            <div class="font-cinzel text-6xl sm:text-7xl font-black text-emerald-400 leading-none">
+              84%
+            </div>
+          </div>
+
+          <!-- Torta Central -->
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 shrink-0">
+            <canvas id="piesChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-4xl sm:text-5xl font-cinzel font-black text-white">2.400</span>
+              <span class="text-xs text-gold-400 font-bold uppercase tracking-widest mt-1">Total Peticiones</span>
+            </div>
+          </div>
+
+          <!-- En Trámite 16% -->
+          <div class="text-center bg-[#1c0606]/95 p-6 rounded-3xl border-2 border-amber-400 shadow-2xl w-full md:w-72">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold text-sm uppercase tracking-wider mb-2">
+              <span class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24]"></span> En Trámite
+            </div>
+            <div class="font-cinzel text-6xl sm:text-7xl font-black text-amber-400 leading-none">
+              16%
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-5 border-t border-gold-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 bg-crimson-950/40 p-4 rounded-2xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400">
+              <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-300 uppercase tracking-widest font-mono">Desglose General</span>
+              <h4 class="text-xl sm:text-2xl font-cinzel font-bold text-white tracking-wide">
+                2.381 PIEs <span class="text-gold-400">y</span> 19 PIOs
+              </h4>
+            </div>
+          </div>
+          <div class="text-xs sm:text-sm font-mono text-gold-300 px-4 py-2 bg-crimson-900/80 rounded-xl border border-gold-500/30 font-semibold">
+            Total Instrumentos: 2.400
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 9 (Índice 9 - Diapositiva 10): GESTIÓN - Minutas de Comunicación -->
+    <section data-slide="9" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-2">
+        <div>
+          <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+            GESTIÓN
+          </h2>
+          <p class="text-gold-400 text-lg md:text-xl mt-1 font-medium">Minutas de Comunicación</p>
+        </div>
+        <div class="text-base text-gold-400 font-mono mt-2 md:mt-0 px-5 py-2 bg-crimson-900/80 rounded-xl border border-gold-500/40 font-bold shadow-lg">
+          Total: 230 Minutas (100%)
+        </div>
+      </div>
+
+      <div class="senado-glass p-3 sm:p-6 rounded-3xl flex items-center justify-center shadow-2xl relative overflow-hidden min-h-[520px]">
+        <div class="relative w-full max-w-5xl h-[490px] sm:h-[530px] flex items-center justify-center">
+
+          <!-- Centro: Canvas de la Torta -->
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 shrink-0 z-10">
+            <canvas id="minutasChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="text-4xl sm:text-5xl font-cinzel font-black text-white"><span class="counter" data-target="230">0</span></span>
+              <span class="text-xs sm:text-sm text-gold-400 font-bold uppercase tracking-widest mt-1">Minutas</span>
+            </div>
+          </div>
+
+          <!-- 1. Órgano Ejecutivo (71% - Lado Derecho Central) -->
+          <div class="absolute top-1/2 -translate-y-1/2 right-1 sm:right-10 z-20 flex items-center gap-3.5 bg-[#170303]/95 backdrop-blur-md px-5 py-3.5 rounded-2xl border-3 border-[#3498db] shadow-[0_0_30px_rgba(52,152,219,0.45)]">
+            <span class="w-5 h-5 rounded-full bg-[#3498db] shadow-[0_0_12px_#3498db]"></span>
+            <div class="text-left">
+              <span class="text-xs uppercase font-cinzel tracking-wider text-slate-300 font-bold block">Entidad Principal</span>
+              <span class="text-base sm:text-xl font-black text-white block tracking-wide">ÓRGANO EJECUTIVO</span>
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span class="text-[#3498db] font-mono font-black text-3xl sm:text-4xl">71%</span>
+                <span class="text-sm sm:text-base font-bold text-slate-200 font-mono">(163 minutas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Órgano Judicial (2% - Parte Superior Derecha cerca de su sector) -->
+          <div class="absolute top-3 right-4 sm:right-16 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-[#c83b3b] shadow-[0_0_22px_rgba(200,59,59,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#c83b3b] shadow-[0_0_10px_#c83b3b]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block">Órgano Judicial</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-[#c83b3b] font-mono font-black text-2xl sm:text-3xl">2%</span>
+                <span class="text-xs sm:text-sm font-bold text-slate-300 font-mono">(5 minutas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. ETAs (21% - Lado Izquierdo Superior) -->
+          <div class="absolute top-16 left-2 sm:left-12 z-20 flex items-center gap-3 bg-[#130202]/95 backdrop-blur-md px-4 py-3 rounded-2xl border-2 border-[#9b59b6] shadow-[0_0_22px_rgba(155,89,182,0.45)]">
+            <span class="w-4 h-4 rounded-full bg-[#9b59b6] shadow-[0_0_10px_#9b59b6]"></span>
+            <div class="text-left">
+              <span class="text-sm sm:text-base font-extrabold text-white block tracking-wide">ETAs (Autonomías)</span>
+              <div class="flex items-baseline gap-2">
+                <span class="text-[#9b59b6] font-mono font-black text-2xl sm:text-3xl">21%</span>
+                <span class="text-xs sm:text-sm font-bold text-slate-300 font-mono">(48 minutas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Otras Entidades Públicas (6% - Lado Izquierdo Medio-Superior) -->
+          <div class="absolute top-2 left-1/3 -translate-x-1/2 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#1abc9c] shadow-[0_0_18px_rgba(26,188,156,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#1abc9c] shadow-[0_0_8px_#1abc9c]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-extrabold text-white block">Otras Entidades Públicas</span>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-[#1abc9c] font-mono font-black text-xl sm:text-2xl">6%</span>
+                <span class="text-xs font-bold text-slate-300 font-mono">(14 minutas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Órgano Electoral (0% - Lado Inferior Centro-Izquierda) -->
+          <div class="absolute bottom-2 left-1/3 -translate-x-1/2 z-20 flex items-center gap-2.5 bg-[#130202]/95 backdrop-blur-md px-4 py-2 rounded-xl border-2 border-[#2ecc71] shadow-[0_0_18px_rgba(46,204,113,0.4)]">
+            <span class="w-3.5 h-3.5 rounded-full bg-[#2ecc71] shadow-[0_0_8px_#2ecc71]"></span>
+            <div class="text-left">
+              <span class="text-xs sm:text-sm font-extrabold text-white block">Órgano Electoral</span>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-[#2ecc71] font-mono font-black text-xl sm:text-2xl">0%</span>
+                <span class="text-xs font-bold text-slate-300 font-mono">(0 minutas)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 10: Gestión -->
+    <section data-slide="10" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl sm:text-6xl font-cinzel font-bold text-white">
+          GESTIÓN
+        </h2>
+        <p class="text-slate-300 text-lg mt-2">Acercando el Senado a las organizaciones vivas y comunidades de Bolivia</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto w-full mb-8">
+        <div class="senado-glass-card p-8 rounded-3xl text-center shadow-xl">
+          <div class="w-16 h-16 rounded-2xl bg-crimson-800/60 border border-gold-500/30 mx-auto mb-4 flex items-center justify-center text-gold-400">
+            <i data-lucide="award" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl font-black text-white">
+            <span class="counter" data-target="88">0</span>
+          </div>
+          <h4 class="text-base font-bold text-gold-400 uppercase tracking-wide mt-3">Resoluciones Camarales</h4>
+        </div>
+
+        <div class="senado-glass-card p-8 rounded-3xl text-center shadow-xl">
+          <div class="w-16 h-16 rounded-2xl bg-crimson-800/60 border border-gold-500/30 mx-auto mb-4 flex items-center justify-center text-gold-400">
+            <i data-lucide="scroll" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl font-black text-white">
+            <span class="counter" data-target="8">0</span>
+          </div>
+          <h4 class="text-base font-bold text-gold-400 uppercase tracking-wide mt-3">Declaraciones Camarales</h4>
+        </div>
+
+        <div class="senado-glass-card p-8 rounded-3xl text-center shadow-xl">
+          <div class="w-16 h-16 rounded-2xl bg-crimson-800/60 border border-gold-500/30 mx-auto mb-4 flex items-center justify-center text-gold-400">
+            <i data-lucide="medal" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl font-black text-white">
+            <span class="counter" data-target="647">0</span>
+          </div>
+          <h4 class="text-base font-bold text-gold-400 uppercase tracking-wide mt-3">Homenajes Camarales</h4>
+        </div>
+
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-gold-500/60 bg-gradient-to-b from-[#3c0c0c] to-[#1e0404] shadow-xl">
+          <div class="w-16 h-16 rounded-2xl bg-gold-500/20 border border-gold-500/50 mx-auto mb-4 flex items-center justify-center text-gold-400">
+            <i data-lucide="users" class="w-9 h-9"></i>
+          </div>
+          <div class="font-cinzel text-6xl sm:text-7xl font-black gold-gradient-text">
+            <span class="counter" data-target="38">0</span>
+          </div>
+          <h4 class="text-base font-bold text-gold-300 uppercase tracking-wide mt-3">Foros Ciudadanos (FIC)</h4>
+        </div>
+      </div>
+
+      <div class="max-w-6xl mx-auto w-full senado-glass p-7 rounded-3xl border-l-8 border-l-gold-500 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div>
+          <h4 class="text-lg sm:text-xl font-bold text-white flex items-center gap-3">
+            <i data-lucide="radio" class="w-6 h-6 text-emerald-400 animate-pulse"></i>
+            Foros de Interés Ciudadano (FIC) Realizados en Todo el País
+          </h4>
+          <p class="text-base text-slate-200 mt-2 leading-relaxed">
+            Mecanismo participativo y plural llevado a cabo en capitales y provincias para debatir, recibir aportes y socializar proyectos de ley prioritarios con organizaciones sociales, cívicas y académicas.
+          </p>
+        </div>
+        <div class="px-6 py-3.5 bg-crimson-900/90 rounded-2xl border border-gold-500/40 text-gold-300 text-base font-mono font-bold whitespace-nowrap shadow-lg">
+          Participación Democrática Directa
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 11: Ámbito Administrativo -->
+    <section data-slide="11" class="slide-content absolute inset-0 max-w-6xl mx-auto flex flex-col justify-center items-center text-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-tr from-gold-500 via-crimson-600 to-crimson-900 p-1.5 shadow-[0_0_30px_rgba(227,209,148,0.3)] border-2 border-gold-500/60 mb-8">
+        <div class="w-full h-full rounded-full bg-[#1d0505] flex items-center justify-center p-3 overflow-hidden">
+          <img 
+            src="https://drive.google.com/thumbnail?id=15pHbZfrU6c7de8sRaKesOVzwxTAw7wJX&sz=w1000" 
+            alt="Logo Senado" 
+            class="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(227,209,148,0.3)]"
+            onerror="this.onerror=null; this.src='https://placehold.co/128x128/230505/e3d194?text=SENADO';"
+          />
+        </div>
+      </div>
+
+      <h2 class="font-cinzel text-5xl sm:text-7xl md:text-8xl font-black tracking-wider text-white uppercase leading-tight mb-5">
+        ÁMBITO ADMINISTRATIVO
+      </h2>
+      <div class="h-1 w-44 bg-gradient-to-r from-transparent via-gold-500 to-transparent my-4"></div>
+    </section>
+
+    <!-- Diapositiva 12: Presupuesto 2026 -->
+    <section data-slide="12" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+          Presupuesto Cámara de Senadores 2026
+        </h2>
+        <p class="text-slate-300 text-base mt-2">Estructura presupuestaria aprobada y modificaciones del ejercicio fiscal</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
+        <div class="senado-glass-card rounded-3xl p-10 text-center border-t-4 border-t-slate-400 flex flex-col justify-center">
+          <span class="text-xs font-mono text-slate-300 uppercase tracking-widest font-bold">Base de Operaciones</span>
+          <h4 class="text-base font-bold text-slate-200 mt-2 uppercase">Presupuesto Inicial 2026</h4>
+          <div class="font-cinzel text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-6">
+            Bs <span class="counter" data-target="86035691" data-format="currency">0</span>
+          </div>
+        </div>
+
+        <div class="senado-glass-card rounded-3xl p-10 text-center border-t-4 border-t-crimson-500 flex flex-col justify-center">
+          <span class="text-xs font-mono text-crimson-400 uppercase tracking-widest font-bold">+ Modificación Aprobada</span>
+          <h4 class="text-base font-bold text-slate-200 mt-2 uppercase">Presupuesto Adicional</h4>
+          <div class="font-cinzel text-3xl sm:text-4xl md:text-5xl font-extrabold text-crimson-400 mt-6">
+            Bs <span class="counter" data-target="21000000" data-format="currency">0</span>
+          </div>
+        </div>
+
+        <div class="senado-glass-card rounded-3xl p-10 text-center border-t-4 border-t-gold-500 bg-gradient-to-b from-[#3a0d0d] to-[#1c0404] flex flex-col justify-center">
+          <span class="text-xs font-mono text-gold-400 uppercase tracking-widest font-bold">Monto Vigente Final</span>
+          <h4 class="text-base font-bold text-gold-300 mt-2 uppercase">Presupuesto Modificado</h4>
+          <div class="font-cinzel text-3xl sm:text-4xl md:text-5xl font-black gold-gradient-text mt-6">
+            Bs <span class="counter" data-target="107035691" data-format="currency">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 13: Distribución y Ejecución -->
+    <section data-slide="13" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="mb-5">
+        <h2 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+          Distribución y Ejecución del Presupuesto
+        </h2>
+        <div class="mt-3 senado-glass px-6 py-3 rounded-2xl border-l-8 border-l-gold-500 inline-flex flex-wrap items-center gap-3 shadow-xl">
+          <span class="text-slate-100 text-lg sm:text-2xl font-medium tracking-wide">
+            Ejecución al 31 de octubre de 2026 es de
+          </span>
+          <span class="text-2xl sm:text-3xl font-cinzel font-black gold-gradient-text tracking-wider">
+            Bs. 59.596.620
+          </span>
+          <span class="text-slate-100 text-lg sm:text-2xl font-medium tracking-wide">
+            equivalente a
+          </span>
+          <span class="px-3.5 py-1 rounded-xl bg-gold-500 text-crimson-950 font-black text-xl sm:text-2xl font-mono shadow-md">
+            56.7%
+          </span>
+        </div>
+      </div>
+
+      <div class="senado-glass rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl">
+        <div class="overflow-x-auto max-h-[62vh] custom-scroll">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-crimson-950 text-gold-400 font-cinzel sticky top-0 border-b border-gold-500/40 uppercase tracking-wider text-sm sm:text-base">
+              <tr>
+                <th class="py-4 px-6 text-center w-[16%]">AREA</th>
+                <th class="py-4 px-6 w-[34%]">DESCRIPCION</th>
+                <th class="py-4 px-5 text-center w-[15%]">VIGENTE</th>
+                <th class="py-4 px-5 text-center w-[15%]">EJECUTADO AL 31/10/2026</th>
+                <th class="py-4 px-4 text-center w-[10%]">Distribución</th>
+                <th class="py-4 px-4 text-center w-[10%]">% EJECUCION</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gold-500/20 text-slate-100 font-sans text-sm sm:text-base">
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-4 px-6 font-bold text-white text-center align-middle bg-crimson-950/40 text-lg sm:text-xl border-r border-gold-500/20">
+                  Administrativa
+                </td>
+                <td class="py-4 px-6 align-middle border-r border-gold-500/20">
+                  <div class="space-y-1.5 text-slate-200 text-base">
+                    <div class="font-semibold text-white">Administración Central</div>
+                    <div class="font-medium text-slate-300">Personal con Discapacidad</div>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-center font-mono font-black text-white text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  45.120.149
+                </td>
+                <td class="py-4 px-5 text-center font-mono font-black text-gold-400 text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  21.272.354
+                </td>
+                <td class="py-4 px-4 text-center font-mono font-black text-white text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  42,15%
+                </td>
+                <td class="py-4 px-4 text-center font-mono font-black text-gold-300 text-xl sm:text-2xl align-middle">
+                  47,15%
+                </td>
+              </tr>
+
+              <tr class="hover:bg-crimson-900/30 transition-colors">
+                <td class="py-4 px-6 font-bold text-white text-center align-middle bg-crimson-950/40 text-lg sm:text-xl border-r border-gold-500/20">
+                  Legislativa
+                </td>
+                <td class="py-4 px-6 align-middle border-r border-gold-500/20">
+                  <div class="space-y-1 text-xs sm:text-sm text-slate-200">
+                    <div>Secretaría General</div>
+                    <div>Directiva Camaral</div>
+                    <div>Sueldos Senadores</div>
+                    <div>Comisiones</div>
+                    <div>Comités</div>
+                    <div>Bancadas Políticas</div>
+                    <div>Brigadas Parlamentarias</div>
+                    <div>Área Legislativa — Personal Eventual</div>
+                    <div>Pasajes al interior y exterior del país</div>
+                    <div>Viáticos al interior y exterior del país</div>
+                    <div>Combustible (Gasolina)</div>
+                  </div>
+                </td>
+                <td class="py-4 px-5 text-center font-mono font-black text-white text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  61.915.542
+                </td>
+                <td class="py-4 px-5 text-center font-mono font-black text-gold-400 text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  38.324.266
+                </td>
+                <td class="py-4 px-4 text-center font-mono font-black text-white text-xl sm:text-2xl align-middle border-r border-gold-500/20">
+                  57,85%
+                </td>
+                <td class="py-4 px-4 text-center font-mono font-black text-gold-300 text-xl sm:text-2xl align-middle">
+                  61,90%
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="bg-gradient-to-r from-crimson-950 via-[#360808] to-crimson-950 font-black text-gold-400 border-t-2 border-gold-500/50 font-mono text-base sm:text-lg">
+              <tr>
+                <td colspan="2" class="py-4 px-6 font-cinzel text-lg uppercase tracking-wider text-white text-right pr-10 border-r border-gold-500/20">
+                  TOTAL
+                </td>
+                <td class="py-4 px-5 text-center text-2xl font-black text-white border-r border-gold-500/20">
+                  107.035.691
+                </td>
+                <td class="py-4 px-5 text-center text-2xl font-black text-gold-300 border-r border-gold-500/20">
+                  59.596.620
+                </td>
+                <td class="py-4 px-4 text-center text-2xl font-black text-white border-r border-gold-500/20">
+                  100%
+                </td>
+                <td class="py-4 px-4 text-center text-xl text-gold-400">
+                  —
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 14: Proyección I (Diapositiva 15 del deck) -->
+    <section data-slide="14" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl sm:text-5xl font-cinzel font-black text-white">
+          PROYECCIÓN DE LA CÁMARA DE SENADORES
+        </h2>
+        <h3 class="text-xl sm:text-3xl md:text-4xl font-cinzel font-extrabold gold-gradient-text uppercase mt-3 tracking-wide">
+          FORTALECER LA ALP ES FORTALECER LA DEMOCRACIA
+        </h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+        <!-- 1 -->
+        <div class="senado-glass-card p-8 rounded-3xl border-l-8 border-l-gold-400 flex flex-col justify-center min-h-[175px]">
+          <div class="w-14 h-14 rounded-2xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400 mb-5 shrink-0">
+            <i data-lucide="landmark" class="w-7 h-7"></i>
+          </div>
+          <h4 class="font-cinzel text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase leading-snug tracking-wide">
+            Nueva Institucionalidad Democrática
+          </h4>
+        </div>
+
+        <!-- 2 -->
+        <div class="senado-glass-card p-8 rounded-3xl border-l-8 border-l-crimson-500 flex flex-col justify-center min-h-[175px]">
+          <div class="w-14 h-14 rounded-2xl bg-crimson-800/60 border border-crimson-500/40 flex items-center justify-center text-gold-400 mb-5 shrink-0">
+            <i data-lucide="message-square" class="w-7 h-7"></i>
+          </div>
+          <h4 class="font-cinzel text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase leading-snug tracking-wide">
+            Espacio de Debate y Consenso
+          </h4>
+        </div>
+
+        <!-- 3 -->
+        <div class="senado-glass-card p-8 rounded-3xl border-l-8 border-l-gold-400 flex flex-col justify-center min-h-[175px]">
+          <div class="w-14 h-14 rounded-2xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400 mb-5 shrink-0">
+            <i data-lucide="map-pin" class="w-7 h-7"></i>
+          </div>
+          <h4 class="font-cinzel text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase leading-snug tracking-wide">
+            Representación Territorial
+          </h4>
+        </div>
+
+        <!-- 4 -->
+        <div class="senado-glass-card p-8 rounded-3xl border-l-8 border-l-crimson-500 flex flex-col justify-center min-h-[175px]">
+          <div class="w-14 h-14 rounded-2xl bg-crimson-800/60 border border-crimson-500/40 flex items-center justify-center text-gold-400 mb-5 shrink-0">
+            <i data-lucide="shield-check" class="w-7 h-7"></i>
+          </div>
+          <h4 class="font-cinzel text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase leading-snug tracking-wide">
+            Nuevo Modelo de Fiscalización
+          </h4>
+        </div>
+
+        <!-- 5 -->
+        <div class="senado-glass-card p-8 rounded-3xl border-l-8 border-l-gold-400 flex flex-col justify-center min-h-[175px] md:col-span-2 lg:col-span-2">
+          <div class="w-14 h-14 rounded-2xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400 mb-5 shrink-0">
+            <i data-lucide="cpu" class="w-7 h-7"></i>
+          </div>
+          <h4 class="font-cinzel text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase leading-snug tracking-wide">
+            Modernización y Digitalización
+          </h4>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 15: Proyección II (Diapositiva 16 del deck) -->
+    <section data-slide="15" class="slide-content absolute inset-0 max-w-7xl mx-auto flex flex-col justify-center px-6 transition-all duration-500 opacity-0 pointer-events-none scale-95">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-5xl font-cinzel font-black text-white">
+          PROYECCIÓN DE LA CÁMARA DE SENADORES
+        </h2>
+        <h3 class="text-lg sm:text-2xl md:text-3xl font-cinzel font-bold text-gold-300 uppercase mt-3 tracking-wide">
+          «NO ESTAMOS PARA ADMINISTRAR EL PRESENTE SINO PARA CONTRIBUIR A CONSTRUIR EL FUTURO»
+        </h3>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
+        <!-- 1 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-gold-400 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="book-open" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Reforma Constitucional
+          </h4>
+        </div>
+
+        <!-- 2 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-crimson-500 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="scale" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Reforma Judicial
+          </h4>
+        </div>
+
+        <!-- 3 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-gold-400 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="trending-up" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Reforma Económica
+          </h4>
+        </div>
+
+        <!-- 4 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-crimson-500 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="check-check" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Reforma Política
+          </h4>
+        </div>
+
+        <!-- 5 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-gold-400 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="git-branch" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Independencia de Órganos
+          </h4>
+        </div>
+
+        <!-- 6 -->
+        <div class="senado-glass-card p-8 rounded-3xl text-center border-t-4 border-t-crimson-500 flex flex-col items-center justify-center min-h-[190px]">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-crimson-900/60 border border-gold-500/40 flex items-center justify-center text-gold-400">
+            <i data-lucide="network" class="w-8 h-8"></i>
+          </div>
+          <h4 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wide leading-snug">
+            Modelo Autonómico
+          </h4>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diapositiva 16: Cierre Institucional -->
+    <section data-slide="16" class="slide-content absolute inset-0 w-full h-full flex flex-col justify-center items-center text-center transition-all duration-500 opacity-0 pointer-events-none scale-95 overflow-hidden">
+      <div class="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden opacity-55">
+        <img 
+          src="https://drive.google.com/thumbnail?id=18Iy01G3HovnYNlSa5FpTJuiOuIYUW5Gu&sz=w2000" 
+          alt="Hemiciclo Senado" 
+          class="w-full h-full object-cover object-center scale-105 filter brightness-95 contrast-110"
+          onerror="this.onerror=null; this.src='https://placehold.co/1920x1080/1a0404/eedda3?text=HEMICICLO+DEL+SENADO';"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0f0202]/85 via-transparent to-[#0f0202]/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0202] via-[#210505]/45 to-[#0f0202]/80"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,#0a0101_95%)]"></div>
+      </div>
+
+      <div class="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center">
+        <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 rounded-full bg-gradient-to-tr from-gold-500 via-crimson-600 to-crimson-900 p-1.5 shadow-[0_0_40px_rgba(227,209,148,0.35)] border-2 border-gold-500/60">
+          <div class="w-full h-full rounded-full bg-[#1e0404] flex items-center justify-center p-3.5 overflow-hidden">
+            <img 
+              src="https://drive.google.com/thumbnail?id=15pHbZfrU6c7de8sRaKesOVzwxTAw7wJX&sz=w1000" 
+              alt="Escudo Senado Bolivia" 
+              class="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(227,209,148,0.35)]"
+              onerror="this.onerror=null; this.src='https://placehold.co/160x160/230505/e3d194?text=BOLIVIA';"
+            />
+          </div>
+        </div>
+
+        <h2 class="font-cinzel text-6xl sm:text-8xl md:text-9xl font-black gold-gradient-text tracking-widest uppercase mb-4 leading-none">
+          ¡GRACIAS!
+        </h2>
+        <div class="h-1 w-44 bg-gradient-to-r from-transparent via-gold-500 to-transparent my-3"></div>
+        <h3 class="text-xl sm:text-2xl md:text-3xl font-cinzel font-bold text-slate-100 tracking-wider uppercase mt-2">
+          CÁMARA DE SENADORES DE BOLIVIA
+        </h3>
+        <p class="text-sm sm:text-base text-gold-400 font-mono tracking-widest uppercase mt-2 mb-10 font-bold">
+          LEGISLATURA 2025-2026
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-5">
+          <button onclick="Deck.goTo(0)" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-500 hover:to-crimson-600 border border-gold-500/50 text-gold-300 font-bold text-base shadow-2xl transition-all flex items-center gap-3">
+            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            <span>Volver al Inicio</span>
+          </button>
+          <button onclick="Deck.toggleGrid()" class="px-8 py-4 rounded-2xl senado-glass hover:bg-crimson-900/60 border border-gold-500/30 text-slate-200 font-semibold text-base transition-all flex items-center gap-3">
+            <i data-lucide="layout-grid" class="w-5 h-5 text-gold-500"></i>
+            <span>Ver Cuadrícula de Slides</span>
+          </button>
+        </div>
+
+        <div class="mt-14 text-xs sm:text-sm text-slate-400 font-cinzel tracking-widest">
+          Compromiso Democrático • Soberanía y Transparencia
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Barra de Controles Inferior -->
+  <footer class="fixed bottom-3.5 left-0 right-0 px-6 md:px-12 z-40 flex items-center justify-between pointer-events-none">
+    <div class="pointer-events-auto flex items-center gap-3 senado-glass px-5 py-2.5 rounded-full shadow-2xl">
+      <span class="text-xs md:text-sm font-cinzel font-bold text-gold-400">DIAPOSITIVA</span>
+      <div class="text-xs md:text-sm font-mono font-bold text-slate-100">
+        <span id="current-slide-num" class="text-gold-400 text-base md:text-lg">01</span> / <span id="total-slide-num">17</span>
+      </div>
+    </div>
+
+    <!-- Puntos mini-indicadores -->
+    <div id="dots-container" class="pointer-events-auto hidden md:flex items-center gap-2 senado-glass px-4 py-2.5 rounded-full shadow-2xl"></div>
+
+    <!-- Botones Anterior y Siguiente -->
+    <div class="pointer-events-auto flex items-center gap-3 senado-glass px-4 py-2 rounded-full shadow-2xl">
+      <button id="btn-prev" onclick="Deck.prev()" title="Anterior (←)" class="p-2.5 rounded-full hover:bg-crimson-800 text-slate-300 hover:text-gold-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent">
+        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+      </button>
+
+      <button id="btn-next" onclick="Deck.next()" title="Siguiente (→ o Espacio)" class="p-2.5 rounded-full hover:bg-crimson-800 text-slate-300 hover:text-gold-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent">
+        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Modal Cuadrícula (G) -->
+  <div id="grid-modal" class="fixed inset-0 z-50 bg-[#0d0202]/92 backdrop-blur-2xl opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col p-6 sm:p-12">
+    <div class="flex items-center justify-between mb-8 max-w-7xl w-full mx-auto">
+      <div>
+        <h3 class="font-cinzel text-2xl font-bold text-gold-400 flex items-center gap-3">
+          <i data-lucide="layout-grid" class="w-6 h-6"></i>
+          Directorio de Diapositivas (17)
+        </h3>
+        <p class="text-sm text-slate-300">Haz clic en cualquier diapositiva para saltar directamente</p>
+      </div>
+      <button onclick="Deck.toggleGrid()" class="p-2.5 rounded-full bg-crimson-900/60 border border-gold-500/30 text-slate-200 hover:text-white">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <div id="grid-cards-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 max-w-7xl w-full mx-auto overflow-y-auto custom-scroll pr-2 flex-1"></div>
+  </div>
+
+  <!-- Cajón Lateral de Índice (M) -->
+  <div id="index-drawer" class="fixed top-0 bottom-0 right-0 w-80 sm:w-96 z-50 senado-glass border-l border-gold-500/40 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col p-6 bg-[#160303]">
+    <div class="flex items-center justify-between pb-4 border-b border-gold-500/20">
+      <h3 class="font-cinzel font-bold text-gold-400 flex items-center gap-2.5 text-sm uppercase">
+        <i data-lucide="bookmark" class="w-4 h-4"></i>
+        Índice Temático
+      </h3>
+      <button onclick="Deck.toggleIndex()" class="p-1.5 rounded-lg hover:bg-crimson-900/60 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div id="index-list" class="flex-1 overflow-y-auto custom-scroll py-4 space-y-2 pr-1"></div>
+
+    <div class="pt-4 border-t border-gold-500/20 text-xs text-slate-400 font-cinzel text-center">
+      Cámara de Senadores de Bolivia
+    </div>
+  </div>
+
+  <!-- Controlador JavaScript Sincronizado -->
+  <script>
+    const SLIDES_DECK = [
+      { id: 0, title: "Portada Principal", desc: "Informe de Gestión 2025-2026" },
+      { id: 1, title: "Mensaje Institucional", desc: "Vocación democrática y compromiso constitucional" },
+      { id: 2, title: "Periodo Legislativo", desc: "Resumen: 101 aprobadas, 365 en tratamiento, 466 total" },
+      { id: 3, title: "Distribución por Área", desc: "Gráfico temático y porcentajes oficiales" },
+      { id: 4, title: "Representación Política", desc: "59% Mayoría - 41% Minoría" },
+      { id: 5, title: "Distribución Territorial", desc: "Gráfico orbital por departamentos" },
+      { id: 6, title: "Leyes Sancionadas y PL Aprobados", desc: "Tabla oficial por área y leyes destacadas" },
+      { id: 7, title: "Proyectos en Tratamiento por Comisiones", desc: "Tabla oficial con 365 proyectos" },
+      { id: 8, title: "Fiscalización", desc: "2.381 PIEs y 19 PIOs (Con Respuesta vs En Trámite)" },
+      { id: 9, title: "Minutas de Comunicación", desc: "Gestión: 230 Minutas (Órgano Ejecutivo 71%, ETAs 21%, etc.)" },
+      { id: 10, title: "Gestión Camaral", desc: "Resoluciones, Declaraciones, Homenajes y Foros FIC" },
+      { id: 11, title: "Ámbito Administrativo", desc: "Carátula de sección financiera institucional" },
+      { id: 12, title: "Presupuesto 2026", desc: "Presupuesto Inicial, Adicional y Modificado" },
+      { id: 13, title: "Distribución y Ejecución", desc: "Ejecución al 31 de octubre de 2026 (Bs. 59.596.620)" },
+      { id: 14, title: "Proyección Institucional I", desc: "Fortalecer la ALP es fortalecer la democracia" },
+      { id: 15, title: "Proyección Institucional II", desc: "Construir el futuro: Reformas estructurales" },
+      { id: 16, title: "Cierre Institucional", desc: "Agradecimiento y despedida" }
+    ];
+
+    const Deck = {
+      current: 0,
+      total: SLIDES_DECK.length,
+      isGridOpen: false,
+      isIndexOpen: false,
+      touchX: 0,
+      touchY: 0,
+      chartInstance: null,
+      bancadasChartInstance: null,
+      territoryChartInstance: null,
+      piesChartInstance: null,
+      minutasChartInstance: null,
+
+      init() {
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+        this.renderDots();
+        this.renderGrid();
+        this.renderIndex();
+        this.bindEvents();
+        this.goTo(0);
+      },
+
+      renderDots() {
+        const container = document.getElementById('dots-container');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < this.total; i++) {
+          const dot = document.createElement('button');
+          dot.id = `dot-${i}`;
+          dot.title = `${i + 1}. ${SLIDES_DECK[i].title}`;
+          dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'w-6 bg-gold-400' : 'bg-crimson-800/80 hover:bg-gold-500/50'}`;
+          dot.onclick = () => this.goTo(i);
+          container.appendChild(dot);
+        }
+      },
+
+      renderGrid() {
+        const grid = document.getElementById('grid-cards-container');
+        if (!grid) return;
+        grid.innerHTML = '';
+        SLIDES_DECK.forEach((slide, idx) => {
+          const item = document.createElement('div');
+          item.className = 'senado-glass-card p-4 rounded-2xl cursor-pointer hover:border-gold-500 transition-all flex flex-col justify-between group';
+          item.onclick = () => {
+            this.goTo(idx);
+            this.toggleGrid();
+          };
+          item.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between text-xs font-mono text-gold-400 mb-1">
+                <span>#${(idx + 1).toString().padStart(2, '0')}</span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity">Ir →</span>
+              </div>
+              <h5 class="text-sm font-bold text-white group-hover:text-gold-300 transition-colors line-clamp-1">${slide.title}</h5>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-2">${slide.desc}</p>
+          `;
+          grid.appendChild(item);
+        });
+      },
+
+      renderIndex() {
+        const list = document.getElementById('index-list');
+        if (!list) return;
+        list.innerHTML = '';
+        SLIDES_DECK.forEach((slide, idx) => {
+          const btn = document.createElement('button');
+          btn.className = `w-full text-left px-3.5 py-3 rounded-2xl transition-all flex items-center justify-between text-xs md:text-sm ${idx === this.current ? 'bg-crimson-800 border border-gold-500/40 text-gold-300 font-bold' : 'text-slate-200 hover:bg-crimson-900/50'}`;
+          btn.onclick = () => {
+            this.goTo(idx);
+            this.toggleIndex();
+          };
+          btn.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="font-mono text-gold-500 text-xs">${(idx + 1).toString().padStart(2, '0')}</span>
+              <span class="line-clamp-1">${slide.title}</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 opacity-60"></i>
+          `;
+          list.appendChild(btn);
+        });
+      },
+
+      goTo(index) {
+        if (index < 0 || index >= this.total) return;
+        this.current = index;
+
+        const slides = document.querySelectorAll('.slide-content');
+        slides.forEach((el) => {
+          const slideIndex = parseInt(el.getAttribute('data-slide'));
+          if (slideIndex === index) {
+            el.classList.remove('opacity-0', 'pointer-events-none', 'scale-95', '-translate-x-12', 'translate-x-12');
+            el.classList.add('opacity-100', 'scale-100', 'z-10');
+            this.animateSlideCounters(el);
+          } else {
+            el.classList.remove('opacity-100', 'scale-100', 'z-10');
+            el.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+            if (slideIndex < index) {
+              el.classList.add('-translate-x-12');
+            } else {
+              el.classList.add('translate-x-12');
+            }
+          }
+        });
+
+        const pct = ((index + 1) / this.total) * 100;
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) progressBar.style.width = `${pct}%`;
+
+        const curSlideEl = document.getElementById('current-slide-num');
+        if (curSlideEl) curSlideEl.textContent = (index + 1).toString().padStart(2, '0');
+
+        const totSlideEl = document.getElementById('total-slide-num');
+        if (totSlideEl) totSlideEl.textContent = this.total.toString().padStart(2, '0');
+
+        const deckTitleEl = document.getElementById('deck-current-title');
+        if (deckTitleEl) deckTitleEl.textContent = SLIDES_DECK[index].title;
+
+        const btnPrev = document.getElementById('btn-prev');
+        if (btnPrev) btnPrev.disabled = (index === 0);
+
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) btnNext.disabled = (index === this.total - 1);
+
+        for (let i = 0; i < this.total; i++) {
+          const dot = document.getElementById(`dot-${i}`);
+          if (dot) {
+            if (i === index) {
+              dot.className = 'w-6 h-2 rounded-full bg-gold-400 transition-all duration-300';
+            } else {
+              dot.className = 'w-2 h-2 rounded-full bg-crimson-800/80 hover:bg-gold-500/50 transition-all duration-300';
+            }
+          }
+        }
+
+        // Renderizado reactivo de gráficos
+        if (index === 3) {
+          setTimeout(() => this.initAreaDoughnutChart(), 60);
+        } else if (index === 4) {
+          setTimeout(() => this.initBancadasDoughnutChart(), 60);
+        } else if (index === 5) {
+          setTimeout(() => this.initTerritoryDoughnutChart(), 60);
+        } else if (index === 8) {
+          setTimeout(() => this.initFiscalizacionChart(), 60);
+        } else if (index === 9) {
+          setTimeout(() => this.initMinutasChart(), 60);
+        }
+
+        this.renderIndex();
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      },
+
+      animateSlideCounters(slideElement) {
+        const counters = slideElement.querySelectorAll('.counter');
+        counters.forEach(counter => {
+          const target = parseFloat(counter.getAttribute('data-target'));
+          const isCurrency = counter.getAttribute('data-format') === 'currency';
+          const decimalPlaces = parseInt(counter.getAttribute('data-decimal') || '0');
+          const duration = 1200;
+          const startTime = performance.now();
+
+          const updateCount = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const currentVal = target * easeOut;
+
+            if (isCurrency) {
+              counter.textContent = Math.round(currentVal).toLocaleString('es-BO');
+            } else if (decimalPlaces > 0) {
+              counter.textContent = currentVal.toFixed(decimalPlaces);
+            } else {
+              counter.textContent = Math.round(currentVal).toLocaleString('es-BO');
+            }
+
+            if (progress < 1) {
+              requestAnimationFrame(updateCount);
+            } else {
+              if (isCurrency) {
+                counter.textContent = target.toLocaleString('es-BO');
+              } else if (decimalPlaces > 0) {
+                counter.textContent = target.toFixed(decimalPlaces);
+              } else {
+                counter.textContent = target.toLocaleString('es-BO');
+              }
+            }
+          };
+
+          requestAnimationFrame(updateCount);
+        });
+      },
+
+      initAreaDoughnutChart() {
+        const ctx = document.getElementById('areasDoughnutChart');
+        if (!ctx || typeof Chart === 'undefined') return;
+        if (this.chartInstance) this.chartInstance.destroy();
+
+        const distinguishableColors = ['#e67e22', '#3498db', '#9b59b6', '#2ecc71', '#1abc9c', '#e74c3c', '#f1c40f'];
+        const plugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
+
+        this.chartInstance = new Chart(ctx, {
+          type: 'doughnut',
+          plugins: plugins,
+          data: {
+            labels: ['Cultura', 'Justicia', 'Infraestructura', 'Economía', 'Medio Ambiente', 'Salud', 'Trabajo'],
+            datasets: [{
+              data: [32, 23, 13, 12, 8, 8, 4],
+              backgroundColor: distinguishableColors,
+              borderColor: '#1d0505',
+              borderWidth: 4,
+              hoverOffset: 12
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+              legend: { display: false },
+              datalabels: {
+                color: '#ffffff',
+                font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 14 },
+                formatter: (value) => value + '%',
+                textShadowColor: 'rgba(0, 0, 0, 0.95)',
+                textShadowBlur: 6
+              },
+              tooltip: {
+                backgroundColor: 'rgba(20, 3, 3, 0.95)',
+                titleColor: '#e3d194',
+                bodyColor: '#ffffff',
+                borderColor: '#e3d194',
+                borderWidth: 1.5,
+                padding: 12,
+                cornerRadius: 10
+              }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1100 }
+          }
+        });
+      },
+
+      initBancadasDoughnutChart() {
+        const ctx = document.getElementById('bancadasDoughnutChart');
+        if (!ctx || typeof Chart === 'undefined') return;
+        if (this.bancadasChartInstance) this.bancadasChartInstance.destroy();
+
+        const plugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
+
+        this.bancadasChartInstance = new Chart(ctx, {
+          type: 'doughnut',
+          plugins: plugins,
+          data: {
+            labels: ['Mayoría (59%)', 'Minoría (41%)'],
+            datasets: [{
+              data: [59, 41],
+              backgroundColor: ['#eedda3', '#c83b3b'],
+              borderColor: '#1d0505',
+              borderWidth: 6,
+              hoverOffset: 14
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+              legend: { display: false },
+              datalabels: {
+                color: (context) => (context.dataIndex === 0 ? '#1f0606' : '#ffffff'),
+                font: { family: 'Cinzel', weight: '900', size: 26 },
+                formatter: (value) => value + '%',
+                textShadowColor: (context) => (context.dataIndex === 0 ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.95)'),
+                textShadowBlur: 6
+              },
+              tooltip: {
+                backgroundColor: 'rgba(20, 3, 3, 0.95)',
+                titleColor: '#e3d194',
+                bodyColor: '#ffffff',
+                borderColor: '#e3d194',
+                borderWidth: 1.5,
+                padding: 12,
+                cornerRadius: 10
+              }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1100 }
+          }
+        });
+      },
+
+      initTerritoryDoughnutChart() {
+        const ctx = document.getElementById('territoryDoughnutChart');
+        if (!ctx || typeof Chart === 'undefined') return;
+        if (this.territoryChartInstance) this.territoryChartInstance.destroy();
+
+        const territoryColors = ['#eedda3', '#e67e22', '#3498db', '#2ecc71', '#9b59b6', '#e74c3c', '#1abc9c', '#f1c40f', '#e84393', '#a29bfe'];
+        const plugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
+
+        this.territoryChartInstance = new Chart(ctx, {
+          type: 'doughnut',
+          plugins: plugins,
+          data: {
+            labels: ['Nacional', 'Tarija', 'La Paz', 'Cochabamba', 'Chuquisaca', 'Potosí', 'Santa Cruz', 'Oruro', 'Pando', 'Beni'],
+            datasets: [{
+              data: [54, 9, 8, 6, 5, 5, 4, 3, 3, 1],
+              backgroundColor: territoryColors,
+              borderColor: '#1d0505',
+              borderWidth: 4,
+              hoverOffset: 10
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+              legend: { display: false },
+              datalabels: {
+                color: (context) => (context.dataIndex === 0 ? '#1f0606' : '#ffffff'),
+                font: { family: 'Plus Jakarta Sans', weight: 'bold', size: (context) => (context.dataIndex === 0 ? 18 : 12) },
+                formatter: (value, context) => (context.dataIndex === 0 ? 'Nac.\n53%' : (value >= 5 ? value : '')),
+                textShadowColor: 'rgba(0, 0, 0, 0.95)',
+                textShadowBlur: 6
+              },
+              tooltip: {
+                backgroundColor: 'rgba(20, 3, 3, 0.95)',
+                titleColor: '#e3d194',
+                bodyColor: '#ffffff',
+                borderColor: '#e3d194',
+                borderWidth: 1.5,
+                padding: 12,
+                cornerRadius: 10
+              }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1100 }
+          }
+        });
+      },
+
+      initFiscalizacionChart() {
+        const ctxPies = document.getElementById('piesChart');
+        if (!ctxPies || typeof Chart === 'undefined') return;
+        if (this.piesChartInstance) this.piesChartInstance.destroy();
+
+        const plugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
+
+        this.piesChartInstance = new Chart(ctxPies, {
+          type: 'doughnut',
+          plugins: plugins,
+          data: {
+            labels: ['Con Respuesta (84%)', 'En Trámite (16%)'],
+            datasets: [{
+              data: [2016, 384],
+              backgroundColor: ['#10b981', '#f59e0b'],
+              borderColor: '#1d0505',
+              borderWidth: 6,
+              hoverOffset: 14
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+              legend: { display: false },
+              datalabels: {
+                color: '#ffffff',
+                font: { family: 'Cinzel', weight: '900', size: 24 },
+                formatter: (value) => (value === 2016 ? '84%' : '16%'),
+                textShadowColor: 'rgba(0, 0, 0, 0.95)',
+                textShadowBlur: 8
+              },
+              tooltip: {
+                backgroundColor: 'rgba(20, 3, 3, 0.95)',
+                titleColor: '#e3d194',
+                bodyColor: '#ffffff',
+                borderColor: '#e3d194',
+                borderWidth: 1.5,
+                padding: 12,
+                cornerRadius: 10
+              }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1100 }
+          }
+        });
+      },
+
+      initMinutasChart() {
+        const ctxMinutas = document.getElementById('minutasChart');
+        if (!ctxMinutas || typeof Chart === 'undefined') return;
+        if (this.minutasChartInstance) this.minutasChartInstance.destroy();
+
+        const minutasColors = ['#3498db', '#9b59b6', '#1abc9c', '#c83b3b', '#2ecc71'];
+        const plugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
+
+        this.minutasChartInstance = new Chart(ctxMinutas, {
+          type: 'doughnut',
+          plugins: plugins,
+          data: {
+            labels: ['Órgano Ejecutivo', 'ETAs', 'Otras Entidades Públicas', 'Órgano Judicial', 'Órgano Electoral'],
+            datasets: [{
+              data: [71, 21, 6, 2, 0.1], // 0.1 para que Chart.js dibuje la porción mínima si aplica
+              backgroundColor: minutasColors,
+              borderColor: '#1d0505',
+              borderWidth: 4,
+              hoverOffset: 12
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+              legend: { display: false },
+              datalabels: {
+                color: '#ffffff',
+                font: { family: 'Plus Jakarta Sans', weight: 'bold', size: (ctx) => (ctx.dataset.data[ctx.dataIndex] > 5 ? 15 : 11) },
+                formatter: (value, ctx) => {
+                  if (ctx.dataIndex === 4) return '0%';
+                  return Math.round(value) + '%';
+                },
+                textShadowColor: 'rgba(0, 0, 0, 0.95)',
+                textShadowBlur: 6
+              },
+              tooltip: {
+                backgroundColor: 'rgba(20, 3, 3, 0.95)',
+                titleColor: '#e3d194',
+                bodyColor: '#ffffff',
+                borderColor: '#e3d194',
+                borderWidth: 1.5,
+                padding: 12,
+                cornerRadius: 10,
+                callbacks: {
+                  label: (context) => {
+                    const label = context.label || '';
+                    const rawVal = context.raw;
+                    const val = (context.dataIndex === 4) ? 0 : Math.round(rawVal);
+                    return ` ${label}: ${val}%`;
+                  }
+                }
+              }
+            },
+            animation: { animateScale: true, animateRotate: true, duration: 1100 }
+          }
+        });
+      },
+
+      next() {
+        if (this.current < this.total - 1) this.goTo(this.current + 1);
+      },
+
+      prev() {
+        if (this.current > 0) this.goTo(this.current - 1);
+      },
+
+      toggleGrid() {
+        this.isGridOpen = !this.isGridOpen;
+        const modal = document.getElementById('grid-modal');
+        if (!modal) return;
+        if (this.isGridOpen) {
+          modal.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.add('opacity-100');
+        } else {
+          modal.classList.add('opacity-0', 'pointer-events-none');
+          modal.classList.remove('opacity-100');
+        }
+      },
+
+      toggleIndex() {
+        this.isIndexOpen = !this.isIndexOpen;
+        const drawer = document.getElementById('index-drawer');
+        if (!drawer) return;
+        if (this.isIndexOpen) {
+          drawer.classList.remove('translate-x-full');
+        } else {
+          drawer.classList.add('translate-x-full');
+        }
+      },
+
+      bindEvents() {
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            if (this.isGridOpen) this.toggleGrid();
+            if (this.isIndexOpen) this.toggleIndex();
+            return;
+          }
+
+          if (this.isGridOpen) return;
+
+          switch (e.key) {
+            case 'ArrowRight':
+            case 'ArrowDown':
+            case ' ':
+            case 'PageDown':
+              e.preventDefault();
+              this.next();
+              break;
+            case 'ArrowLeft':
+            case 'ArrowUp':
+            case 'PageUp':
+              e.preventDefault();
+              this.prev();
+              break;
+            case 'Home':
+              e.preventDefault();
+              this.goTo(0);
+              break;
+            case 'End':
+              e.preventDefault();
+              this.goTo(this.total - 1);
+              break;
+            case 'g':
+            case 'G':
+              this.toggleGrid();
+              break;
+            case 'm':
+            case 'M':
+              this.toggleIndex();
+              break;
+            case 'f':
+            case 'F':
+              this.toggleFullscreen();
+              break;
+          }
+        });
+
+        const vp = document.getElementById('viewport');
+        if (vp) {
+          vp.addEventListener('touchstart', (e) => {
+            this.touchX = e.changedTouches[0].screenX;
+            this.touchY = e.changedTouches[0].screenY;
+          }, { passive: true });
+
+          vp.addEventListener('touchend', (e) => {
+            const diffX = e.changedTouches[0].screenX - this.touchX;
+            const diffY = e.changedTouches[0].screenY - this.touchY;
+
+            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+              if (diffX < 0) this.next();
+              else this.prev();
+            }
+          }, { passive: true });
+        }
+
+        const btnGrid = document.getElementById('btn-grid');
+        if (btnGrid) btnGrid.addEventListener('click', () => this.toggleGrid());
+
+        const btnIndex = document.getElementById('btn-index');
+        if (btnIndex) btnIndex.addEventListener('click', () => this.toggleIndex());
+
+        const btnFs = document.getElementById('btn-fullscreen');
+        if (btnFs) btnFs.addEventListener('click', () => this.toggleFullscreen());
+      },
+
+      toggleFullscreen() {
+        const icon = document.getElementById('fullscreen-icon');
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+          if (icon) icon.setAttribute('data-lucide', 'minimize');
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+            if (icon) icon.setAttribute('data-lucide', 'maximize');
+          }
+        }
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Deck.init();
+    });
+  </script>
+</body>
+</html>
