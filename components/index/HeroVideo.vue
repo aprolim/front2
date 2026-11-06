@@ -3,17 +3,21 @@
     class="hero-video-wrapper relative w-full overflow-hidden"
     ref="videoContainerRef"
   >
-    <video
-      ref="videoRef"
-      class="absolute top-0 left-0 w-full h-full object-cover"
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="auto"
-    >
-      <source src="/videos/fondo-senado.webm" type="video/mp4" />
-    </video>
+    <!-- ============================================ -->
+    <!-- CARRUSEL DE IMÁGENES DE FONDO                -->
+    <!-- ============================================ -->
+    <div class="absolute inset-0 w-full h-full bg-black">
+      <transition-group name="fade" tag="div" class="relative w-full h-full">
+        <img
+          v-for="(img, index) in imagenes"
+          :key="img"
+          v-show="index === indiceActual"
+          :src="img"
+          alt="Fondo Senado"
+          class="absolute top-0 left-0 w-full h-full object-cover"
+        />
+      </transition-group>
+    </div>
 
     <!-- ============================================ -->
     <!-- BARRA DE SESIÓN - SIEMPRE VISIBLE            -->
@@ -56,23 +60,21 @@ const { liveVideo } = storeToRefs(liveStore)
 const statsDinamicos = ref({
   enTratamiento: 0,
   aprobados: 0,
-  rechazados: 0 // CAMBIO: Renombrado de sancionadas a rechazados
+  rechazados: 0
 })
 
 const cargarEstadisticas = async () => {
   try {
-    // Consultamos todos los endpoints en paralelo para mayor velocidad
     const [
       resTratamiento,
       resAprobados,
-      resRechazados // CAMBIO: Ahora consulta rechazados
+      resRechazados
     ] = await Promise.allSettled([
       getStats('proyecto-ley-tratamiento-senado'),
       getStats('proyecto-ley-aprobados'),
-      getStats('proyecto-ley-rechazados') // CAMBIO: Endpoint de rechazados
+      getStats('proyecto-ley-rechazados')
     ])
 
-    // Extraer los totales (si falla, se queda en 0)
     const enTratamiento = resTratamiento.status === 'fulfilled' ? (resTratamiento.value?.total || 0) : 0
     const aprobados = resAprobados.status === 'fulfilled' ? (resAprobados.value?.total || 0) : 0
     const rechazados = resRechazados.status === 'fulfilled' ? (resRechazados.value?.total || 0) : 0
@@ -90,10 +92,25 @@ const cargarEstadisticas = async () => {
 }
 
 // ==========================================
-// CONFIGURACIÓN DEL VIDEO DE FONDO
+// CONFIGURACIÓN DEL CARRUSEL DE IMÁGENES
 // ==========================================
-const videoRef = ref(null)
 const videoContainerRef = ref(null)
+const imagenes = [
+  '/galeria/img1.jpeg',
+  '/galeria/img2.jpeg',
+  '/galeria/img3.jpeg',
+  '/galeria/img4.jpeg',
+  '/galeria/img5.jpeg',
+  '/galeria/img6.jpeg'
+]
+const indiceActual = ref(0)
+let intervalo = null
+
+const iniciarCarrusel = () => {
+  intervalo = setInterval(() => {
+    indiceActual.value = (indiceActual.value + 1) % imagenes.length
+  }, 5000) // Cambia cada 5 segundos
+}
 
 // CSS var global que ajustamos al detectar el header
 const updateHeroHeight = () => {
@@ -103,13 +120,6 @@ const updateHeroHeight = () => {
   const headerPx = header ? header.offsetHeight : 80
 
   document.documentElement.style.setProperty('--header-height', `${headerPx}px`)
-}
-
-// ==========================================
-// MÉTODOS
-// ==========================================
-const openModal = () => {
-  sessionStore.openModal()
 }
 
 // ==========================================
@@ -127,6 +137,9 @@ onMounted(() => {
   // 🔥 CARGAR LAS ESTADÍSTICAS DINÁMICAS
   cargarEstadisticas()
 
+  // Iniciar el carrusel
+  iniciarCarrusel()
+
   // Resize con rAF
   let resizeRaf = null
   const handleResize = () => {
@@ -139,18 +152,15 @@ onMounted(() => {
   window.addEventListener('resize', handleResize, { passive: true })
   window.addEventListener('orientationchange', handleResize, { passive: true })
 
-  // Autoplay del video
-  if (videoRef.value) {
-    const playPromise = videoRef.value.play()
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(() => {})
-    }
-  }
-
   onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
     window.removeEventListener('orientationchange', handleResize)
     if (resizeRaf) cancelAnimationFrame(resizeRaf)
+    
+    // Limpiar intervalo del carrusel
+    if (intervalo) {
+      clearInterval(intervalo)
+    }
   })
 })
 </script>
@@ -169,6 +179,24 @@ onMounted(() => {
     height: calc(100vh - var(--header-height, 80px));
     transition: height 0.15s ease-out;
   }
+}
+
+/* Animación de fundido para el carrusel */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Aseguramos que las imágenes se apilen bien en absoluto */
+.fade-leave-active {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 /* Cometa */

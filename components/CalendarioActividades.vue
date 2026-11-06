@@ -460,29 +460,24 @@ const seleccionarDiaConEvento = () => {
   }
 }
 
-// Al cargar: ir al mes con la sesión más reciente (pero permitir navegar)
+// Al cargar: seleccionar SIEMPRE el día de hoy (aunque no tenga evento)
 const inicializarCalendario = () => {
-  if (sesionesMock.value.length === 0) return
+  const ahora = new Date()
+  const hoyStr = formatearFecha(ahora)
 
-  const sesionesOrdenadas = [...sesionesMock.value].sort(
-    (a, b) => parsearFecha(b.fecha) - parsearFecha(a.fecha)
-  )
-  const sesionMasReciente = sesionesOrdenadas[0]
-
-  const fechaSesion = parsearFecha(sesionMasReciente.fecha)
-  mesActual.value = fechaSesion.getMonth()
-  añoActual.value = fechaSesion.getFullYear()
+  // Posicionar el calendario en el mes/año actual
+  mesActual.value = ahora.getMonth()
+  añoActual.value = ahora.getFullYear()
 
   nextTick(() => {
     const dias = diasDelMes.value
-    const diaEncontrado = dias.find(
-      d => d.esMesActual && d.fechaStr === sesionMasReciente.fecha
-    )
-    if (diaEncontrado) {
-      seleccionarDia(diaEncontrado)
+    const diaHoy = dias.find(d => d.esMesActual && d.fechaStr === hoyStr)
+
+    if (diaHoy) {
+      seleccionarDia(diaHoy)
     } else {
-      // Si por alguna razón no se encuentra, seleccionar el último del mes
-      seleccionarDiaConEvento()
+      // Fallback: si por alguna razón no se encuentra, limpiar selección
+      diaSeleccionado.value = null
     }
   })
 }

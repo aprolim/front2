@@ -9,7 +9,7 @@
         </h1>
         <div class="w-24 h-1 bg-[#611717] mx-auto mt-4"></div>
         <p class="text-center text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
-          Consulta la normativa vigente del Senado de Bolivia
+          Consulta la normativa del Senado de Bolivia
         </p>
       </div>
 

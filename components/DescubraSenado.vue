@@ -5,22 +5,18 @@
       <!-- BOTÓN TITULARES/SUPLENTES                  -->
       <!-- ========================================== -->
       <div class="botones-padre">
-        <div class="inline-flex rounded-md shadow-sm" role="group">
+        <div class="toggle-container" role="group">
           <button
             @click="setTipoVisualizacion('titulares')"
-            class="px-4 py-2 text-[2.6vw] sm:text-[1.6vw] font-medium rounded-l-lg transition-colors"
-            :class="tipoVisualizacion === 'titulares' 
-              ? 'bg-senado-primary text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'"
+            class="toggle-btn toggle-btn-left"
+            :class="{ 'toggle-btn-active': tipoVisualizacion === 'titulares' }"
           >
             Titulares
           </button>
           <button
             @click="setTipoVisualizacion('suplentes')"
-            class="px-4 py-2 text-[2.6vw] sm:text-[1.6vw] font-medium rounded-r-lg transition-colors"
-            :class="tipoVisualizacion === 'suplentes' 
-              ? 'bg-senado-primary text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 border-l-0'"
+            class="toggle-btn toggle-btn-right"
+            :class="{ 'toggle-btn-active': tipoVisualizacion === 'suplentes' }"
           >
             Suplentes
           </button>
@@ -823,10 +819,9 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* BOTONES                                    */
+/* BOTONES (SIN Z-INDEX)                      */
 /* ========================================== */
 .botones-padre {
-  margin-bottom: 0.5em;
   display: flex;
   align-items: center;
   gap: 1em;
@@ -834,9 +829,38 @@ onMounted(() => {
   justify-content: center;
 }
 
-.botones-padre button {
-  padding: 0.4em 0.75em;
-  border-radius: 0.375em;
+.toggle-container {
+  display: inline-flex;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #9ca3af;
+}
+
+.toggle-btn {
+  padding: 0.5rem 1rem;
+  font-size: clamp(0.875rem, 1.6vw, 1rem);
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: none;
+}
+
+.toggle-btn:hover:not(.toggle-btn-active) {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.toggle-btn-left {
+  border-right: 1px solid #9ca3af;
+}
+
+.toggle-btn-active {
+  background-color: #611717 !important;
+  color: white !important;
+  cursor: default;
 }
 
 .filtro-activo {
@@ -880,18 +904,17 @@ onMounted(() => {
 }
 
 /* ========================================== */
-/* HEMICICLO (MÁS PEQUEÑO)                    */
+/* HEMICICLO (SIN MARGEN NEGATIVO)            */
 /* ========================================== */
 .hemicycle-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: -1em 0; 
+  margin: 0; /* 🔥 Ya no invade hacia arriba */
 }
 
 .hemicycle-container {
-  /* 🔥 Reducido al 60% */
   width: 60%; 
   display: flex;
   justify-content: center;
@@ -906,7 +929,6 @@ onMounted(() => {
   aspect-ratio: 700 / 400;
 }
 
-/* 🔥 MÓVIL: Reducido al 100% */
 @media (max-width: 1023px) {
   .hemicycle-container {
     width: 100%;
@@ -1147,7 +1169,7 @@ onMounted(() => {
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(0.95);
   }
 }
 </style>

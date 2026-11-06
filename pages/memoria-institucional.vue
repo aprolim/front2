@@ -429,7 +429,15 @@ const tomos2025 = [
     pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_III_2025-2026.pdf',
     portada: '/images/portadas/2025-2026/default.jpg',
     nombreArchivo: 'Redactor_Tomo_III_2025-2026.pdf'
-  }
+  },
+  { 
+    id: 4, 
+    numero: 'TOMO IV', 
+    titulo: 'Tomo IV - Gestión 2025-2026',
+    pdfUrl: '/pdfs/redactor/REDACTOR_TOMO_IV_2025-2026.pdf',
+    portada: '/images/portadas/2025-2026/default.jpg',
+    nombreArchivo: 'Redactor_Tomo_IV_2025-2026.pdf'
+  }  
 ]
 
 // ============================================ //
