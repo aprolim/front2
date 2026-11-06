@@ -52,18 +52,9 @@
       <!-- ========================================== -->
       <!-- BOTONES INFERIORES                         -->
       <!-- ========================================== -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+      <div class="flex flex-col items-center justify-center gap-4 mt-12">
 
-        <!-- Volver al inicio (navegación interna Nuxt) -->
-        <NuxtLink 
-          to="/" 
-          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium"
-        >
-          <Icon name="mdi:arrow-left" class="w-5 h-5" />
-          Volver al inicio
-        </NuxtLink>
-
-        <!-- 🔥 NUEVO: Botón que redirige al HTML externo -->
+        <!-- 🔥 Botón que redirige al HTML externo (AHORA ARRIBA) -->
         <a 
           href="/InformeFinal20252026.html"
           target="_blank"
@@ -75,6 +66,15 @@
           Ver Informe Final 2025-2026
           <Icon name="mdi:open-in-new" class="w-4 h-4 opacity-80" />
         </a>
+
+        <!-- Volver al inicio (AHORA ABAJO) -->
+        <NuxtLink 
+          to="/" 
+          class="inline-flex items-center gap-2 text-senado-primary hover:text-senado-primary-dark transition-colors text-[1.1vw] font-medium mt-2"
+        >
+          <Icon name="mdi:arrow-left" class="w-5 h-5" />
+          Volver al inicio
+        </NuxtLink>
 
       </div>
     </div>
