@@ -62,8 +62,7 @@
           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#611717] hover:bg-[#3a060d] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
           title="Ver Informe Final 2025-2026"
         >
-          <Icon name="mdi:file-document" class="w-5 h-5" />
-          Ver Informe Final 2025-2026
+          Informe de Gestión 2025-2026
           <Icon name="mdi:open-in-new" class="w-4 h-4 opacity-80" />
         </a>
 
