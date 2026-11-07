@@ -298,8 +298,8 @@ const sesionesMock = ref([
     tipo: 'sesion',
     tipoLabel: 'Sesión',
     modality: 'Salón de Sesiones',
-    pdfUrl: '/sesiones/primera session.jpeg',
-    youtubeUrl: ''
+    pdfUrl: '/sesiones/Sesión Camaral 01ª.pdf',
+    youtubeUrl: 'https://www.youtube.com/embed/X9N6cO45mRw'
   }
 ])
 
