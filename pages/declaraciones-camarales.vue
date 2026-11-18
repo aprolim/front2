@@ -1,7 +1,7 @@
 <!-- declaraciones-camarales -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
-    <div class="w-[95%] max-w-7xl mx-auto">
+    <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
       <div class="mb-6">
         <NuxtLink to="/" class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium">
@@ -11,7 +11,7 @@
       </div>
 
       <div class="mb-6">
-        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">📋 Gestión</div>
+        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">ðŸ“‹ GestiÃ³n</div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Declaraciones Camarales</h1>
 
       </div>
@@ -22,8 +22,8 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
-            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, asunto..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
-            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por cÃ³digo, asunto..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar bÃºsqueda">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -31,9 +31,9 @@
       </div>
 
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
-        Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> declaración{{ total !== 1 ? 'es' : '' }}
+        Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> declaraciÃ³n{{ total !== 1 ? 'es' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
+        <span class="ml-2 text-xs text-gray-400">Â· Orden: {{ ordenDescendente ? 'mÃ¡s reciente primero' : 'mÃ¡s antiguo primero' }}</span>
       </div>
 
       <div v-if="loading" class="bg-white rounded-lg shadow-sm py-16 text-center">
@@ -47,9 +47,9 @@
       </div>
 
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
-        <div class="text-5xl mb-3">📭</div>
+        <div class="text-5xl mb-3">ðŸ“­</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay declaraciones</h3>
-        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay declaraciones registradas.' }}</p>
+        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros tÃ©rminos de bÃºsqueda.' : 'AÃºn no hay declaraciones registradas.' }}</p>
       </div>
 
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
@@ -57,35 +57,35 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
+                <!-- BOTÃ“N NÂº PARA INVERTIR EL ORDEN -->
                 <th
                   @click="toggleOrden"
                   class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
-                    Nº
+                    NÂº
                     <span class="text-[10px] opacity-80 group-hover:opacity-100">
-                      {{ ordenDescendente ? '▼' : '▲' }}
+                      {{ ordenDescendente ? 'â–¼' : 'â–²' }}
                     </span>
                   </span>
                 </th>
-                <!-- Columna Código (antes Nº) -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de Aprobación</th>
+                <!-- Columna CÃ³digo (antes NÂº) -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">CÃ³digo</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">DescripciÃ³n</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha de AprobaciÃ³n</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- Nº secuencial GLOBAL -->
+                <!-- NÂº secuencial GLOBAL -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
-                <!-- Código (antes Nº) -->
+                <!-- CÃ³digo (antes NÂº) -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ mayusculas(doc.numero) }}</span>
                 </td>
@@ -127,14 +127,18 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useGestionStore } from '~/stores/gestion'
 
 useHead({
   title: 'Declaraciones Camarales | Senado de Bolivia',
-  meta: [{ name: 'description', content: 'Registro oficial de declaraciones camarales de la Cámara de Senadores de Bolivia.' }]
+  meta: [{ name: 'description', content: 'Registro oficial de declaraciones camarales de la CÃ¡mara de Senadores de Bolivia.' }]
 })
 
 const config = useRuntimeConfig()
 const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
+
+// Gestion legislativa activa (persistida)
+const gestionStore = useGestionStore()
 
 const documentos = ref([])
 const loading = ref(false)
@@ -157,22 +161,22 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// 🔥 Nueva función para convertir texto a mayúsculas
+// ðŸ”¥ Nueva funciÃ³n para convertir texto a mayÃºsculas
 const mayusculas = (texto) => {
   if (texto === null || texto === undefined) return ''
   return String(texto).toUpperCase()
 }
 
 const formatearFecha = (fecha) => {
-  if (!fecha) return '—'
+  if (!fecha) return 'â€”'
   try {
     const d = new Date(fecha)
-    if (isNaN(d.getTime())) return '—'
+    if (isNaN(d.getTime())) return 'â€”'
     return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
-  } catch { return '—' }
+  } catch { return 'â€”' }
 }
 
-// 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
+// ðŸ”¥ NumeraciÃ³n GLOBAL (Igual a Proyectos Aprobados)
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
     return total.value - ((page.value - 1) * itemsPorPagina) - index
@@ -189,6 +193,8 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
+    if (gestionStore.filtro.creadoDesde) params.append('creadoDesde', gestionStore.filtro.creadoDesde)
+    if (gestionStore.filtro.creadoHasta) params.append('creadoHasta', gestionStore.filtro.creadoHasta)
 
     const url = `${API_BASE_URL}/legislativos/declaracion-camaral?${params.toString()}`
     const response = await fetch(url)
@@ -210,7 +216,7 @@ const cargarDocumentos = async () => {
   }
 }
 
-// 🔥 Botón Nº
+// ðŸ”¥ BotÃ³n NÂº
 const toggleOrden = () => {
   if (loading.value) return
   ordenDescendente.value = !ordenDescendente.value

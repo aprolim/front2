@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
-    <div class="w-[95%] max-w-7xl mx-auto">
+    <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
-      <!-- Botón volver -->
+      <!-- BotÃ³n volver -->
       <div class="mb-6">
         <NuxtLink to="/" class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -13,7 +13,7 @@
       <!-- Encabezado -->
       <div class="mb-6">
         <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
-          ⚖️ Legislación
+          âš–ï¸ LegislaciÃ³n
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley en Tratamiento</h1>
       </div>
@@ -25,8 +25,8 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
-            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, descripción..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
-            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por cÃ³digo, descripciÃ³n..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar bÃºsqueda">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -37,7 +37,7 @@
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> proyectos
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
+        <span class="ml-2 text-xs text-gray-400">Â· Orden: {{ ordenDescendente ? 'mÃ¡s reciente primero' : 'mÃ¡s antiguo primero' }}</span>
       </div>
 
       <!-- Loading -->
@@ -54,70 +54,59 @@
 
       <!-- Sin resultados -->
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
-        <div class="text-5xl mb-3">📭</div>
+        <div class="text-5xl mb-3">ðŸ“­</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay proyectos de ley</h3>
-        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay proyectos registrados.' }}</p>
+        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros tÃ©rminos de bÃºsqueda.' : 'AÃºn no hay proyectos registrados.' }}</p>
       </div>
 
       <!-- Tabla -->
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="w-full table-fixed text-sm">
-            <colgroup>
-              <col style="width: 3vw" />
-              <col style="width: 5vw" />
-              <col style="width: auto" />
-              <col style="width: 7vw" />
-              <col style="width: 12vw" />
-              <col style="width: 8vw" />
-              <col style="width: 12vw" />
-              <col style="width: 8vw" />
-              <col style="width: 8vw" />
-            </colgroup>
+          <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
+                <!-- ðŸ”¥ BOTÃ“N NÂº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th 
                   @click="toggleOrden"
-                  class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
+                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
-                    Nº
+                    NÂº
                     <span class="text-[10px] opacity-80 group-hover:opacity-100">
-                      {{ ordenDescendente ? '▼' : '▲' }}
+                      {{ ordenDescendente ? 'â–¼' : 'â–²' }}
                     </span>
                   </span>
                 </th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Código</th>
-                <!-- 🔥 Descripción: ocupa todo el espacio libre -->
-                <th class="px-3 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Descripción</th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Proyectista</th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Comisión I Remitida</th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Fecha Remisión Com. I</th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Comisión II</th>
-                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Fecha Remisión Com. II</th>
-                <th class="px-2 py-4 text-center text-[11px] font-semibold uppercase leading-tight break-words">Adjunto</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-24">CÃ³digo</th>
+                <!-- ðŸ”¥ DescripciÃ³n: la mÃ¡s ancha de la tabla -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[480px]">DescripciÃ³n</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap min-w-[180px]">Proyectista</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[200px]">ComisiÃ³n I Remitida</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-32">Fecha RemisiÃ³n Com. I</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[200px]">ComisiÃ³n II</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-32">Fecha RemisiÃ³n Com. II</th>
+                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-36">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- Nº: Numeración Global Dinámica -->
-                <td class="px-2 py-4 whitespace-nowrap align-top">
+                <!-- NÂº: NumeraciÃ³n Global DinÃ¡mica -->
+                <td class="px-4 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
-                <!-- Código -->
-                <td class="px-2 py-4 whitespace-nowrap align-top">
-                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero }}</span>
+                <!-- CÃ³digo -->
+                <td class="px-4 py-4 whitespace-nowrap align-top">
+                  <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero ?? 'â€”' }}</span>
                 </td>
-                <!-- 🔥 Descripción (asunto) - Ocupa todo el espacio libre -->
-                <td class="px-3 py-4 text-gray-700 align-top">
-                  <div class="text-justify text-xs leading-relaxed uppercase break-words">{{ doc.asunto }}</div>
+                <!-- ðŸ”¥ DescripciÃ³n (asunto) - La mÃ¡s ancha de la tabla -->
+                <td class="px-4 py-4 text-gray-700 min-w-[480px] align-top">
+                  <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <!-- 🔥 Proyectista (peticionario) - Cada uno en su línea con guion -->
-                <td class="px-2 py-4 text-gray-700 text-xs uppercase align-top break-words min-w-0">
+                <!-- Proyectista (peticionario) - Cada uno en su lÃ­nea con guion -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top min-w-[180px]">
                   <div class="flex flex-col gap-1.5">
                     <span v-for="(nombre, i) in formatearProyectista(doc.peticionario)" :key="i" class="flex items-start gap-1.5">
                       <span class="shrink-0 leading-tight">-</span>
@@ -125,37 +114,37 @@
                     </span>
                   </div>
                 </td>
-                <!-- Comisión I Remitida -->
-                <td class="px-2 py-4 text-gray-700 text-xs uppercase align-top break-words min-w-0">
+                <!-- ComisiÃ³n I Remitida -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top min-w-[200px]">
                   <div v-if="separarComisiones(doc.comisionI).length > 0">
                     <div v-for="(comision, i) in separarComisiones(doc.comisionI)" :key="i" class="mb-1 last:mb-0 flex items-start gap-1.5">
                       <span class="shrink-0 leading-tight">-</span>
                       <span class="leading-tight">{{ comision }}</span>
                     </div>
                   </div>
-                  <div v-else>—</div>
+                  <div v-else>â€”</div>
                 </td>
-                <!-- Fecha Remisión Comisión I -->
-                <td class="px-1 py-4 text-gray-700 text-[11px] uppercase align-top whitespace-nowrap text-center">
+                <!-- Fecha RemisiÃ³n ComisiÃ³n I -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top whitespace-nowrap">
                   {{ formatearFecha(doc.fechaRemisionComisionI) }}
                 </td>
-                <!-- Comisión II -->
-                <td class="px-2 py-4 text-gray-700 text-xs uppercase align-top break-words min-w-0">
+                <!-- ComisiÃ³n II -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top min-w-[200px]">
                   <div v-if="separarComisiones(doc.comisionII).length > 0">
                     <div v-for="(comision, i) in separarComisiones(doc.comisionII)" :key="i" class="mb-1 last:mb-0 flex items-start gap-1.5">
                       <span class="shrink-0 leading-tight">-</span>
                       <span class="leading-tight">{{ comision }}</span>
                     </div>
                   </div>
-                  <div v-else>—</div>
+                  <div v-else>â€”</div>
                 </td>
-                <!-- Fecha Remisión Comisión II -->
-                <td class="px-1 py-4 text-gray-700 text-[11px] uppercase align-top whitespace-nowrap text-center">
+                <!-- Fecha RemisiÃ³n ComisiÃ³n II -->
+                <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top whitespace-nowrap">
                   {{ formatearFecha(doc.fechaRemisionComisionII) }}
                 </td>
                 <!-- Adjunto (archivo) -->
-                <td class="px-2 py-4 text-center align-top">
-                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap" title="Ver PDF">
+                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
+                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase whitespace-nowrap" title="Ver PDF">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     Ver PDF
                   </a>
@@ -166,7 +155,7 @@
           </table>
         </div>
 
-        <!-- Paginación -->
+        <!-- PaginaciÃ³n -->
         <div v-if="totalPages > 1" class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]">
           <div class="text-xs text-gray-600">
             Mostrando registros del <strong class="text-[#611717]">{{ (page - 1) * itemsPorPagina + 1 }}</strong> al <strong class="text-[#611717]">{{ Math.min(page * itemsPorPagina, total) }}</strong> de un total de <strong class="text-[#611717]">{{ total }}</strong> registros
@@ -189,14 +178,18 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useGestionStore } from '~/stores/gestion'
 
 useHead({
   title: 'Proyectos de Ley en Tratamiento | Senado de Bolivia',
-  meta: [{ name: 'description', content: 'Listado de proyectos de ley en tratamiento originados en la Cámara de Senadores.' }]
+  meta: [{ name: 'description', content: 'Listado de proyectos de ley en tratamiento originados en la CÃ¡mara de Senadores.' }]
 })
 
 const config = useRuntimeConfig()
 const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
+
+// Gestion legislativa activa (persistida)
+const gestionStore = useGestionStore()
 
 const documentos = ref([])
 const loading = ref(false)
@@ -208,7 +201,7 @@ const itemsPorPagina = 10
 const filters = ref({ search: '' })
 let searchTimeout = null
 
-// 🔥 Estado del ordenamiento (true = descendente / false = ascendente)
+// ðŸ”¥ Estado del ordenamiento (true = descendente / false = ascendente)
 const ordenDescendente = ref(true)
 
 const paginasVisibles = computed(() => {
@@ -220,16 +213,16 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// 🔥 Función procesadora Avanzada para Nombres
+// ðŸ”¥ FunciÃ³n procesadora Avanzada para Nombres
 const formatearProyectista = (peticionario) => {
-  if (!peticionario) return ['—']
+  if (!peticionario) return ['â€”']
   
   // 1. Unir si viene como Array
   let texto = Array.isArray(peticionario) ? peticionario.join(' ') : peticionario
 
   // 2. Agregar un delimitador (|) justo antes de "Sen.", "Senador", "Ex. Sen.", etc.
   // Esto separa los nombres aunque vengan pegados y sin comas en el texto.
-  let textoFormateado = texto.replace(/(Ex\.?\s*Sen\.?|Ex\s*Senador|Sen\.?|Senador|Senadora)(?=\s[A-ZÁÉÍÓÚÑ])/gi, '|$1')
+  let textoFormateado = texto.replace(/(Ex\.?\s*Sen\.?|Ex\s*Senador|Sen\.?|Senador|Senadora)(?=\s[A-ZÃÃ‰ÃÃ“ÃšÃ‘])/gi, '|$1')
 
   // 3. Separar por el delimitador (|) o por comas
   return textoFormateado
@@ -239,31 +232,31 @@ const formatearProyectista = (peticionario) => {
       let limpio = nombre.replace(/^(Ex\.?\s*Sen\.?|Ex\s*Senador|Sen\.?|Senador|Senadora)\s+/gi, '')
       return limpio.trim()
     })
-    .filter(nombre => nombre.length > 0) // Quitar vacíos
+    .filter(nombre => nombre.length > 0) // Quitar vacÃ­os
 }
 
-// 🔥 Fecha en columnas estrechas: dd/mm arriba y el año completo abajo
+// ðŸ”¥ Fecha en columnas estrechas: dd/mm arriba y el aÃ±o completo abajo
 const formatearFechaCorta = (fecha) => {
-  if (!fecha) return { dia: '—', anio: '' }
+  if (!fecha) return { dia: 'â€”', anio: '' }
   try {
     const d = new Date(fecha)
-    if (isNaN(d.getTime())) return { dia: '—', anio: '' }
+    if (isNaN(d.getTime())) return { dia: 'â€”', anio: '' }
     const dia = d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', timeZone: 'UTC' })
     const anio = d.toLocaleDateString('es-BO', { year: 'numeric', timeZone: 'UTC' })
     return { dia, anio }
-  } catch { return { dia: '—', anio: '' } }
+  } catch { return { dia: 'â€”', anio: '' } }
 }
 
 const formatearFecha = (fecha) => {
-  if (!fecha) return '—'
+  if (!fecha) return 'â€”'
   try {
     const d = new Date(fecha)
-    if (isNaN(d.getTime())) return '—'
+    if (isNaN(d.getTime())) return 'â€”'
     return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
-  } catch { return '—' }
+  } catch { return 'â€”' }
 }
 
-// 🔥 Convierte comisionI / comisionII en una lista limpia separada por guiones
+// ðŸ”¥ Convierte comisionI / comisionII en una lista limpia separada por guiones
 const separarComisiones = (dato) => {
   if (!dato) return []
 
@@ -284,7 +277,7 @@ const separarComisiones = (dato) => {
     .filter((c) => c.length > 0)
 }
 
-// 🔥 Numeración secuencial GLOBAL basada en el orden actual
+// ðŸ”¥ NumeraciÃ³n secuencial GLOBAL basada en el orden actual
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
     return total.value - ((page.value - 1) * itemsPorPagina) - index
@@ -301,8 +294,10 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
     
-    // 🔥 Enviamos el orden dinámico al backend
+    // ðŸ”¥ Enviamos el orden dinÃ¡mico al backend
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
+    if (gestionStore.filtro.creadoDesde) params.append('creadoDesde', gestionStore.filtro.creadoDesde)
+    if (gestionStore.filtro.creadoHasta) params.append('creadoHasta', gestionStore.filtro.creadoHasta)
 
     const url = `${API_BASE_URL}/legislativos/proyecto-ley-tratamiento-senado?${params.toString()}`
     const response = await fetch(url)
@@ -321,7 +316,7 @@ const cargarDocumentos = async () => {
   }
 }
 
-// 🔥 ACCIÓN DEL BOTÓN Nº: Invierte el orden, vuelve a la página 1 y recarga
+// ðŸ”¥ ACCIÃ“N DEL BOTÃ“N NÂº: Invierte el orden, vuelve a la pÃ¡gina 1 y recarga
 const toggleOrden = () => {
   if (loading.value) return
   ordenDescendente.value = !ordenDescendente.value
@@ -352,7 +347,7 @@ onMounted(() => { cargarDocumentos() })
 </script>
 
 <style scoped>
-/* 🔥 Aumentado a 5 líneas para mostrar más descripción */
+/* ðŸ”¥ Aumentado a 5 lÃ­neas para mostrar mÃ¡s descripciÃ³n */
 .line-clamp-5 {
   display: -webkit-box;
   -webkit-line-clamp: 5;

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
-    <div class="w-[95%] max-w-7xl mx-auto">
+    <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
       <!-- Botón volver -->
       <div class="mb-6">

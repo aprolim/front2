@@ -164,7 +164,7 @@
     >
       <div
         ref="menuPanel"
-        class="bg-white text-gray-800 w-96 max-w-[90vw] h-full overflow-y-auto shadow-2xl rounded-r-2xl relative transition-all duration-500 ease-out hide-scrollbar"
+        class="bg-white text-gray-800 w-96 sm:w-[26rem] lg:w-[28vw] xl:w-[30vw] min-w-[24rem] h-full overflow-y-auto shadow-2xl rounded-r-2xl relative transition-all duration-500 ease-out hide-scrollbar"
         :class="menuAbierto ? 'translate-x-0' : '-translate-x-full'"
         @mouseenter="handleMenuPanelHoverEnter"
         @mouseleave="handleMenuPanelHoverLeave"
@@ -195,7 +195,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5"> <!-- 🔥 py-1.5 agregado para compactar -->
-                  <span>&nbsp;&nbsp;&nbsp; Institucional</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Institucional</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.institucional ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -226,7 +226,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Plan Estratégico y POA</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Plan Estratégico y POA</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.planEstrategico ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -250,7 +250,7 @@
               @click="closeMenu"
             >
               <div class="flex items-center justify-between w-full text-left font-[500] text-BLACK hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors">
-                <span>&nbsp;&nbsp;&nbsp; Facultades de la Camara de Senadores</span>
+                <span class="block">&nbsp;&nbsp;&nbsp; Facultades de la Camara de Senadores</span>
               </div>
             </NuxtLink>
 
@@ -265,7 +265,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Estructura</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Estructura</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.senadores ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -296,7 +296,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Recursos Humanos</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Recursos Humanos</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.recursosHumanos ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -324,7 +324,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Contrataciones</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Contrataciones</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.contrataciones ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -348,7 +348,7 @@
               @click="closeMenu"
             >
               <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors">
-                <span>&nbsp;&nbsp;&nbsp; Auditoría</span>
+                <span class="block">&nbsp;&nbsp;&nbsp; Auditoría</span>
               </div>
             </NuxtLink>
 
@@ -363,7 +363,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Información Financiera</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Información Financiera</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.informacionFinanciera ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -392,7 +392,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Transparencia y Lucha contra la Corrupción</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Transparencia y Lucha contra la Corrupción</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.transparenciaInstitucional ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>
@@ -421,7 +421,7 @@
                 class="cursor-pointer menu-item"
               >
                 <div class="flex items-center justify-between w-full text-left font-[500] text-black hover:text-senado-primary-dark text-[3.3vw] sm:text-[1.3vw] lg:text-[1.1vw] transition-colors hover:bg-white/60 py-1.5">
-                  <span>&nbsp;&nbsp;&nbsp; Comunicación</span>
+                  <span class="block">&nbsp;&nbsp;&nbsp; Comunicación</span>
                   <span class="transition-transform duration-300 inline-flex" :class="submenus.comunicacion ? 'rotate-90' : ''">
                     <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M0.878906 15.3789L7.75755 8.50026L0.878906 1.62162" stroke="currentColor" stroke-width="2"/>

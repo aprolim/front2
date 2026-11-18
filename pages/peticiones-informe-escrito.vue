@@ -1,9 +1,9 @@
 <!-- peticiones-informe-escrito -->
 <template>
   <div class="min-h-screen bg-gray-50 py-8">
-    <div class="w-[95%] max-w-7xl mx-auto">
+    <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
-      <!-- Botón volver -->
+      <!-- BotÃ³n volver -->
       <div class="mb-6">
         <NuxtLink
           to="/"
@@ -19,7 +19,7 @@
       <!-- Encabezado -->
       <div class="mb-6">
         <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
-          🔍 Fiscalización
+          ðŸ” FiscalizaciÃ³n
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">
           Peticiones de Informe Escrito
@@ -40,14 +40,14 @@
               v-model="filters.search"
               @input="onSearchInput"
               type="text"
-              placeholder="Buscar por código, asunto, peticionante..."
+              placeholder="Buscar por cÃ³digo, asunto, peticionante..."
               class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200"
             />
             <button
               v-if="filters.search"
               @click="limpiarBusqueda"
               class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors"
-              title="Limpiar búsqueda"
+              title="Limpiar bÃºsqueda"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <!-- 🔥 Filtro por peticionante -->
+        <!-- ðŸ”¥ Filtro por peticionante -->
         <div class="relative flex-1 mt-3">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,9 +94,9 @@
         de <strong class="text-[#611717]">{{ total }}</strong>
         peticione{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span v-if="filters.peticionario"> · peticionante: "<strong>{{ filters.peticionario }}</strong>"</span>
+        <span v-if="filters.peticionario"> Â· peticionante: "<strong>{{ filters.peticionario }}</strong>"</span>
         <span class="ml-2 text-xs text-gray-400" v-if="rangoGlobal">
-          · Periodo: {{ rangoGlobal }}
+          Â· Periodo: {{ rangoGlobal }}
         </span>
       </div>
 
@@ -119,10 +119,10 @@
 
       <!-- Sin resultados -->
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
-        <div class="text-5xl mb-3">📭</div>
+        <div class="text-5xl mb-3">ðŸ“­</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay peticiones</h3>
         <p class="text-gray-500 text-sm">
-          {{ filters.search || filters.peticionario ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay peticiones registradas.' }}
+          {{ filters.search || filters.peticionario ? 'Prueba con otros tÃ©rminos de bÃºsqueda.' : 'AÃºn no hay peticiones registradas.' }}
         </p>
       </div>
 
@@ -147,17 +147,17 @@
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
-                    Nº
+                    NÂº
                     <span class="text-[10px] opacity-80 group-hover:opacity-100">
-                      {{ ordenDescendente ? '▼' : '▲' }}
+                      {{ ordenDescendente ? 'â–¼' : 'â–²' }}
                     </span>
                   </span>
                 </th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">CÃ³digo</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">DescripciÃ³n</th>
                 <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Peticionante(s)</th>
                 <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Destinatario</th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Fecha Remisión Destinatario</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Fecha RemisiÃ³n Destinatario</th>
                 <th class="px-3 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjuntos</th>
               </tr>
             </thead>
@@ -175,7 +175,7 @@
 
                 <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
-                    {{ doc.numero ?? '—' }}
+                    {{ doc.numero ?? 'â€”' }}
                   </span>
                 </td>
 
@@ -196,11 +196,11 @@
                       {{ senador }}
                     </div>
                   </div>
-                  <div v-else>—</div>
+                  <div v-else>â€”</div>
                 </td>
 
                 <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
-                  {{ doc.destinatario || '—' }}
+                  {{ doc.destinatario || 'â€”' }}
                 </td>
 
                 <td class="px-3 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
@@ -245,7 +245,7 @@
           </table>
         </div>
 
-        <!-- Paginación -->
+        <!-- PaginaciÃ³n -->
         <div
           v-if="totalPages > 1"
           class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]"
@@ -293,13 +293,14 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useGestionStore } from '~/stores/gestion'
 
 useHead({
   title: 'Peticiones de Informe Escrito | Senado de Bolivia',
   meta: [
     {
       name: 'description',
-      content: 'Registro oficial de peticiones de informe escrito de la Cámara de Senadores de Bolivia.'
+      content: 'Registro oficial de peticiones de informe escrito de la CÃ¡mara de Senadores de Bolivia.'
     }
   ]
 })
@@ -307,7 +308,10 @@ useHead({
 const config = useRuntimeConfig()
 const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
 
-// 🔥 Tipo de documento de esta página (cambiar según corresponda)
+// Gestion legislativa activa (persistida)
+const gestionStore = useGestionStore()
+
+// ðŸ”¥ Tipo de documento de esta pÃ¡gina (cambiar segÃºn corresponda)
 const TIPO_DOCUMENTO = 'peticion-informe-escrito'
 
 // ============================================
@@ -363,7 +367,7 @@ const rangoGlobal = computed(() => {
   const fMin = formatear(fechaExtremaMin.value)
 
   if (fMax && fMin) {
-    return ordenDescendente.value ? `${fMax} – ${fMin}` : `${fMin} – ${fMax}`
+    return ordenDescendente.value ? `${fMax} â€“ ${fMin}` : `${fMin} â€“ ${fMax}`
   }
   return null
 })
@@ -372,10 +376,10 @@ const rangoGlobal = computed(() => {
 // HELPERS
 // ============================================
 const formatearFecha = (fecha) => {
-  if (!fecha) return '—'
+  if (!fecha) return 'â€”'
   try {
     const d = new Date(fecha)
-    if (isNaN(d.getTime())) return '—'
+    if (isNaN(d.getTime())) return 'â€”'
     return d.toLocaleDateString('es-BO', {
       day: '2-digit',
       month: '2-digit',
@@ -383,7 +387,7 @@ const formatearFecha = (fecha) => {
       timeZone: 'UTC'
     })
   } catch {
-    return '—'
+    return 'â€”'
   }
 }
 
@@ -434,6 +438,8 @@ const cargarDocumentos = async () => {
     if (filters.value.search) params.append('search', filters.value.search)
     if (filters.value.peticionario) params.append('peticionario', filters.value.peticionario)
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
+    if (gestionStore.filtro.creadoDesde) params.append('creadoDesde', gestionStore.filtro.creadoDesde)
+    if (gestionStore.filtro.creadoHasta) params.append('creadoHasta', gestionStore.filtro.creadoHasta)
 
     const url = `${API_BASE_URL}/legislativos/${TIPO_DOCUMENTO}?${params.toString()}`
     const response = await fetch(url)
@@ -474,7 +480,7 @@ const cargarPeticionarios = async () => {
 }
 
 // ============================================
-// FILTROS Y PAGINACIÓN
+// FILTROS Y PAGINACIÃ“N
 // ============================================
 const toggleOrden = () => {
   if (loading.value) return

@@ -174,7 +174,9 @@ onMounted(() => {
   will-change: height;
 }
 
-@media (min-width: 1024px) {
+/* 🔥 El efecto de altura de pantalla completa ahora arranca en 720px
+   (antes en 1024px), manteniendo el comportamiento original. */
+@media (min-width: 720px) {
   .hero-video-wrapper {
     height: calc(100vh - var(--header-height, 80px));
     transition: height 0.15s ease-out;

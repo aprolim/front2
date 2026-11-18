@@ -95,12 +95,32 @@
         </div>
       </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- BOTONES DE GESTIÓN LEGISLATIVA             -->
+    <!-- ========================================== -->
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+      <button
+        v-for="g in gestiones"
+        :key="g.id"
+        @click="cambiarGestion(g.id)"
+        class="px-5 py-2 rounded-full text-[3.4vw] md:text-[1vw] font-semibold border-2 transition-all duration-200"
+        :class="esGestionActiva(g.id)
+          ? 'bg-senado-primary text-white border-senado-primary shadow-md'
+          : 'bg-senado-gold-lightest3 text-senado-primary border-senado-gold-light hover:bg-senado-gold-light'"
+        :title="`Ver legislación de la gestión ${g.label}`"
+      >
+        Legislación {{ g.label }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useDocumentosLegislativos } from '~/composables/useDocumentosLegislativos'
+import { useGestionStore } from '~/stores/gestion'
 
 // ============================================
 // PROPS (Nuevo: controla el encabezado)
@@ -113,6 +133,19 @@ defineProps({
 })
 
 const { getStats } = useDocumentosLegislativos()
+
+// ============================================
+// GESTIÓN ACTIVA (persistida en localStorage)
+// ============================================
+const gestionStore = useGestionStore()
+const { activa, gestiones } = storeToRefs(gestionStore)
+
+const esGestionActiva = (id) => activa.value === id
+
+const cambiarGestion = (id) => {
+  if (activa.value === id) return
+  gestionStore.setGestion(id)
+}
 
 // ============================================
 // ESTADO DE CONTADORES (por tipo)
@@ -206,16 +239,19 @@ const gestionItems = computed(() => [
 // ============================================
 const cargarContadores = async () => {
   const tipos = Object.keys(counts.value)
+  // 🔥 Los contadores respetan la gestión activa
+  const filtro = gestionStore.filtro
 
   const results = await Promise.allSettled(
-    tipos.map((tipo) => getStats(tipo))
+    tipos.map((tipo) => getStats(tipo, filtro))
   )
 
   const nuevos = { ...counts.value }
   results.forEach((result, idx) => {
     const tipo = tipos[idx]
     if (result.status === 'fulfilled' && result.value) {
-      nuevos[tipo] = result.value.total || 0
+      const data = result.value?.data ?? result.value
+      nuevos[tipo] = data?.total || 0
     }
   })
   counts.value = nuevos
@@ -225,6 +261,11 @@ const cargarContadores = async () => {
 // LIFECYCLE
 // ============================================
 onMounted(() => {
+  cargarContadores()
+})
+
+// 🔥 Recargar contadores cuando cambia la gestión
+watch(activa, () => {
   cargarContadores()
 })
 </script>
