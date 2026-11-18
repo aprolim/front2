@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
-      <!-- BotÃ³n volver -->
+      <!-- Botón volver -->
       <div class="mb-6">
         <NuxtLink to="/" class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -12,9 +12,7 @@
 
       <!-- Encabezado -->
       <div class="mb-6">
-        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
-          âš–ï¸ LegislaciÃ³n
-        </div>
+        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">Legislación</div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley con Modificaciones</h1>
         <p class="text-gray-600 mt-1 text-sm">Listado de proyectos de ley que fueron devueltos con modificaciones</p>
       </div>
@@ -26,8 +24,8 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
-            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por cÃ³digo, descripciÃ³n..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
-            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar bÃºsqueda">
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, descripción..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -38,7 +36,7 @@
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> proyectos
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">Â· Orden: {{ ordenDescendente ? 'mÃ¡s reciente primero' : 'mÃ¡s antiguo primero' }}</span>
+        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
       <!-- Loading -->
@@ -55,9 +53,9 @@
 
       <!-- Sin resultados -->
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
-        <div class="text-5xl mb-3">ðŸ“­</div>
+        <div class="text-5xl mb-3">📥</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay proyectos de ley</h3>
-        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros tÃ©rminos de bÃºsqueda.' : 'AÃºn no hay proyectos registrados.' }}</p>
+        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay proyectos registrados.' }}</p>
       </div>
 
       <!-- Tabla -->
@@ -66,29 +64,29 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- ðŸ”¥ BOTÃ“N NÂº PARA INVERTIR EL ORDEN GLOBAL -->
+                <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th 
                   @click="toggleOrden"
                   class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
-                    NÂº
+                    Nº
                     <span class="text-[10px] opacity-80 group-hover:opacity-100">
-                      {{ ordenDescendente ? 'â–¼' : 'â–²' }}
+                      {{ ordenDescendente ? '▼' : '▲' }}
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">CÃ³digo</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">DescripciÃ³n</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- NÂº secuencial GLOBAL -->
+                <!-- Nº secuencial GLOBAL -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
@@ -103,7 +101,7 @@
                 </td>
                 <td class="px-4 py-4 text-gray-700 min-w-[180px] text-xs uppercase">
                   <span v-if="Array.isArray(doc.peticionario)">{{ doc.peticionario.join(', ') }}</span>
-                  <span v-else>{{ doc.peticionario || 'â€”' }}</span>
+                  <span v-else>{{ doc.peticionario || '—' }}</span>
                 </td>
                 <td class="px-4 py-4 text-center whitespace-nowrap">
                   <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
@@ -117,7 +115,7 @@
           </table>
         </div>
 
-        <!-- PaginaciÃ³n -->
+        <!-- Paginación -->
         <div v-if="totalPages > 1" class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]">
           <div class="text-xs text-gray-600">
             Mostrando registros del <strong class="text-[#611717]">{{ (page - 1) * itemsPorPagina + 1 }}</strong> al <strong class="text-[#611717]">{{ Math.min(page * itemsPorPagina, total) }}</strong> de un total de <strong class="text-[#611717]">{{ total }}</strong> registros
@@ -144,7 +142,7 @@ import { useGestionStore } from '~/stores/gestion'
 
 useHead({
   title: 'Proyectos de Ley con Modificaciones | Senado de Bolivia',
-  meta: [{ name: 'description', content: 'Listado de proyectos de ley con modificaciones de la CÃ¡mara de Senadores.' }]
+  meta: [{ name: 'description', content: 'Listado de proyectos de ley con modificaciones de la Cámara de Senadores.' }]
 })
 
 const config = useRuntimeConfig()
@@ -175,12 +173,12 @@ const paginasVisibles = computed(() => {
 })
 
 const formatearFecha = (fecha) => {
-  if (!fecha) return 'â€”'
+  if (!fecha) return '—'
   try {
     const d = new Date(fecha)
-    if (isNaN(d.getTime())) return 'â€”'
+    if (isNaN(d.getTime())) return '—'
     return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
-  } catch { return 'â€”' }
+  } catch { return '—' }
 }
 
 const numeroSecuencial = (index) => {
@@ -241,7 +239,11 @@ const irAPagina = (p) => {
 const prevPage = () => { if (page.value > 1) irAPagina(page.value - 1) }
 const nextPage = () => { if (page.value < totalPages.value) irAPagina(page.value + 1) }
 
-onMounted(() => { cargarDocumentos() })
+onMounted(() => {
+  // Re-lee la gestion guardada (en SSR el store nace sin localStorage)
+  gestionStore.sincronizarDesdeStorage()
+  cargarDocumentos()
+})
 </script>
 
 <style scoped>

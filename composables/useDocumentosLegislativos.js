@@ -1,6 +1,6 @@
 // composables/useDocumentosLegislativos.js
-// Cliente HTTP para el mÃ³dulo de documentos legislativos
-// (FiscalizaciÃ³n, GestiÃ³n, LegislaciÃ³n).
+// Cliente HTTP para el módulo de documentos legislativos
+// (Fiscalización, Gestión, Legislación).
 
 import { useApi } from './useApi'
 
@@ -10,7 +10,7 @@ export const useDocumentosLegislativos = () => {
   const baseUrl = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
 
   // ============================================
-  // ðŸ“¡ PÃšBLICO
+  // 📡 PÚBLICO
   // ============================================
   const getDocumentosPublicos = async (tipo, params = {}) => {
     const query = new URLSearchParams()
@@ -28,7 +28,7 @@ export const useDocumentosLegislativos = () => {
   }
 
   // ============================================
-  // ðŸ” ADMIN
+  // 🔐 ADMIN
   // ============================================
   const getDocumentosAdmin = async (tipo, params = {}) => {
     const query = new URLSearchParams()
@@ -57,8 +57,8 @@ export const useDocumentosLegislativos = () => {
   }
 
   /**
-   * ðŸ”¥ SOFT DELETE con motivo obligatorio.
-   * El backend marca el documento como eliminado y guarda quiÃ©n/cuÃ¡ndo/por quÃ©.
+   * 🔥 SOFT DELETE con motivo obligatorio.
+   * El backend marca el documento como eliminado y guarda quién/cuándo/por qué.
    */
   const deleteDocumento = async (tipo, id, motivo) => {
     const token = process.client ? localStorage.getItem('auth_token') : ''
@@ -85,7 +85,7 @@ export const useDocumentosLegislativos = () => {
   }
 
   // ============================================
-  // ðŸ“¤ UPLOAD PDF
+  // 📤 UPLOAD PDF
   // ============================================
   const uploadPDF = async (tipo, file) => {
     const formData = new FormData()
@@ -105,11 +105,11 @@ export const useDocumentosLegislativos = () => {
   }
 
   // ============================================
-  // ðŸ“Š STATS
+  // 📊 STATS
   // ============================================
   const getStats = async (tipo, params = {}) => {
     const query = new URLSearchParams()
-    // ðŸ”¥ Filtro por gestiÃ³n legislativa (fecha de carga)
+    // 🔥 Filtro por gestión legislativa (fecha de carga)
     if (params.creadoDesde) query.append('creadoDesde', params.creadoDesde)
     if (params.creadoHasta) query.append('creadoHasta', params.creadoHasta)
 
@@ -118,7 +118,7 @@ export const useDocumentosLegislativos = () => {
   }
 
   // ============================================
-  // ðŸ“‹ CONFIG
+  // 📋 CONFIG
   // ============================================
   const getConfigDelTipo = async (tipo) => {
     return await get(`${baseUrl}/legislativos/${tipo}/config`)

@@ -242,6 +242,8 @@ const cargarContadores = async () => {
   // 🔥 Los contadores respetan la gestión activa
   const filtro = gestionStore.filtro
 
+  console.log('🔎 [Contadores] gestión activa =', gestionStore.activa, '| filtro =', JSON.stringify(filtro))
+
   const results = await Promise.allSettled(
     tipos.map((tipo) => getStats(tipo, filtro))
   )
@@ -250,10 +252,18 @@ const cargarContadores = async () => {
   results.forEach((result, idx) => {
     const tipo = tipos[idx]
     if (result.status === 'fulfilled' && result.value) {
-      const data = result.value?.data ?? result.value
-      nuevos[tipo] = data?.total || 0
+      // useApi desenvuelve `data.data`, así que aquí ya llega
+      // { total, activos, eliminados } directamente.
+      const r = result.value
+      const valor = r?.total ?? r?.data?.total ?? 0
+      nuevos[tipo] = valor || 0
+    } else if (result.status === 'rejected') {
+      console.warn(`⚠️ [Contadores] ${tipo}:`, result.reason?.message || result.reason)
     }
   })
+  console.log('🔎 [Contadores] resultado:', JSON.stringify(nuevos))
+
+  // ⚠️ Sin esta asignación los contadores no se actualizan
   counts.value = nuevos
 }
 
@@ -261,6 +271,10 @@ const cargarContadores = async () => {
 // LIFECYCLE
 // ============================================
 onMounted(() => {
+  // ⚠️ En SSR el store se crea en el servidor (sin localStorage), y esa
+  // instancia se reutiliza al hidratar. Por eso re-sincronizamos la
+  // gestión desde el almacenamiento ANTES de pedir los contadores.
+  gestionStore.sincronizarDesdeStorage()
   cargarContadores()
 })
 

@@ -3,7 +3,7 @@
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="w-[95%] max-w-[1600px] xl:max-w-[1800px] 2xl:max-w-[95%] mx-auto">
 
-      <!-- BotÃ³n volver -->
+      <!-- Botón volver -->
       <div class="mb-6">
         <NuxtLink to="/" class="inline-flex items-center gap-2 text-[#611717] hover:text-[#3a060d] transition-colors text-sm font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -13,9 +13,7 @@
 
       <!-- Encabezado -->
       <div class="mb-6">
-        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
-          âš–ï¸ LegislaciÃ³n
-        </div>
+        <div class="inline-block bg-[#611717] text-white text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">Legislación</div>
         <h1 class="text-2xl md:text-3xl font-bold text-[#611717]">Proyectos de Ley Aprobados</h1>
       </div>
 
@@ -26,8 +24,8 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
-            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por cÃ³digo, descripciÃ³n..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
-            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar bÃºsqueda">
+            <input v-model="filters.search" @input="onSearchInput" type="text" placeholder="Buscar por código, descripción..." class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200" />
+            <button v-if="filters.search" @click="limpiarBusqueda" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors" title="Limpiar búsqueda">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -38,7 +36,7 @@
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> proyectos
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-        <span class="ml-2 text-xs text-gray-400">Â· Orden: {{ ordenDescendente ? 'mÃ¡s reciente primero' : 'mÃ¡s antiguo primero' }}</span>
+        <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
       <!-- Loading -->
@@ -55,9 +53,9 @@
 
       <!-- Sin resultados -->
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
-        <div class="text-5xl mb-3">ðŸ“­</div>
+        <div class="text-5xl mb-3">📥</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay proyectos de ley</h3>
-        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros tÃ©rminos de bÃºsqueda.' : 'AÃºn no hay proyectos registrados.' }}</p>
+        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay proyectos registrados.' }}</p>
       </div>
 
       <!-- Tabla -->
@@ -66,29 +64,29 @@
           <table class="min-w-full text-sm">
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- ðŸ”¥ BOTÃ“N NÂº PARA INVERTIR EL ORDEN GLOBAL -->
+                <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th
                   @click="toggleOrden"
                   class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group w-16"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
-                    NÂº
+                    Nº
                     <span class="text-[10px] opacity-80 group-hover:opacity-100">
-                      {{ ordenDescendente ? 'â–¼' : 'â–²' }}
+                      {{ ordenDescendente ? '▼' : '▲' }}
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-24">CÃ³digo</th>
-                <!-- ðŸ”¥ Se ampliÃ³ el ancho de la columna DescripciÃ³n -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[500px]">DescripciÃ³n</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-24">Código</th>
+                <!-- 🔥 Se amplió el ancho de la columna Descripción -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider min-w-[500px]">Descripción</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap min-w-[200px]">Proyectista</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap w-36">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
-                <!-- NÂº secuencial GLOBAL -->
+                <!-- Nº secuencial GLOBAL -->
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
@@ -96,20 +94,20 @@
                 </td>
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
-                    {{ doc.numero ?? 'â€”' }}
+                    {{ doc.numero ?? '—' }}
                   </span>
                 </td>
-                <!-- ðŸ”¥ DescripciÃ³n con mÃ¡s espacio y mÃ¡s lÃ­neas visibles -->
+                <!-- 🔥 Descripción con más espacio y más líneas visibles -->
                 <td class="px-4 py-4 text-gray-700 min-w-[500px]">
                   <div class="line-clamp-5 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
                 </td>
-                <!-- ðŸ”¥ Proyectista formateado (uno debajo de otro y sin "Senador/Sen.") -->
+                <!-- 🔥 Proyectista formateado (uno debajo de otro y sin "Senador/Sen.") -->
                 <td class="px-4 py-4 text-gray-700 text-xs uppercase align-top">
                   <div class="flex flex-col gap-1.5">
                     <span v-for="(nombre, idx) in formatearPeticionarios(doc.peticionario)" :key="idx" class="block">
                       {{ nombre }}
                     </span>
-                    <span v-if="formatearPeticionarios(doc.peticionario).length === 0">â€”</span>
+                    <span v-if="formatearPeticionarios(doc.peticionario).length === 0">—</span>
                   </div>
                 </td>
                 <td class="px-4 py-4 text-center whitespace-nowrap">
@@ -124,7 +122,7 @@
           </table>
         </div>
 
-        <!-- PaginaciÃ³n -->
+        <!-- Paginación -->
         <div v-if="totalPages > 1" class="px-6 py-5 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4 bg-[#fbf8f1]">
           <div class="text-xs text-gray-600">
             Mostrando registros del <strong class="text-[#611717]">{{ (page - 1) * itemsPorPagina + 1 }}</strong> al <strong class="text-[#611717]">{{ Math.min(page * itemsPorPagina, total) }}</strong> de un total de <strong class="text-[#611717]">{{ total }}</strong> registros
@@ -151,7 +149,7 @@ import { useGestionStore } from '~/stores/gestion'
 
 useHead({
   title: 'Proyectos de Ley Aprobados | Senado de Bolivia',
-  meta: [{ name: 'description', content: 'Listado de proyectos de ley aprobados por la CÃ¡mara de Senadores.' }]
+  meta: [{ name: 'description', content: 'Listado de proyectos de ley aprobados por la Cámara de Senadores.' }]
 })
 
 const config = useRuntimeConfig()
@@ -170,7 +168,7 @@ const itemsPorPagina = 10
 const filters = ref({ search: '' })
 let searchTimeout = null
 
-// ðŸ”¥ Estado del ordenamiento
+// 🔥 Estado del ordenamiento
 const ordenDescendente = ref(true)
 
 const paginasVisibles = computed(() => {
@@ -182,7 +180,7 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// ðŸ”¥ NumeraciÃ³n secuencial GLOBAL (No por pÃ¡gina)
+// 🔥 Numeración secuencial GLOBAL (No por página)
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
     return total.value - ((page.value - 1) * itemsPorPagina) - index
@@ -190,7 +188,7 @@ const numeroSecuencial = (index) => {
   return (page.value - 1) * itemsPorPagina + index + 1
 }
 
-// ðŸ”¥ PROCESADOR DE PROYECTISTAS: Limpia "Senador/Sen." y los separa por coma o saltos de lÃ­nea
+// 🔥 PROCESADOR DE PROYECTISTAS: Limpia "Senador/Sen." y los separa por coma o saltos de línea
 const formatearPeticionarios = (peticionario) => {
   if (!peticionario) return []
   
@@ -205,7 +203,7 @@ const formatearPeticionarios = (peticionario) => {
       nombreLimpio = nombreLimpio.replace(/^(senador|senadora|sen\.?|senadora\.?)\s+/i, '')
       return nombreLimpio
     })
-    .filter(nombre => nombre.length > 0) // Eliminar vacÃ­os
+    .filter(nombre => nombre.length > 0) // Eliminar vacíos
 }
 
 const cargarDocumentos = async () => {
@@ -217,7 +215,7 @@ const cargarDocumentos = async () => {
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
     
-    // ðŸ”¥ Le enviamos el orden dinÃ¡mico al backend
+    // 🔥 Le enviamos el orden dinámico al backend
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
     if (gestionStore.filtro.creadoDesde) params.append('creadoDesde', gestionStore.filtro.creadoDesde)
     if (gestionStore.filtro.creadoHasta) params.append('creadoHasta', gestionStore.filtro.creadoHasta)
@@ -239,7 +237,7 @@ const cargarDocumentos = async () => {
   }
 }
 
-// ðŸ”¥ ACCIÃ“N DEL BOTÃ“N NÂº: Invierte el orden y vuelve a pedir los datos
+// 🔥 ACCIÓN DEL BOTÓN Nº: Invierte el orden y vuelve a pedir los datos
 const toggleOrden = () => {
   if (loading.value) return
   ordenDescendente.value = !ordenDescendente.value
@@ -266,11 +264,15 @@ const irAPagina = (p) => {
 const prevPage = () => { if (page.value > 1) irAPagina(page.value - 1) }
 const nextPage = () => { if (page.value < totalPages.value) irAPagina(page.value + 1) }
 
-onMounted(() => { cargarDocumentos() })
+onMounted(() => {
+  // Re-lee la gestion guardada (en SSR el store nace sin localStorage)
+  gestionStore.sincronizarDesdeStorage()
+  cargarDocumentos()
+})
 </script>
 
 <style scoped>
-/* ðŸ”¥ Cambiado a 5 lÃ­neas para que se vea mÃ¡s texto */
+/* 🔥 Cambiado a 5 líneas para que se vea más texto */
 .line-clamp-5 {
   display: -webkit-box;
   -webkit-line-clamp: 5;

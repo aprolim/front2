@@ -6,8 +6,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   if (pinia) {
     pinia.use(piniaPluginPersistedstate)
-    console.log('✅ [Pinia] Persistencia habilitada')
+    console.log('[Pinia] Persistencia habilitada')
   } else {
-    console.warn('⚠️ [Pinia] No se pudo habilitar persistencia')
+    console.warn('[Pinia] No se pudo habilitar persistencia')
   }
 })
