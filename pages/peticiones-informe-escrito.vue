@@ -26,8 +26,9 @@
         </h1>
       </div>
 
-      <!-- BUSCADOR -->
+      <!-- BUSCADORES -->
       <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5 mb-6">
+        <!-- Buscador general -->
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div class="relative flex-1">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -54,6 +55,37 @@
             </button>
           </div>
         </div>
+
+        <!-- 🔥 Filtro por peticionante -->
+        <div class="relative flex-1 mt-3">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <input
+            v-model="filters.peticionario"
+            @input="onPeticionarioInput"
+            list="lista-peticionarios"
+            type="text"
+            placeholder="Filtrar por peticionante..."
+            class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200"
+          />
+          <datalist id="lista-peticionarios">
+            <option v-for="p in listaPeticionarios" :key="p" :value="p" />
+          </datalist>
+          <button
+            v-if="filters.peticionario"
+            @click="limpiarPeticionario"
+            class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors"
+            title="Limpiar filtro"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Contador de resultados -->
@@ -62,15 +94,10 @@
         de <strong class="text-[#611717]">{{ total }}</strong>
         peticione{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
-
-        <!-- 🔥 Periodo global enviado por el backend -->
+        <span v-if="filters.peticionario"> · peticionante: "<strong>{{ filters.peticionario }}</strong>"</span>
         <span class="ml-2 text-xs text-gray-400" v-if="rangoGlobal">
           · Periodo: {{ rangoGlobal }}
         </span>
-
-        <!-- <span class="ml-2 text-xs text-gray-400">
-          · Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}
-        </span> -->
       </div>
 
       <!-- Loading -->
@@ -95,7 +122,7 @@
         <div class="text-5xl mb-3">📭</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay peticiones</h3>
         <p class="text-gray-500 text-sm">
-          {{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay peticiones registradas.' }}
+          {{ filters.search || filters.peticionario ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay peticiones registradas.' }}
         </p>
       </div>
 
@@ -105,16 +132,15 @@
           <table class="min-w-full text-sm table-fixed">
             <colgroup>
               <col class="w-12" />
-              <col class="w-20" />
               <col class="w-24" />
               <col />
+              <col class="w-40" />
               <col class="w-40" />
               <col class="w-36" />
               <col class="w-28" />
             </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
-                <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
                 <th
                   @click="toggleOrden"
                   class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
@@ -128,21 +154,11 @@
                   </span>
                 </th>
                 <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Fecha
-                </th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
-                  Descripción
-                </th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
-                  Senador(es) Peticionante(s)
-                </th>
-                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">
-                  Destinatario
-                </th>
-                <th class="px-3 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
-                  Adjuntos
-                </th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Peticionante(s)</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Destinatario</th>
+                <th class="px-3 py-4 text-left text-xs font-semibold uppercase tracking-wider">Fecha Remisión Destinatario</th>
+                <th class="px-3 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjuntos</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -151,33 +167,24 @@
                 :key="doc._id"
                 class="hover:bg-[#fbf8f1] transition-colors"
               >
-                <!-- Nº secuencial GLOBAL -->
                 <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
 
-                <!-- Código -->
                 <td class="px-3 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">
                     {{ doc.numero ?? '—' }}
                   </span>
                 </td>
 
-                <!-- Fecha de Petición -->
-                <td class="px-3 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
-                  {{ formatearFecha(doc.fechaIngreso) }}
-                </td>
-
-                <!-- Descripción (absorbe el ancho sobrante) -->
                 <td class="px-3 py-4 text-gray-700 align-top uppercase">
                   <div class="line-clamp-4 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">
                     {{ doc.asunto }}
                   </div>
                 </td>
 
-                <!-- Peticionante (columna reducida) -->
                 <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   <div v-if="Array.isArray(doc.peticionario) && doc.peticionario.length > 0">
                     <div v-for="(senador, i) in procesarPeticionarios(doc.peticionario)" :key="i" class="mb-1 last:mb-0">
@@ -185,22 +192,23 @@
                     </div>
                   </div>
                   <div v-else-if="typeof doc.peticionario === 'string'">
-                     <div v-for="(senador, i) in procesarPeticionarios([doc.peticionario])" :key="i" class="mb-1 last:mb-0">
+                    <div v-for="(senador, i) in procesarPeticionarios([doc.peticionario])" :key="i" class="mb-1 last:mb-0">
                       {{ senador }}
                     </div>
                   </div>
                   <div v-else>—</div>
                 </td>
 
-                <!-- Destinatario (columna reducida) -->
                 <td class="px-3 py-4 text-gray-700 text-xs align-top uppercase break-words">
                   {{ doc.destinatario || '—' }}
                 </td>
 
-                <!-- Adjuntos y Estado -->
+                <td class="px-3 py-4 text-gray-700 whitespace-nowrap text-xs align-top uppercase">
+                  {{ formatearFecha(doc.fechaRemisionDestinatario) }}
+                </td>
+
                 <td class="px-3 py-4 text-center whitespace-nowrap align-top">
                   <div class="flex flex-col items-center gap-2">
-                    <!-- 🔥 CAMBIO: usa getPdfUrl() en lugar de doc.archivo.url directo -->
                     <a
                       v-if="getPdfUrl(doc)"
                       :href="getPdfUrl(doc)"
@@ -299,6 +307,9 @@ useHead({
 const config = useRuntimeConfig()
 const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
 
+// 🔥 Tipo de documento de esta página (cambiar según corresponda)
+const TIPO_DOCUMENTO = 'peticion-informe-escrito'
+
 // ============================================
 // ESTADO
 // ============================================
@@ -309,12 +320,13 @@ const page = ref(1)
 const totalPages = ref(1)
 const total = ref(0)
 const itemsPorPagina = 10
-const filters = ref({ search: '' })
+const filters = ref({ search: '', peticionario: '' })
 let searchTimeout = null
+let peticionarioTimeout = null
 
+const listaPeticionarios = ref([])
 const ordenDescendente = ref(true)
 
-// 🔥 Fechas extremas globales enviadas por el backend
 const fechaExtremaMax = ref(null)
 const fechaExtremaMin = ref(null)
 
@@ -332,7 +344,6 @@ const paginasVisibles = computed(() => {
   return paginas
 })
 
-// 🔥 Texto del periodo (viene del backend)
 const rangoGlobal = computed(() => {
   if (!fechaExtremaMax.value && !fechaExtremaMin.value) return null
 
@@ -376,7 +387,6 @@ const formatearFecha = (fecha) => {
   }
 }
 
-// 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
     return total.value - ((page.value - 1) * itemsPorPagina) - index
@@ -399,28 +409,19 @@ const procesarPeticionarios = (peticionarioData) => {
     .filter((p) => p.length > 0)
 }
 
-// 🔥 NUEVO HELPER: Busca la URL del PDF en cualquier campo posible
-// (retrocompatible con la respuesta actual del backend)
 const getPdfUrl = (doc) => {
-  // 1. Campo archivo principal (lo que debería venir del backend)
   if (doc?.archivo?.url) return doc.archivo.url
-
-  // 2. Fallback: primer elemento de archivoAnexo
-  //    (por si el backend lo puso ahí)
   if (Array.isArray(doc?.archivoAnexo) && doc.archivoAnexo[0]?.url) {
     return doc.archivoAnexo[0].url
   }
-
-  // 3. Fallback: si archivo viene como string plano
   if (typeof doc?.archivo === 'string' && doc.archivo) {
     return doc.archivo
   }
-
   return null
 }
 
 // ============================================
-// CARGA DE DATOS (CON PAGINACIÓN DEL BACKEND)
+// CARGA DE DATOS
 // ============================================
 const cargarDocumentos = async () => {
   loading.value = true
@@ -431,9 +432,10 @@ const cargarDocumentos = async () => {
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
+    if (filters.value.peticionario) params.append('peticionario', filters.value.peticionario)
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
-    const url = `${API_BASE_URL}/legislativos/peticion-informe-escrito?${params.toString()}`
+    const url = `${API_BASE_URL}/legislativos/${TIPO_DOCUMENTO}?${params.toString()}`
     const response = await fetch(url)
     const result = await response.json()
 
@@ -444,12 +446,10 @@ const cargarDocumentos = async () => {
     documentos.value = result.data?.documentos || []
     total.value = result.data?.total || 0
     totalPages.value = result.data?.pages || 1
-
-    // 🔥 Guardamos las fechas extremas globales
     fechaExtremaMax.value = result.data?.fechaMaxima || null
     fechaExtremaMin.value = result.data?.fechaMinima || null
   } catch (err) {
-    console.error('Error cargando PIE:', err)
+    console.error('Error cargando documentos:', err)
     error.value = err.message || 'Error al cargar las peticiones'
     documentos.value = []
     total.value = 0
@@ -461,7 +461,21 @@ const cargarDocumentos = async () => {
   }
 }
 
-// 🔥 Botón Nº
+const cargarPeticionarios = async () => {
+  try {
+    const r = await fetch(`${API_BASE_URL}/legislativos/${TIPO_DOCUMENTO}/peticionarios`)
+    const json = await r.json()
+    if (json.success) {
+      listaPeticionarios.value = json.data || []
+    }
+  } catch (e) {
+    console.warn('No se pudieron cargar los peticionarios', e)
+  }
+}
+
+// ============================================
+// FILTROS Y PAGINACIÓN
+// ============================================
 const toggleOrden = () => {
   if (loading.value) return
   ordenDescendente.value = !ordenDescendente.value
@@ -470,9 +484,6 @@ const toggleOrden = () => {
   if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-// ============================================
-// FILTROS Y PAGINACIÓN
-// ============================================
 const onSearchInput = () => {
   if (searchTimeout) clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
@@ -483,6 +494,20 @@ const onSearchInput = () => {
 
 const limpiarBusqueda = () => {
   filters.value.search = ''
+  page.value = 1
+  cargarDocumentos()
+}
+
+const onPeticionarioInput = () => {
+  if (peticionarioTimeout) clearTimeout(peticionarioTimeout)
+  peticionarioTimeout = setTimeout(() => {
+    page.value = 1
+    cargarDocumentos()
+  }, 500)
+}
+
+const limpiarPeticionario = () => {
+  filters.value.peticionario = ''
   page.value = 1
   cargarDocumentos()
 }
@@ -508,6 +533,7 @@ const nextPage = () => {
 // ============================================
 onMounted(() => {
   cargarDocumentos()
+  cargarPeticionarios()
 })
 </script>
 

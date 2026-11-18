@@ -34,12 +34,44 @@
             </button>
           </div>
         </div>
+
+        <!-- 🔥 Filtro por proyectista -->
+        <div class="relative flex-1 mt-3">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-[#611717]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <input
+            v-model="filters.proyectista"
+            @input="onProyectistaInput"
+            list="lista-proyectistas"
+            type="text"
+            placeholder="Filtrar por proyectista..."
+            class="w-full pl-12 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#611717] focus:border-transparent focus:bg-white transition-all duration-200"
+          />
+          <datalist id="lista-proyectistas">
+            <option v-for="p in listaProyectistas" :key="p" :value="p" />
+          </datalist>
+          <button
+            v-if="filters.proyectista"
+            @click="limpiarProyectista"
+            class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#611717] transition-colors"
+            title="Limpiar filtro"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Contador -->
       <div v-if="!loading && !error" class="mb-4 text-sm text-gray-500">
         Mostrando <strong class="text-[#611717]">{{ documentos.length }}</strong> de <strong class="text-[#611717]">{{ total }}</strong> minuta{{ total !== 1 ? 's' : '' }}
         <span v-if="filters.search"> para "<strong>{{ filters.search }}</strong>"</span>
+        <span v-if="filters.proyectista"> · proyectista: "<strong>{{ filters.proyectista }}</strong>"</span>
         <span class="ml-2 text-xs text-gray-400">· Orden: {{ ordenDescendente ? 'más reciente primero' : 'más antiguo primero' }}</span>
       </div>
 
@@ -59,13 +91,21 @@
       <div v-else-if="documentos.length === 0" class="bg-white rounded-lg shadow-sm py-16 text-center">
         <div class="text-5xl mb-3">📭</div>
         <h3 class="text-lg font-medium text-gray-800 mb-1">No hay minutas</h3>
-        <p class="text-gray-500 text-sm">{{ filters.search ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay minutas registradas.' }}</p>
+        <p class="text-gray-500 text-sm">{{ filters.search || filters.proyectista ? 'Prueba con otros términos de búsqueda.' : 'Aún no hay minutas registradas.' }}</p>
       </div>
 
       <!-- Tabla -->
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full text-sm">
+          <table class="min-w-full text-sm table-fixed">
+            <colgroup>
+              <col class="w-12" />
+              <col class="w-24" />
+              <col />
+              <col class="w-40" />
+              <col class="w-36" />
+              <col class="w-28" />
+            </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
                 <!-- BOTÓN Nº PARA INVERTIR EL ORDEN -->
@@ -83,10 +123,9 @@
                 </th>
                 <!-- Columna Código (antes Nº) -->
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <!-- 🔥 CAMBIO: "Fecha de Petición" a "Fecha" -->
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
                 <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <!-- 🔥 CAMBIO: Columna "Proyectista" eliminada -->
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Proyectista</th>
+                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Fecha Remisión Destinatario</th>
                 <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
               </tr>
             </thead>
@@ -102,20 +141,42 @@
                 <td class="px-4 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">{{ mayusculas(doc.numero) }}</span>
                 </td>
-                <!-- Fecha (fechaIngreso) -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ mayusculas(formatearFecha(doc.fechaIngreso)) }}</td>
                 <!-- Descripción (asunto) -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md">
+                <td class="px-4 py-4 text-gray-700">
                   <div class="line-clamp-3 text-justify text-xs leading-relaxed" :title="mayusculas(doc.asunto)">{{ mayusculas(doc.asunto) }}</div>
                 </td>
-                <!-- 🔥 CAMBIO: Celda de "Proyectista" eliminada -->
+                <!-- Proyectista (se guarda en el campo `peticionario`) -->
+                <td class="px-4 py-4 text-gray-700 text-xs whitespace-normal break-words">
+                  <div class="whitespace-pre-line leading-relaxed">
+                    {{ mayusculas(formatearPeticionario(doc.peticionario)) }}
+                  </div>
+                </td>
+                <!-- Fecha de remisión al destinatario -->
+                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs">{{ mayusculas(formatearFecha(doc.fechaRemisionDestinatario)) }}</td>
                 <!-- Adjunto (archivo) -->
                 <td class="px-4 py-4 text-center whitespace-nowrap">
-                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Ver PDF
-                  </a>
-                  <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+                  <div class="flex flex-col items-center gap-2">
+                    <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200" title="Ver PDF">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      Ver PDF
+                    </a>
+                    <span v-else class="text-gray-300 text-xs">Sin archivo</span>
+
+                    <span
+                      v-if="doc.fechaRespuesta"
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded border border-green-200 uppercase"
+                      title="Con Respuesta"
+                    >
+                      Con Respuesta
+                    </span>
+                    <span
+                      v-else
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-200 uppercase"
+                      title="Sin Respuesta"
+                    >
+                      Sin Respuesta
+                    </span>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -161,9 +222,11 @@ const page = ref(1)
 const totalPages = ref(1)
 const total = ref(0)
 const itemsPorPagina = 10
-const filters = ref({ search: '' })
+const filters = ref({ search: '', proyectista: '' })
 let searchTimeout = null
+let proyectistaTimeout = null
 
+const listaProyectistas = ref([])
 const ordenDescendente = ref(true)
 
 const paginasVisibles = computed(() => {
@@ -190,6 +253,41 @@ const formatearFecha = (fecha) => {
   } catch { return '—' }
 }
 
+// 🔥 FUNCIÓN MODIFICADA: cada nombre en su línea con guion
+const formatearPeticionario = (peticionario) => {
+  if (!peticionario) return '—'
+
+  let lista = []
+
+  // Si ya es un array real
+  if (Array.isArray(peticionario)) {
+    lista = peticionario
+  }
+  // Si es un string que parece un array JSON (ej: '["Nombre"]')
+  else if (typeof peticionario === 'string') {
+    const trimmed = peticionario.trim()
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      try {
+        const parsed = JSON.parse(trimmed)
+        if (Array.isArray(parsed)) {
+          lista = parsed
+        }
+      } catch (e) {
+        // Si falla el parseo, hacemos una limpieza manual con Regex
+        lista = trimmed.replace(/[\[\]"]/g, '').split(',').map(s => s.trim()).filter(Boolean)
+      }
+    } else {
+      // Si es un string normal
+      lista = [trimmed]
+    }
+  } else {
+    lista = [String(peticionario)]
+  }
+
+  // Formato: cada nombre en su línea con guion
+  return lista.map(nombre => `- ${nombre}`).join('\n')
+}
+
 // 🔥 Numeración GLOBAL (Igual a Proyectos Aprobados)
 const numeroSecuencial = (index) => {
   if (ordenDescendente.value) {
@@ -197,6 +295,8 @@ const numeroSecuencial = (index) => {
   }
   return (page.value - 1) * itemsPorPagina + index + 1
 }
+
+const TIPO_DOCUMENTO = 'minuta-comunicacion'
 
 const cargarDocumentos = async () => {
   loading.value = true
@@ -206,9 +306,11 @@ const cargarDocumentos = async () => {
     params.append('page', String(page.value))
     params.append('limit', String(itemsPorPagina))
     if (filters.value.search) params.append('search', filters.value.search)
+    // 🔥 El backend guarda al proyectista en el campo `peticionario`
+    if (filters.value.proyectista) params.append('peticionario', filters.value.proyectista)
     params.append('order', ordenDescendente.value ? 'desc' : 'asc')
 
-    const url = `${API_BASE_URL}/legislativos/minuta-comunicacion?${params.toString()}`
+    const url = `${API_BASE_URL}/legislativos/${TIPO_DOCUMENTO}?${params.toString()}`
     const response = await fetch(url)
     const result = await response.json()
 
@@ -228,6 +330,18 @@ const cargarDocumentos = async () => {
   }
 }
 
+const cargarProyectistas = async () => {
+  try {
+    const r = await fetch(`${API_BASE_URL}/legislativos/${TIPO_DOCUMENTO}/peticionarios`)
+    const json = await r.json()
+    if (json.success) {
+      listaProyectistas.value = json.data || []
+    }
+  } catch (e) {
+    console.warn('No se pudieron cargar los proyectistas', e)
+  }
+}
+
 // 🔥 Botón Nº
 const toggleOrden = () => {
   if (loading.value) return
@@ -244,6 +358,13 @@ const onSearchInput = () => {
 
 const limpiarBusqueda = () => { filters.value.search = ''; page.value = 1; cargarDocumentos() }
 
+const onProyectistaInput = () => {
+  if (proyectistaTimeout) clearTimeout(proyectistaTimeout)
+  proyectistaTimeout = setTimeout(() => { page.value = 1; cargarDocumentos() }, 500)
+}
+
+const limpiarProyectista = () => { filters.value.proyectista = ''; page.value = 1; cargarDocumentos() }
+
 const irAPagina = (p) => {
   if (p >= 1 && p <= totalPages.value) {
     page.value = p
@@ -255,7 +376,7 @@ const irAPagina = (p) => {
 const prevPage = () => { if (page.value > 1) { page.value--; cargarDocumentos(); if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) } }
 const nextPage = () => { if (page.value < totalPages.value) { page.value++; cargarDocumentos(); if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' }) } }
 
-onMounted(() => { cargarDocumentos() })
+onMounted(() => { cargarDocumentos(); cargarProyectistas() })
 </script>
 
 <style scoped>

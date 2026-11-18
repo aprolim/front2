@@ -66,13 +66,24 @@
       <!-- Tabla -->
       <div v-else class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full text-sm">
+          <table class="w-full table-fixed text-sm">
+            <colgroup>
+              <col style="width: 3vw" />
+              <col style="width: 5vw" />
+              <col style="width: 8vw" />
+              <col style="width: auto" />
+              <col style="width: 12vw" />
+              <col style="width: 8vw" />
+              <col style="width: 12vw" />
+              <col style="width: 8vw" />
+              <col style="width: 8vw" />
+            </colgroup>
             <thead class="bg-[#611717] text-white">
               <tr>
                 <!-- 🔥 BOTÓN Nº PARA INVERTIR EL ORDEN GLOBAL -->
                 <th 
                   @click="toggleOrden"
-                  class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
+                  class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight whitespace-nowrap cursor-pointer select-none hover:bg-[#7a1f1f] transition-colors group"
                   title="Click para invertir el orden"
                 >
                   <span class="inline-flex items-center gap-1">
@@ -82,34 +93,66 @@
                     </span>
                   </span>
                 </th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Código</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Fecha</th>
-                <th class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">Descripción</th>
-                <th class="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Adjunto</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Código</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Fecha</th>
+                <th class="px-3 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Descripción</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Comisión I Remitida</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Fecha Remisión Com. I</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Comisión II</th>
+                <th class="px-2 py-4 text-left text-[11px] font-semibold uppercase leading-tight break-words">Fecha Remisión Com. II</th>
+                <th class="px-2 py-4 text-center text-[11px] font-semibold uppercase leading-tight break-words">Adjunto</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(doc, index) in documentos" :key="doc._id" class="hover:bg-[#fbf8f1] transition-colors">
                 <!-- Nº secuencial GLOBAL -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <td class="px-2 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194]">
                     {{ numeroSecuencial(index) }}
                   </span>
                 </td>
                 <!-- Código -->
-                <td class="px-4 py-4 whitespace-nowrap align-top">
+                <td class="px-2 py-4 whitespace-nowrap align-top">
                   <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fbf8f1] text-[#611717] font-bold text-xs border border-[#e3d194] uppercase">{{ doc.numero }}</span>
                 </td>
                 <!-- Fecha -->
-                <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-xs uppercase align-top">{{ formatearFecha(doc.fechaIngreso) }}</td>
+                <td class="px-1 py-4 text-gray-700 text-[11px] uppercase align-top whitespace-nowrap text-center">{{ formatearFecha(doc.fechaIngreso) }}</td>
                 <!-- Descripción -->
-                <td class="px-4 py-4 text-gray-700 min-w-[320px] max-w-md uppercase align-top">
-                  <div class="line-clamp-3 text-justify text-xs leading-relaxed uppercase" :title="doc.asunto">{{ doc.asunto }}</div>
+                <td class="px-3 py-4 text-gray-700 uppercase align-top">
+                  <div class="text-justify text-xs leading-relaxed uppercase break-words">{{ doc.asunto }}</div>
+                </td>
+                <!-- Comisión I Remitida -->
+                <td class="px-2 py-4 text-gray-700 text-xs uppercase align-top break-words min-w-0">
+                  <div v-if="separarComisiones(doc.comisionI).length > 0">
+                    <div v-for="(comision, i) in separarComisiones(doc.comisionI)" :key="i" class="mb-1 last:mb-0 flex items-start gap-1.5">
+                      <span class="shrink-0 leading-tight">-</span>
+                      <span class="leading-tight">{{ comision }}</span>
+                    </div>
+                  </div>
+                  <div v-else>—</div>
+                </td>
+                <!-- Fecha Remisión Comisión I -->
+                <td class="px-1 py-4 text-gray-700 text-[11px] uppercase align-top whitespace-nowrap text-center">
+                  {{ formatearFecha(doc.fechaRemisionComisionI) }}
+                </td>
+                <!-- Comisión II -->
+                <td class="px-2 py-4 text-gray-700 text-xs uppercase align-top break-words min-w-0">
+                  <div v-if="separarComisiones(doc.comisionII).length > 0">
+                    <div v-for="(comision, i) in separarComisiones(doc.comisionII)" :key="i" class="mb-1 last:mb-0 flex items-start gap-1.5">
+                      <span class="shrink-0 leading-tight">-</span>
+                      <span class="leading-tight">{{ comision }}</span>
+                    </div>
+                  </div>
+                  <div v-else>—</div>
+                </td>
+                <!-- Fecha Remisión Comisión II -->
+                <td class="px-1 py-4 text-gray-700 text-[11px] uppercase align-top whitespace-nowrap text-center">
+                  {{ formatearFecha(doc.fechaRemisionComisionII) }}
                 </td>
                 <!-- Adjunto -->
-                <td class="px-4 py-4 text-center whitespace-nowrap align-top">
-                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 uppercase" title="Ver PDF">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <td class="px-2 py-4 text-center align-top">
+                  <a v-if="doc.archivo && doc.archivo.url" :href="doc.archivo.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 border-2 border-[#611717] text-[#611717] hover:bg-[#611717] hover:text-white rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap" title="Ver PDF">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     Ver PDF
                   </a>
                   <span v-else class="text-gray-300 text-xs uppercase">Sin archivo</span>
@@ -198,6 +241,18 @@ const rangoGlobal = computed(() => {
   return null
 })
 
+// 🔥 Fecha en columnas estrechas: dd/mm arriba y el año completo abajo
+const formatearFechaCorta = (fecha) => {
+  if (!fecha) return { dia: '—', anio: '' }
+  try {
+    const d = new Date(fecha)
+    if (isNaN(d.getTime())) return { dia: '—', anio: '' }
+    const dia = d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', timeZone: 'UTC' })
+    const anio = d.toLocaleDateString('es-BO', { year: 'numeric', timeZone: 'UTC' })
+    return { dia, anio }
+  } catch { return { dia: '—', anio: '' } }
+}
+
 const formatearFecha = (fecha) => {
   if (!fecha) return '—'
   try {
@@ -205,6 +260,27 @@ const formatearFecha = (fecha) => {
     if (isNaN(d.getTime())) return '—'
     return d.toLocaleDateString('es-BO', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' })
   } catch { return '—' }
+}
+
+// 🔥 Convierte comisionI / comisionII en una lista limpia separada por guiones
+const separarComisiones = (dato) => {
+  if (!dato) return []
+
+  let lista = []
+
+  if (Array.isArray(dato)) {
+    lista = dato.map(String)
+  } else {
+    lista = [String(dato)]
+  }
+
+  // Unimos todo y separamos por comas (algunos registros traen varias
+  // comisiones dentro de un mismo elemento en vez de en el array)
+  return lista
+    .join(',')
+    .split(',')
+    .map((c) => c.trim())
+    .filter((c) => c.length > 0)
 }
 
 const numeroSecuencial = (index) => {
