@@ -71,110 +71,36 @@
 
             <!-- ========================================== -->
             <!-- DIRECTIVA (CENTRO) - SIEMPRE TITULARES     -->
+            <!-- Los IDs y datos vienen de /api/legisladores/directiva -->
             <!-- ========================================== -->
             <g>
-              <g>
-                <!-- 12 - 2da Vicepresidencia -->
-                <circle 
-                  cx="500" cy="240" r="20" 
-                  :fill="getColorDirectiva(12)" 
-                  stroke="white" stroke-width="2" 
+              <g v-for="asiento in asientosDirectiva" :key="asiento.id">
+                <circle
+                  :cx="asiento.x"
+                  :cy="asiento.y"
+                  :r="asiento.esPresidente ? 22 : 20"
+                  :fill="getColorDirectiva(asiento.id)"
+                  stroke="white"
+                  :stroke-width="asiento.esPresidente ? 2.5 : 2"
                   class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 12,
-                    'filtered-out': getSeatFilteredOut(12)
+                  :class="{
+                    'selected': hoveredSeat?.id === asiento.id,
+                    'filtered-out': getSeatFilteredOut(asiento.id)
                   }"
                   style="cursor: pointer;"
-                  @click="goToSenator(12, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)"
+                  @click="goToSenator(asiento.id, true)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(asiento.id), $event)"
                   @mouseleave="handleMouseLeave"
                 />
-                <text x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
-                
-                <!-- 6 - 1ra Vicepresidencia -->
-                <circle 
-                  cx="540" cy="240" r="20" 
-                  :fill="getColorDirectiva(6)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 6,
-                    'filtered-out': getSeatFilteredOut(6)
-                  }"
-                  style="cursor: pointer;"
-                  @click="goToSenator(6, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>   
-                
-                <!-- 32 - Presidente -->
-                <circle 
-                  cx="580" cy="240" r="22" 
-                  :fill="getColorDirectiva(32)" 
-                  stroke="white" stroke-width="2.5" 
-                  class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 32,
-                    'filtered-out': getSeatFilteredOut(32)
-                  }"
-                  style="cursor: pointer;"
-                  @click="goToSenator(32, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
-                
-                <!-- 33 - 1ra Secretaria -->
-                <circle 
-                  cx="620" cy="240" r="20" 
-                  :fill="getColorDirectiva(33)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 33,
-                    'filtered-out': getSeatFilteredOut(33)
-                  }"
-                  style="cursor: pointer;"
-                  @click="goToSenator(33, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
-                
-                <!-- 24 - Julio Diego Romaña Galindo -->
-                <circle 
-                  cx="660" cy="240" r="20" 
-                  :fill="getColorDirectiva(24)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 24,
-                    'filtered-out': getSeatFilteredOut(24)
-                  }"
-                  style="cursor: pointer;"
-                  @click="goToSenator(24, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
-                
-                <!-- 13 - 2da Secretaria -->
-                <circle 
-                  cx="700" cy="240" r="20" 
-                  :fill="getColorDirectiva(13)" 
-                  stroke="white" stroke-width="2" 
-                  class="senator-circle directive-seat"
-                  :class="{ 
-                    'selected': hoveredSeat?.id === 13,
-                    'filtered-out': getSeatFilteredOut(13)
-                  }"
-                  style="cursor: pointer;"
-                  @click="goToSenator(13, true)"
-                  @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)"
-                  @mouseleave="handleMouseLeave"
-                />
-                <text x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+                <text
+                  :x="asiento.x"
+                  :y="asiento.y + 5"
+                  text-anchor="middle"
+                  fill="white"
+                  font-size="14"
+                  font-weight="bold"
+                  class="seat-number"
+                >{{ asiento.seatNumber }}</text>
               </g>
 
               <!-- ========================================== -->
@@ -331,7 +257,81 @@ const emit = defineEmits(['update:stats', 'update:filtroPartido'])
 // ============================================
 const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
 
-const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
+// URL del backend (misma convención que el resto del proyecto)
+const runtimeConfig = useRuntimeConfig()
+const API_BASE_URL = runtimeConfig.public.apiUrl
+  ? runtimeConfig.public.apiUrl.replace(/\/api\/?$/, '')
+  : 'https://demoback.senado.gob.bo'
+
+// ============================================
+// DIRECTIVA CAMARAL (desde el backend)
+// ============================================
+/**
+ * Estructura que devuelve GET /api/legisladores/directiva:
+ *   data: { presidente: {...}, vicepresidencias: [...], secretarias: [...] }
+ *
+ * Cada miembro trae los campos del modelo Senador: id, name, slug, foto,
+ * party, partyShort, partyColor, department, cargo, etc.
+ */
+const directiva = ref({ presidente: null, vicepresidencias: [], secretarias: [] })
+const directivaCargada = ref(false)
+
+/** Lista plana de los 6 integrantes de la directiva. */
+const miembrosDirectiva = computed(() => {
+  const d = directiva.value
+  if (!d) return []
+  const lista = []
+  if (d.presidente && d.presidente.id) lista.push(d.presidente)
+  for (const v of (d.vicepresidencias || [])) if (v && v.id) lista.push(v)
+  for (const s of (d.secretarias || [])) if (s && s.id) lista.push(s)
+  return lista
+})
+
+/**
+ * IDs de los senadores que van al centro del hemiciclo.
+ * Si el API respondió, se usan sus IDs. Si no, se mantiene el fallback
+ * estático para que el componente nunca quede vacío.
+ */
+const DIRECTIVA_IDS_FALLBACK = [6, 12, 13, 24, 32, 33]
+
+const directivaIds = computed(() => {
+  const ids = miembrosDirectiva.value.map((m) => m.id).filter((id) => id != null)
+  return ids.length > 0 ? ids : DIRECTIVA_IDS_FALLBACK
+})
+
+/** Buscar un miembro de la directiva por su ID de senador. */
+const getMiembroDirectiva = (id) => {
+  return miembrosDirectiva.value.find((m) => m.id === id) || null
+}
+
+/** Resuelve la URL de la foto del backend (para rutas relativas). */
+const getFotoUrl = (foto) => {
+  if (!foto) return defaultAvatar
+  if (foto.startsWith('http://') || foto.startsWith('https://')) return foto
+  if (foto.startsWith('data:')) return foto
+  return `${API_BASE_URL}${foto.startsWith('/') ? '' : '/'}${foto}`
+}
+
+const cargarDirectiva = async () => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/legisladores/directiva`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+    const json = await res.json()
+    if (json.success && json.data) {
+      directiva.value = {
+        presidente: json.data.presidente || null,
+        vicepresidencias: json.data.vicepresidencias || [],
+        secretarias: json.data.secretarias || []
+      }
+      directivaCargada.value = true
+      console.log('✅ [DescubraSenado] Directiva cargada del backend')
+    }
+  } catch (err) {
+    console.warn('⚠️ [DescubraSenado] No se pudo cargar la directiva, se usa el fallback:', err.message)
+    directivaCargada.value = false
+  }
+}
 
 // ============================================
 // ESTADO
@@ -408,7 +408,7 @@ const seatPositionsArco = [
 // ============================================
 // FUNCIONES
 // ============================================
-const esDirectiva = (id) => DIRECTIVA_IDS.includes(id)
+const esDirectiva = (id) => directivaIds.value.includes(id)
 
 const getSuplenteNombre = (suplenteId) => {
   if (!suplenteId) return null
@@ -559,30 +559,107 @@ const filteredSeats = computed(() => {
 // ============================================
 // FUNCIONES PARA LA DIRECTIVA (SIEMPRE TITULARES)
 // ============================================
+
+/**
+ * Posiciones del hemiciclo central (izquierda a derecha).
+ * El presidente va en el centro con radio mayor.
+ */
+const POSICIONES_DIRECTIVA = [
+  { x: 500, y: 240 }, // 0 - 2da Vicepresidencia
+  { x: 540, y: 240 }, // 1 - 1ra Vicepresidencia
+  { x: 580, y: 240 }, // 2 - Presidente
+  { x: 620, y: 240 }, // 3 - 1ra Secretaria
+  { x: 660, y: 240 }, // 4 - 2da Secretaria
+  { x: 700, y: 240 }  // 5 - 3ra Secretaria
+]
+
+/**
+ * Asientos del centro. Orden pensado para que el presidente quede al medio:
+ *   [segunda vice, primera vice, presidente, primera secretaria, segunda, tercera]
+ *
+ * Si el API aún no respondió, se usa el fallback estático con los mismos IDs
+ * para que el componente se vea igual que antes.
+ */
+const asientosDirectiva = computed(() => {
+  const d = directiva.value || {}
+  const presidente = d.presidente
+  const vices = (d.vicepresidencias || []).filter((m) => m && m.id)
+  const secs = (d.secretarias || []).filter((m) => m && m.id)
+
+  // Orden: [vice2, vice1, presidente, sec1, sec2, sec3]
+  const ordenados = [
+    vices[1] || null,
+    vices[0] || null,
+    presidente && presidente.id ? presidente : null,
+    secs[0] || null,
+    secs[1] || null,
+    secs[2] || null
+  ]
+
+  const hayDatos = ordenados.some((m) => m && m.id)
+
+  if (!hayDatos) {
+    // Fallback: mismas posiciones con los IDs históricos
+    return DIRECTIVA_IDS_FALLBACK.map((id, i) => {
+      const titular = senadores.find((s) => s.id === id && s.tipo === 'titular')
+      return {
+        id,
+        seatNumber: titular?.seatNumber ?? id,
+        x: POSICIONES_DIRECTIVA[i]?.x ?? 580,
+        y: POSICIONES_DIRECTIVA[i]?.y ?? 240,
+        esPresidente: i === 2
+      }
+    })
+  }
+
+  return ordenados
+    .map((miembro, i) => {
+      if (!miembro || !miembro.id) return null
+      const titular = senadores.find((s) => s.id === miembro.id && s.tipo === 'titular')
+      return {
+        id: miembro.id,
+        seatNumber: miembro.seatNumber ?? titular?.seatNumber ?? miembro.id,
+        x: POSICIONES_DIRECTIVA[i]?.x ?? 580,
+        y: POSICIONES_DIRECTIVA[i]?.y ?? 240,
+        esPresidente: i === 2
+      }
+    })
+    .filter(Boolean)
+})
+
 const getColorDirectiva = (id) => {
-  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
   const seat = allSeats.value.find(s => s.id === id)
   if (seat && seat.filteredOut) {
     return '#e5e7eb'
   }
+  // Prioridad: dato del backend > dato del arco local
+  const miembro = getMiembroDirectiva(id)
+  if (miembro?.partyColor) return miembro.partyColor
+
+  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
   return titular?.partyColor || '#cccccc'
 }
 
-const getSeatDirectiva = (id) => {
-  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
-  if (!titular) return null
+const getSeatDirectiva = (id) => {  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  const miembro = getMiembroDirectiva(id)
+
+  // Si el backend tiene a esta persona en la directiva, mandan sus datos.
+  // Si no (o si aún no cargó), se usa el senador local.
+  const base = miembro || titular
+  if (!base) return null
+
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
   const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === id)
-  
+
   return {
-    ...titular,
-    nombreActual: titular.name,
-    fotoActual: titular.foto,
+    ...base,
+    nombreActual: base.name,
+    fotoActual: getFotoUrl(base.foto),
     isEmpty: false,
-    comite: titular.comite || null,
-    comision: titular.comision || null,
-    cargo: titular.cargo || null,
+    comite: base.comite || null,
+    comision: base.comision || null,
+    cargo: base.cargo || null,
     suplente: suplente?.name || null,
     suplenteId: suplente?.id || null,
     esDirectiva: true,
@@ -709,6 +786,13 @@ const goToSenator = (id, fromDirectiva = false) => {
   // CENTRO (DIRECTIVA): SIEMPRE NAVEGA AL TITULAR
   // ==========================================
   if (fromDirectiva) {
+    // Prioridad: slug que venga del backend
+    const miembro = getMiembroDirectiva(id)
+    if (miembro?.slug) {
+      router.push(`/senador/${miembro.slug}`)
+      return
+    }
+
     const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
     if (titular && titular.slug) {
       router.push(`/senador/${titular.slug}`)
@@ -797,7 +881,9 @@ watch(filteredSeats, (nuevos) => {
 // ============================================
 // MONTAJE
 // ============================================
-onMounted(() => {
+onMounted(async () => {
+  // La directiva se pide al backend; mientras tanto se usa el fallback estático.
+  await cargarDirectiva()
   restaurarEstado()
 })
 </script>

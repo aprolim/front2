@@ -97,16 +97,14 @@
             </div>
 
             <!-- Contenido -->
-            <transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="max-h-0 opacity-0"
-              enter-to-class="max-h-[5000px] opacity-100"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="max-h-[5000px] opacity-100"
-              leave-to-class="max-h-0 opacity-0"
+            <!-- ⚡ El contenido queda SIEMPRE montado (no v-if) para que el
+                 navegador descargue las imágenes aunque la pestaña esté
+                 cerrada. La animación se hace por altura (max-height). -->
+            <div
+              class="overflow-hidden transition-all duration-300 ease-out"
+              :class="isOpen(comision.nombre) ? 'max-h-[6000px] opacity-100' : 'max-h-0 opacity-0'"
             >
-              <div v-if="isOpen(comision.nombre)" class="overflow-hidden">
-                <div class="px-[3vw] pb-[3vw] pt-[1vw]">
+              <div class="px-[3vw] pb-[3vw] pt-[1vw]">
 
                   <!-- Presidente (Centrado) -->
                   <div v-if="comision.presidente" class="mb-[2.5vw]">
@@ -119,7 +117,11 @@
                         <img
                           :src="getImageUrl(comision.presidente.foto)"
                           :alt="comision.presidente.nombreCompleto"
-                          class="w-[14vw] h-[14vw] rounded-full object-cover border-[0.25vw] shadow-md hover:scale-105 transition-transform"
+                          width="200"
+                          height="200"
+                          loading="eager"
+                          decoding="async"
+                          class="w-[14vw] h-[14vw] rounded-full object-cover border-[0.25vw] shadow-md hover:scale-105 transition-transform bg-gray-200"
                           :style="{ borderColor: comision.presidente.color || '#ccc' }"
                           @error="(e) => e.target.src = defaultAvatar"
                         />
@@ -179,7 +181,11 @@
                             <img
                               :src="getImageUrl(comite.secretario.foto)"
                               :alt="comite.secretario.nombreCompleto"
-                              class="w-[11vw] h-[11vw] rounded-full object-cover border-[0.2vw] flex-shrink-0"
+                              width="160"
+                              height="160"
+                              loading="eager"
+                              decoding="async"
+                              class="w-[11vw] h-[11vw] rounded-full object-cover border-[0.2vw] flex-shrink-0 bg-gray-200"
                               :style="{ borderColor: comite.secretario.color || '#ccc' }"
                               @error="(e) => e.target.src = defaultAvatar"
                             />
@@ -217,7 +223,6 @@
                   </div>
                 </div>
               </div>
-            </transition>
           </div>
         </div>
 
@@ -338,6 +343,59 @@ const resaltarTexto = (texto) => {
 }
 
 // ========================================== //
+// PRECARGA DE IMÁGENES
+// ========================================== //
+/**
+ * Mapa url -> true cuando la imagen ya está en caché del navegador.
+ * Así el <img> puede pintarse al instante al abrir la pestaña.
+ */
+const imagenesListas = ref(new Set())
+
+/** Cola de URLs únicas de todas las fotos de la página. */
+const urlsImagenes = computed(() => {
+  const urls = new Set()
+  for (const c of comisionesData.value) {
+    if (c.presidente?.foto) urls.add(getImageUrl(c.presidente.foto))
+    if (c.presidente?.fotoSuplente) urls.add(getImageUrl(c.presidente.fotoSuplente))
+    for (const co of (c.comites || [])) {
+      if (co.secretario?.foto) urls.add(getImageUrl(co.secretario.foto))
+      if (co.secretario?.fotoSuplente) urls.add(getImageUrl(co.secretario.fotoSuplente))
+    }
+  }
+  return [...urls]
+})
+
+/**
+ * Descarga las imágenes en segundo plano con concurrencia limitada.
+ * Al terminar cada una, se marca como lista para pintarla desde caché.
+ */
+const precargarImagenes = async (urls, concurrencia = 6) => {
+  let idx = 0
+
+  const trabajador = async () => {
+    while (idx < urls.length) {
+      const url = urls[idx++]
+      if (!url || imagenesListas.value.has(url)) continue
+
+      await new Promise((resolve) => {
+        const img = new Image()
+        // Que el navegador las sirva desde caché al pintarlas luego
+        img.decoding = 'async'
+        img.onload = img.onerror = () => {
+          imagenesListas.value.add(url)
+          resolve()
+        }
+        img.src = url
+      })
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrencia, urls.length) }, trabajador)
+  )
+}
+
+// ========================================== //
 // FETCH DATA
 // ========================================== //
 const fetchComisiones = async () => {
@@ -351,6 +409,14 @@ const fetchComisiones = async () => {
     if (result.success && result.data) {
       comisionesData.value = result.data
       console.log('✅ Comisiones cargadas:', comisionesData.value.length)
+
+      // 🔥 Precarga en segundo plano: NO bloquea el render.
+      // Cuando el usuario abra una pestaña, las fotos ya estarán en caché.
+      const urls = urlsImagenes.value
+      console.log(`🖼️  Precargando ${urls.length} imágenes...`)
+      precargarImagenes(urls).then(() => {
+        console.log('✅ Imágenes precargadas')
+      })
     } else {
       throw new Error(result.message || 'Error al cargar comisiones')
     }
