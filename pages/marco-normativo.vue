@@ -111,7 +111,7 @@
                           Leer
                         </button>
                         <a 
-                          :href="doc.url" 
+                          :href="urlPdf(doc)" 
                           download
                           target="_blank"
                           class="inline-flex items-center gap-1 text-gray-500 hover:text-gray-800 font-medium hover:underline"
@@ -244,6 +244,10 @@ import * as pdfjsLib from 'pdfjs-dist'
 // Configurar el Worker de PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
 
+// URL del backend (misma convención que el resto del proyecto)
+const config = useRuntimeConfig()
+const API_BASE_URL = config.public.apiUrl || 'https://demoback.senado.gob.bo/api'
+
 // ============================================
 // ESTADO
 // ============================================
@@ -267,58 +271,11 @@ const errorVisor = ref(null)
 // ============================================
 // DATOS
 // ============================================
-const documentosData = [
-  // 1 AL 6: DESTACADOS (Tarjetas) - Imágenes de la carpeta "marco normativo"
-  { id: 1, categoria: 'Constitución Política del Estado', nombre: 'Constitución Política Del Estado Plurinacional de Bolivia', gestion: '2009', url: '/pdfs/Constitución Política del Estado/Constitución Politica Del Estado Plurinacional de Bolivia.pdf', imagen: '/marco normativo/1.jpg' },
-  { id: 2, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento General de la Cámara de Senadores', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento General de la Cámara de Senadores.pdf', imagen: '/marco normativo/2.jpg' },
-  { id: 3, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Participación Ciudadana y Deliberación Pública', gestion: '2012', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Participación Ciudadana y Deliberación Pública.pdf', imagen: '/marco normativo/3.jpg' },
-  { id: 4, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento Específico de Homenajes Camarales', gestion: '2024', url: '/pdfs/Norma General de Área Legislativa/Reglamento Específico de Homenajes Camarales.pdf', imagen: '/marco normativo/4.jpg' },
-  { id: 5, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Condecoraciones', gestion: '2022', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Condecoraciones.pdf', imagen: '/marco normativo/5.jpg' },
-  { id: 6, categoria: 'Norma General de Área Legislativa', nombre: 'Reglamento de Ética', gestion: '2014', url: '/pdfs/Norma General de Área Legislativa/Reglamento de Ética.pdf', imagen: '/marco normativo/6.jpg' },
-
-  // 7 AL 21: DOCUMENTOS QUE VAN AL ACORDEÓN UNIFICADO
-  { id: 7, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Organización y Funciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Organización y Funciones.pdf', imagen: '/images/t-negra.png' },
-  { id: 8, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Interno de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Interno de Personal.pdf', imagen: '/images/t-negra.png' },
-  { id: 9, categoria: 'Normativa Interna', nombre: 'Código de Ética', gestion: '2020', url: '/pdfs/Normativa Interna/Código de Ética.pdf', imagen: '/images/t-negra.png' },
-  { id: 10, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema Contabilidad Integrada', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema Contabilidad Integrada.pdf', imagen: '/images/t-negra.png' },
-  { id: 11, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Personal', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Personal.pdf', imagen: '/images/t-negra.png' },
-  { id: 12, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Organización Administrativa', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Organización Administrativa.pdf', imagen: '/images/t-negra.png' },
-  { id: 13, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Programación de Operaciones', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Programación de Operaciones.pdf', imagen: '/images/t-negra.png' },
-  { id: 14, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico Sistema de Tesorería', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico Sistema de Tesorería.pdf', imagen: '/images/t-negra.png' },
-  { id: 15, categoria: 'Normativa Interna', nombre: 'Manual de Procesos y Procedimientos del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Procesos y Procedimientos del Sistema de Presupuestos.pdf', imagen: '/images/t-negra.png' },
-  { id: 16, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento para el cumplimiento de Declaración Jurada de Bienes y Servicios.pdf', imagen: '/images/t-negra.png' },
-  { id: 17, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Administración de Bienes y Servicios', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Administración de Bienes y Servicios.pdf', imagen: '/images/t-negra.png' },
-  { id: 18, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Específico del Sistema de Presupuestos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Reglamento Específico del Sistema de Presupuestos.pdf', imagen: '/images/t-negra.png' },
-  { id: 19, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Procesos Sumarios', gestion: '2026', url: '/pdfs/Normativa Interna/REGLAMENTO PROCESOS SUMARIOS.pdf', imagen: '/images/t-negra.png' },
-  { id: 20, categoria: 'Normas del Área Administrativa', nombre: 'Reglamento Interno Unidad de Transparencia y Lucha Contra la Corrupción', gestion: '2025', url: '/pdfs/trasparencia/Reglamento Interno UTLCC.pdf', imagen: '/images/t-negra.png' },
-  { id: 21, categoria: 'Normas del Área Administrativa', nombre: 'Manual de Administración de Activos Fijos', gestion: '2020', url: '/pdfs/Norma General de Área Administrativa/Manual de Administración de Activos Fijos.pdf', imagen: '/images/t-negra.png' },
-  { id: 22, categoria: 'Normativa Interna', nombre: 'Manual de Administración de Almacenes', gestion: '2020', url: '/pdfs/Normativa Interna/Manual de Administración de Almacenes.pdf', imagen: '/images/t-negra.png' }
-]
-
-// ============================================
-// COMPUTED
-// ============================================
-const documentosDestacados = computed(() => {
-  return documentos.value.filter(d => 
-    d.categoria === 'Constitución Política del Estado' || 
-    d.categoria === 'Norma General de Área Legislativa'
-  )
-})
-
-// Unificamos todas las categorías en un solo acordeón respetando el orden del array
-const categoriasAcordeon = computed(() => {
-  const documentosUnificados = documentos.value.filter(d => 
-    d.categoria === 'Normas del Área Administrativa' || 
-    d.categoria === 'Normativa Interna'
-  )
-  
-  return [
-    {
-      nombre: 'Normativa Administrativa',
-      documentos: documentosUnificados
-    }
-  ]
-})
+// Los documentos ya NO están hardcodeados: se cargan desde el backend en
+// GET /api/marco-normativo (público), que devuelve { destacados, categorias }.
+// El CMS administra el contenido en `demopanel`; aquí solo se consume.
+const documentosDestacados = ref([])
+const categoriasAcordeon = ref([])
 
 // ============================================
 // MÉTODOS
@@ -340,21 +297,43 @@ const toggleCategoria = (nombre) => {
   }
 }
 
-const cargarDocumentos = () => {
+/**
+ * Carga los documentos desde el backend (endpoint público).
+ * Respuesta esperada: { success: true, data: { destacados, categorias } }
+ */
+const cargarDocumentos = async () => {
   loading.value = true
+  error.value = null
+
   try {
-    documentos.value = documentosData
+    const res = await fetch(`${API_BASE_URL}/marco-normativo`, {
+      headers: { Accept: 'application/json' }
+    })
+
+    if (!res.ok) {
+      throw new Error(`El servidor respondió ${res.status}`)
+    }
+
+    const json = await res.json()
+    const data = json?.data || {}
+
+    documentosDestacados.value = Array.isArray(data.destacados) ? data.destacados : []
+    categoriasAcordeon.value = Array.isArray(data.categorias) ? data.categorias : []
   } catch (err) {
-    error.value = 'Error al cargar'
+    console.error('❌ Error cargando marco normativo:', err)
+    error.value = 'No se pudo cargar el Marco Normativo. Intenta nuevamente.'
   } finally {
     loading.value = false
   }
 }
 
+/** URL del PDF de un documento (el API la entrega en archivo.url). */
+const urlPdf = (doc) => doc?.archivo?.url || doc?.url || ''
+
 const abrirVisor = async (doc) => {
   pdfTitulo.value = doc.nombre
-  pdfUrlActual.value = encodeURI(doc.url)
-  pdfPeso.value = 0 
+  pdfUrlActual.value = urlPdf(doc)
+  pdfPeso.value = doc?.archivo?.size || 0
   errorVisor.value = null
   visorAbierto.value = true
   cargandoPDF.value = true
@@ -364,6 +343,10 @@ const abrirVisor = async (doc) => {
   await nextTick()
   
   try {
+    if (!pdfUrlActual.value) {
+      throw new Error('El documento no tiene archivo asociado')
+    }
+
     try {
       const response = await fetch(pdfUrlActual.value, { method: 'HEAD' })
       const size = response.headers.get('content-length')
@@ -384,7 +367,7 @@ const abrirVisor = async (doc) => {
     await renderizarPaginaPDF(1)
   } catch (err) {
     console.error('Error al cargar PDF:', err)
-    errorVisor.value = 'El archivo no pudo ser leído. Verifica que exista en la carpeta public o intenta abrirlo en una pestaña nueva.'
+    errorVisor.value = 'El archivo no pudo ser leído. Verifica tu conexión o intenta abrirlo en una pestaña nueva.'
   } finally {
     cargandoPDF.value = false
   }
