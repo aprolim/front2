@@ -1,6 +1,14 @@
 <template>
   <div class="senate-chamber" @mouseleave="handleMouseLeave">
     <div class="background-container">
+
+      <!-- ESTADO DE CARGA: mientras llega el pleno del backend -->
+      <div v-if="plenoCargando" class="flex flex-col items-center justify-center py-[6vw]">
+        <div class="inline-block w-[3vw] h-[3vw] border-[0.25vw] border-senado-primary border-t-transparent rounded-full animate-spin"></div>
+        <p class="mt-[1vw] text-gray-500 text-[1.1vw]">Cargando el pleno camaral...</p>
+      </div>
+
+      <template v-else>
       
       <!-- CABECERA: BOTONES TITULARES/SUPLENTES -->
       <div class="botones-padre">
@@ -46,21 +54,34 @@
 
             <rect x="0" y="0" width="1200" height="800" fill="url(#hemicicloBg)" />
 
-            <!-- DIRECTIVA -->
+            <!-- DIRECTIVA (CENTRO) -->
+            <!-- Los cargos y las personas vienen del backend
+                 (/api/pleno-camaral/publico → campo `directiva`). -->
             <g>
-              <g>
-                <circle cx="500" cy="240" r="20" :fill="getColorDirectiva(12)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 12, 'filtered-out': getSeatFilteredOut(12) }" style="cursor: pointer;" @click="goToSenator(12, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(12), $event)" @mouseleave="handleMouseLeave" />
-                <text x="500" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">12</text>
-                <circle cx="540" cy="240" r="20" :fill="getColorDirectiva(6)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 6, 'filtered-out': getSeatFilteredOut(6) }" style="cursor: pointer;" @click="goToSenator(6, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(6), $event)" @mouseleave="handleMouseLeave" />
-                <text x="540" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">6</text>
-                <circle cx="580" cy="240" r="22" :fill="getColorDirectiva(32)" stroke="white" stroke-width="2.5" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 32, 'filtered-out': getSeatFilteredOut(32) }" style="cursor: pointer;" @click="goToSenator(32, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(32), $event)" @mouseleave="handleMouseLeave" />
-                <text x="580" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">32</text>
-                <circle cx="620" cy="240" r="20" :fill="getColorDirectiva(33)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 33, 'filtered-out': getSeatFilteredOut(33) }" style="cursor: pointer;" @click="goToSenator(33, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(33), $event)" @mouseleave="handleMouseLeave" />
-                <text x="620" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">33</text>
-                <circle cx="660" cy="240" r="20" :fill="getColorDirectiva(24)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 24, 'filtered-out': getSeatFilteredOut(24) }" style="cursor: pointer;" @click="goToSenator(24, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(24), $event)" @mouseleave="handleMouseLeave" />
-                <text x="660" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">24</text>
-                <circle cx="700" cy="240" r="20" :fill="getColorDirectiva(13)" stroke="white" stroke-width="2" class="senator-circle directive-seat" :class="{ 'selected': hoveredSeat?.id === 13, 'filtered-out': getSeatFilteredOut(13) }" style="cursor: pointer;" @click="goToSenator(13, true)" @mouseenter="handleMouseEnter(getSeatDirectiva(13), $event)" @mouseleave="handleMouseLeave" />
-                <text x="700" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold" class="seat-number">13</text>
+              <g v-for="asiento in asientosDirectiva" :key="asiento.id">
+                <circle
+                  :cx="asiento.x"
+                  :cy="asiento.y"
+                  :r="asiento.esPresidente ? 22 : 20"
+                  :fill="getColorDirectiva(asiento.id)"
+                  stroke="white"
+                  :stroke-width="asiento.esPresidente ? 2.5 : 2"
+                  class="senator-circle directive-seat"
+                  :class="{ 'selected': hoveredSeat?.id === asiento.id, 'filtered-out': getSeatFilteredOut(asiento.id) }"
+                  style="cursor: pointer;"
+                  @click="goToSenator(asiento.id, true)"
+                  @mouseenter="handleMouseEnter(getSeatDirectiva(asiento.id), $event)"
+                  @mouseleave="handleMouseLeave"
+                />
+                <text
+                  :x="asiento.x"
+                  :y="asiento.y + 5"
+                  text-anchor="middle"
+                  fill="white"
+                  font-size="14"
+                  font-weight="bold"
+                  class="seat-number"
+                >{{ asiento.seatNumber }}</text>
               </g>
 
               <!-- ARCO -->
@@ -100,7 +121,7 @@
           <div v-if="hoveredSeat && !isNavigating" class="tooltip-padre" :style="tooltipStyle">
             <div class="tooltip-header">
               <div class="seat-photo">
-                <img :src="hoveredSeat.fotoActual || defaultAvatar" :alt="hoveredSeat.nombreActual || hoveredSeat.name" class="foto-senador" :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }" @error="(e) => e.target.src = defaultAvatar" />
+                <img :src="hoveredSeat.fotoActual || defaultAvatar" :alt="hoveredSeat.nombreActual || hoveredSeat.name" class="foto-senador" :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }" width="80" height="80" decoding="async" fetchpriority="high" @error="(e) => e.target.src = defaultAvatar" />
               </div>
               <div class="senator-info">
                 <h4 class="nombre-senador">{{ hoveredSeat.nombreActual || hoveredSeat.name }}</h4>
@@ -181,6 +202,7 @@
         </div>
       </div>
 
+      </template>
     </div>
   </div>
 </template>
@@ -188,9 +210,30 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { senadores } from '~/data/senadores'
+import { usePlenoCamaral } from '~/composables/usePlenoCamaral'
 
 const router = useRouter()
+
+// ⚡ El pleno (titulares, suplentes y directiva) viene del backend.
+// Antes se importaba la lista estática `~/data/senadores`, que no reflejaba
+// los cambios hechos desde el CMS.
+const { estado: plenoState, cargar: cargarPleno } = usePlenoCamaral()
+
+// Lista reactiva: los componentes hijos (y los computed) se actualizan
+// automáticamente cuando llega la respuesta del API.
+const senadores = computed(() => plenoState.value.senadores)
+
+// Directiva dinámica (fallback al histórico mientras carga)
+const DIRECTIVA_IDS_FALLBACK = [6, 12, 13, 24, 32, 33]
+const directivaIds = computed(() => {
+  const ids = plenoState.value.directivaIds
+  return ids && ids.length > 0 ? ids : DIRECTIVA_IDS_FALLBACK
+})
+
+// ¿Ya tenemos datos? Se usa para evitar parpadeos en el template.
+const plenoCargando = computed(
+  () => plenoState.value.cargando || !plenoState.value.cargada
+)
 
 const props = defineProps({
   filtroDepartamentoExterno: { type: String, default: null },
@@ -200,7 +243,6 @@ const props = defineProps({
 const emit = defineEmits(['update:stats', 'update:filtroDepartamento'])
 
 const defaultAvatar = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e5e7eb%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2240%22 font-family=%22sans-serif%22%3E👤%3C/text%3E%3C/svg%3E'
-const DIRECTIVA_IDS = [6, 12, 13, 24, 32, 33]
 
 const departamentos = [
   'Beni', 'Chuquisaca', 'Cochabamba', 'La Paz', 'Oruro',
@@ -241,21 +283,21 @@ const seatPositionsArco = [
   { x: 647, y: 580 }, { x: 693, y: 573 }, { x: 736, y: 559 }, { x: 777, y: 538 }, { x: 812, y: 511 }, { x: 845, y: 477 }, { x: 872, y: 438 }, { x: 893, y: 395 }, { x: 908, y: 349 }, { x: 917, y: 301 }, { x: 920, y: 252 }
 ]
 
-const esDirectiva = (id) => DIRECTIVA_IDS.includes(id)
-const getSuplenteNombre = (suplenteId) => senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')?.name || null
-const getSuplenteSlug = (suplenteId) => senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')?.slug || null
-const getTitularNombre = (titularId) => senadores.find(s => s.id === titularId && s.tipo === 'titular')?.name || null
-const getTitularSlug = (titularId) => senadores.find(s => s.id === titularId && s.tipo === 'titular')?.slug || null
+const esDirectiva = (id) => directivaIds.value.includes(id)
+const getSuplenteNombre = (suplenteId) => senadores.value.find(s => s.id === suplenteId && s.tipo === 'suplente')?.name || null
+const getSuplenteSlug = (suplenteId) => senadores.value.find(s => s.id === suplenteId && s.tipo === 'suplente')?.slug || null
+const getTitularNombre = (titularId) => senadores.value.find(s => s.id === titularId && s.tipo === 'titular')?.name || null
+const getTitularSlug = (titularId) => senadores.value.find(s => s.id === titularId && s.tipo === 'titular')?.slug || null
 const getSeatFilteredOut = (id) => allSeats.value.find(s => s.id === id)?.filteredOut || false
 
 const allSeats = computed(() => {
-  const titulares = senadores.filter(s => s.tipo === 'titular')
+  const titulares = senadores.value.filter(s => s.tipo === 'titular')
   const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
 
   return titularesOrdenados.map((senator, index) => {
     const pos = seatPositionsArco[index] || { x: 400, y: 300 }
     const isDirectiva = esDirectiva(senator.id)
-    const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
+    const suplente = senadores.value.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
 
     if (tipoVisualizacion.value === 'suplentes') {
       if (suplente) {
@@ -296,19 +338,76 @@ const filteredSeats = computed(() => {
   })
 })
 
+/** Posiciones del hemiciclo central (izquierda a derecha). */
+const POSICIONES_DIRECTIVA = [
+  { x: 500, y: 240 }, // 2da Vicepresidencia
+  { x: 540, y: 240 }, // 1ra Vicepresidencia
+  { x: 580, y: 240 }, // Presidente (radio mayor)
+  { x: 620, y: 240 }, // 1ra Secretaría
+  { x: 660, y: 240 }, // 2da Secretaría
+  { x: 700, y: 240 }  // 3ra Secretaría
+]
+
+/**
+ * Asientos de la directiva.
+ *
+ * El backend devuelve `directiva` en el orden:
+ *   [presidente, vice1, vice2, sec1, sec2, sec3]
+ * y aquí se reordena para que el presidente quede justo en el centro:
+ *   [vice2, vice1, PRESIDENTE, sec1, sec2, sec3]
+ *
+ * Mientras el API responde se usa el fallback histórico.
+ */
+const asientosDirectiva = computed(() => {
+  const ids = plenoState.value.directivaIds
+
+  let porCargo
+  if (ids && ids.length >= 3) {
+    // El backend devuelve: [presidente, vice1, vice2, sec1, sec2, sec3]
+    const [presidente, vice1, vice2, sec1, sec2, sec3] = ids
+    porCargo = { presidente, v1: vice1, v2: vice2, s1: sec1, s2: sec2, s3: sec3 }
+  } else {
+    // Fallback histórico por CARGO (el presidente va al centro)
+    porCargo = { presidente: 32, v1: 6, v2: 12, s1: 33, s2: 24, s3: 13 }
+  }
+
+  // Se dibuja de izquierda a derecha: vice2, vice1, PRESIDENTE, sec1, sec2, sec3
+  const ordenados = [
+    porCargo.v2,
+    porCargo.v1,
+    porCargo.presidente,
+    porCargo.s1,
+    porCargo.s2,
+    porCargo.s3
+  ]
+
+  return ordenados
+    .map((id, i) => {
+      if (id == null) return null
+      const titular = senadores.value.find((s) => s.id === id && s.tipo === 'titular')
+      return {
+        id,
+        seatNumber: titular?.seatNumber ?? id,
+        x: POSICIONES_DIRECTIVA[i]?.x ?? 580,
+        y: POSICIONES_DIRECTIVA[i]?.y ?? 240,
+        esPresidente: i === 2
+      }
+    })
+    .filter(Boolean)
+})
+
 const getColorDirectiva = (id) => {
-  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
   const seat = allSeats.value.find(s => s.id === id)
   if (seat && seat.filteredOut) return '#e5e7eb'
   return titular?.partyColor || '#cccccc'
 }
-
 const getSeatDirectiva = (id) => {
-  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
   if (!titular) return null
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
-  const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === id)
+  const suplente = senadores.value.find(s => s.tipo === 'suplente' && s.titularId === id)
 
   return {
     ...titular, nombreActual: titular.name, fotoActual: titular.foto, isEmpty: false,
@@ -350,7 +449,7 @@ const goToSenator = (id, fromDirectiva = false) => {
   hoveredSeat.value = null
 
   if (fromDirectiva) {
-    const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+    const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
     if (titular && titular.slug) router.push(`/senador/${titular.slug}`)
     return
   }
@@ -388,7 +487,11 @@ watch(filteredSeats, (nuevos) => {
   })
 }, { immediate: true, deep: true })
 
-onMounted(() => { restaurarEstado() })
+onMounted(async () => {
+  restaurarEstado()
+  // Cargar el pleno desde el backend (incluye directiva actualizada)
+  await cargarPleno()
+})
 </script>
 
 <style scoped>

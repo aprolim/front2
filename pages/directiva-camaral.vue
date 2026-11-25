@@ -48,7 +48,11 @@
                 <img
                   :src="getImageUrl(directiva.presidente.foto)"
                   :alt="directiva.presidente.name"
-                  class="w-[14vw] h-[14vw] rounded-full object-cover border-4 shadow-lg"
+                  class="w-[14vw] h-[14vw] rounded-full object-cover border-4 shadow-lg bg-gray-200"
+                  width="200"
+                  height="200"
+                  fetchpriority="high"
+                  decoding="async"
                   :style="{ borderColor: directiva.presidente.partyColor || '#e3d194' }"
                   @error="(e) => e.target.src = defaultAvatar"
                 />
@@ -245,6 +249,9 @@ const fetchDirectiva = async () => {
     if (result.success && result.data) {
       directiva.value = result.data
       console.log('✅ Directiva cargada:', directiva.value)
+
+      // ⚡ Precarga de fotos en segundo plano (no bloquea el render)
+      precargarFotosDirectiva(result.data)
     } else {
       throw new Error(result.message || 'Error al cargar la directiva')
     }
@@ -253,6 +260,27 @@ const fetchDirectiva = async () => {
     error.value = err.message || 'Error al cargar la directiva'
   } finally {
     loading.value = false
+  }
+}
+
+/**
+ * Descarga las 6 fotos de la directiva con antelación para que el navegador
+ * las pinte desde caché y no haya hueco al mostrarse.
+ */
+const precargarFotosDirectiva = (d) => {
+  if (typeof window === 'undefined' || !d) return
+
+  const miembros = [
+    d.presidente,
+    ...(d.vicepresidencias || []),
+    ...(d.secretarias || [])
+  ].filter(Boolean)
+
+  for (const m of miembros) {
+    if (!m.foto) continue
+    const img = new Image()
+    img.decoding = 'async'
+    img.src = getImageUrl(m.foto)
   }
 }
 

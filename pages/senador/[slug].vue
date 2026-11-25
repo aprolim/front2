@@ -1,6 +1,35 @@
 <template>
   <div class="py-[6vw] sm:py-[3vw]">
-    <div v-if="senator" class="w-[92%] sm:w-[85%] mx-auto">
+    <!-- Cargando (los datos vienen del backend) -->
+    <div v-if="!senator && cargando" class="flex flex-col items-center justify-center py-[10vw]">
+      <div class="inline-block w-[3vw] h-[3vw] border-[0.25vw] border-senado-primary border-t-transparent rounded-full animate-spin"></div>
+      <p class="mt-[1vw] text-gray-500 text-[1.1vw]">Cargando senador...</p>
+    </div>
+
+    <!-- Error de carga -->
+    <div v-else-if="error" class="text-center py-[8vw]">
+      <h1 class="text-[2vw] font-bold text-senado-primary mb-[1vw]">No se pudo cargar el senador</h1>
+      <p class="text-gray-600 text-[1.1vw]">{{ error }}</p>
+      <button
+        @click="recargar()"
+        class="inline-block mt-[2vw] px-[3vw] py-[1.5vw] bg-senado-primary text-white rounded-[1vw] hover:opacity-90"
+      >
+        Reintentar
+      </button>
+    </div>
+
+    <!-- No encontrado -->
+    <div v-else-if="!senator" class="text-center py-[8vw]">
+      <h1 class="text-[2vw] font-bold text-senado-primary mb-[1vw]">Senador no encontrado</h1>
+      <p class="text-gray-600 text-[1.1vw]">
+        No existe un senador con el identificador «{{ slug }}».
+      </p>
+      <NuxtLink to="/brigadas" class="inline-block mt-[2vw] text-senado-primary hover:underline font-medium">
+        Ver el Pleno Camaral
+      </NuxtLink>
+    </div>
+
+    <div v-else class="w-[92%] sm:w-[85%] mx-auto">
       <!-- Botón volver -->
       <button 
         @click="volver"
@@ -58,20 +87,16 @@
 
             <!-- Columna 3: Partido -->
             <div class="sm:col-span-3 flex flex-col items-center justify-center pb-[3vw] sm:pb-0">
-              <div class="relative inline-block group">
-                <img 
-                  :src="getLogoPartido(senator.partyShort)" 
-                  :alt="senator.partyShort"
-                  class="h-[16vw] sm:h-[6vw] w-auto object-contain transition-opacity duration-300 logo-normal"
-                  @error="(e) => e.target.src = ''"
-                />
-                <img 
-                  :src="getLogoPartidoHover(senator.partyShort)" 
-                  :alt="senator.partyShort + ' hover'"
-                  class="h-[16vw] sm:h-[6vw] w-auto object-contain absolute top-0 left-0 transition-opacity duration-300 logo-hover"
-                  @error="(e) => e.target.style.display = 'none'"
-                />
-              </div>
+              <!-- Se usa siempre la versión A COLOR del logo (los archivos
+                   *Hover.svg son los que tienen los colores del partido;
+                   los .svg base son gris/negro). Sin efectos de hover. -->
+              <img
+                v-if="getLogoPartidoColor(senator.partyShort)"
+                :src="getLogoPartidoColor(senator.partyShort)"
+                :alt="senator.partyShort"
+                class="h-[16vw] sm:h-[6vw] w-auto object-contain"
+                @error="(e) => e.target.style.display = 'none'"
+              />
               <span 
                 class="px-[2.4vw] sm:px-[1vw] py-[0.6vw] sm:py-[0.3vw] w-[22vw] sm:w-[10vw] rounded-full text-black text-[2.4vw] sm:text-[0.8vw] mt-[2vw] sm:mt-[1vw] text-center"
               >
@@ -212,13 +237,6 @@
       /> -->
     </div>
 
-    <div v-else class="text-center py-[10vw] sm:py-[5vw]">
-      <h2 class="text-[5vw] sm:text-[2vw] font-bold text-gray-600">Senador no encontrado</h2>
-      <NuxtLink to="/" class="text-senado-primary hover:underline mt-[3vw] sm:mt-[1.5vw] inline-block text-[3.6vw] sm:text-[1.2vw]">
-        Volver al inicio
-      </NuxtLink>
-    </div>
-
     <!-- MODAL PARA VER FOTO -->
     <Teleport to="body">
       <transition
@@ -276,13 +294,36 @@ import { useSenadores } from '~/composables/useSenadores'
 import NoticiasSenador from '~/components/NoticiasSenador.vue'
 
 const route = useRoute()
-const { getSenadorBySlug, getSuplenteByTitularId } = useSenadores()
+const { getSenadorBySlug, getSuplenteByTitularId, cargando, error } = useSenadores()
+const { recargar } = usePlenoCamaral()
 
 const slug = computed(() => route.params.slug)
 const modalAbierto = ref(false)
 
 const senator = computed(() => {
   return getSenadorBySlug(slug.value)
+})
+
+// ==========================================
+// RED DE SEGURIDAD
+//
+// Si al entrar no hay datos y sigue "cargando" pasado un tiempo, se fuerza
+// una recarga. Así el enlace directo nunca queda con el spinner eterno,
+// ni siquiera si la carga SSR quedó interrumpida.
+// ==========================================
+let temporizador = null
+
+onMounted(() => {
+  temporizador = setTimeout(() => {
+    if (!senator.value) {
+      console.warn('⚠️ [senador] Sin datos tras 3s, reintentando carga forzada')
+      recargar()
+    }
+  }, 3000)
+})
+
+onBeforeUnmount(() => {
+  if (temporizador) clearTimeout(temporizador)
 })
 
 const proyectosDestacados = computed(() => {
@@ -352,24 +393,28 @@ const getMapaDepartamento = (departamento) => {
   return mapas[departamento] || '/mapas/default.svg'
 }
 
-const getLogoPartido = (partyShort) => {
-  const logos = {
-    'PDC': '/logos FuerzasPoliticas/PDC.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidad.svg',
-    'LIBRE': '/logos FuerzasPoliticas/Libre.svg',
-    'APB': '/logos FuerzasPoliticas/Sumate.svg'
-  }
-  return logos[partyShort] || ''
+// Los archivos viven en /public/logos FuerzasPoliticas/ (con espacio).
+//
+// ⚠️ IMPORTANTE: la versión A COLOR del logo son los archivos `*Hover.svg`.
+// Los `.svg` base (PDC.svg, Libre.svg…) están en gris/negro y NO deben usarse
+// para mostrar el partido.
+const LOGO_BASE = '/logos%20FuerzasPoliticas/'
+
+const LOGOS_COLOR = {
+  PDC: 'PDCHover.svg',
+  UNIDAD: 'AlianzaUnidadHover.svg',
+  LIBRE: 'LibreHover.svg',
+  APB: 'SumateHover.svg'
 }
 
-const getLogoPartidoHover = (partyShort) => {
-  const logosHover = {
-    'PDC': '/logos FuerzasPoliticas/PDCHover.svg',
-    'UNIDAD': '/logos FuerzasPoliticas/AlianzaUnidadHover.svg',
-    'LIBRE': '/logos FuerzasPoliticas/LibreHover.svg',
-    'APB': '/logos FuerzasPoliticas/SumateHover.svg'
-  }
-  return logosHover[partyShort] || ''
+/**
+ * Logo A COLOR del partido (siempre el mismo, sin estados hover).
+ * Tolera variantes en `partyShort`: "LIBRE", "Libre", "libre"…
+ */
+const getLogoPartidoColor = (partyShort) => {
+  const clave = String(partyShort || '').trim().toUpperCase()
+  const archivo = LOGOS_COLOR[clave]
+  return archivo ? `${LOGO_BASE}${archivo}` : ''
 }
 
 const getAsientoHemiciclo = (seatNumber) => {
@@ -416,6 +461,6 @@ const getAsientoHemiciclo = (seatNumber) => {
 </script>
 
 <style scoped>
-.logo-normal { opacity: 0; }
-.logo-hover  { opacity: 1; }
+/* Sin estilos especiales: el logo del partido y su pastilla de color
+   se muestran siempre, sin depender de :hover. */
 </style>

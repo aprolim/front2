@@ -152,6 +152,10 @@
                   :src="hoveredSeat.fotoActual || defaultAvatar" 
                   :alt="hoveredSeat.nombreActual || hoveredSeat.name"
                   class="foto-senador"
+                  width="80"
+                  height="80"
+                  decoding="async"
+                  fetchpriority="high"
                   :style="{ borderColor: hoveredSeat.partyColor || '#ccc' }"
                   @error="(e) => e.target.src = defaultAvatar"
                 />
@@ -235,9 +239,15 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { senadores } from '~/data/senadores'
+import { usePlenoCamaral } from '~/composables/usePlenoCamaral'
 
 const router = useRouter()
+
+// ⚡ El pleno (titulares, suplentes) viene del backend.
+// Antes se usaba la lista estática `~/data/senadores`, que no reflejaba
+// los cambios hechos desde el CMS (fotos, nombres, partido…).
+const { estado: plenoState, cargar: cargarPleno } = usePlenoCamaral()
+const senadores = computed(() => plenoState.value.senadores)
 
 const props = defineProps({
   filtroDepartamentoExterno: {
@@ -296,7 +306,13 @@ const DIRECTIVA_IDS_FALLBACK = [6, 12, 13, 24, 32, 33]
 
 const directivaIds = computed(() => {
   const ids = miembrosDirectiva.value.map((m) => m.id).filter((id) => id != null)
-  return ids.length > 0 ? ids : DIRECTIVA_IDS_FALLBACK
+  if (ids.length > 0) return ids
+
+  // Fallback: los ids que trae el endpoint público del pleno
+  const desdePleno = plenoState.value.directivaIds
+  if (desdePleno && desdePleno.length > 0) return desdePleno
+
+  return DIRECTIVA_IDS_FALLBACK
 })
 
 /** Buscar un miembro de la directiva por su ID de senador. */
@@ -318,17 +334,18 @@ const cargarDirectiva = async () => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
     const json = await res.json()
-    if (json.success && json.data) {
+    if (json && json.success && json.data) {
       directiva.value = {
         presidente: json.data.presidente || null,
-        vicepresidencias: json.data.vicepresidencias || [],
-        secretarias: json.data.secretarias || []
+        vicepresidencias: Array.isArray(json.data.vicepresidencias) ? json.data.vicepresidencias : [],
+        secretarias: Array.isArray(json.data.secretarias) ? json.data.secretarias : []
       }
       directivaCargada.value = true
       console.log('✅ [DescubraSenado] Directiva cargada del backend')
     }
   } catch (err) {
-    console.warn('⚠️ [DescubraSenado] No se pudo cargar la directiva, se usa el fallback:', err.message)
+    // No debe romper el componente: se usa el fallback estático
+    console.warn('⚠️ [DescubraSenado] Directiva no disponible, se usa fallback:', err?.message || err)
     directivaCargada.value = false
   }
 }
@@ -412,25 +429,25 @@ const esDirectiva = (id) => directivaIds.value.includes(id)
 
 const getSuplenteNombre = (suplenteId) => {
   if (!suplenteId) return null
-  const s = senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')
+  const s = senadores.value.find(s => s.id === suplenteId && s.tipo === 'suplente')
   return s?.name || null
 }
 
 const getSuplenteSlug = (suplenteId) => {
   if (!suplenteId) return null
-  const s = senadores.find(s => s.id === suplenteId && s.tipo === 'suplente')
+  const s = senadores.value.find(s => s.id === suplenteId && s.tipo === 'suplente')
   return s?.slug || null
 }
 
 const getTitularNombre = (titularId) => {
   if (!titularId) return null
-  const s = senadores.find(s => s.id === titularId && s.tipo === 'titular')
+  const s = senadores.value.find(s => s.id === titularId && s.tipo === 'titular')
   return s?.name || null
 }
 
 const getTitularSlug = (titularId) => {
   if (!titularId) return null
-  const s = senadores.find(s => s.id === titularId && s.tipo === 'titular')
+  const s = senadores.value.find(s => s.id === titularId && s.tipo === 'titular')
   return s?.slug || null
 }
 
@@ -454,13 +471,13 @@ const getSeatFilteredOut = (id) => {
 // COMPUTED - TODOS LOS ASIENTOS (36)
 // ============================================
 const allSeats = computed(() => {
-  const titulares = senadores.filter(s => s.tipo === 'titular')
+  const titulares = senadores.value.filter(s => s.tipo === 'titular')
   const titularesOrdenados = [...titulares].sort((a, b) => a.seatNumber - b.seatNumber)
   
   return titularesOrdenados.map((senator, index) => {
     const pos = seatPositionsArco[index] || { x: 400, y: 300 }
     const isDirectiva = esDirectiva(senator.id)
-    const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
+    const suplente = senadores.value.find(s => s.tipo === 'suplente' && s.titularId === senator.id)
     
     if (tipoVisualizacion.value === 'suplentes') {
       if (suplente) {
@@ -601,7 +618,7 @@ const asientosDirectiva = computed(() => {
   if (!hayDatos) {
     // Fallback: mismas posiciones con los IDs históricos
     return DIRECTIVA_IDS_FALLBACK.map((id, i) => {
-      const titular = senadores.find((s) => s.id === id && s.tipo === 'titular')
+      const titular = senadores.value.find((s) => s.id === id && s.tipo === 'titular')
       return {
         id,
         seatNumber: titular?.seatNumber ?? id,
@@ -615,7 +632,7 @@ const asientosDirectiva = computed(() => {
   return ordenados
     .map((miembro, i) => {
       if (!miembro || !miembro.id) return null
-      const titular = senadores.find((s) => s.id === miembro.id && s.tipo === 'titular')
+      const titular = senadores.value.find((s) => s.id === miembro.id && s.tipo === 'titular')
       return {
         id: miembro.id,
         seatNumber: miembro.seatNumber ?? titular?.seatNumber ?? miembro.id,
@@ -636,11 +653,11 @@ const getColorDirectiva = (id) => {
   const miembro = getMiembroDirectiva(id)
   if (miembro?.partyColor) return miembro.partyColor
 
-  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+  const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
   return titular?.partyColor || '#cccccc'
 }
 
-const getSeatDirectiva = (id) => {  const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+const getSeatDirectiva = (id) => {  const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
   const miembro = getMiembroDirectiva(id)
 
   // Si el backend tiene a esta persona en la directiva, mandan sus datos.
@@ -650,7 +667,7 @@ const getSeatDirectiva = (id) => {  const titular = senadores.find(s => s.id ===
 
   const seat = allSeats.value.find(s => s.id === id)
   const isFilteredOut = seat?.filteredOut || false
-  const suplente = senadores.find(s => s.tipo === 'suplente' && s.titularId === id)
+  const suplente = senadores.value.find(s => s.tipo === 'suplente' && s.titularId === id)
 
   return {
     ...base,
@@ -677,9 +694,9 @@ const partidosOrdenados = computed(() => {
   let baseSenadores
   
   if (tipoVisualizacion.value === 'suplentes') {
-    baseSenadores = senadores.filter(s => s.tipo === 'suplente')
+    baseSenadores = senadores.value.filter(s => s.tipo === 'suplente')
   } else {
-    baseSenadores = senadores.filter(s => s.tipo === 'titular')
+    baseSenadores = senadores.value.filter(s => s.tipo === 'titular')
   }
   
   baseSenadores.forEach(s => {
@@ -786,17 +803,39 @@ const goToSenator = (id, fromDirectiva = false) => {
   // CENTRO (DIRECTIVA): SIEMPRE NAVEGA AL TITULAR
   // ==========================================
   if (fromDirectiva) {
-    // Prioridad: slug que venga del backend
+    // Prioridad 1: slug que venga del endpoint de directiva
     const miembro = getMiembroDirectiva(id)
-    if (miembro?.slug) {
+    if (miembro && typeof miembro.slug === 'string' && miembro.slug) {
       router.push(`/senador/${miembro.slug}`)
       return
     }
 
-    const titular = senadores.find(s => s.id === id && s.tipo === 'titular')
+    // Prioridad 2: el titular del pleno (siempre tiene slug)
+    const titular = senadores.value.find(s => s.id === id && s.tipo === 'titular')
     if (titular && titular.slug) {
       router.push(`/senador/${titular.slug}`)
+      return
     }
+
+    // Prioridad 3: generar el slug desde el nombre (misma regla que el backend)
+    const nombre = titular?.name || miembro?.name
+    if (nombre) {
+      const slugGenerado = nombre
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/ñ/g, 'n')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+      if (slugGenerado) {
+        router.push(`/senador/${slugGenerado}`)
+        return
+      }
+    }
+
+    console.warn('⚠️ [DescubraSenado] No se pudo resolver el slug del senador id:', id)
+    isNavigating.value = false
     return
   }
   
@@ -882,8 +921,14 @@ watch(filteredSeats, (nuevos) => {
 // MONTAJE
 // ============================================
 onMounted(async () => {
-  // La directiva se pide al backend; mientras tanto se usa el fallback estático.
-  await cargarDirectiva()
+  // Pleno (titulares, suplentes) y directiva vienen del backend.
+  // Se usa allSettled para que un fallo en una carga no aborte la otra
+  // ni propague un error no capturado (que rompería el render).
+  try {
+    await Promise.allSettled([cargarPleno(), cargarDirectiva()])
+  } catch (err) {
+    console.warn('⚠️ [DescubraSenado] Error al cargar datos iniciales:', err)
+  }
   restaurarEstado()
 })
 </script>
